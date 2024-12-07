@@ -1,6 +1,6 @@
 # NativeAppTemplate-Free-Android
 
-NativeAppTemplate-Free-Android is a modern and comprehensive native iOS app with user authentication.
+NativeAppTemplate-Free-Android is a modern and comprehensive native iOS app with user authentication.  
 This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).
 
 ## Overview
