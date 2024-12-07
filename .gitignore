@@ -1,0 +1,62 @@
+# built application files
+*.apk
+*.aab
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+out/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+
+# Windows thumbnail db
+.DS_Store
+
+# IDEA/Android Studio project files, because
+# the project can be imported from settings.gradle.kts
+*.iml
+.idea/*
+!.idea/copyright
+# Keep the code styles.
+!/.idea/codeStyles
+/.idea/codeStyles/*
+!/.idea/codeStyles/Project.xml
+!/.idea/codeStyles/codeStyleConfig.xml
+
+# Gradle cache
+.gradle
+
+# Sandbox stuff
+_sandbox
+
+# Android Studio captures folder
+captures/
+
+# Version control
+vcs.xml
+
+# lint
+lint/intermediates/
+lint/generated/
+lint/outputs/
+lint/tmp/
+# lint/reports/
+
+app/release/*
+
+# Ignore kotlin 2.0 compiler files (.salive: session-is-alive)
+# https://github.com/JetBrains/kotlin/blob/ca34e5d2fd255ed0501bae4fae3d3691dc40d375/libraries/tools/kotlin-gradle-plugin/src/common/kotlin/org/jetbrains/kotlin/compilerRunner/GradleKotlinCompilerRunner.kt#L458
+/.kotlin

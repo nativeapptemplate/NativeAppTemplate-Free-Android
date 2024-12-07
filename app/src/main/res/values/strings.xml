@@ -1,0 +1,125 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <string name="app_name">NativeAppTemplate Free</string>
+  <string name="title_shops">Shops</string>
+  <string name="title_settings">Settings</string>
+
+  <!-- Sign up screen -->
+  <string name="sign_in">Sign In</string>
+  <string name="sign_up">Sign Up</string>
+  <string name="signed_up_but_unconfirmed">A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.</string>
+  <string name="email">Email</string>
+  <string name="password">Password</string>
+
+  <!-- Email and password screen -->
+  <string name="label_password">Password</string>
+  <string name="sign_up_for_an_account">Sign Up for an Account</string>
+  <string name="sign_in_to_your_account">Sign In to Your Account</string>
+
+  <!-- Generic -->
+  <string name="label_loading">Loading …</string>
+  <string name="label_description">Description</string>
+  <string name="delete">Delete</string>
+  <string name="button_label_update">Update</string>
+  <string name="time_zone">Time Zone</string>
+  <string name="not_connected">⚠️ You aren’t connected to the internet</string>
+  <string name="are_you_sure">Are you sure?</string>
+  <string name="full_name">Full Name</string>
+  <string name="full_name_is_required">Full name is required.</string>
+  <string name="email_is_required">Email is required.</string>
+  <string name="email_is_invalid">Email is invalid.</string>
+  <string name="password_is_required">Password is required.</string>
+  <string name="password_is_invalid">Password is invalid.</string>
+  <string name="role">Role</string>
+  <string name="unauthorized">You are not authorized to perform this action.</string>
+  <string name="cancel">Cancel</string>
+  <string name="button_label_ok">OK</string>
+  <string name="accept">Accept</string>
+
+  <!-- Welcome screen -->
+  <string name="button_sign_in">Sign In</string>
+
+  <!-- Login screen -->
+  <string name="button_sign_out">Sign Out</string>
+  <string name="forgot_password">Forgot your password?</string>
+
+  <!-- Forgot Password screen -->
+  <string name="sent_reset_password_instruction">An email has been sent the email containing instructions for resetting your password."</string>
+  <string name="button_send_me_reset_password_instructions">Send me reset password instructions</string>
+
+  <!-- Resend Confirmation Instructions screen -->
+  <string name="button_send_me_confirmation_instructions">Resend confirmation instructions</string>
+  <string name="didnt_receive_confirmation_instructions">Didn\'t receive confirmation instructions?</string>
+  <string name="sent_confirmation_instruction">An email has been sent the email containing instructions for confirming your email address.</string>
+
+  <!-- Need App Updates screen -->
+  <string name="update_app">Update App</string>
+  <string name="install_new_version_app">Please install new version app.</string>
+
+  <!-- Accept Privacy screen -->
+  <string name="confirmed_privacy_version_updated">Privacy policy accepted successfully.</string>
+  <string name="privacy_policy_updated">Privacy Policy Updated</string>
+
+  <!-- Accept Terms screen -->
+  <string name="confirmed_terms_version_updated">Terms of use accepted successfully.</string>
+  <string name="terms_of_use_updated">Terms of Use Updated</string>
+
+  <!-- On-boarding -->
+  <string name="onboarding_description1">Onboarding description1.</string>
+  <string name="onboarding_description2">Onboarding description2.</string>
+  <string name="onboarding_description3">Onboarding description3.</string>
+
+  <!-- Shops Screen -->
+  <string name="add_shop">Add Shop</string>
+  <string name="shops">Shops</string>
+  <string name="shop_name">Shop Name</string>
+  <string name="shop_name_is_required">Shop name is required.</string>
+  <string name="add_shop_description">Add a new shop.</string>
+
+  <!-- Shop Detail Screen -->
+  <string name="message_shop_created">Shop added.</string>
+  <string name="message_shop_deleted">Shop removed.</string>
+  <string name="message_shop_updated">Shop updated.</string>
+
+  <!-- Shop Settings Screen -->
+  <string name="title_delete_shop">Delete Shop</string>
+
+  <string name="label_shop_settings">Shop Settings</string>
+  <string name="label_shop_settings_basic_settings">Basic Settings</string>
+
+  <!-- Settings Screen -->
+  <string name="mode">Mode</string>
+  <string name="label_dark_mode">Dark Mode</string>
+  <string name="label_light">Light</string>
+  <string name="label_dark">Dark</string>
+  <string name="label_system_default">System Default</string>
+  <string name="dark_mode_preference">Dark Mode Preference</string>
+  <string name="my_account">My Account</string>
+  <string name="profile">Profile</string>
+  <string name="information">Information</string>
+  <string name="support_website">Support Website</string>
+  <string name="faqs">FAQs</string>
+  <string name="discussions">Discussions</string>
+  <string name="rate_app">Rate or Review the App</string>
+  <string name="contact">Contact</string>
+  <string name="email_app_is_not_found">Email app is not found.</string>
+  <string name="privacy_policy">Privacy Policy</string>
+  <string name="terms_of_use">Terms of Use</string>
+  <string name="edit_profile">Edit Profile</string>
+  <string name="delete_my_account">Delete My Account</string>
+  <string name="update_password">Update Password</string>
+  <string name="current_password">Current Password</string>
+  <string name="new_password">New Password</string>
+  <string name="confirm_new_password">Confirm New Password</string>
+  <string name="current_password_is_required">Current password is required.</string>
+  <string name="new_password_is_required">New password is required.</string>
+  <string name="confirm_new_password_is_required">Confirm new password is required.</string>
+  <string name="we_need_your_current_password">We need your current password to confirm your changes.</string>
+  <string name="reconfirm_description">A message with a confirmation link has been sent to your new email address. Please follow the link to update to your new email address. Your email address will not be updated until confirming.</string>
+
+  <!-- Update password -->
+  <string name="message_password_updated">Password updated successfully.</string>
+
+  <!-- Profile -->
+  <string name="message_shopkeeper_updated">Account updated successfully.</string>
+  <string name="message_shopkeeper_deleted">Account deleted successfully.</string>
+</resources>

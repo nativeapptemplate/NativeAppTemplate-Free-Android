@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+import "dark_theme_config.proto";
+
+option java_package = "com.nativeapptemplate.nativeapptemplatefree";
+option java_multiple_files = true;
+
+message UserPreferences {
+  string id = 1;
+  string account_id = 2;
+  string personal_account_id = 3;
+  string account_owner_id = 4;
+  string account_name = 5;
+  string email = 6;
+  string name = 7;
+  string time_zone = 8;
+  repeated string permissions = 11;
+  string token = 12;
+  string client = 13;
+  string uid = 14;
+  string expiry = 15;
+
+  DarkThemeConfigProto dark_theme_config = 16;
+
+  bool is_logged_in = 17;
+
+  int32 android_app_version = 20;
+  bool should_update_privacy = 21;
+  bool should_update_terms = 22;
+  int32 shop_limit_count = 28;
+
+  bool is_email_updated = 32;
+  bool is_my_account_deleted = 33;
+  bool is_shop_deleted = 35;
+
+  bool should_update_app = 39;
+}
