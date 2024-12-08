@@ -1,6 +1,6 @@
 # NativeAppTemplate-Free-Android
 
-NativeAppTemplate-Free-Android is a modern and comprehensive native iOS app with user authentication.  
+NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native iOS app with user authentication.  
 This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).
 
 ## Overview
@@ -21,7 +21,7 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 - **Retrofit2** (Networking)
 - **[Proto DataStore](https://developer.android.com/topic/libraries/architecture/datastore)**  
 - **[Android Modern App Architecture](https://developer.android.com/topic/architecture#modern-app-architecture)**  
-- References from [nowinandroid](https://github.com/android/nowinandroid) and [emitron-Android](https://github.com/razeware/emitron-Android)
+- Inspired by [nowinandroid](https://github.com/android/nowinandroid) and [emitron-Android](https://github.com/razeware/emitron-Android)
 
 #### Included Features
 
