@@ -68,7 +68,7 @@ fun ShopkeeperEditView(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val shopkeeperUpdatedMessage = stringResource(R.string.message_shopkeeper_updated)
 
-  LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+  LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
     viewModel.reload()
   }
 

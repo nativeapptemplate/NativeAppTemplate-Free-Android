@@ -60,7 +60,7 @@ fun ShopBasicSettingsView(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val shopUpdatedMessage = stringResource(id = R.string.message_shop_updated)
 
-  LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+  LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
     viewModel.reload()
   }
 
