@@ -71,6 +71,10 @@ buildConfigField("String", "PORT","\"3000\"")
 buildConfigField("String", "SCHEME","\"http\"")
 ```
 
+## Blog
+
+- [Key Differences in MVVM Architecture: iOS vs. Android](https://medium.com/@dadachix/key-differences-in-mvvm-architecture-ios-vs-android-e239d30b2ea7)
+
 ## Contributing
 
 If you have an improvement you'd like to share, create a fork of the repository and send us a pull request.
