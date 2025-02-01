@@ -73,10 +73,9 @@ internal fun OnboardingView(
           Image(
             painter = painterResource(OnboardingViewModel.onboardingImageId(page)),
             contentDescription = null,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Fit,
             modifier = Modifier
               .align(Alignment.TopCenter)
-              .fillMaxWidth()
           )
           Card(
             shape = RoundedCornerShape(16.dp),
