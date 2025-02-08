@@ -8,19 +8,20 @@ import androidx.navigation.compose.composable
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.PasswordEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.SettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.ShopkeeperEditView
+import kotlinx.serialization.Serializable
 
-const val SETTINGS_ROUTE = "settings_tab_route"
-const val SHOPKEEPER_EDIT_ROUTE = "settings_tab_shopkeeper_edit_route"
-const val PASSWORD_EDIT_ROUTE = "settings_tab_password_edit_route"
+@Serializable data object SettingsRoute
+@Serializable data object ShopkeeperEditRoute
+@Serializable data object PasswordEditRoute
 
-fun NavController.navigateToSettings(navOptions: NavOptions) = navigate(SETTINGS_ROUTE, navOptions)
+fun NavController.navigateToSettings(navOptions: NavOptions) = navigate(route = SettingsRoute, navOptions)
 
 fun NavGraphBuilder.settingsView(
   onShowShopkeeperEditClick: () -> Unit,
   onShowPasswordEditClick: () -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
 ) {
-  composable(route = SETTINGS_ROUTE) {
+  composable<SettingsRoute> {
     SettingsView(
       onShowShopkeeperEditClick = onShowShopkeeperEditClick,
       onShowPasswordEditClick = onShowPasswordEditClick,
@@ -29,17 +30,13 @@ fun NavGraphBuilder.settingsView(
   }
 }
 
-fun NavController.navigateToShopkeeperEdit() {
-  navigate(SHOPKEEPER_EDIT_ROUTE)
-}
+fun NavController.navigateToShopkeeperEdit() = navigate(ShopkeeperEditRoute)
 
 fun NavGraphBuilder.shopkeeperEditView(
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
-  composable(
-    route = SHOPKEEPER_EDIT_ROUTE,
-    ) {
+  composable<ShopkeeperEditRoute> {
     ShopkeeperEditView(
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
@@ -47,17 +44,13 @@ fun NavGraphBuilder.shopkeeperEditView(
   }
 }
 
-fun NavController.navigateToPasswordEdit() {
-  navigate(PASSWORD_EDIT_ROUTE)
-}
+fun NavController.navigateToPasswordEdit() = navigate(PasswordEditRoute)
 
 fun NavGraphBuilder.passwordEditView(
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
-  composable(
-    route = PASSWORD_EDIT_ROUTE,
-  ) {
+  composable<PasswordEditRoute> {
     PasswordEditView(
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,

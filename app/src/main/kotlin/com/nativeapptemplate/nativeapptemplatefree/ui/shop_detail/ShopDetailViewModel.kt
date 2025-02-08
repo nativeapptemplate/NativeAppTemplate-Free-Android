@@ -3,9 +3,10 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.ShopDetailArgs
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.ShopDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,15 +31,13 @@ data class ShopDetailUiState(
 class ShopDetailViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val shopRepository: ShopRepository,
-
   ) : ViewModel() {
-  private val shopDetailArgs: ShopDetailArgs = ShopDetailArgs(savedStateHandle)
-
+  private val shopId = savedStateHandle.toRoute<ShopDetailRoute>().id
   private val _uiState = MutableStateFlow(ShopDetailUiState())
   val uiState: StateFlow<ShopDetailUiState> = _uiState.asStateFlow()
 
   fun reload() {
-    fetchData(shopDetailArgs.shopId)
+    fetchData(shopId)
   }
 
   private fun fetchData(shopId: String) {

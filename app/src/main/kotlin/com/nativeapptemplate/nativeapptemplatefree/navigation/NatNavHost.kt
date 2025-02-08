@@ -7,6 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToPasswordEdit
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToShopkeeperEdit
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.passwordEditView
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingsView
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.shopkeeperEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NatAppState
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptPrivacyView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptTermsView
@@ -14,30 +19,25 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.forgot
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToAcceptPrivacy
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToAcceptTerms
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToForgotPassword
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToNeedAppUpdatesView
+import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToNeedAppUpdates
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToOnboarding
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToResendConfirmationInstructions
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToSignInEmailAndPassword
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToSignUp
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToSignUpOrSignIn
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.needAppUpdatesView
-import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.SHOPS_ROUTE
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.onboardingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.resendConfirmationInstructionsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signInEmailAndPasswordView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpOrSignInView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpView
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToPasswordEdit
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToShopkeeperEdit
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.passwordEditView
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingsView
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.shopkeeperEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.navigateToShopDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.shopDetailView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopBasicSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopBasicSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopSettingsView
+import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopsRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopCreate
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopCreateView
@@ -55,7 +55,6 @@ fun NatNavHost(
   appState: NatAppState,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   modifier: Modifier = Modifier,
-  startDestination: String = SHOPS_ROUTE
 ) {
   val navController = appState.navController
   val isLoggedIn by appState.isLoggedIn.collectAsStateWithLifecycle()
@@ -71,7 +70,7 @@ fun NatNavHost(
   ) {
     if (isLoggedIn) {
       if (shouldUpdateApp) {
-        navController.navigateToNeedAppUpdatesView()
+        navController.navigateToNeedAppUpdates()
       } else if (shouldUpdatePrivacy) {
         navController.navigateToAcceptPrivacy()
       } else if (shouldUpdateTerms) {
@@ -86,7 +85,7 @@ fun NatNavHost(
 
   NavHost(
     navController = navController,
-    startDestination = startDestination,
+    startDestination = ShopsRoute,
     modifier = modifier,
   ) {
     onboardingView(

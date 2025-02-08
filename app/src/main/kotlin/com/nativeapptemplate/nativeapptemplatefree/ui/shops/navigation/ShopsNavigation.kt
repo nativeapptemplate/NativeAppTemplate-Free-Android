@@ -7,22 +7,19 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.ShopCreateView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.ShopListView
+import kotlinx.serialization.Serializable
 
-const val SHOPS_ROUTE = "shops_tab_route"
-const val SHOP_CREATE_ROUTE = "shops_tab_shop_create_route"
+@Serializable data object ShopsRoute
+@Serializable data object ShopCreateRoute
 
-fun NavController.navigateToShopList(navOptions: NavOptions? = null) {
-  navigate(SHOPS_ROUTE, navOptions)
-}
+fun NavController.navigateToShopList(navOptions: NavOptions? = null) = navigate(route = ShopsRoute, navOptions)
 
 fun NavGraphBuilder.shopListView(
   onItemClick: (String) -> Unit,
   onAddShopClick: () -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
 ) {
-  composable(
-    route = SHOPS_ROUTE,
-  ) {
+  composable<ShopsRoute> {
     ShopListView(
       onItemClick = onItemClick,
       onAddShopClick = onAddShopClick,
@@ -31,13 +28,13 @@ fun NavGraphBuilder.shopListView(
   }
 }
 
-fun NavController.navigateToShopCreate() = navigate(SHOP_CREATE_ROUTE)
+fun NavController.navigateToShopCreate() = navigate(ShopCreateRoute)
 
 fun NavGraphBuilder.shopCreateView(
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
-  composable(SHOP_CREATE_ROUTE) {
+  composable<ShopCreateRoute> {
     ShopCreateView(
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
