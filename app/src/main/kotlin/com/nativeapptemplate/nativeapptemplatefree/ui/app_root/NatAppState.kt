@@ -11,11 +11,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import androidx.tracing.trace
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToSettings
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SETTINGS_TAB
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SHOPS_TAB
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
 import kotlinx.coroutines.CoroutineScope

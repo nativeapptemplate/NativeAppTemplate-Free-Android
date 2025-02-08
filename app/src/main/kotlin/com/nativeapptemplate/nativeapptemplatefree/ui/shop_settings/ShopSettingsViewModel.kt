@@ -3,10 +3,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopSettingsArgs
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopSettingsRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,15 +32,14 @@ class ShopSettingsViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
   private val shopRepository: ShopRepository,
-
   ) : ViewModel() {
-  private val shopSettingsArgs: ShopSettingsArgs = ShopSettingsArgs(savedStateHandle)
+  private val shopId = savedStateHandle.toRoute<ShopSettingsRoute>().id
 
   private val _uiState = MutableStateFlow(ShopSettingsUiState())
   val uiState: StateFlow<ShopSettingsUiState> = _uiState.asStateFlow()
 
   fun reload() {
-    fetchData(shopSettingsArgs.shopId)
+    fetchData(shopId)
   }
 
   private fun fetchData(shopId: String) {
@@ -114,4 +114,3 @@ class ShopSettingsViewModel @Inject constructor(
     _uiState.update { it.copy(message = "") }
   }
 }
-

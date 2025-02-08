@@ -3,12 +3,13 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopUpdateBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopUpdateBodyDetail
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopBasicSettingsArgs
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopBasicSettingsRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,13 +39,13 @@ class ShopBasicSettingsViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val shopRepository: ShopRepository
 ) : ViewModel() {
-  private val shopBasicSettingsArgs: ShopBasicSettingsArgs = ShopBasicSettingsArgs(savedStateHandle)
+  private val shopId = savedStateHandle.toRoute<ShopBasicSettingsRoute>().id
 
   private val _uiState = MutableStateFlow(ShopBasicSettingsUiState())
   val uiState: StateFlow<ShopBasicSettingsUiState> = _uiState.asStateFlow()
 
   fun reload() {
-    fetchData(shopBasicSettingsArgs.shopId)
+    fetchData(shopId)
   }
 
   private fun fetchData(shopId: String) {
@@ -100,7 +101,7 @@ class ShopBasicSettingsViewModel @Inject constructor(
       )
       val shopUpdateBody = ShopUpdateBody(shopUpdateBodyDetail)
 
-      val shopFlow: Flow<Shop> = shopRepository.updateShop(shopBasicSettingsArgs.shopId, shopUpdateBody)
+      val shopFlow: Flow<Shop> = shopRepository.updateShop(shopId, shopUpdateBody)
 
       shopFlow
         .catch { exception ->
