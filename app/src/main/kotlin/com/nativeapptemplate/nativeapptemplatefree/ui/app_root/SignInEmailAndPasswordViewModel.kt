@@ -46,7 +46,6 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
     viewModelScope.launch {
       val login = Login(uiState.value.email, uiState.value.password)
       val loggedInShopkeeperFlow: Flow<LoggedInShopkeeper> = loginRepository.login(login)
-      var loggedIn = false
 
       loggedInShopkeeperFlow
         .catch { exception ->
@@ -62,27 +61,24 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
           _uiState.update { it.copy(loggedInShopkeeper = loggedInShopkeeper) }
           loginRepository.clearUserPreferences()
           loginRepository.setShopkeeper(loggedInShopkeeper)
-          loggedIn = true
-        }
 
-      if (!loggedIn) return@launch
+          val permissionsFlow: Flow<Permissions> = loginRepository.getPermissions()
 
-      val permissionsFlow: Flow<Permissions> = loginRepository.getPermissions()
-
-      permissionsFlow
-        .catch { exception ->
-          Log.e("SignInEmailAndPasswordViewModel", "Failed to update permissions", exception)
-          val booleanFlow = loginRepository.logout()
-          booleanFlow
-            .catch { logoutException ->
-              Log.e("SignInEmailAndPasswordViewModel", "Logout error", logoutException)
+          permissionsFlow
+            .catch { exception ->
+              Log.e("SignInEmailAndPasswordViewModel", "Failed to update permissions", exception)
+              val booleanFlow = loginRepository.logout()
+              booleanFlow
+                .catch { logoutException ->
+                  Log.e("SignInEmailAndPasswordViewModel", "Logout error", logoutException)
+                }
+                .collect {
+                }
             }
-            .collect {
+            .collect { permissions ->
+              loginRepository.setPermissions(permissions)
+              _uiState.update { it.copy(isLoading = false) }
             }
-         }
-        .collect { permissions ->
-          loginRepository.setPermissions(permissions)
-          _uiState.update { it.copy(isLoading = false) }
         }
     }
   }
