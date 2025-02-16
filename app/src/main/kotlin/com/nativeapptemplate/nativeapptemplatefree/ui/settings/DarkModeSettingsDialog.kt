@@ -1,10 +1,7 @@
-@file:Suppress("ktlint:standard:max-line-length")
-
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -109,7 +106,7 @@ fun DarkModeSettingsDialog(
 
 // [ColumnScope] is used for using the [ColumnScope.AnimatedVisibility] extension overload composable.
 @Composable
-private fun ColumnScope.SettingsPanel(
+private fun SettingsPanel(
   settings: UserEditableSettings,
   onChangeDarkThemeConfig: (darkThemeConfig: DarkThemeConfig) -> Unit,
 ) {
