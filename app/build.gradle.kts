@@ -61,6 +61,22 @@ android {
     }
   }
 
+  packaging {
+    resources {
+      excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+    }
+  }
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+    kotlinOptions {
+      freeCompilerArgs += listOf(
+        "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+      )
+    }
+  }
+
   namespace = "com.nativeapptemplate.nativeapptemplatefree"
 }
 
