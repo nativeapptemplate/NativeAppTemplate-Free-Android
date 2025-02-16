@@ -26,7 +26,8 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 - **Hilt** (Dependency Injection)
 - **Retrofit2** (Networking)
 - **[Proto DataStore](https://developer.android.com/topic/libraries/architecture/datastore)**  
-- **[Android Modern App Architecture](https://developer.android.com/topic/architecture#modern-app-architecture)**  
+- **[Android Modern App Architecture](https://developer.android.com/topic/architecture#modern-app-architecture)**
+- Test  
 - Inspired by [nowinandroid](https://github.com/android/nowinandroid) and [emitron-Android](https://github.com/razeware/emitron-Android)
 
 #### Included Features
