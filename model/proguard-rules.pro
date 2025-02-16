@@ -1,1 +1,1 @@
--keep com.nativeapptemplate.nativeapptemplate.model.**
+-keep com.nativeapptemplate.nativeapptemplatefree.model.**

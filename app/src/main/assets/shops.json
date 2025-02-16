@@ -1,0 +1,43 @@
+{
+  "data": [
+    {
+      "id": "5712F2DF-DFC7-A3AA-66BC-191203654A1C",
+      "type": "shop",
+      "attributes": {
+        "name": "Shop1",
+        "description": "This is a Shop1",
+        "time_zone": "Tokyo"
+      },
+      "meta": {
+        "limit_count": 96,
+        "created_shops_count": 3
+      }
+    },
+    {
+      "id": "5712F2DF-DFC7-A3AA-66BC-191203654A1D",
+      "type": "shop",
+      "attributes": {
+        "name": "Shop2",
+        "description": "This is a Shop2",
+        "time_zone": "Tokyo"
+      },
+      "meta": {
+        "limit_count": 96,
+        "created_shops_count": 3
+      }
+    },
+    {
+      "id": "5712F2DF-DFC7-A3AA-66BC-191203654A1E",
+      "type": "shop",
+      "attributes": {
+        "name": "Shop3",
+        "description": "This is a Shop3",
+        "time_zone": "Tokyo"
+      },
+      "meta": {
+        "limit_count": 96,
+        "created_shops_count": 3
+      }
+    }
+  ]
+}

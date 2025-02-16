@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "id": "5712F2DF-DFC7-A3AA-66BC-191203654A1A",
+      "type": "permission",
+      "attributes": {
+        "name": "update shops",
+        "tag": "update_shops",
+        "created_at": "2024-07-01T15:30:35.000Z",
+        "updated_at": "2024-07-01T15:30:35.000Z"
+      }
+    },
+    {
+      "id": "5712F2DF-DFC7-A3AA-66BC-191203654A1B",
+      "type": "permission",
+      "attributes": {
+        "name": "update organizations",
+        "tag": "update_organizations",
+        "created_at": "2024-07-01T15:30:35.000Z",
+        "updated_at": "2024-07-01T15:30:35.000Z"
+      }
+    },
+    {
+      "id": "5712F2DF-DFC7-A3AA-66BC-191203654A1C",
+      "type": "permission",
+      "attributes": {
+        "name": "invitation",
+        "tag": "invitation",
+        "created_at": "2024-07-01T15:30:35.000Z",
+        "updated_at": "2024-07-01T15:30:35.000Z"
+      }
+    }
+  ],
+  "meta": {
+    "android_app_version": 1,
+    "should_update_privacy": false,
+    "should_update_terms": false,
+    "shop_limit_count": 99
+  }
+}

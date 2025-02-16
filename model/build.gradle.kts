@@ -30,7 +30,7 @@ android {
     }
   }
 
-  namespace = "com.nativeapptemplate.nativeapptemplate.model"
+  namespace = "com.nativeapptemplate.nativeapptemplatefree.model"
 }
 
 dependencies {

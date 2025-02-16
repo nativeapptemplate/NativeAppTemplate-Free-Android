@@ -61,6 +61,22 @@ android {
     }
   }
 
+  packaging {
+    resources {
+      excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+    }
+  }
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+    kotlinOptions {
+      freeCompilerArgs += listOf(
+        "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+      )
+    }
+  }
+
   namespace = "com.nativeapptemplate.nativeapptemplatefree"
 }
 
@@ -138,6 +154,12 @@ dependencies {
   ksp(libs.hilt.compiler)
 
   debugImplementation(libs.androidx.compose.ui.tooling)
+
+  testImplementation(libs.androidx.navigation.testing)
+  testImplementation(libs.hilt.android.testing)
+  testImplementation(libs.kotlin.test)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.robolectric)
 }
 
 
