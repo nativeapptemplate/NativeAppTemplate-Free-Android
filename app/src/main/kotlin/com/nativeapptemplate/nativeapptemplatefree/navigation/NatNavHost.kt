@@ -31,15 +31,17 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.resend
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signInEmailAndPasswordView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpOrSignInView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpView
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingBaseView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.navigateToShopDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.shopDetailView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopBasicSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopBasicSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopSettingsView
-import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopsRoute
+import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopCreate
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
+import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopBaseView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopCreateView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopListView
 
@@ -85,7 +87,7 @@ fun NatNavHost(
 
   NavHost(
     navController = navController,
-    startDestination = ShopsRoute,
+    startDestination = ShopBaseRoute,
     modifier = modifier,
   ) {
     onboardingView(
@@ -123,42 +125,46 @@ fun NatNavHost(
       onShowSnackbar = onShowSnackbar,
     )
 
-    shopListView(
-      onItemClick = { shopId -> navController.navigateToShopDetail(shopId) },
-      onAddShopClick = { navController.navigateToShopCreate() },
-      onShowSnackbar = onShowSnackbar,
-    )
-    shopCreateView(
-      onShowSnackbar = onShowSnackbar,
-      onBackClick = navController::popBackStack,
-    )
-    shopDetailView(
-      onSettingsClick = { shopId -> navController.navigateToShopSettings(shopId) },
-      onShowSnackbar = onShowSnackbar,
-      onBackClick = navController::popBackStack,
-    )
-    shopSettingsView(
-      onShowBasicSettingsClick = { shopId -> navController.navigateToShopBasicSettings(shopId) },
-      onShowSnackbar = onShowSnackbar,
-      onBackClick = navController::popBackStack,
-    )
-    shopBasicSettingsView(
-      onShowSnackbar = onShowSnackbar,
-      onBackClick = navController::popBackStack,
-    )
+    shopBaseView {
+      shopListView(
+        onItemClick = { shopId -> navController.navigateToShopDetail(shopId) },
+        onAddShopClick = { navController.navigateToShopCreate() },
+        onShowSnackbar = onShowSnackbar,
+      )
+      shopCreateView(
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+      shopDetailView(
+        onSettingsClick = { shopId -> navController.navigateToShopSettings(shopId) },
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+      shopSettingsView(
+        onShowBasicSettingsClick = { shopId -> navController.navigateToShopBasicSettings(shopId) },
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+      shopBasicSettingsView(
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+    }
 
-    settingsView(
-      onShowShopkeeperEditClick = { navController.navigateToShopkeeperEdit() },
-      onShowPasswordEditClick = { navController.navigateToPasswordEdit() },
-      onShowSnackbar = onShowSnackbar,
-    )
-    shopkeeperEditView(
-      onShowSnackbar = onShowSnackbar,
-      onBackClick =navController::popBackStack,
-    )
-    passwordEditView(
-      onShowSnackbar = onShowSnackbar,
-      onBackClick =navController::popBackStack,
-    )
+    settingBaseView {
+      settingsView(
+        onShowShopkeeperEditClick = { navController.navigateToShopkeeperEdit() },
+        onShowPasswordEditClick = { navController.navigateToPasswordEdit() },
+        onShowSnackbar = onShowSnackbar,
+      )
+      shopkeeperEditView(
+        onShowSnackbar = onShowSnackbar,
+        onBackClick =navController::popBackStack,
+      )
+      passwordEditView(
+        onShowSnackbar = onShowSnackbar,
+        onBackClick =navController::popBackStack,
+      )
+    }
   }
 }

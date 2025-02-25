@@ -5,12 +5,22 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.ShopCreateView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.ShopListView
 import kotlinx.serialization.Serializable
 
+@Serializable data object ShopBaseRoute
 @Serializable data object ShopsRoute
 @Serializable data object ShopCreateRoute
+
+fun NavGraphBuilder.shopBaseView(
+  destination: NavGraphBuilder.() -> Unit,
+) {
+  navigation<ShopBaseRoute>(startDestination = ShopsRoute) {
+    destination()
+  }
+}
 
 fun NavController.navigateToShopList(navOptions: NavOptions? = null) = navigate(route = ShopsRoute, navOptions)
 

@@ -32,6 +32,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NatBackground
@@ -39,6 +40,7 @@ import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NatNav
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NatNavigationBarItem
 import com.nativeapptemplate.nativeapptemplatefree.navigation.NatNavHost
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
+import kotlin.reflect.KClass
 
 @OptIn(
   ExperimentalComposeUiApi::class,
@@ -162,7 +164,8 @@ private fun NatBottomBar(
     modifier = modifier,
   ) {
     destinations.forEach { destination ->
-      val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
+      val selected = currentDestination.isRouteInHierarchy(destination.baseRoute)
+
       NatNavigationBarItem(
         selected = selected,
         onClick = { onNavigateToDestination(destination) },
@@ -184,7 +187,7 @@ private fun NatBottomBar(
   }
 }
 
-private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
+private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) =
   this?.hierarchy?.any {
-    it.route?.contains(destination.name, true) ?: false
+    it.hasRoute(route)
   } ?: false
