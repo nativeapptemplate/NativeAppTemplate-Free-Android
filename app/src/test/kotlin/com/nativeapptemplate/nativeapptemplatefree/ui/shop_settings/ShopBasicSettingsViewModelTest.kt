@@ -74,16 +74,20 @@ class ShopBasicSettingsViewModelTest {
   fun stateIsUpdated_whenUpdatingShop_becomesTrue() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateName(testInputShop.getName())
-    viewModel.updateDescription(testInputShop.getDescription())
-    viewModel.updateTimeZone(testInputShop.getTimeZone())
+    shopRepository.sendShop(testInputShop)
+
+    viewModel.reload()
+
+    viewModel.updateName(testInputNewName)
+    viewModel.updateDescription(testInputNewDescription)
+    viewModel.updateTimeZone(testInputNewTimeZone)
 
     val uiStateValue = viewModel.uiState.value
-    assertEquals(uiStateValue.name, testInputShop.getName())
-    assertEquals(uiStateValue.description, testInputShop.getDescription())
-    assertEquals(uiStateValue.timeZone, testInputShop.getTimeZone())
+    assertEquals(uiStateValue.name, testInputNewName)
+    assertEquals(uiStateValue.description, testInputNewDescription)
+    assertEquals(uiStateValue.timeZone, testInputNewTimeZone)
+    assertFalse(viewModel.hasInvalidData())
 
-    shopRepository.sendShop(testInputShop)
     viewModel.updateShop()
 
     assertTrue(viewModel.uiState.value.isUpdated)
@@ -133,3 +137,6 @@ private val testInputShopsData =
 private val testInputShop = Shop(
   datum = testInputShopsData,
 )
+private const val testInputNewName = "Olivia Clark"
+private const val testInputNewDescription = "olivia@example.com"
+private const val testInputNewTimeZone = "Hawaii"

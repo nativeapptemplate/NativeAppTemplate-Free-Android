@@ -5,14 +5,24 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.PasswordEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.SettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.ShopkeeperEditView
 import kotlinx.serialization.Serializable
 
+@Serializable data object SettingBaseRoute
 @Serializable data object SettingsRoute
 @Serializable data object ShopkeeperEditRoute
 @Serializable data object PasswordEditRoute
+
+fun NavGraphBuilder.settingBaseView(
+  destination: NavGraphBuilder.() -> Unit,
+) {
+  navigation<SettingBaseRoute>(startDestination = SettingsRoute) {
+    destination()
+  }
+}
 
 fun NavController.navigateToSettings(navOptions: NavOptions) = navigate(route = SettingsRoute, navOptions)
 
