@@ -16,6 +16,7 @@ android {
 
   defaultConfig {
     applicationId = "com.nativeapptemplate.nativeapptemplatefree"
+    targetSdk = 35
     minSdk = 26
     versionCode = 1
     versionName = "1.0.0"
