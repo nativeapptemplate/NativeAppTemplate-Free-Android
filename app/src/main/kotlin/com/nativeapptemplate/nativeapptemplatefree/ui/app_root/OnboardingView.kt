@@ -47,7 +47,7 @@ internal fun OnboardingView(
   val fontSizeLarge = 24
   val lineHeightLarge = 26
   val pagerState = rememberPagerState(pageCount = {
-    3
+    13
   })
 
   Scaffold(
@@ -144,10 +144,10 @@ private fun TopAppBar(
     },
     navigationIcon = {
       TextButton(
-        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NatConstants.SUPPORT_WEBSITE_URL))) },
+        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NatConstants.HOW_TO_USE_URL))) },
       ) {
         Text(
-          stringResource(R.string.support_website),
+          stringResource(R.string.how_to_use),
         )
       }
     },

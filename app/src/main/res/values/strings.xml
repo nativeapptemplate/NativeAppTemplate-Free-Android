@@ -64,9 +64,19 @@
   <string name="terms_of_use_updated">Terms of Use Updated</string>
 
   <!-- On-boarding -->
-  <string name="onboarding_description1">Onboarding description1.</string>
-  <string name="onboarding_description2">Onboarding description2.</string>
-  <string name="onboarding_description3">Onboarding description3.</string>
+  <string name="onboarding_description1">A Server Tag and a Customer Tag are NFCs.</string>
+  <string name="onboarding_description2">The staff gives the Customer Tag to the customer.</string>
+  <string name="onboarding_description3">The customer scans the Customer Tag or the Customer QR code.</string>
+  <string name="onboarding_description4">The customer can view the Number Tags Webpage on his mobile browser.</string>
+  <string name="onboarding_description5">The staff is cooking KILITANPOs.</string>
+  <string name="onboarding_description6">The staff completed cooking KILITANPOs. The staff scans the Server Tag.</string>
+  <string name="onboarding_description7">Tag completed with Background Tag Reading.</string>
+  <string name="onboarding_description8">If you do not want to scan, you can complete the tag by swiping the tag(Shops > [Shop]).</string>
+  <string name="onboarding_description9">Number Tags Webpage displays the completed number tag.</string>
+  <string name="onboarding_description10">The customer\'s Number Tags Webpage updated.</string>
+  <string name="onboarding_description11">The customer\'s Number Tags Webpage displays the completed Customer Tag(A07).</string>
+  <string name="onboarding_description12">The customer returns the Customer Tag.</string>
+  <string name="onboarding_description13">The customer finally got the delicious KILITANPO!</string>
 
   <!-- Shops Screen -->
   <string name="add_shop">Add Shop</string>
@@ -96,6 +106,7 @@
   <string name="my_account">My Account</string>
   <string name="profile">Profile</string>
   <string name="information">Information</string>
+  <string name="how_to_use">How To Use</string>
   <string name="support_website">Support Website</string>
   <string name="faqs">FAQs</string>
   <string name="discussions">Discussions</string>
