@@ -1,12 +1,16 @@
 package com.nativeapptemplate.nativeapptemplatefree.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Storefront
+import androidx.compose.material.icons.rounded.PhoneAndroid
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Storefront
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.ScanBaseRoute
+import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.ScanRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.SettingBaseRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.SettingsRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
@@ -31,6 +35,13 @@ enum class TopLevelDestination(
     iconTextId = R.string.title_shops,
     route = ShopsRoute::class,
     baseRoute = ShopBaseRoute::class,
+  ),
+  SCAN_TAB(
+    selectedIcon = Icons.Rounded.PhoneAndroid,
+    unselectedIcon = Icons.Outlined.PhoneAndroid,
+    iconTextId = R.string.title_scan,
+    route = ScanRoute::class,
+    baseRoute = ScanBaseRoute::class,
   ),
   SETTINGS_TAB(
     selectedIcon = Icons.Rounded.Settings,

@@ -1,6 +1,10 @@
 package com.nativeapptemplate.nativeapptemplatefree
 
+import android.content.Intent
 import android.graphics.Color
+import android.nfc.NdefMessage
+import android.nfc.NfcAdapter
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -22,13 +26,16 @@ import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
+import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagInfoFromNdefMessage
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NatApp
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.rememberNatAppState
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
+import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,6 +53,16 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     var uiState: MainActivityUiState by mutableStateOf(Loading)
+
+    viewModel.updateShouldNavigateToScanView(false)
+    viewModel.updateShouldFetchItemTagForShowTagInfoScan(false)
+    viewModel.updateShouldCompleteItemTagForCompleteScan(false)
+    viewModel.initScanViewSelectedTabIndex()
+    viewModel.initShowTagInfoScanResult()
+    viewModel.initCompleteScanResult()
+
+//    viewModel.updateDidShowTapShopBelowTip(false)
+//    viewModel.updateDidShowReadInstructionsTip(false)
 
     // Update the uiState
     lifecycleScope.launch {
@@ -103,11 +120,80 @@ class MainActivity : ComponentActivity() {
         NatApp(appState)
       }
     }
+
+    val intent = intent
+    if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+      viewModel.updateShouldNavigateToScanView(false)
+
+      val ndefMessage: NdefMessage?
+      val rawMessages = if (SDK_INT >= 33) { // TIRAMISU
+        intent.getParcelableArrayExtra(
+          NfcAdapter.EXTRA_NDEF_MESSAGES,
+          NdefMessage::class.java
+        )
+      }else{
+        @Suppress("DEPRECATION")
+        intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+      }
+
+      if (!rawMessages.isNullOrEmpty()) {
+        ndefMessage = rawMessages[0] as NdefMessage
+
+        val itemTagInfoFromNdefMessage = Utility.extractItemTagInfoFrom(
+          context = this,
+          ndefMessage = ndefMessage
+        )
+
+        updateItemTagInfoFromNdefMessage(itemTagInfoFromNdefMessage)
+        viewModel.initScanViewSelectedTabIndex()
+        viewModel.updateShouldNavigateToScanView(true)
+      }
+    }
+  }
+
+  override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+      viewModel.updateShouldNavigateToScanView(false)
+
+      val ndefMessage: NdefMessage?
+      val rawMessages = if (SDK_INT >= 33) { // TIRAMISU
+        intent.getParcelableArrayExtra(
+          NfcAdapter.EXTRA_NDEF_MESSAGES,
+          NdefMessage::class.java
+        )
+      }else{
+        @Suppress("DEPRECATION")
+        intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+      }
+
+      if (!rawMessages.isNullOrEmpty()) {
+        ndefMessage = rawMessages[0] as NdefMessage
+
+        val itemTagInfoFromNdefMessage = Utility.extractItemTagInfoFrom(
+          context = this,
+          ndefMessage = ndefMessage
+        )
+
+        updateItemTagInfoFromNdefMessage(itemTagInfoFromNdefMessage)
+        viewModel.initScanViewSelectedTabIndex()
+        viewModel.updateShouldNavigateToScanView(true)
+      }
+    }
   }
 
   override fun onResume() {
     super.onResume()
     viewModel.updatePermissions()
+  }
+
+  private fun updateItemTagInfoFromNdefMessage(itemTagInfoFromNdefMessage: ItemTagInfoFromNdefMessage) {
+    if (itemTagInfoFromNdefMessage.success) {
+      itemTagInfoFromNdefMessage.scannedAt = Date().toInstant().toString()
+    }
+
+    viewModel.updateItemTagInfoFromNdefMessage(itemTagInfoFromNdefMessage)
+    viewModel.updateShouldCompleteItemTagForCompleteScan(itemTagInfoFromNdefMessage.success)
   }
 }
 

@@ -31,6 +31,10 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.resend
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signInEmailAndPasswordView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpOrSignInView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpView
+import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.doScanView
+import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.navigateToDoScan
+import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.scanBaseView
+import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.scanView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingBaseView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.navigateToShopDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.shopDetailView
@@ -63,8 +67,9 @@ fun NatNavHost(
   val shouldUpdateApp by appState.shouldUpdateApp.collectAsStateWithLifecycle()
   val shouldUpdatePrivacy by appState.shouldUpdatePrivacy.collectAsStateWithLifecycle()
   val shouldUpdateTerms by appState.shouldUpdateTerms.collectAsStateWithLifecycle()
+  val shouldNavigateToScanView by appState.shouldNavigateToScanView.collectAsStateWithLifecycle()
 
-  LaunchedEffect(
+ LaunchedEffect(
     isLoggedIn,
     shouldUpdateApp,
     shouldUpdatePrivacy,
@@ -82,6 +87,12 @@ fun NatNavHost(
       }
     } else {
       navController.navigateToOnboarding()
+    }
+  }
+
+  LaunchedEffect(shouldNavigateToScanView) {
+    if (shouldNavigateToScanView) {
+      appState.navigateToScan()
     }
   }
 
@@ -147,6 +158,16 @@ fun NatNavHost(
       )
       shopBasicSettingsView(
         onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+    }
+
+    scanBaseView {
+      scanView(
+        onShowDoScanViewClick = { isTest -> navController.navigateToDoScan(isTest) },
+        onShowSnackbar = onShowSnackbar,
+      )
+      doScanView(
         onBackClick = navController::popBackStack,
       )
     }
