@@ -24,6 +24,21 @@ data class Attributes(
 
   val state: String? = null,
 
+  @SerialName("queue_number")
+  val queueNumber: String? = null,
+
+  @SerialName("scan_state")
+  val scanState: String? = null,
+
+  @SerialName("customer_read_at")
+  val customerReadAt: String? = null,
+
+  @SerialName("completed_at")
+  val completedAt: String? = null,
+
+  @SerialName("already_completed")
+  val alreadyCompleted: Boolean? = null,
+
   @SerialName("account_id")
   val accountId: String? = null,
 
@@ -59,6 +74,18 @@ data class Attributes(
 
   @SerialName("time_zone")
   val timeZone: String? = null,
+
+  @SerialName("display_shop_server_path")
+  val displayShopServerPath: String? = null,
+
+  @SerialName("item_tags_count")
+  val itemTagsCount: Int? = null,
+
+  @SerialName("scanned_item_tags_count")
+  val scannedItemTagsCount: Int? = null,
+
+  @SerialName("completed_item_tags_count")
+  val completedItemTagsCount: Int? = null,
 
   val email: String? = null,
 

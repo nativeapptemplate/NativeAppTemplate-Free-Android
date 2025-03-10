@@ -5,6 +5,9 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+  <uses-permission android:name="android.permission.NFC" />
+  <uses-feature android:name="android.hardware.nfc" android:required="false" />
+
   <application
           android:name=".NativeAppTemplateApplication"
           android:allowBackup="true"
@@ -18,6 +21,10 @@
           tools:targetApi="tiramisu">
     <profileable android:shell="true" tools:targetApi="q" />
 
+    <!--
+    `singleTask` for Background Tag Reading. Avoid running MainActivity onCreate again with Background Tag Reading.
+    https://qiita.com/takagimeow/items/48b37c55ad8d73d5da88
+    -->
     <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -34,6 +41,23 @@
         <data android:scheme="mailto" />
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:scheme="https"
+                android:host="api.nativeapptemplate.com"
+                android:path="/scan"
+                />
+      </intent-filter>
     </activity>
+    <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+      <meta-data
+              android:name="android.support.FILE_PROVIDER_PATHS"
+              android:resource="@xml/filepaths" />
+    </provider>
   </application>
 </manifest>

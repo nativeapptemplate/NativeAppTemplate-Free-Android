@@ -1,16 +1,19 @@
 package com.nativeapptemplate.nativeapptemplatefree.testing.repository
 
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
+import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 
 val emptyUserData = UserData(
 )
@@ -40,6 +43,33 @@ class TestLoginRepository : LoginRepository {
   override fun updateConfirmedPrivacyVersion(): Flow<Boolean> =  MutableStateFlow(true)
 
   override fun updateConfirmedTermsVersion(): Flow<Boolean> =  MutableStateFlow(true)
+
+  override suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean) {
+    currentUserData.let { current ->
+      _userData.tryEmit(current.copy(shouldFetchItemTagForShowTagInfoScan = shouldFetchItemTagForShowTagInfoScan))
+    }
+  }
+
+  override suspend fun setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan: Boolean) {
+    currentUserData.let { current ->
+      _userData.tryEmit(current.copy(shouldCompleteItemTagForCompleteScan = shouldCompleteItemTagForCompleteScan))
+    }
+  }
+
+  override suspend fun setShouldNavigateToScanView(shouldNavigateToScanView: Boolean) {
+  }
+
+  override suspend fun setScanViewSelectedTabIndex(scanViewSelectedTabIndex: Int) {
+    currentUserData.let { current ->
+      _userData.tryEmit(current.copy(scanViewSelectedTabIndex = scanViewSelectedTabIndex))
+    }
+  }
+
+  override suspend fun setCompleteScanResult(completeScanResult: CompleteScanResult) {
+  }
+
+  override suspend fun setShowTagInfoScanResult(showTagInfoScanResult: ShowTagInfoScanResult) {
+  }
 
   override suspend fun setAccountId(accountId: String) {
   }
@@ -97,6 +127,15 @@ class TestLoginRepository : LoginRepository {
     }
   }
 
+  override suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
+  }
+
+  override suspend fun setDidShowReadInstructionsTip(didShowReadInstructionsTip: Boolean) {
+    currentUserData.let { current ->
+      _userData.tryEmit(current.copy(didShowReadInstructionsTip = didShowReadInstructionsTip))
+    }
+  }
+
   override suspend fun setIsEmailUpdated(isEmailUpdated: Boolean) {
     currentUserData.let { current ->
       _userData.tryEmit(current.copy(isEmailUpdated = isEmailUpdated))
@@ -128,6 +167,25 @@ class TestLoginRepository : LoginRepository {
   override fun isMyAccountDeleted(): Flow<Boolean> = MutableStateFlow(false)
 
   override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(false)
+
+
+  override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun didShowReadInstructionsTip(): Flow<Boolean> = userData.map { it.didShowReadInstructionsTip }
+
+  override fun getMaximumQueueNumberLength(): Flow<Int> = userData.map { it.maximumQueueNumberLength }
+
+  override fun shouldFetchItemTagForShowTagInfoScan(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun shouldCompleteItemTagForCompleteScan(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun shouldNavigateToScanView(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun scanViewSelectedTabIndex(): Flow<Int> = MutableStateFlow(0)
+
+  override fun completeScanResult(): Flow<CompleteScanResult> = MutableStateFlow(CompleteScanResult())
+
+  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> = MutableStateFlow(ShowTagInfoScanResult())
 
   /**
    * A test-only API.

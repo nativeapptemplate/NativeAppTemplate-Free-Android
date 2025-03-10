@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 data class ShopListUiState(
   val shops: Shops = Shops(),
+  val didShowTapShopBelowTip: Boolean = false,
 
   val isLoading: Boolean = true,
   val success: Boolean = false,
@@ -64,26 +66,37 @@ class ShopListViewModel @Inject constructor(
 
     viewModelScope.launch {
       val shopsFlow: Flow<Shops> = shopRepository.getShops()
+      val didShowTapShopBelowTipFlow = loginRepository.didShowTapShopBelowTip()
 
-      shopsFlow
-        .catch { exception ->
-          val message = exception.message
-          _uiState.update {
-            it.copy(
-              message = message ?: "Unknown Error",
-              isLoading = false,
-            )
-          }
+      combine(
+        shopsFlow,
+        didShowTapShopBelowTipFlow,
+      ) { shops,
+          didShowTapShopBelowTip ->
+        _uiState.update {
+          it.copy(
+            shops = shops,
+            didShowTapShopBelowTip = didShowTapShopBelowTip,
+            success = true,
+            isLoading = false,
+          )
         }
-        .collect { shops ->
-          _uiState.update {
-            it.copy(
-              shops = shops,
-              success = true,
-              isLoading = false,
-            )
-          }
+      }.catch { exception ->
+        val message = exception.message
+        _uiState.update {
+          it.copy(
+            message = message ?: "Unknown Error",
+            isLoading = false,
+          )
         }
+      }.collect {
+      }
+    }
+  }
+
+  fun updateDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
+    viewModelScope.launch {
+      loginRepository.setDidShowTapShopBelowTip(didShowTapShopBelowTip)
     }
   }
 

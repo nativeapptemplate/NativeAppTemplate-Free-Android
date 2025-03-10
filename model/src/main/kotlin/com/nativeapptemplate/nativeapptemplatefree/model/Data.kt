@@ -13,8 +13,13 @@ data class Data(
   val relationships: Relationships? = null,
   val meta: Meta? = null,
   val included: Shops? = null,
+  val isOptionsRevealed: Boolean = false,
 ) : Parcelable {
+  fun getCreatedAt(): String = attributes?.createdAt ?: ""
+
   fun getName(): String = attributes?.name ?: ""
+
+  fun getState(): String? = attributes?.state
 
   fun getEmail(): String = attributes?.email ?: ""
 
@@ -28,6 +33,14 @@ data class Data(
     val updatedRelationships = relationships
 
     return this.copy(relationships = updatedRelationships)
+  }
+
+  fun getItemTagState(): ItemTagState? {
+    return ItemTagState.fromParam(getState())
+  }
+
+  fun getScanState(): ScanState? {
+    return ScanState.fromParam(attributes?.scanState)
   }
 
   fun getToken(): String? = attributes?.token
@@ -46,5 +59,25 @@ data class Data(
 
   fun getCurrentAccountName(): String? = attributes?.accountName
 
+  fun getQueueNumber(): String = attributes?.queueNumber ?: ""
+
+  fun getCustomerReadAt(): String = attributes?.customerReadAt ?: ""
+
+  fun getAlreadyCompleted(): Boolean = attributes?.alreadyCompleted ?: false
+
+  fun getCompletedAt(): String = attributes?.completedAt ?: ""
+
+  fun getShopId(): String? = attributes?.shopId
+
+  fun getShopName(): String? = attributes?.shopName
+
   fun getTimeZone(): String = attributes?.timeZone ?: TimeZones.DEFAULT_TIME_ZONE
+
+  fun getItemTagsCount(): Int = attributes?.itemTagsCount ?: 0
+
+  fun getScannedItemTagsCount(): Int = attributes?.scannedItemTagsCount ?: 0
+
+  fun getCompletedItemTagsCount(): Int = attributes?.completedItemTagsCount ?: 0
+
+  fun getDisplayShopServerPath(): String = attributes?.displayShopServerPath ?: ""
 }

@@ -1,6 +1,8 @@
 package com.nativeapptemplate.nativeapptemplatefree.di.modules
 
 import android.annotation.SuppressLint
+import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepositoryImpl
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordRepositoryImpl
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
@@ -31,6 +33,9 @@ abstract class DataModule {
 
   @Binds
   internal abstract fun bindShopRepository(shopRepositoryImpl: ShopRepositoryImpl): ShopRepository
+
+  @Binds
+  internal abstract fun bindItemTagRepository(itemTagRepositoryImpl: ItemTagRepositoryImpl): ItemTagRepository
 
   @Binds
   internal abstract fun bindsNetworkMonitor(

@@ -157,6 +157,30 @@ class LoginRepositoryImpl @Inject constructor(
     }
   }.flowOn(ioDispatcher)
 
+  override suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean) {
+    natPreferencesDataSource.setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan)
+  }
+
+  override suspend fun setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan: Boolean) {
+    natPreferencesDataSource.setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan)
+  }
+
+  override suspend fun setShouldNavigateToScanView(shouldNavigateToScanView: Boolean) {
+    natPreferencesDataSource.setShouldNavigateToScanView(shouldNavigateToScanView)
+  }
+
+  override suspend fun setScanViewSelectedTabIndex(scanViewSelectedTabIndex: Int) {
+    natPreferencesDataSource.setScanViewSelectedTabIndex(scanViewSelectedTabIndex)
+  }
+
+  override suspend fun setCompleteScanResult(completeScanResult: CompleteScanResult) {
+    natPreferencesDataSource.setCompleteScanResult(completeScanResult)
+  }
+
+  override suspend fun setShowTagInfoScanResult(showTagInfoScanResult: ShowTagInfoScanResult) {
+    natPreferencesDataSource.setShowTagInfoScanResult(showTagInfoScanResult)
+  }
+
   override suspend fun setAccountId(accountId: String) {
     natPreferencesDataSource.setAccountId(accountId)
   }
@@ -175,6 +199,14 @@ class LoginRepositoryImpl @Inject constructor(
 
   override suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) {
     natPreferencesDataSource.setDarkThemeConfig(darkThemeConfig)
+  }
+
+  override suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
+    natPreferencesDataSource.setDidShowTapShopBelowTip(didShowTapShopBelowTip)
+  }
+
+  override suspend fun setDidShowReadInstructionsTip(didShowReadInstructionsTip: Boolean) {
+    natPreferencesDataSource.setDidShowReadInstructionsTip(didShowReadInstructionsTip)
   }
 
   override suspend fun setIsEmailUpdated(isEmailUpdated: Boolean) {
@@ -206,4 +238,22 @@ class LoginRepositoryImpl @Inject constructor(
   override fun isMyAccountDeleted(): Flow<Boolean> = natPreferencesDataSource.isMyAccountDeleted()
 
   override fun isShopDeleted(): Flow<Boolean> = natPreferencesDataSource.isShopDeleted()
+
+  override fun didShowTapShopBelowTip(): Flow<Boolean> = natPreferencesDataSource.didShowTapShopBelowTip()
+
+  override fun didShowReadInstructionsTip(): Flow<Boolean> = natPreferencesDataSource.didShowReadInstructionsTip()
+
+  override fun getMaximumQueueNumberLength(): Flow<Int> = natPreferencesDataSource.getMaximumQueueNumberLength()
+
+  override fun shouldFetchItemTagForShowTagInfoScan(): Flow<Boolean> = natPreferencesDataSource.shouldFetchItemTagForShowTagInfoScan()
+
+  override fun shouldCompleteItemTagForCompleteScan(): Flow<Boolean> = natPreferencesDataSource.shouldCompleteItemTagForCompleteScan()
+
+  override fun shouldNavigateToScanView(): Flow<Boolean> = natPreferencesDataSource.shouldNavigateToScanView()
+
+  override fun scanViewSelectedTabIndex(): Flow<Int> = natPreferencesDataSource.scanViewSelectedTabIndex()
+
+  override fun completeScanResult(): Flow<CompleteScanResult> = natPreferencesDataSource.completeScanResult()
+
+  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> = natPreferencesDataSource.showTagInfoScanResult()
 }

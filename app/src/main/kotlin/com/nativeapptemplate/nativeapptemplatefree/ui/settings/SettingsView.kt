@@ -15,8 +15,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Forum
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Key
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
 import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
@@ -270,7 +273,7 @@ private fun SettingsContentView(
             },
             leadingContent = {
               Icon(
-                Icons.Outlined.Info,
+                Icons.Outlined.Language,
                 contentDescription = stringResource(R.string.support_website),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
               )
@@ -283,6 +286,57 @@ private fun SettingsContentView(
                     Uri.parse(NatConstants.SUPPORT_WEBSITE_URL)
                   )
                 )
+              },
+          )
+          HorizontalDivider()
+        }
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                stringResource(R.string.how_to_use),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+              )
+            },
+            leadingContent = {
+              Icon(
+                Icons.Outlined.Info,
+                contentDescription = stringResource(R.string.how_to_use),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            },
+            modifier = Modifier
+              .clickable {
+                context.startActivity(
+                  Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(NatConstants.HOW_TO_USE_URL)
+                  )
+                )
+              },
+          )
+          HorizontalDivider()
+        }
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                stringResource(R.string.faqs),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+              )
+            },
+            leadingContent = {
+              Icon(
+                Icons.Outlined.QuestionMark,
+                contentDescription = stringResource(R.string.faqs),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            },
+            modifier = Modifier
+              .clickable {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NatConstants.FAQS_URL)))
               },
           )
           HorizontalDivider()
@@ -430,6 +484,13 @@ private fun SettingsContentView(
             )
           }
         }
+
+        if (BuildConfig.DEBUG) {
+          item {
+            Text("accountOwnerId: ${userData.accountOwnerId}")
+            HorizontalDivider()
+          }
+        }
       }
     }
   }
@@ -491,6 +552,3 @@ private fun SettingsLoadingView(
     }
   }
 }
-
-
-
