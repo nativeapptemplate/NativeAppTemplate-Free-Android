@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.NoLuggage
 import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -21,6 +23,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -163,6 +167,16 @@ private fun ShopListContentView(
         LazyColumn(
           Modifier.padding(24.dp)
         ) {
+          item {
+            if (!uiState.didShowTapShopBelowTip) {
+              TapShopBelowTip(
+                stringResource(R.string.tap_shop_below),
+              ) {
+                viewModel.updateDidShowTapShopBelowTip(true)
+              }
+            }
+          }
+
           items(
             items = uiState.shops.getDatumWithRelationships(),
             key = { it.id!! }
@@ -214,6 +228,39 @@ private fun TopAppBar() {
     ),
     title = { Text(text = stringResource(id = R.string.shops)) },
     modifier = Modifier.fillMaxWidth(),
+  )
+}
+
+@Composable
+fun TapShopBelowTip(
+  text: String,
+  onDismiss: () -> Unit,
+) {
+  InputChip(
+    onClick = {
+      onDismiss()
+    },
+    label = { Text(
+      text,
+      style = MaterialTheme.typography.titleLarge,
+      color = MaterialTheme.colorScheme.tertiary,
+    ) },
+    selected = false,
+    avatar = {
+      Icon(
+        Icons.Outlined.Info,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.tertiary,
+        modifier = Modifier.size(InputChipDefaults.AvatarSize)
+      )
+    },
+    trailingIcon = {
+      Icon(
+        Icons.Default.Close,
+        contentDescription = null,
+        Modifier.size(InputChipDefaults.AvatarSize)
+      )
+    },
   )
 }
 
