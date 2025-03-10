@@ -4,6 +4,7 @@ import androidx.tracing.trace
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
 import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpApi
@@ -94,6 +95,9 @@ class NetModule {
 
   @Provides
   fun provideShopApi(retrofit: Retrofit): ShopApi = ShopApi.create(retrofit)
+
+  @Provides
+  fun provideItemTagApi(retrofit: Retrofit): ItemTagApi = ItemTagApi.create(retrofit)
 
   @Provides
   @Singleton

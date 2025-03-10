@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.nativeapptemplate.nativeapptemplatefree";
+option java_multiple_files = true;
+
+message ItemTagDataProto {
+  string id = 1;
+  string shop_id = 2;
+  string queue_number = 3;
+  string state = 4;
+  string scan_state = 5;
+  string created_at = 6;
+  string customer_read_at = 7;
+  string completed_at = 9;
+  string shop_name = 10;
+  bool already_completed = 11;
+}

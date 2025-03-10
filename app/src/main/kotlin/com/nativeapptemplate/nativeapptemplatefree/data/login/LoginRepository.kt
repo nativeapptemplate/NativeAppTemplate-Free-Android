@@ -22,6 +22,18 @@ interface LoginRepository {
   fun updateConfirmedTermsVersion(
   ): Flow<Boolean>
 
+  suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean)
+
+  suspend fun setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan: Boolean)
+
+  suspend fun setShouldNavigateToScanView(shouldNavigateToScanView: Boolean)
+
+  suspend fun setScanViewSelectedTabIndex(scanViewSelectedTabIndex: Int)
+
+  suspend fun setCompleteScanResult(completeScanResult: CompleteScanResult)
+
+  suspend fun setShowTagInfoScanResult(showTagInfoScanResult: ShowTagInfoScanResult)
+
   suspend fun setAccountId(accountId: String)
 
   suspend fun setShopkeeper(loggedInShopkeeper: LoggedInShopkeeper)
@@ -29,6 +41,10 @@ interface LoginRepository {
   suspend fun setShopkeeperForUpdate(loggedInShopkeeper: LoggedInShopkeeper)
 
   suspend fun setPermissions(permissions: Permissions)
+
+  suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean)
+
+  suspend fun setDidShowReadInstructionsTip(didShowReadInstructionsTip: Boolean)
 
   suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
 
@@ -53,5 +69,23 @@ interface LoginRepository {
   fun isMyAccountDeleted(): Flow<Boolean>
 
   fun isShopDeleted(): Flow<Boolean>
+
+  fun didShowTapShopBelowTip(): Flow<Boolean>
+
+  fun didShowReadInstructionsTip(): Flow<Boolean>
+
+  fun getMaximumQueueNumberLength(): Flow<Int>
+
+  fun shouldFetchItemTagForShowTagInfoScan(): Flow<Boolean>
+
+  fun shouldCompleteItemTagForCompleteScan(): Flow<Boolean>
+
+  fun shouldNavigateToScanView(): Flow<Boolean>
+
+  fun scanViewSelectedTabIndex(): Flow<Int>
+
+  fun completeScanResult(): Flow<CompleteScanResult>
+
+  fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult>
 }
 

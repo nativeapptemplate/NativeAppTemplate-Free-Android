@@ -37,11 +37,20 @@ data class UserData(
 
   val isLoggedIn: Boolean = false,
 
+  val didShowReadInstructionsTip: Boolean = false,
+
   var androidAppVersion: Int = -1,
   var shouldUpdatePrivacy: Boolean= false,
   var shouldUpdateTerms: Boolean= false,
+  var maximumQueueNumberLength: Int = -1,
   var shopLimitCount: Int = -1,
 
   var isEmailUpdated: Boolean = false,
   var isMyAccountDeleted: Boolean = false,
+
+  var scanViewSelectedTabIndex: Int = 0,
+  var shouldFetchItemTagForShowTagInfoScan: Boolean = false,
+  var shouldCompleteItemTagForCompleteScan: Boolean = false,
+
+  val didShowTapShopBelowTip: Boolean = false,
 )

@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "dark_theme_config.proto";
+import "scan_result.proto";
 
 option java_package = "com.nativeapptemplate.nativeapptemplatefree";
 option java_multiple_files = true;
@@ -24,9 +25,13 @@ message UserPreferences {
 
   bool is_logged_in = 17;
 
+  bool did_show_you_are_in_personal_account_alert = 18;
+  bool did_show_read_instructions_tip = 19;
+
   int32 android_app_version = 20;
   bool should_update_privacy = 21;
   bool should_update_terms = 22;
+  int32 maximum_queue_number_length = 23;
   int32 shop_limit_count = 28;
 
   bool is_email_updated = 32;
@@ -34,4 +39,14 @@ message UserPreferences {
   bool is_shop_deleted = 35;
 
   bool should_update_app = 39;
+
+  ScanResultProto complete_scan_result = 42;
+  ScanResultProto show_tag_info_scan_result = 43;
+
+  int32 scan_view_selected_tab_index = 44;
+  bool should_complete_item_tag_for_complete_scan = 45;
+  bool should_fetch_item_tag_for_show_tag_info_scan = 46;
+  bool should_navigate_to_scan_view = 47;
+
+  bool did_show_tap_shop_below_tip = 48;
 }

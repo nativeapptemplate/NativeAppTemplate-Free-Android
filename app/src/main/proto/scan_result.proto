@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+import "item_tag_info_from_ndef_message.proto";
+import "item_tag_data.proto";
+
+option java_package = "com.nativeapptemplate.nativeapptemplatefree";
+option java_multiple_files = true;
+
+message ScanResultProto {
+  ItemTagInfoFromNdefMessageProto item_tag_info_from_ndef_message = 1;
+  ItemTagDataProto item_tag_data = 2;
+  string scan_result_type = 3;
+  string message = 4;
+}

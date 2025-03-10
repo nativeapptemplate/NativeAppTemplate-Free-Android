@@ -1,7 +1,9 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +12,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AddAlert
+import androidx.compose.material.icons.outlined.Rectangle
 import androidx.compose.material.icons.outlined.Storefront
+import androidx.compose.material.icons.outlined.Web
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -50,6 +54,8 @@ internal fun ShopSettingsView(
   viewModel: ShopSettingsViewModel = hiltViewModel(),
 
   onShowBasicSettingsClick: (String) -> Unit,
+  onShowItemTagListClick: (String) -> Unit,
+  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
@@ -67,6 +73,15 @@ internal fun ShopSettingsView(
     }
   }
 
+  if (uiState.isShopReset) {
+    NatAlertDialog(
+      dialogTitle= stringResource(R.string.message_shop_reset),
+      onDismissRequest = {
+        onBackClick()
+      },
+    )
+  }
+
   if (uiState.isShopDeleted) {
     val context = LocalContext.current
     context.restartApp()
@@ -77,6 +92,8 @@ internal fun ShopSettingsView(
     uiState = uiState,
 
     onShowBasicSettingsClick = onShowBasicSettingsClick,
+    onShowItemTagListClick = onShowItemTagListClick,
+    onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
 
     onBackClick = onBackClick,
   )
@@ -88,6 +105,8 @@ fun ShopSettingsView(
   uiState: ShopSettingsUiState,
 
   onShowBasicSettingsClick: (String) -> Unit,
+  onShowItemTagListClick: (String) -> Unit,
+  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onBackClick: () -> Unit,
 ) {
@@ -96,6 +115,8 @@ fun ShopSettingsView(
     uiState = uiState,
 
     onShowBasicSettingsClick = onShowBasicSettingsClick,
+    onShowItemTagListClick = onShowItemTagListClick,
+    onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
 
     onBackClick = onBackClick,
   )
@@ -107,6 +128,8 @@ private fun ContentView(
   uiState: ShopSettingsUiState,
 
   onShowBasicSettingsClick: (String) -> Unit,
+  onShowItemTagListClick: (String) -> Unit,
+  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onBackClick: () -> Unit,
 ) {
@@ -118,6 +141,8 @@ private fun ContentView(
       uiState = uiState,
 
       onShowBasicSettingsClick = onShowBasicSettingsClick,
+      onShowItemTagListClick = onShowItemTagListClick,
+      onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
 
       onBackClick = onBackClick,
     )
@@ -132,10 +157,23 @@ private fun ShopSettingsContentView(
   uiState: ShopSettingsUiState,
 
   onShowBasicSettingsClick: (String) -> Unit,
+  onShowItemTagListClick: (String) -> Unit,
+  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onBackClick: () -> Unit,
 ) {
+  var isShowingResetConfirmationDialog by remember { mutableStateOf(false) }
   var isShowingDeleteConfirmationDialog by remember { mutableStateOf(false) }
+
+  if (isShowingResetConfirmationDialog) {
+    NatAlertDialog(
+      dialogTitle= stringResource(R.string.are_you_sure),
+      confirmButtonTitle = stringResource(R.string.title_reset_number_tags),
+      onDismissRequest = { isShowingResetConfirmationDialog = false },
+      onConfirmation = { viewModel.resetShop(uiState.shop.getData()?.id!!) },
+      icon = Icons.Outlined.AddAlert,
+    )
+  }
 
   if (isShowingDeleteConfirmationDialog) {
     NatAlertDialog(
@@ -208,6 +246,90 @@ private fun ShopSettingsContentView(
               )
             },
           )
+        }
+
+        item {
+          HorizontalDivider()
+
+          ListItem(
+            headlineContent = {
+              Text(
+                stringResource(R.string.label_shop_settings_manage_number_tags),
+                style = MaterialTheme.typography.titleMedium
+              )
+            },
+            leadingContent = {
+              Icon(
+                Icons.Outlined.Rectangle,
+                contentDescription = stringResource(R.string.label_shop_settings_manage_number_tags),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            },
+            modifier = Modifier
+              .clickable { onShowItemTagListClick(uiState.shop.getData()?.id!!) }
+          )
+
+          HorizontalDivider()
+        }
+
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                "",
+                style = MaterialTheme.typography.titleMedium
+              )
+            },
+          )
+        }
+
+        item {
+          HorizontalDivider()
+
+          ListItem(
+            headlineContent = {
+              Text(
+                stringResource(R.string.label_shop_settings_number_tags_webpage),
+                style = MaterialTheme.typography.titleMedium
+              )
+            },
+            leadingContent = {
+              Icon(
+                Icons.Outlined.Web,
+                contentDescription = stringResource(R.string.label_shop_settings_number_tags_webpage),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            },
+            modifier = Modifier
+              .clickable { onShowNumberTagsWebpageListClick(uiState.shop.getData()?.id!!) },
+          )
+
+          HorizontalDivider()
+        }
+
+        item {
+          Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+              .padding(top = 48.dp)
+          ) {
+            MainButtonView(
+              title = stringResource(R.string.title_reset_number_tags),
+              onClick = {  isShowingResetConfirmationDialog = true },
+              modifier = Modifier
+                .padding(horizontal = 12.dp)
+                .padding(top = 24.dp)
+            )
+
+            Text(
+              stringResource(R.string.reset_number_tags_description),
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+              textAlign = TextAlign.Center,
+              modifier = Modifier
+                .fillMaxWidth()
+            )
+          }
         }
 
         item {
