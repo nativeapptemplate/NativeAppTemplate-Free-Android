@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">NativeAppTemplate Free</string>
   <string name="title_shops">Shops</string>
+  <string name="title_scan">Scan</string>
   <string name="title_settings">Settings</string>
 
   <!-- Sign up screen -->
@@ -22,6 +23,10 @@
   <string name="button_label_update">Update</string>
   <string name="time_zone">Time Zone</string>
   <string name="not_connected">⚠️ You aren’t connected to the internet</string>
+  <string name="instructions">Instructions</string>
+  <string name="open">Open</string>
+  <string name="server_number_tags_webpage">Server Number Tags Webpage</string>
+  <string name="learn_more">Learn More</string>
   <string name="are_you_sure">Are you sure?</string>
   <string name="full_name">Full Name</string>
   <string name="full_name_is_required">Full name is required.</string>
@@ -33,6 +38,7 @@
   <string name="unauthorized">You are not authorized to perform this action.</string>
   <string name="cancel">Cancel</string>
   <string name="button_label_ok">OK</string>
+  <string name="this_device_does_not_support_tag_scanning">This device doesn’t support tag scanning.</string>
   <string name="accept">Accept</string>
 
   <!-- Welcome screen -->
@@ -84,17 +90,65 @@
   <string name="shop_name">Shop Name</string>
   <string name="shop_name_is_required">Shop name is required.</string>
   <string name="add_shop_description">Add a new shop.</string>
+  <string name="tap_shop_below">Tap a shop below</string>
 
   <!-- Shop Detail Screen -->
   <string name="message_shop_created">Shop added.</string>
   <string name="message_shop_deleted">Shop removed.</string>
   <string name="message_shop_updated">Shop updated.</string>
+  <string name="swipe_number_tag_below">Swipe a number tag below.</string>
+  <string name="tap_displayed_button">Tap the displayed button.</string>
+  <string name="server_number_tags_webpage_will_be_updated">The Server Number Tags Webpage will be updated.</string>
+  <string name="read_instructions">Read Instructions</string>
 
   <!-- Shop Settings Screen -->
+  <string name="title_reset_number_tags">Reset Number Tags</string>
   <string name="title_delete_shop">Delete Shop</string>
 
   <string name="label_shop_settings">Shop Settings</string>
   <string name="label_shop_settings_basic_settings">Basic Settings</string>
+  <string name="label_shop_settings_manage_number_tags">Manage Number Tags</string>
+  <string name="label_shop_settings_number_tags_webpage">Number Tags Webpage</string>
+  <string name="reset_number_tags_description">Reset all number tag statuses.</string>
+  <string name="message_shop_reset">All number tags reset.</string>
+
+  <!-- Item Tag -->
+  <string name="tag_number">Tag Number</string>
+  <string name="label_add_tag">Add Tag</string>
+  <string name="add_tag_description">Add a new number tag and start changing the tag status.</string>
+  <string name="tag_number_is_invalid">Tag number is invalid.</string>
+  <string name="write_server_tag">Write Server Tag</string>
+  <string name="write_customer_tag">Write Customer Tag</string>
+  <string name="zero_padding">Zero padding(e.g. 07).</string>
+
+  <string name="message_item_tag_created">Tag created successfully.</string>
+  <string name="message_item_tag_updated">Tag updated successfully.</string>
+  <string name="message_item_tag_deleted">Tag deleted successfully.</string>
+
+  <!-- Item Tag Detail Screen -->
+  <string name="label_edit_item_tag">Edit Tag</string>
+  <string name="title_delete_item_tag">Delete Tag</string>
+  <string name="you_cannot_undo_after_locking_tag">You cannot undo. After locking the tag, you can no longer write data to it.</string>
+
+  <!-- Write item tag screen -->
+  <string name="tag_cannot_be_made_read_only">Tag cannot be made read-only.</string>
+  <string name="ready_for_scanning">Ready for scanning.</string>
+  <string name="hold_your_android_near_the_item">Hold your Android near the item to learn more about it.</string>
+
+  <!-- Scan Screen -->
+  <string name="message_written_on_tag_is_wrong">Message written on tag is wrong.</string>
+  <string name="message_this_tag_is_a_customer_tag">This tag is a “CUSTOMER” tag. Scan a “SERVER” tag!</string>
+
+  <string name="complete_scan">Complete Scan</string>
+  <string name="show_tag_info_scan">Show Tag Info Scan</string>
+  <string name="tag_info">Tag info</string>
+  <string name="read_only">Read Only</string>
+  <string name="writable">Writable</string>
+  <string name="reset">Reset</string>
+  <string name="complete_scan_help">Read a NFC Number Tag for changing the Number Tag status.</string>
+  <string name="show_tag_info_scan_help">Read a NFC Number Tag for showing the Number Tag information.</string>
+  <string name="tag_is_not_writable">Tag is not writable.</string>
+  <string name="update_success">Update success!</string>
 
   <!-- Settings Screen -->
   <string name="mode">Mode</string>

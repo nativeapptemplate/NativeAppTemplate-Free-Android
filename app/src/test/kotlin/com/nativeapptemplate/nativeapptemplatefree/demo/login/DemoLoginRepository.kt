@@ -5,10 +5,12 @@ import androidx.test.core.app.ApplicationProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManager
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManagerImpl
+import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
+import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
@@ -54,6 +56,24 @@ class DemoLoginRepository @Inject constructor(
 
   override fun updateConfirmedTermsVersion(): Flow<Boolean> = MutableStateFlow(true)
 
+  override suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean) {
+  }
+
+  override suspend fun setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan: Boolean) {
+  }
+
+  override suspend fun setShouldNavigateToScanView(shouldNavigateToScanView: Boolean) {
+  }
+
+  override suspend fun setScanViewSelectedTabIndex(scanViewSelectedTabIndex: Int) {
+  }
+
+  override suspend fun setCompleteScanResult(completeScanResult: CompleteScanResult) {
+  }
+
+  override suspend fun setShowTagInfoScanResult(showTagInfoScanResult: ShowTagInfoScanResult) {
+  }
+
   override suspend fun setAccountId(accountId: String) {
   }
 
@@ -67,6 +87,12 @@ class DemoLoginRepository @Inject constructor(
   }
 
   override suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) {
+  }
+
+  override suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
+  }
+
+  override suspend fun setDidShowReadInstructionsTip(didShowReadInstructionsTip: Boolean) {
   }
 
   override suspend fun setIsEmailUpdated(isEmailUpdated: Boolean) {
@@ -94,6 +120,24 @@ class DemoLoginRepository @Inject constructor(
   override fun isMyAccountDeleted(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun didShowTapShopBelowTip(): Flow<Boolean> =MutableStateFlow(true)
+
+  override fun didShowReadInstructionsTip(): Flow<Boolean> =MutableStateFlow(true)
+
+  override fun getMaximumQueueNumberLength(): Flow<Int> = MutableStateFlow(5)
+
+  override fun shouldFetchItemTagForShowTagInfoScan(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun shouldCompleteItemTagForCompleteScan(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun shouldNavigateToScanView(): Flow<Boolean> = MutableStateFlow(true)
+
+  override fun scanViewSelectedTabIndex(): Flow<Int> = MutableStateFlow(0)
+
+  override fun completeScanResult(): Flow<CompleteScanResult> = MutableStateFlow(CompleteScanResult())
+
+  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> = MutableStateFlow(ShowTagInfoScanResult())
 
   @OptIn(ExperimentalSerializationApi::class)
   private suspend inline fun <reified T> getDataFromJsonFile(fileName: String): T =

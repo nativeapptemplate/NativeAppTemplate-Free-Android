@@ -25,4 +25,8 @@ data class Shop(
   fun getDescription(): String = getData()?.getDescription() ?: ""
 
   fun getTimeZone(): String = getData()?.getTimeZone() ?: TimeZones.DEFAULT_TIME_ZONE
+
+  fun getCompletedItemTagsCount(): Int = getData()?.getCompletedItemTagsCount() ?: 0
+
+  fun displayShopServerUrlString(baseUrlString: String): String = "${baseUrlString}/${getData()?.getDisplayShopServerPath()}"
 }

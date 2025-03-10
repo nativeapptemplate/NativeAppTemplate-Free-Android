@@ -22,4 +22,8 @@ interface ShopRepository {
   fun deleteShop(
     id: String,
   ): Flow<Boolean>
+
+  fun resetShop(
+    id: String,
+  ): Flow<Boolean>
 }

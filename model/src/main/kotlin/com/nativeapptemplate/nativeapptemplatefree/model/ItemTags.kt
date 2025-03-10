@@ -5,23 +5,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Model for list response of Bookmark, Content, Progressions
+ */
 @Serializable
 @Parcelize
-data class Permissions(
+data class ItemTags(
   @SerialName("data")
   val datum: List<Data> = emptyList(),
-
   val included: List<Data>? = null,
-
   val meta: Meta? = null
 ) : Parcelable {
-  fun getAndroidAppVersion(): Int? = meta?.androidAppVersion
-
-  fun getShouldUpdatePrivacy(): Boolean? = meta?.shouldUpdatePrivacy
-
-  fun getShouldUpdateTerms(): Boolean? = meta?.shouldUpdateTerms
-
-  fun getMaximumQueueNumberLength(): Int? = meta?.maximumQueueNumberLength
-
-  fun getShopLimitCount(): Int? = meta?.shopLimitCount
+  fun getDatumWithRelationships(): List<Data> = datum.map {
+    it.updateRelationships(included)
+  }
 }

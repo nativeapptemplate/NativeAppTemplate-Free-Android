@@ -1,4 +1,4 @@
-package com.nativeapptemplate.nativeapptemplatefree.data.shop
+package com.nativeapptemplate.nativeapptemplatefree.data.item_tag
 
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
@@ -14,16 +14,18 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class ShopRepositoryImpl @Inject constructor(
-  private val natPreferencesDataSource: NatPreferencesDataSource,
-  private val api: ShopApi,
+class ItemTagRepositoryImpl @Inject constructor(
+  private val mtcPreferencesDataSource: NatPreferencesDataSource,
+  private val api: ItemTagApi,
   @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-) : ShopRepository {
+) : ItemTagRepository {
 
-  override fun getShops(
+  override fun getItemTags(
+    shopId: String,
   ) = flow {
-    val response = api.getShops(
-      natPreferencesDataSource.userData.first().accountId,
+    val response = api.getItemTags(
+      mtcPreferencesDataSource.userData.first().accountId,
+      shopId,
     )
 
     response.suspendOnSuccess {
@@ -32,7 +34,7 @@ class ShopRepositoryImpl @Inject constructor(
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Shops, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTags, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
         val message= "Not processable error(${message()})."
         throw Exception(message)
@@ -48,20 +50,21 @@ class ShopRepositoryImpl @Inject constructor(
     }
   }.flowOn(ioDispatcher)
 
-  override fun getShop(
+  override fun getItemTag(
     id: String,
   ) = flow {
-    val response = api.getShop(
-      natPreferencesDataSource.userData.first().accountId,
+    val response = api.getItemTag(
+      mtcPreferencesDataSource.userData.first().accountId,
       id
     )
+
     response.suspendOnSuccess {
       emit(data)
     }.suspendOnFailure {
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Shop, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
         val message= "Not processable error(${message()})."
         throw Exception(message)
@@ -77,24 +80,26 @@ class ShopRepositoryImpl @Inject constructor(
     }
   }.flowOn(ioDispatcher)
 
-  override fun createShop(
-    shopBody: ShopBody,
+  override fun createItemTag(
+    shopId: String,
+    itemTagBody: ItemTagBody,
   ) = flow {
-    var shop: Shop
+    var itemTag: ItemTag
 
-    val response = api.createShop(
-      natPreferencesDataSource.userData.first().accountId,
-      shopBody
+    val response = api.createItemTag(
+      mtcPreferencesDataSource.userData.first().accountId,
+      shopId,
+      itemTagBody,
     )
 
     response.suspendOnSuccess {
-      shop = data
-      emit(shop)
+      itemTag = data
+      emit(itemTag)
     }.suspendOnFailure {
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Shop, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
         val message= "Not processable error(${message()})."
         throw Exception(message)
@@ -110,26 +115,26 @@ class ShopRepositoryImpl @Inject constructor(
     }
   }.flowOn(ioDispatcher)
 
-  override fun updateShop(
+  override fun updateItemTag(
     id: String,
-    shopUpdateBody: ShopUpdateBody,
+    itemTagBody: ItemTagBody,
   ) = flow {
-    var shop: Shop
+    var itemTag: ItemTag
 
-    val response = api.updateShop(
-      natPreferencesDataSource.userData.first().accountId,
+    val response = api.updateItemTag(
+      mtcPreferencesDataSource.userData.first().accountId,
       id,
-      shopUpdateBody,
+      itemTagBody
     )
 
     response.suspendOnSuccess {
-      shop = data
-      emit(shop)
+      itemTag = data
+      emit(itemTag)
     }.suspendOnFailure {
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Shop, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
         val message= "Not processable error(${message()})."
         throw Exception(message)
@@ -145,10 +150,10 @@ class ShopRepositoryImpl @Inject constructor(
     }
   }.flowOn(ioDispatcher)
 
-  override fun deleteShop(
+  override fun deleteItemTag(
     id: String,
   ) = flow {
-    val response = api.deleteShop(natPreferencesDataSource.userData.first().accountId, id)
+    val response = api.deleteItemTag(mtcPreferencesDataSource.userData.first().accountId, id)
 
     response.suspendOnSuccess {
       emit(true)
@@ -172,18 +177,45 @@ class ShopRepositoryImpl @Inject constructor(
     }
   }.flowOn(ioDispatcher)
 
-  override fun resetShop(
+  override fun completeItemTag(
     id: String,
   ) = flow {
-    val response = api.resetShop(natPreferencesDataSource.userData.first().accountId, id)
+    val response = api.completeItemTag(mtcPreferencesDataSource.userData.first().accountId, id)
 
     response.suspendOnSuccess {
-      emit(true)
+      emit(data)
     }.suspendOnFailure {
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
+        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
+      } catch (exception: Exception) {
+        val message= "Not processable error(${message()})."
+        throw Exception(message)
+      }
+
+      if (nativeAppTemplateApiError != null) {
+        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        throw Exception(message)
+      } else {
+        val message= "Not processable error(${message()})."
+        throw Exception(message)
+      }
+    }
+  }.flowOn(ioDispatcher)
+
+  override fun resetItemTag(
+    id: String,
+  ) = flow {
+    val response = api.resetItemTag(mtcPreferencesDataSource.userData.first().accountId, id)
+
+    response.suspendOnSuccess {
+      emit(data)
+    }.suspendOnFailure {
+      val nativeAppTemplateApiError: NativeAppTemplateApiError?
+
+      try {
+        nativeAppTemplateApiError = response.deserializeErrorBody<ItemTag, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
         val message= "Not processable error(${message()})."
         throw Exception(message)
