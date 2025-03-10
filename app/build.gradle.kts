@@ -18,8 +18,8 @@ android {
     applicationId = "com.nativeapptemplate.nativeapptemplatefree"
     targetSdk = 35
     minSdk = 26
-    versionCode = 1
-    versionName = "1.0.0"
+    versionCode = 2
+    versionName = "2.0.0"
 
     vectorDrawables {
       useSupportLibrary = true
@@ -140,10 +140,13 @@ dependencies {
   implementation(libs.androidx.navigation.compose)
   implementation(libs.androidx.profileinstaller)
   implementation(libs.androidx.tracing.ktx)
+  implementation(libs.capturable)
+  implementation(libs.compose.qr.code)
   implementation(libs.hilt.android)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.coroutines.guava)
   implementation(libs.kotlinx.serialization.json)
+  implementation(libs.lottie.compose)
   implementation(libs.okhttp)
   implementation(libs.okhttp.logging.interceptor)
   implementation(libs.retrofit)

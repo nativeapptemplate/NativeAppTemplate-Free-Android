@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_package = "com.nativeapptemplate.nativeapptemplatefree";
+option java_multiple_files = true;
+
+message ItemTagInfoFromNdefMessageProto {
+  string id = 1;
+  string item_tag_type = 2;
+  bool success = 3;
+  string message = 4;
+  bool is_read_only = 5;
+  string scanned_at = 6;
+}
+

@@ -47,6 +47,8 @@ class DemoShopRepository @Inject constructor(
 
   override fun deleteShop(id: String): Flow<Boolean> = MutableStateFlow(true)
 
+  override fun resetShop(id: String): Flow<Boolean> = MutableStateFlow(true)
+
   @OptIn(ExperimentalSerializationApi::class)
   private suspend inline fun <reified T> getDataFromJsonFile(fileName: String): T =
     withContext(ioDispatcher) {

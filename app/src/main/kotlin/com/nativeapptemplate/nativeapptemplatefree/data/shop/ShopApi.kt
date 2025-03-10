@@ -36,6 +36,12 @@ interface ShopApi {
     @Path("id") id: String,
   ): ApiResponse<Status>
 
+  @DELETE("{account_id}/api/v1/shopkeeper/shops/{id}/reset")
+  suspend fun resetShop(
+    @Path("account_id") accountId: String,
+    @Path("id") id: String,
+  ): ApiResponse<Status>
+
   companion object {
     fun create(retroFit: Retrofit): ShopApi = retroFit.create(
       ShopApi::class.java
