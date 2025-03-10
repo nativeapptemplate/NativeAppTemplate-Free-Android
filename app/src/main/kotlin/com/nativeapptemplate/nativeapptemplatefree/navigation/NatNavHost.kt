@@ -38,8 +38,20 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.scanView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingBaseView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.navigateToShopDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.shopDetailView
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagCreateView
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagDetailView
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagEditView
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagListView
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagWriteView
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagCreate
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagDetail
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagEdit
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagList
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagWrite
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToNumberTagsWebpageList
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopBasicSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopSettings
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.numberTagsWebpageListView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopBasicSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
@@ -153,11 +165,43 @@ fun NatNavHost(
       )
       shopSettingsView(
         onShowBasicSettingsClick = { shopId -> navController.navigateToShopBasicSettings(shopId) },
+        onShowItemTagListClick = { shopId -> navController.navigateToItemTagList(shopId) },
+        onShowNumberTagsWebpageListClick = { shopId -> navController.navigateToNumberTagsWebpageList(shopId) },
+
         onShowSnackbar = onShowSnackbar,
         onBackClick = navController::popBackStack,
       )
       shopBasicSettingsView(
         onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+
+      numberTagsWebpageListView(
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+
+      itemTagListView(
+        onItemClick = { itemTagId -> navController.navigateToItemTagDetail(itemTagId) },
+        onAddItemTagClick = { shopId -> navController.navigateToItemTagCreate(shopId) },
+        onShowSnackbar = onShowSnackbar,
+        onBackClick =navController::popBackStack,
+      )
+      itemTagCreateView(
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+      itemTagDetailView(
+        onShowItemTagEditClick = { itemTagId -> navController.navigateToItemTagEdit(itemTagId) },
+        onShowItemTagWriteClick = { itemTagId, isLock, itemTagType -> navController.navigateToItemTagWrite(itemTagId, isLock, itemTagType) },
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+      itemTagEditView(
+        onShowSnackbar = onShowSnackbar,
+        onBackClick = navController::popBackStack,
+      )
+      itemTagWriteView(
         onBackClick = navController::popBackStack,
       )
     }

@@ -21,6 +21,7 @@ import javax.inject.Inject
 data class ShopSettingsUiState(
   val shop: Shop = Shop(),
   val isShopDeleted: Boolean = false,
+  val isShopReset: Boolean = false,
 
   val isLoading: Boolean = true,
   val success: Boolean = false,
@@ -70,6 +71,37 @@ class ShopSettingsViewModel @Inject constructor(
               shop = shop,
               success = true,
               isLoading = false,
+            )
+          }
+        }
+    }
+  }
+
+  fun resetShop(shopId: String) {
+    _uiState.update {
+      it.copy(
+        isLoading = true,
+        isShopReset = false,
+      )
+    }
+
+    viewModelScope.launch {
+      val booleanFlow: Flow<Boolean> = shopRepository.resetShop(shopId)
+
+      booleanFlow
+        .catch { exception ->
+          val message = exception.message
+          _uiState.update {
+            it.copy(
+              message = message ?: "Unknown Error",
+              isLoading = false,
+            )
+          }
+        }
+        .collect {
+          _uiState.update {
+            it.copy(
+              isShopReset = true,
             )
           }
         }
