@@ -32,8 +32,6 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.rememberNatAppSta
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -47,12 +45,11 @@ class MainActivity : ComponentActivity() {
   lateinit var loginRepository: LoginRepository
 
   private val viewModel: MainActivityViewModel by viewModels()
+  var uiState: MainActivityUiState by mutableStateOf(Loading)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     val splashScreen = installSplashScreen()
     super.onCreate(savedInstanceState)
-
-    var uiState: MainActivityUiState by mutableStateOf(Loading)
 
     viewModel.updateShouldNavigateToScanView(false)
     viewModel.updateShouldFetchItemTagForShowTagInfoScan(false)
@@ -67,9 +64,9 @@ class MainActivity : ComponentActivity() {
     // Update the uiState
     lifecycleScope.launch {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.uiState
-          .onEach { uiState = it }
-          .collect()
+        viewModel.uiState.collect {
+          uiState = it
+        }
       }
     }
 
@@ -121,6 +118,8 @@ class MainActivity : ComponentActivity() {
       }
     }
 
+    if (!uiState.isLoggedIn) return
+
     val intent = intent
     if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
       viewModel.updateShouldNavigateToScanView(false)
@@ -153,6 +152,9 @@ class MainActivity : ComponentActivity() {
 
   override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
+
+    if (!uiState.isLoggedIn) return
+
     if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
       viewModel.updateShouldNavigateToScanView(false)
 
