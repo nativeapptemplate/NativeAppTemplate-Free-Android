@@ -133,14 +133,6 @@ class MainActivityViewModel @Inject constructor(
       }
     }
   }
-
-  fun isLoggedIn(): StateFlow<Boolean> = loginRepository
-    .isLoggedIn()
-    .stateIn(
-      scope = viewModelScope,
-      initialValue = false,
-      started = SharingStarted.WhileSubscribed(5_000),
-    )
 }
 
 sealed interface MainActivityUiState {
