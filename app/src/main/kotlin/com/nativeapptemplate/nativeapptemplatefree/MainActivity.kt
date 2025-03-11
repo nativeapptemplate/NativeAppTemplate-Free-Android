@@ -32,8 +32,6 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.rememberNatAppSta
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
