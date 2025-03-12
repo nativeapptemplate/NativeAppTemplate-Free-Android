@@ -43,11 +43,23 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 - NFC features for Number Tags (ItemTags): Write Application Info to a Tag, Read a Tag, Background Tag Reading
 - And more!
 
-#### NFC Features
+## NFC Tag Operations
 
-![Screenshot showing Write application info to tag screen, Scan tag screen and Shop detail screen screen](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/screenshots_nfc.png "Screenshot showing Write application info to tag screen, Scan tag screen and Shop detail screen screen")
+![Screenshot showing Write Application Info to Tag screen, Scan Tag screen, and Shop Detail screen](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/screenshots_nfc.png "Screenshot showing Write Application Info to Tag screen, Scan Tag screen, and Shop Detail screen")
 
-![Gif showing Background tag reading](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/nfc.gif "showing Background tag reading")
+1. Write application info to pair Number Tags (Server Tag and Customer Tag) or a Customer QR code.  
+2. Scan a Server Tag in the **Scan** tab.  
+3. View the updated Number Tags status in the **Shop Detail** screen or on the **Number Tags Webpage** (see below).  
+
+---
+
+### Background Tag Reading
+
+![Gif showing Background Tag Reading](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/nfc.gif "Showing Background Tag Reading")
+
+1. Scan a Server Tag.  
+2. View the updated Number Tags status in the **Shop Detail** screen or on the **Number Tags Webpage**.
+
 
 #### Not Included in the Free Version
 
