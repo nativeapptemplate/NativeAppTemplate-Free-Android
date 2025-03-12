@@ -1,6 +1,6 @@
 # NativeAppTemplate-Free-Android
 
-NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication.  
+NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and [background tag reading](https://developer.apple.com/documentation/corenfc/adding-support-for-background-tag-reading).  
 This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).  
 
 The iOS version is available here: [NativeAppTemplate-Free-iOS](https://github.com/nativeapptemplate/NativeAppTemplate-Free-iOS).  
