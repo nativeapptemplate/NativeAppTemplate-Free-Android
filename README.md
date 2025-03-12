@@ -47,7 +47,7 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 
 ![Screenshot showing Write application info to tag screen, Scan tag screen and Shop detail screen screen](docs/images/screenshots_nfc.png "Screenshot showing Write application info to tag screen, Scan tag screen and Shop detail screen screen")
 
-![Gif showing Background tag reading](docs/images/nfc.gif "showing Background tag reading")
+![Gif showing Background tag reading](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/nfc.gif "showing Background tag reading")
 
 #### Not Included in the Free Version
 
