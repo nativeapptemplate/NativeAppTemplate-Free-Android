@@ -53,15 +53,20 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 
 ---
 
-### Background Tag Reading
+### Background Tag Reading  
 
-![Gif showing Background Tag Reading](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/nfc.gif "Showing Background Tag Reading")
+![Gif showing Background Tag Reading](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/nfc.gif "Showing Background Tag Reading")  
 
 1. Scan a Server Tag.  
 2. View the updated Number Tags status in the **Shop Detail** screen or on the **Number Tags Webpage**.  
 
 The **Number Tags Webpage** updates in real-time using Rails [Turbo](https://turbo.hotwired.dev).  
-This functionality is implemented in [NativeAppTemplate-API (Solo)](https://nativeapptemplate.com/products/api-solo) or [NativeAppTemplate-API (Team)](https://nativeapptemplate.com/products/api-team).  
+This functionality is available in:  
+- [NativeAppTemplate-API (Solo)](https://nativeapptemplate.com/products/api-solo)  
+- [NativeAppTemplate-API (Team)](https://nativeapptemplate.com/products/api-team)  
+
+> **Note:**  
+> The GIF above shows [MyTurnTag Creator for iOS](https://apps.apple.com/app/myturntag-creator/id1516198303) in action, which may behave slightly differently from **NativeAppTemplate-Free-Android**.
 
 ## Not Included in the Free Version
 
