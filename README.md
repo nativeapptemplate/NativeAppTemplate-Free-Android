@@ -80,7 +80,7 @@ This functionality is available in:
 
 The full versions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team)) include additional advanced features:
 
-- URL Path-Based Multitenancy (e.g., prepends `/:account_id/` to URLs)
+- URL Path-Based Multitenancy (prepends `/:account_id/` to URLs)
 - User Invitation to Organizations
 - Role-Based Permissions and Access Control
 
