@@ -1,14 +1,10 @@
-import com.google.protobuf.gradle.GenerateProtoTask
-
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.compose)
   alias(libs.plugins.hilt)
-  alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.protobuf)
 }
 
 android {
@@ -54,6 +50,11 @@ android {
 
   kotlin {
     jvmToolchain(17)
+    compilerOptions {
+      freeCompilerArgs.addAll(
+        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+      )
+    }
   }
 
   java {
@@ -71,56 +72,14 @@ android {
     unitTests {
       isIncludeAndroidResources = true
     }
-    kotlinOptions {
-      freeCompilerArgs += listOf(
-        "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-      )
-    }
   }
 
   namespace = "com.nativeapptemplate.nativeapptemplatefree"
 }
 
-protobuf {
-  protoc {
-    artifact = libs.protobuf.protoc.get().toString()
-  }
-  generateProtoTasks {
-    all().forEach { task ->
-      task.builtins {
-        register("java") {
-          option("lite")
-        }
-        register("kotlin") {
-          option("lite")
-        }
-      }
-    }
-  }
-}
-
-// Avoid "androidx.datastore.core.DataStore<error.NonExistentClass>"
-// https://github.com/google/ksp/issues/1590#issuecomment-1826387452
-androidComponents {
-  onVariants(selector().all()) { variant ->
-    afterEvaluate {
-      val protoTask =
-        project.tasks.getByName("generate" + variant.name.replaceFirstChar { it.uppercaseChar() } + "Proto") as GenerateProtoTask
-
-      project.tasks.getByName("ksp" + variant.name.replaceFirstChar { it.uppercaseChar() } + "Kotlin") {
-        dependsOn(protoTask)
-        (this as org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompileTool<*>).setSource(
-          protoTask.outputBaseDir
-        )
-      }
-    }
-  }
-}
-
 dependencies {
-  api(libs.protobuf.kotlin.lite)
-
   implementation(project(":model"))
+  implementation(project(":datastore-proto"))
 
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.activity.compose)
