@@ -18,4 +18,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "nativeapptemplate"
-include(":app", ":model")
+include(":app", ":model", ":datastore-proto")
