@@ -17,6 +17,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Call
+import okhttp3.CertificatePinner
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -61,6 +62,14 @@ class NetModule {
       .writeTimeout(30, TimeUnit.SECONDS)
       .addNetworkInterceptor(authInterceptor)
       .addInterceptor(loggingInterceptor)
+      .certificatePinner(
+        CertificatePinner.Builder()
+          // Leaf: api.nativeapptemplate.com
+          .add("api.nativeapptemplate.com", "sha256/7Thx4p19FEZF2WeuXyjc8kr2t1FtT2zA5wWSWoIhh8A=")
+          // Intermediate: Google Trust Services WE1
+          .add("api.nativeapptemplate.com", "sha256/kIdp6NNEd8wsugYyyIYFsi1ylMCED3hZbSR8ZFsa/A4=")
+          .build(),
+      )
       .build()
 
   private val json = Json {

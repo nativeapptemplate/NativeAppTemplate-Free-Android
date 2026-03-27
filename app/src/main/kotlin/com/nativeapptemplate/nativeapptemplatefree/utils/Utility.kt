@@ -69,6 +69,10 @@ object Utility {
     val ndefRecord = ndefRecords.first()
     val url = ndefRecord.toUri() ?: return itemTagInfo
 
+    if (url.scheme != "https" || url.host != BuildConfig.DOMAIN || url.path != "/${NatConstants.SCAN_PATH}") {
+      return itemTagInfo
+    }
+
     val itemTagId = url.getQueryParameter("item_tag_id")
     val type = url.getQueryParameter("type")
 

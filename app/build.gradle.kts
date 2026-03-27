@@ -113,6 +113,7 @@ dependencies {
   implementation(libs.sandwich)
   implementation(libs.sandwich.retrofit)
   implementation(libs.sandwich.retrofit.serialization)
+  implementation(libs.tink.android)
 
   ksp(libs.hilt.compiler)
 
