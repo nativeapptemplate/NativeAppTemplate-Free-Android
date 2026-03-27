@@ -5,6 +5,7 @@ import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataS
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
+import com.nativeapptemplate.nativeapptemplatefree.network.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
@@ -46,7 +47,7 @@ class LoginRepositoryImpl @Inject constructor(
       emit(true)
     }.suspendOnFailure {
       clearUserPreferences()
-      throw Exception(message())
+      throw ApiException.UnprocessableError(rawMessage = message())
     }
   }.flowOn(ioDispatcher)
 

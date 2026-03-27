@@ -8,6 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
 
 class ApiResponseExtensionsTest {
 
@@ -26,45 +27,48 @@ class ApiResponseExtensionsTest {
   }
 
   @Test
-  fun emitApiResponse_onFailure_throwsException() = runTest {
+  fun emitApiResponse_onFailure_throwsUnprocessableError() = runTest {
     val response = ApiResponse.Failure.Exception(Exception("network error"))
-    assertFailsWith<Exception> {
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
       flow { emitApiResponse<String>(response) }.first()
     }
+    assertEquals("network error", exception.rawMessage)
   }
 
   @Test
-  fun emitApiResponse_withTransform_onFailure_throwsException() = runTest {
+  fun emitApiResponse_withTransform_onFailure_throwsUnprocessableError() = runTest {
     val response = ApiResponse.Failure.Exception(Exception("network error"))
-    assertFailsWith<Exception> {
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
       flow { emitApiResponse<String, Boolean>(response) { true } }.first()
     }
+    assertEquals("network error", exception.rawMessage)
   }
 
   @Test
-  fun throwApiError_includesErrorMessageInException() {
+  fun throwApiError_throwsUnprocessableError_withMessage() {
     val response: ApiResponse<String> = ApiResponse.Failure.Exception(Exception("timeout"))
-    val exception = assertFailsWith<Exception> {
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
       throwApiError(response, "timeout")
     }
+    assertEquals("timeout", exception.rawMessage)
     assertEquals("Not processable error(timeout).", exception.message)
   }
 
   @Test
-  fun emitApiResponse_onFailure_exceptionContainsNotProcessableError() = runTest {
+  fun emitApiResponse_onFailure_exceptionIsApiException() = runTest {
     val response: ApiResponse<String> = ApiResponse.Failure.Exception(Exception("server error"))
-    val exception = assertFailsWith<Exception> {
+    val exception = assertFailsWith<ApiException> {
       flow { emitApiResponse<String>(response) }.first()
     }
-    assertTrue(exception.message!!.contains("Not processable error"))
+    assertIs<ApiException.UnprocessableError>(exception)
   }
 
   @Test
-  fun emitApiResponse_withTransform_onFailure_exceptionContainsNotProcessableError() = runTest {
+  fun emitApiResponse_withTransform_onFailure_exceptionIsApiException() = runTest {
     val response: ApiResponse<String> = ApiResponse.Failure.Exception(Exception("server error"))
-    val exception = assertFailsWith<Exception> {
+    val exception = assertFailsWith<ApiException> {
       flow { emitApiResponse<String, Boolean>(response) { true } }.first()
     }
-    assertTrue(exception.message!!.contains("Not processable error"))
+    assertIs<ApiException.UnprocessableError>(exception)
   }
 }
