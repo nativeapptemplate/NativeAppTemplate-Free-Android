@@ -4,10 +4,7 @@ import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataS
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
-import com.skydoves.sandwich.message
-import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
-import com.skydoves.sandwich.suspendOnFailure
-import com.skydoves.sandwich.suspendOnSuccess
+import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -26,26 +23,6 @@ class AccountPasswordRepositoryImpl @Inject constructor(
       natPreferencesDataSource.userData.first().accountId,
       updatePasswordBody,
     )
-
-    response.suspendOnSuccess {
-      emit(true)
-    }.suspendOnFailure {
-      val nativeAppTemplateApiError: NativeAppTemplateApiError?
-
-      try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
-      } catch (exception: Exception) {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-
-      if (nativeAppTemplateApiError != null) {
-        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
-        throw Exception(message)
-      } else {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-    }
+    emitApiResponse<Status, Boolean>(response) { true }
   }.flowOn(ioDispatcher)
 }
