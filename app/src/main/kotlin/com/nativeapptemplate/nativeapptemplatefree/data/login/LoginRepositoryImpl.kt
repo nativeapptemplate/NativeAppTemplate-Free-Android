@@ -7,8 +7,8 @@ import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
 import com.skydoves.sandwich.message
-import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,31 +31,8 @@ class LoginRepositoryImpl @Inject constructor(
   override fun login(
     login: Login,
   ) = flow {
-    var loggedInShopkeeper: LoggedInShopkeeper
-
     val response = api.login(login)
-
-    response.suspendOnSuccess {
-      loggedInShopkeeper = data
-      emit(loggedInShopkeeper)
-    }.suspendOnFailure {
-      val nativeAppTemplateApiError: NativeAppTemplateApiError?
-
-      try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<LoggedInShopkeeper, NativeAppTemplateApiError>()
-      } catch (exception: Exception) {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-
-      if (nativeAppTemplateApiError != null) {
-        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
-        throw Exception(message)
-      } else {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-    }
+    emitApiResponse(response)
   }.flowOn(ioDispatcher)
 
   override val userData: Flow<UserData> =
@@ -77,81 +54,21 @@ class LoginRepositoryImpl @Inject constructor(
     val response = api.getPermissions(
       userData.first().accountId,
     )
-
-    response.suspendOnSuccess {
-      emit(data)
-    }.suspendOnFailure {
-      val nativeAppTemplateApiError: NativeAppTemplateApiError?
-
-      try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Permissions, NativeAppTemplateApiError>()
-      } catch (exception: Exception) {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-
-      if (nativeAppTemplateApiError != null) {
-        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
-        throw Exception(message)
-      } else {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-    }
+    emitApiResponse(response)
   }.flowOn(ioDispatcher)
 
   override fun updateConfirmedPrivacyVersion() = flow {
     val response = api.updateConfirmedPrivacyVersion(
       natPreferencesDataSource.userData.first().accountId,
     )
-
-    response.suspendOnSuccess {
-      emit(true)
-    }.suspendOnFailure { // handles the all error cases from the API request fails.
-      val nativeAppTemplateApiError: NativeAppTemplateApiError?
-
-      try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
-      } catch (exception: Exception) {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-
-      if (nativeAppTemplateApiError != null) {
-        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
-        throw Exception(message)
-      } else {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-    }
+    emitApiResponse<Status, Boolean>(response) { true }
   }.flowOn(ioDispatcher)
 
   override fun updateConfirmedTermsVersion() = flow {
     val response = api.updateConfirmedTermsVersion(
       natPreferencesDataSource.userData.first().accountId,
     )
-
-    response.suspendOnSuccess {
-      emit(true)
-    }.suspendOnFailure { // handles the all error cases from the API request fails.
-      val nativeAppTemplateApiError: NativeAppTemplateApiError?
-
-      try {
-        nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
-      } catch (exception: Exception) {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-
-      if (nativeAppTemplateApiError != null) {
-        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
-        throw Exception(message)
-      } else {
-        val message = "Not processable error(${message()})."
-        throw Exception(message)
-      }
-    }
+    emitApiResponse<Status, Boolean>(response) { true }
   }.flowOn(ioDispatcher)
 
   override suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean) {
