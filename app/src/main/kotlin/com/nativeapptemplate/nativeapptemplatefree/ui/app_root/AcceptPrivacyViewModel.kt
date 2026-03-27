@@ -23,7 +23,7 @@ data class AcceptPrivacyUiState(
 
 @HiltViewModel
 class AcceptPrivacyViewModel @Inject constructor(
-  private val loginRepository: LoginRepository
+  private val loginRepository: LoginRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(AcceptPrivacyUiState())
   val uiState: StateFlow<AcceptPrivacyUiState> = _uiState.asStateFlow()

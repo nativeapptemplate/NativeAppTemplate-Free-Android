@@ -6,8 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class OnboardingViewModel @Inject constructor(
-) : ViewModel() {
+class OnboardingViewModel @Inject constructor() : ViewModel() {
   companion object {
     fun onboardingDescription(index: Int): Int {
       val description = when (index) {

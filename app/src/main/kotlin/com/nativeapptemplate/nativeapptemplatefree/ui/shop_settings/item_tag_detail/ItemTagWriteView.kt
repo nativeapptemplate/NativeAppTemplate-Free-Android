@@ -83,8 +83,8 @@ internal fun ItemTagWriteView(
               NdefMessage(
                 arrayOf(
                   mRecord,
-                  NdefRecord.createApplicationRecord(BuildConfig.APPLICATION_ID)
-                )
+                  NdefRecord.createApplicationRecord(BuildConfig.APPLICATION_ID),
+                ),
               )
             } else {
               NdefMessage(mRecord)
@@ -133,7 +133,7 @@ internal fun ItemTagWriteView(
       activity,
       nfcCallback,
       NfcAdapter.FLAG_READER_NFC_A,
-      null
+      null,
     )
 
     onDispose {
@@ -182,7 +182,7 @@ private fun ItemTagWriteContentView(
       modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .padding(padding)
+        .padding(padding),
     ) {
       Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -205,7 +205,7 @@ private fun ItemTagWriteContentView(
           ),
           colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
           modifier = Modifier
-            .padding(24.dp)
+            .padding(24.dp),
         ) {
           Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -215,7 +215,7 @@ private fun ItemTagWriteContentView(
                 alignment = Alignment.CenterVertically,
               ),
             modifier = Modifier
-              .padding(24.dp)
+              .padding(24.dp),
           ) {
             Text(
               stringResource(R.string.ready_for_scanning),
@@ -223,7 +223,7 @@ private fun ItemTagWriteContentView(
               textAlign = TextAlign.Center,
               modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp)
+                .padding(top = 12.dp),
             )
 
             Text(
@@ -232,7 +232,7 @@ private fun ItemTagWriteContentView(
               textAlign = TextAlign.Center,
               modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp)
+                .padding(top = 12.dp),
             )
 
             if (uiState.isUpdated) {
@@ -240,14 +240,14 @@ private fun ItemTagWriteContentView(
                 Icons.Outlined.Done,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(128.dp)
+                modifier = Modifier.size(128.dp),
               )
             } else if (uiState.isFailed) {
               Icon(
                 Icons.Outlined.CrisisAlert,
                 contentDescription = null,
                 tint = Color.Red,
-                modifier = Modifier.size(128.dp)
+                modifier = Modifier.size(128.dp),
               )
             } else {
               val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.nfc_reader))
@@ -260,8 +260,8 @@ private fun ItemTagWriteContentView(
             MainButtonView(
               title = stringResource(R.string.cancel),
               onClick = { onBackClick() },
-              modifier =  Modifier
-                .padding(horizontal = 12.dp, vertical = 24.dp)
+              modifier = Modifier
+                .padding(horizontal = 12.dp, vertical = 24.dp),
             )
           }
         }

@@ -8,5 +8,5 @@ data class NativeAppTemplateApiError(
   val code: Int,
 
   @SerialName("error_message")
-  val message: String
+  val message: String,
 )

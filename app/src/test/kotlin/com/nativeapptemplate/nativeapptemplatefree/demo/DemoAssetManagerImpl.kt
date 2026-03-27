@@ -19,7 +19,6 @@ package com.nativeapptemplate.nativeapptemplatefree.demo
 import android.content.Context
 import java.io.InputStream
 
-
 internal object DemoAssetManagerImpl : DemoAssetManager {
-  override fun open(context : Context, fileName: String): InputStream = context.assets.open(fileName)
+  override fun open(context: Context, fileName: String): InputStream = context.assets.open(fileName)
 }

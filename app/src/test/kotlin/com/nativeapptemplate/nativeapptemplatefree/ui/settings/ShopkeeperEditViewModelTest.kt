@@ -77,9 +77,9 @@ class ShopkeeperEditViewModelTest {
         type = LOGGED_IN_SHOPKEEPER_TYPE,
         attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(
           name = testInputNewName,
-          timeZone = testInputNewTimeZone
-        )
-      )
+          timeZone = testInputNewTimeZone,
+        ),
+      ),
     )
 
     loginRepository.sendUserData(userData)
@@ -123,9 +123,9 @@ class ShopkeeperEditViewModelTest {
         attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(
           name = testInputNewName,
           email = testInputNewEmail,
-          timeZone = testInputNewTimeZone
-        )
-      )
+          timeZone = testInputNewTimeZone,
+        ),
+      ),
     )
 
     loginRepository.sendUserData(userData)
@@ -250,7 +250,7 @@ private val testInputLoggedInShopkeeperData =
       client = LOGGED_IN_SHOPKEEPER_CLIENT,
       uid = LOGGED_IN_SHOPKEEPER_UID,
       expiry = LOGGED_IN_SHOPKEEPER_EXPIRY,
-    )
+    ),
   )
 
 private val testInputLoggedInShopkeeper = LoggedInShopkeeper(

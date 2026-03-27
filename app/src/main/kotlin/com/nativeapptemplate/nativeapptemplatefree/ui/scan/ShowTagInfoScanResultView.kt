@@ -82,12 +82,12 @@ private fun SucceededView(
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseSurface),
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 24.dp)
+      .padding(top = 24.dp),
   ) {
     Column(
       verticalArrangement = Arrangement.spacedBy(12.dp),
       modifier = Modifier
-        .padding(24.dp)
+        .padding(24.dp),
     ) {
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -115,7 +115,7 @@ private fun SucceededView(
         Text(
           showTagInfoScanResult.itemTagData.queueNumber,
           color = itemTagTypeColor,
-          style = MaterialTheme.typography.displaySmall
+          style = MaterialTheme.typography.displaySmall,
         )
       }
 
@@ -155,11 +155,11 @@ private fun SucceededView(
               space = 8.dp,
               alignment = Alignment.CenterHorizontally,
             ),
-          verticalAlignment = Alignment.Bottom
+          verticalAlignment = Alignment.Bottom,
         ) {
           Icon(
             Icons.Outlined.Storefront,
-            contentDescription = null
+            contentDescription = null,
           )
 
           Text(
@@ -173,20 +173,20 @@ private fun SucceededView(
 
         InfoRow(
           Icons.Outlined.Info,
-          "tag type"
+          "tag type",
         ) {
           Text(
             itemTagType.title,
             fontSize = fontSizeLarge.sp.nonScaledSp,
             lineHeight = lineHeightLarge.sp.nonScaledSp,
             color = itemTagTypeColor,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
           )
         }
 
         InfoRow(
           Icons.Outlined.Flag,
-          "tag status"
+          "tag status",
         ) {
           when (itemTagData.state) {
             ItemTagState.Completed -> CompletedTag()
@@ -197,14 +197,14 @@ private fun SucceededView(
         if (itemTagData.scanState == ScanState.Scanned && itemTagData.customerReadAt.isNotBlank()) {
           InfoRow(
             Icons.Outlined.People,
-            "scanned by a customer"
+            "scanned by a customer",
           ) {
             Text(
               itemTagData.customerReadAt.cardTimeString(),
               fontSize = fontSizeLarge.sp.nonScaledSp,
               lineHeight = lineHeightLarge.sp.nonScaledSp,
               color = MaterialTheme.colorScheme.inverseOnSurface,
-              style = MaterialTheme.typography.titleLarge
+              style = MaterialTheme.typography.titleLarge,
             )
           }
         }
@@ -212,41 +212,41 @@ private fun SucceededView(
         if (itemTagData.state == ItemTagState.Completed && itemTagData.completedAt.isNotBlank()) {
           InfoRow(
             Icons.Outlined.FlagCircle,
-            "completed"
+            "completed",
           ) {
             Text(
               itemTagData.completedAt.cardTimeString(),
               fontSize = fontSizeLarge.sp.nonScaledSp,
               lineHeight = lineHeightLarge.sp.nonScaledSp,
               color = MaterialTheme.colorScheme.inverseOnSurface,
-              style = MaterialTheme.typography.titleLarge
+              style = MaterialTheme.typography.titleLarge,
             )
           }
         }
 
         InfoRow(
           Icons.Outlined.Rectangle,
-          "NFC tag"
+          "NFC tag",
         ) {
           Text(
             displayReadOnly,
             fontSize = fontSizeLarge.sp.nonScaledSp,
             lineHeight = lineHeightLarge.sp.nonScaledSp,
             color = MaterialTheme.colorScheme.inverseOnSurface,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
           )
         }
 
         InfoRow(
           Icons.Outlined.AccessTime,
-          "created"
+          "created",
         ) {
           Text(
             itemTagData.createdAt.cardDateString(),
             fontSize = fontSizeLarge.sp.nonScaledSp,
             lineHeight = lineHeightLarge.sp.nonScaledSp,
             color = MaterialTheme.colorScheme.inverseOnSurface,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
           )
         }
       }
@@ -263,12 +263,12 @@ private fun FailedView(
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 24.dp)
+      .padding(top = 24.dp),
   ) {
     Column(
       verticalArrangement = Arrangement.spacedBy(12.dp),
       modifier = Modifier
-        .padding(24.dp)
+        .padding(24.dp),
     ) {
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -303,19 +303,18 @@ private fun FailedView(
 }
 
 @Composable
-private fun IdledView(
-) {
+private fun IdledView() {
   Card(
     shape = RoundedCornerShape(16.dp),
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseSurface),
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 24.dp)
+      .padding(top = 24.dp),
   ) {
     Column(
       verticalArrangement = Arrangement.spacedBy(12.dp),
       modifier = Modifier
-        .padding(24.dp)
+        .padding(24.dp),
     ) {
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -355,16 +354,16 @@ private fun InfoRow(
           space = 8.dp,
           alignment = Alignment.CenterHorizontally,
         ),
-      verticalAlignment = Alignment.CenterVertically
+      verticalAlignment = Alignment.CenterVertically,
     ) {
       Icon(
         imageVector = icon,
-        contentDescription = null
+        contentDescription = null,
       )
 
       Row(
         modifier = Modifier
-          .width(128.dp)
+          .width(128.dp),
       ) {
         content()
       }
@@ -374,7 +373,7 @@ private fun InfoRow(
         fontSize = fontSizeMedium.sp.nonScaledSp,
         lineHeight = lineHeightMedium.sp.nonScaledSp,
         modifier = Modifier
-          .padding(start = 8.dp)
+          .padding(start = 8.dp),
       )
     }
   }

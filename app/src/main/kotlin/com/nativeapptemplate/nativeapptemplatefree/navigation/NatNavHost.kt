@@ -7,11 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToPasswordEdit
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToShopkeeperEdit
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.passwordEditView
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingsView
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.shopkeeperEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NatAppState
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptPrivacyView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptTermsView
@@ -35,7 +30,12 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.doScanView
 import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.navigateToDoScan
 import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.scanBaseView
 import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.scanView
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToPasswordEdit
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToShopkeeperEdit
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.passwordEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingBaseView
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.settingsView
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.shopkeeperEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.navigateToShopDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.shopDetailView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagCreateView
@@ -81,7 +81,7 @@ fun NatNavHost(
   val shouldUpdateTerms by appState.shouldUpdateTerms.collectAsStateWithLifecycle()
   val shouldNavigateToScanView by appState.shouldNavigateToScanView.collectAsStateWithLifecycle()
 
- LaunchedEffect(
+  LaunchedEffect(
     isLoggedIn,
     shouldUpdateApp,
     shouldUpdatePrivacy,
@@ -141,10 +141,10 @@ fun NatNavHost(
     )
 
     needAppUpdatesView()
-    acceptPrivacyView (
+    acceptPrivacyView(
       onShowSnackbar = onShowSnackbar,
     )
-    acceptTermsView (
+    acceptTermsView(
       onShowSnackbar = onShowSnackbar,
     )
 
@@ -185,7 +185,7 @@ fun NatNavHost(
         onItemClick = { itemTagId -> navController.navigateToItemTagDetail(itemTagId) },
         onAddItemTagClick = { shopId -> navController.navigateToItemTagCreate(shopId) },
         onShowSnackbar = onShowSnackbar,
-        onBackClick =navController::popBackStack,
+        onBackClick = navController::popBackStack,
       )
       itemTagCreateView(
         onShowSnackbar = onShowSnackbar,
@@ -224,11 +224,11 @@ fun NatNavHost(
       )
       shopkeeperEditView(
         onShowSnackbar = onShowSnackbar,
-        onBackClick =navController::popBackStack,
+        onBackClick = navController::popBackStack,
       )
       passwordEditView(
         onShowSnackbar = onShowSnackbar,
-        onBackClick =navController::popBackStack,
+        onBackClick = navController::popBackStack,
       )
     }
   }

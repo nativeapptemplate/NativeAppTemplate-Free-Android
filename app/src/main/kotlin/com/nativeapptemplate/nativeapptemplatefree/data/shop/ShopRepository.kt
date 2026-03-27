@@ -7,11 +7,11 @@ interface ShopRepository {
   fun getShops(): Flow<Shops>
 
   fun getShop(
-    id: String
+    id: String,
   ): Flow<Shop>
 
   fun createShop(
-    shopBody: ShopBody
+    shopBody: ShopBody,
   ): Flow<Shop>
 
   fun updateShop(

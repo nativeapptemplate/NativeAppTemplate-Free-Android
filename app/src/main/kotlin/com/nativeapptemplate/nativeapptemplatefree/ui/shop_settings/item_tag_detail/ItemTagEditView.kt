@@ -72,7 +72,7 @@ fun ItemTagEditView(
   ItemTagEditView(
     viewModel,
     uiState,
-    onBackClick
+    onBackClick,
   )
 }
 
@@ -117,9 +117,9 @@ fun ItemTagEditContentView(
         onClick = { viewModel.updateItemTag() },
         modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape
+        shape = CircleShape,
 
-      ){
+      ) {
         Icon(Icons.Filled.Done, contentDescription = null)
       }
     },
@@ -130,12 +130,12 @@ fun ItemTagEditContentView(
         .padding(padding)
         .padding(horizontal = 16.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
-      verticalArrangement = Arrangement.spacedBy(16.dp)
+      verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.tag_number)
+            text = stringResource(R.string.tag_number),
           )
         },
         placeholder = { Text("A001") },
@@ -146,17 +146,17 @@ fun ItemTagEditContentView(
             Text(
               text = "Tag Number must be a 2-${uiState.maximumQueueNumberLength} alphanumeric characters.",
               style = MaterialTheme.typography.bodyLarge,
-              color = MaterialTheme.colorScheme.onSurfaceVariant
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
               text = stringResource(R.string.zero_padding),
               style = MaterialTheme.typography.bodyLarge,
-              color = MaterialTheme.colorScheme.onSurfaceVariant
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
               text = stringResource(id = R.string.tag_number_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
-              color = if (viewModel.hasInvalidDataQueueNumber()) Color.Red else Color.Transparent
+              color = if (viewModel.hasInvalidDataQueueNumber()) Color.Red else Color.Transparent,
             )
           }
         },
@@ -185,7 +185,7 @@ private fun TopAppBar(
       }) {
         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
       }
-     },
+    },
     modifier = Modifier.fillMaxWidth(),
   )
 }
@@ -208,10 +208,10 @@ private fun ItemTagEditErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
@@ -234,7 +234,7 @@ private fun ItemTagEditLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

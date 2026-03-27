@@ -60,7 +60,7 @@ fun SignInEmailAndPasswordView(
     onShowForgotPasswordClick,
     onShowResendConfirmationInstructionsClick,
     onShowSnackbar,
-    onBackClick
+    onBackClick,
   )
 }
 
@@ -79,7 +79,7 @@ fun SignInEmailAndPasswordView(
     onShowForgotPasswordClick,
     onShowResendConfirmationInstructionsClick,
     onShowSnackbar,
-    onBackClick
+    onBackClick,
   )
 }
 
@@ -101,7 +101,7 @@ private fun ContentView(
       onShowForgotPasswordClick,
       onShowResendConfirmationInstructionsClick,
       onShowSnackbar,
-      onBackClick
+      onBackClick,
     )
   }
 }
@@ -125,9 +125,11 @@ fun SignInEmailAndPasswordContentView(
   }
 
   Scaffold(
-    topBar = { TopAppBar(
-      onBackClick = onBackClick
-    ) },
+    topBar = {
+      TopAppBar(
+        onBackClick = onBackClick,
+      )
+    },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
     Column(
@@ -141,7 +143,7 @@ fun SignInEmailAndPasswordContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.email)
+            text = stringResource(R.string.email),
           )
         },
         placeholder = { Text(NatConstants.PLACEHOLDER_EMAIL) },
@@ -152,13 +154,13 @@ fun SignInEmailAndPasswordContentView(
             Text(
               text = stringResource(id = R.string.email_is_required),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           } else if (viewModel.hasInvalidDataEmail()) {
             Text(
               text = stringResource(id = R.string.email_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           }
         },
@@ -170,7 +172,7 @@ fun SignInEmailAndPasswordContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.label_password)
+            text = stringResource(R.string.label_password),
           )
         },
         placeholder = { Text(NatConstants.PLACEHOLDER_PASSWORD) },
@@ -181,27 +183,29 @@ fun SignInEmailAndPasswordContentView(
             Text(
               text = stringResource(id = R.string.new_password_is_required),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           } else if (viewModel.hasInvalidDataPassword()) {
             Text(
               text = stringResource(id = R.string.password_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           }
         },
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
-          val image = if (passwordVisible)
+          val image = if (passwordVisible) {
             Icons.Filled.Visibility
-          else Icons.Filled.VisibilityOff
+          } else {
+            Icons.Filled.VisibilityOff
+          }
 
           val description = if (passwordVisible) "Hide password" else "Show password"
 
-          IconButton(onClick = {passwordVisible = !passwordVisible}){
-            Icon(imageVector  = image, description)
+          IconButton(onClick = { passwordVisible = !passwordVisible }) {
+            Icon(imageVector = image, description)
           }
         },
         modifier = Modifier
@@ -212,23 +216,23 @@ fun SignInEmailAndPasswordContentView(
         title = stringResource(R.string.button_sign_in),
         onClick = { viewModel.login() },
         enabled = !viewModel.hasInvalidData(),
-        modifier =  Modifier
-          .padding(horizontal = 12.dp, vertical = 24.dp)
+        modifier = Modifier
+          .padding(horizontal = 12.dp, vertical = 24.dp),
       )
 
       MainButtonView(
         title = stringResource(R.string.forgot_password),
         onClick = { onShowForgotPasswordClick() },
-        modifier =  Modifier
+        modifier = Modifier
           .padding(horizontal = 12.dp, vertical = 24.dp)
-          .padding(top = 64.dp)
+          .padding(top = 64.dp),
       )
 
       MainButtonView(
         title = stringResource(R.string.didnt_receive_confirmation_instructions),
         onClick = { onShowResendConfirmationInstructionsClick() },
-        modifier =  Modifier
-          .padding(horizontal = 12.dp, vertical = 24.dp)
+        modifier = Modifier
+          .padding(horizontal = 12.dp, vertical = 24.dp),
       )
     }
   }
@@ -251,7 +255,6 @@ private fun TopAppBar(
       }) {
         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
       }
-
     },
     modifier = Modifier.fillMaxWidth(),
   )
@@ -270,10 +273,9 @@ private fun SignInEmailAndPasswordLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }
   }
 }
-

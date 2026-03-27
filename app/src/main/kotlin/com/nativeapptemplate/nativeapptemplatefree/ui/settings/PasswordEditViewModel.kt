@@ -28,7 +28,7 @@ data class PasswordEditUiState(
 
 @HiltViewModel
 class PasswordEditViewModel @Inject constructor(
-  private val accountPasswordRepository: AccountPasswordRepository
+  private val accountPasswordRepository: AccountPasswordRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(PasswordEditUiState())
   val uiState: StateFlow<PasswordEditUiState> = _uiState.asStateFlow()
@@ -72,7 +72,7 @@ class PasswordEditViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     if (
       uiState.value.currentPassword.isBlank() ||
       uiState.value.password.isBlank() ||
@@ -86,7 +86,7 @@ class PasswordEditViewModel @Inject constructor(
     return false
   }
 
-  fun hasInvalidDataPassword() : Boolean {
+  fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true
     if (uiState.value.password.length < NatConstants.MINIMUM_PASSWORD_LENGTH) return true
 

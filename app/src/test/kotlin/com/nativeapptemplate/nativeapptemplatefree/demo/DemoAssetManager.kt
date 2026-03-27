@@ -4,5 +4,5 @@ import android.content.Context
 import java.io.InputStream
 
 fun interface DemoAssetManager {
-  fun open(context : Context, fileName: String): InputStream
+  fun open(context: Context, fileName: String): InputStream
 }

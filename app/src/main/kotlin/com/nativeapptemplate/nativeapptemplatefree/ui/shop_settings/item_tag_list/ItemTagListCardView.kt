@@ -17,7 +17,7 @@ fun ItemTagListCardView(
     headlineContent = {
       Text(
         data.getQueueNumber(),
-        style = MaterialTheme.typography.titleMedium
+        style = MaterialTheme.typography.titleMedium,
       )
     },
     modifier = Modifier

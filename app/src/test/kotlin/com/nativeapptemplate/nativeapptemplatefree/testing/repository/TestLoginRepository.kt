@@ -15,8 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
-val emptyUserData = UserData(
-)
+val emptyUserData = UserData()
 
 class TestLoginRepository : LoginRepository {
   private val loggedInShopkeeperFlow: MutableSharedFlow<LoggedInShopkeeper> =
@@ -36,13 +35,13 @@ class TestLoginRepository : LoginRepository {
 
   override fun login(login: Login): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
 
-  override fun logout(): Flow<Boolean> =  MutableStateFlow(true)
+  override fun logout(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun getPermissions(): Flow<Permissions> = permissionsFlow
 
-  override fun updateConfirmedPrivacyVersion(): Flow<Boolean> =  MutableStateFlow(true)
+  override fun updateConfirmedPrivacyVersion(): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun updateConfirmedTermsVersion(): Flow<Boolean> =  MutableStateFlow(true)
+  override fun updateConfirmedTermsVersion(): Flow<Boolean> = MutableStateFlow(true)
 
   override suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean) {
     currentUserData.let { current ->
@@ -91,7 +90,7 @@ class TestLoginRepository : LoginRepository {
           uid = loggedInShopkeeper.getUID()!!,
           expiry = loggedInShopkeeper.getExpiry()!!,
           isLoggedIn = true,
-        )
+        ),
       )
     }
   }
@@ -104,7 +103,7 @@ class TestLoginRepository : LoginRepository {
           name = loggedInShopkeeper.getName()!!,
           timeZone = loggedInShopkeeper.getTimeZone()!!,
           uid = loggedInShopkeeper.getUID()!!,
-        )
+        ),
       )
     }
   }
@@ -112,11 +111,11 @@ class TestLoginRepository : LoginRepository {
     currentUserData.let { current ->
       _userData.tryEmit(
         current.copy(
-          androidAppVersion =  permissions.getAndroidAppVersion()!!,
-          shouldUpdatePrivacy =  permissions.getShouldUpdatePrivacy()!!,
+          androidAppVersion = permissions.getAndroidAppVersion()!!,
+          shouldUpdatePrivacy = permissions.getShouldUpdatePrivacy()!!,
           shouldUpdateTerms = permissions.getShouldUpdateTerms()!!,
           shopLimitCount = permissions.getShopLimitCount()!!,
-        )
+        ),
       )
     }
   }
@@ -167,7 +166,6 @@ class TestLoginRepository : LoginRepository {
   override fun isMyAccountDeleted(): Flow<Boolean> = MutableStateFlow(false)
 
   override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(false)
-
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
 

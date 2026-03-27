@@ -56,7 +56,7 @@ fun AcceptTermsView(
   if (uiState.isUpdated) {
     val context = LocalContext.current
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.confirmed_terms_version_updated),
+      dialogTitle = stringResource(R.string.confirmed_terms_version_updated),
       onDismissRequest = { context.restartApp() },
     )
   }
@@ -102,7 +102,7 @@ fun AcceptTermsContentView(
         .padding(padding)
         .padding(horizontal = 24.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
-      verticalArrangement = Arrangement.spacedBy(24.dp)
+      verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
       val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
@@ -113,8 +113,8 @@ fun AcceptTermsContentView(
         withLink(
           LinkAnnotation.Url(
             NatConstants.TERMS_OF_USE_URL,
-            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
-          )
+            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
+          ),
         ) {
           append(stringResource(R.string.terms_of_use))
         }
@@ -132,8 +132,8 @@ fun AcceptTermsContentView(
       MainButtonView(
         title = stringResource(R.string.accept),
         onClick = { viewModel.updateConfirmedTermsVersion() },
-        modifier =  Modifier
-          .padding(horizontal = 12.dp, vertical = 24.dp)
+        modifier = Modifier
+          .padding(horizontal = 12.dp, vertical = 24.dp),
       )
     }
   }
@@ -141,8 +141,7 @@ fun AcceptTermsContentView(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopAppBar(
-) {
+private fun TopAppBar() {
   CenterAlignedTopAppBar(
     colors = TopAppBarDefaults.topAppBarColors(
       containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -154,12 +153,10 @@ private fun TopAppBar(
 }
 
 @Composable
-private fun AcceptTermsLoadingView(
-) {
+private fun AcceptTermsLoadingView() {
   Scaffold(
     topBar = {
-      TopAppBar(
-      )
+      TopAppBar()
     },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
@@ -168,7 +165,7 @@ private fun AcceptTermsLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

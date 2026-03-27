@@ -33,7 +33,7 @@ class DemoShopRepositoryTest {
     ),
     meta = Meta(
       limitCount = 96,
-      createdShopsCount = 3
+      createdShopsCount = 3,
     ),
   )
 
@@ -72,8 +72,8 @@ class DemoShopRepositoryTest {
             name = "Shop1",
             description = "This is a Shop1",
             timeZone = "Tokyo",
-          )
-         )
+          ),
+        ),
       ).first(),
     )
   }

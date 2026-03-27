@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class TestAccountPasswordRepository : AccountPasswordRepository {
   override fun updateAccountPassword(
-    updatePasswordBody: UpdatePasswordBody
+    updatePasswordBody: UpdatePasswordBody,
   ): Flow<Boolean> = MutableStateFlow(true)
 }

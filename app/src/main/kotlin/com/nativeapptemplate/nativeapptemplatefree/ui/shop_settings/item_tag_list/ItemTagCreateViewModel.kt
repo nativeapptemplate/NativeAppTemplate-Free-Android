@@ -35,7 +35,7 @@ data class ItemTagCreateUiState(
 class ItemTagCreateViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
-  private val itemTagRepository: ItemTagRepository
+  private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ItemTagCreateRoute>().shopId
 
@@ -116,11 +116,11 @@ class ItemTagCreateViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     return hasInvalidDataQueueNumber()
   }
 
-  fun hasInvalidDataQueueNumber() : Boolean {
+  fun hasInvalidDataQueueNumber(): Boolean {
     val queueNumber = uiState.value.queueNumber
 
     if (queueNumber.isBlank()) return true

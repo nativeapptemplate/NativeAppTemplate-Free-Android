@@ -11,20 +11,20 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import androidx.tracing.trace
-import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToSettings
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SCAN_TAB
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SETTINGS_TAB
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SHOPS_TAB
 import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.navigateToScan
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -66,12 +66,13 @@ class NatAppState(
     loginRepository.isLoggedIn(),
     loginRepository.shouldUpdateApp(),
     loginRepository.shouldUpdatePrivacy(),
-    loginRepository.shouldUpdateTerms()
+    loginRepository.shouldUpdateTerms(),
   ) {
       theIsLoggedIn,
       theShouldUpdateApp,
       theShouldUpdatePrivacy,
-      theShouldUpdateTerms ->
+      theShouldUpdateTerms,
+    ->
     theIsLoggedIn && !theShouldUpdateApp && !theShouldUpdatePrivacy && !theShouldUpdateTerms
   }.stateIn(
     scope = coroutineScope,

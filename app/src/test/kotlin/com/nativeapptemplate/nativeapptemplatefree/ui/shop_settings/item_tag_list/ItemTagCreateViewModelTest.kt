@@ -65,7 +65,7 @@ class ItemTagCreateViewModelTest {
     val maximumQueueNumberLength = 5
 
     val userData = emptyUserData.copy(
-      maximumQueueNumberLength = maximumQueueNumberLength
+      maximumQueueNumberLength = maximumQueueNumberLength,
     )
 
     loginRepository.sendUserData(userData)
@@ -84,7 +84,7 @@ class ItemTagCreateViewModelTest {
 
     val maximumQueueNumberLength = 5
     val userData = emptyUserData.copy(
-      maximumQueueNumberLength = maximumQueueNumberLength
+      maximumQueueNumberLength = maximumQueueNumberLength,
     )
 
     loginRepository.sendUserData(userData)
@@ -148,7 +148,7 @@ private var testInputShopsData =
       description = SHOP_DESCRIPTION,
       timeZone = SHOP_TIME_ZONE,
       completedItemTagsCount = 3,
-    )
+    ),
   )
 
 private var testInputShop = Shop(
@@ -178,10 +178,9 @@ private val testInputItemTagsData =
       shopName = SHOP_NAME,
       customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED
-    )
+      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
+    ),
   )
-
 
 private val testInputItemTag = ItemTag(
   datum = testInputItemTagsData,

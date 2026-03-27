@@ -80,8 +80,11 @@ fun NatTheme(
   val tintTheme = TintTheme()
 
   val customColorsPalette =
-    if (darkTheme) DarkCustomColorScheme
-    else LightCustomColorScheme
+    if (darkTheme) {
+      DarkCustomColorScheme
+    } else {
+      LightCustomColorScheme
+    }
 
   // Composition locals
   CompositionLocalProvider(

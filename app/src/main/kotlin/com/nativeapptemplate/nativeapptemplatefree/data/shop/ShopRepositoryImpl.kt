@@ -20,8 +20,7 @@ class ShopRepositoryImpl @Inject constructor(
   @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ShopRepository {
 
-  override fun getShops(
-  ) = flow {
+  override fun getShops() = flow {
     val response = api.getShops(
       natPreferencesDataSource.userData.first().accountId,
     )
@@ -34,15 +33,15 @@ class ShopRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Shops, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -53,7 +52,7 @@ class ShopRepositoryImpl @Inject constructor(
   ) = flow {
     val response = api.getShop(
       natPreferencesDataSource.userData.first().accountId,
-      id
+      id,
     )
     response.suspendOnSuccess {
       emit(data)
@@ -63,15 +62,15 @@ class ShopRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Shop, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -84,7 +83,7 @@ class ShopRepositoryImpl @Inject constructor(
 
     val response = api.createShop(
       natPreferencesDataSource.userData.first().accountId,
-      shopBody
+      shopBody,
     )
 
     response.suspendOnSuccess {
@@ -96,15 +95,15 @@ class ShopRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Shop, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -131,15 +130,15 @@ class ShopRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Shop, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -158,15 +157,15 @@ class ShopRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -185,15 +184,15 @@ class ShopRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }

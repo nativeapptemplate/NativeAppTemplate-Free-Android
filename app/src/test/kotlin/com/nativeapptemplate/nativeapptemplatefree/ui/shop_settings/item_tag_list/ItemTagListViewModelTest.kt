@@ -122,7 +122,7 @@ private var testInputShopsData =
       description = SHOP_DESCRIPTION,
       timeZone = SHOP_TIME_ZONE,
       completedItemTagsCount = 3,
-    )
+    ),
   )
 
 private var testInputShop = Shop(
@@ -156,8 +156,8 @@ private val testInputItemTagsData = listOf(
       shopName = SHOP_NAME,
       customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED
-    )
+      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
+    ),
   ),
   Data(
     id = ITEM_TAG_2_ID,
@@ -170,8 +170,8 @@ private val testInputItemTagsData = listOf(
       createdAt = ITEM_TAG_CREATED_AT,
       shopName = SHOP_NAME,
       customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED
-    )
+      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
+    ),
   ),
   Data(
     id = ITEM_TAG_3_ID,
@@ -185,8 +185,8 @@ private val testInputItemTagsData = listOf(
       shopName = SHOP_NAME,
       customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED
-    )
+      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
+    ),
   ),
 )
 

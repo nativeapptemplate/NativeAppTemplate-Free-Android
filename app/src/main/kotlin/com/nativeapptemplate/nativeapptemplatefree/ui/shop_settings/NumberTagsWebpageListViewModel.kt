@@ -32,7 +32,7 @@ class NumberTagsWebpageListViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val shopRepository: ShopRepository,
 
-  ) : ViewModel() {
+) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<NumberTagsWebpageListRoute>().id
 
   private val _uiState = MutableStateFlow(NumberTagsWebpageListUiState())
@@ -79,4 +79,3 @@ class NumberTagsWebpageListViewModel @Inject constructor(
     _uiState.update { it.copy(message = "") }
   }
 }
-

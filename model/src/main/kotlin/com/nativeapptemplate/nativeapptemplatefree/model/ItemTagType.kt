@@ -1,9 +1,10 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 enum class ItemTagType(val param: String, val title: String) {
-  Server("server","Server"),
+  Server("server", "Server"),
 
-  Customer("customer","Customer");
+  Customer("customer", "Customer"),
+  ;
 
   companion object {
     val titles: List<String> = entries.map { it.title }

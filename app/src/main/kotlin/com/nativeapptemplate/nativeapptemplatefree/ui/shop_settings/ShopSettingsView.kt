@@ -75,7 +75,7 @@ internal fun ShopSettingsView(
 
   if (uiState.isShopReset) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.message_shop_reset),
+      dialogTitle = stringResource(R.string.message_shop_reset),
       onDismissRequest = {
         onBackClick()
       },
@@ -167,7 +167,7 @@ private fun ShopSettingsContentView(
 
   if (isShowingResetConfirmationDialog) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.are_you_sure),
+      dialogTitle = stringResource(R.string.are_you_sure),
       confirmButtonTitle = stringResource(R.string.title_reset_number_tags),
       onDismissRequest = { isShowingResetConfirmationDialog = false },
       onConfirmation = { viewModel.resetShop(uiState.shop.getData()?.id!!) },
@@ -177,7 +177,7 @@ private fun ShopSettingsContentView(
 
   if (isShowingDeleteConfirmationDialog) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.are_you_sure),
+      dialogTitle = stringResource(R.string.are_you_sure),
       confirmButtonTitle = stringResource(R.string.title_delete_shop),
       onDismissRequest = { isShowingDeleteConfirmationDialog = false },
       onConfirmation = { viewModel.deleteShop(uiState.shop.getData()?.id!!) },
@@ -197,10 +197,10 @@ private fun ShopSettingsContentView(
       modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .padding(padding)
+        .padding(padding),
     ) {
       LazyColumn(
-        Modifier.padding(24.dp)
+        Modifier.padding(24.dp),
       ) {
         item {
           Text(
@@ -209,7 +209,7 @@ private fun ShopSettingsContentView(
             textAlign = TextAlign.Center,
             modifier = Modifier
               .fillMaxWidth()
-              .padding(bottom = 48.dp)
+              .padding(bottom = 48.dp),
           )
         }
 
@@ -220,7 +220,7 @@ private fun ShopSettingsContentView(
             headlineContent = {
               Text(
                 stringResource(R.string.label_shop_settings_basic_settings),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
             leadingContent = {
@@ -231,7 +231,7 @@ private fun ShopSettingsContentView(
               )
             },
             modifier = Modifier
-              .clickable { onShowBasicSettingsClick(uiState.shop.getData()?.id!!) }
+              .clickable { onShowBasicSettingsClick(uiState.shop.getData()?.id!!) },
           )
 
           HorizontalDivider()
@@ -242,7 +242,7 @@ private fun ShopSettingsContentView(
             headlineContent = {
               Text(
                 "",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
           )
@@ -255,7 +255,7 @@ private fun ShopSettingsContentView(
             headlineContent = {
               Text(
                 stringResource(R.string.label_shop_settings_manage_number_tags),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
             leadingContent = {
@@ -266,7 +266,7 @@ private fun ShopSettingsContentView(
               )
             },
             modifier = Modifier
-              .clickable { onShowItemTagListClick(uiState.shop.getData()?.id!!) }
+              .clickable { onShowItemTagListClick(uiState.shop.getData()?.id!!) },
           )
 
           HorizontalDivider()
@@ -277,7 +277,7 @@ private fun ShopSettingsContentView(
             headlineContent = {
               Text(
                 "",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
           )
@@ -290,7 +290,7 @@ private fun ShopSettingsContentView(
             headlineContent = {
               Text(
                 stringResource(R.string.label_shop_settings_number_tags_webpage),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
             leadingContent = {
@@ -312,14 +312,14 @@ private fun ShopSettingsContentView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-              .padding(top = 48.dp)
+              .padding(top = 48.dp),
           ) {
             MainButtonView(
               title = stringResource(R.string.title_reset_number_tags),
-              onClick = {  isShowingResetConfirmationDialog = true },
+              onClick = { isShowingResetConfirmationDialog = true },
               modifier = Modifier
                 .padding(horizontal = 12.dp)
-                .padding(top = 24.dp)
+                .padding(top = 24.dp),
             )
 
             Text(
@@ -327,7 +327,7 @@ private fun ShopSettingsContentView(
               color = MaterialTheme.colorScheme.onSurfaceVariant,
               textAlign = TextAlign.Center,
               modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
             )
           }
         }
@@ -336,8 +336,8 @@ private fun ShopSettingsContentView(
           MainButtonView(
             title = stringResource(R.string.title_delete_shop),
             onClick = { isShowingDeleteConfirmationDialog = true },
-            modifier =  Modifier
-              .padding(horizontal = 12.dp, vertical = 24.dp)
+            modifier = Modifier
+              .padding(horizontal = 12.dp, vertical = 24.dp),
           )
         }
       }
@@ -385,10 +385,10 @@ private fun ShopSettingsErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
@@ -411,7 +411,7 @@ private fun ShopSettingsLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

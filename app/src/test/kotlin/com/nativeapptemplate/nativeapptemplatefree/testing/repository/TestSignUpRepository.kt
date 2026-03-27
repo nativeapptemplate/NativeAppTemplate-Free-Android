@@ -18,17 +18,17 @@ class TestSignUpRepository : SignUpRepository {
   override fun signUp(signUp: SignUp): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
 
   override fun updateAccount(
-    signUpForUpdate: SignUpForUpdate
+    signUpForUpdate: SignUpForUpdate,
   ): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
 
   override fun deleteAccount(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun sendResetPasswordInstruction(
-    sendResetPassword: SendResetPassword
+    sendResetPassword: SendResetPassword,
   ): Flow<Boolean> = MutableStateFlow(true)
 
   override fun sendConfirmationInstruction(
-    sendConfirmation: SendConfirmation
+    sendConfirmation: SendConfirmation,
   ): Flow<Boolean> = MutableStateFlow(true)
 
   /**

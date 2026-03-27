@@ -73,17 +73,17 @@ class ScanViewModelTest {
     val showTagInfoScanResult = uiStateValue.showTagInfoScanResult
     assertEquals(
       showTagInfoScanResult.itemTagInfoFromNdefMessage,
-      testInputItemTagInfoFromNdefMessage
+      testInputItemTagInfoFromNdefMessage,
     )
 
     assertEquals(
       showTagInfoScanResult.itemTagData,
-      ItemTagData(testInputItemTag)
+      ItemTagData(testInputItemTag),
     )
 
     assertEquals(
       showTagInfoScanResult.showTagInfoScanResultType,
-      ShowTagInfoScanResultType.Succeeded
+      ShowTagInfoScanResultType.Succeeded,
     )
   }
 
@@ -101,22 +101,22 @@ class ScanViewModelTest {
     val completeScanResult = uiStateValue.completeScanResult
     assertEquals(
       completeScanResult.itemTagInfoFromNdefMessage,
-      testInputItemTagInfoFromNdefMessage
+      testInputItemTagInfoFromNdefMessage,
     )
 
     assertEquals(
       completeScanResult.itemTagData,
-      ItemTagData(testInputItemTag)
+      ItemTagData(testInputItemTag),
     )
 
     assertEquals(
       completeScanResult.completeScanResultType,
-      CompleteScanResultType.Completed
+      CompleteScanResultType.Completed,
     )
 
     assertEquals(
       uiStateValue.isAlreadyCompleted,
-      false
+      false,
     )
   }
 
@@ -132,8 +132,8 @@ class ScanViewModelTest {
         type = ITEM_TAG_TYPE,
         attributes = testInputItemTag.datum!!.attributes!!.copy(
           alreadyCompleted = true,
-        )
-      )
+        ),
+      ),
     )
 
     itemTagRepository.sendItemTag(newTestInputItemTag)
@@ -145,22 +145,22 @@ class ScanViewModelTest {
     val completeScanResult = uiStateValue.completeScanResult
     assertEquals(
       completeScanResult.itemTagInfoFromNdefMessage,
-      testInputItemTagInfoFromNdefMessage
+      testInputItemTagInfoFromNdefMessage,
     )
 
     assertEquals(
       completeScanResult.itemTagData,
-      ItemTagData(newTestInputItemTag)
+      ItemTagData(newTestInputItemTag),
     )
 
     assertEquals(
       completeScanResult.completeScanResultType,
-      CompleteScanResultType.Completed
+      CompleteScanResultType.Completed,
     )
 
     assertEquals(
       uiStateValue.isAlreadyCompleted,
-      true
+      true,
     )
   }
 
@@ -178,22 +178,22 @@ class ScanViewModelTest {
     val completeScanResult = uiStateValue.completeScanResult
     assertEquals(
       completeScanResult.itemTagInfoFromNdefMessage,
-      testInputItemTagInfoFromNdefMessage
+      testInputItemTagInfoFromNdefMessage,
     )
 
     assertEquals(
       completeScanResult.itemTagData,
-      ItemTagData(testInputItemTag)
+      ItemTagData(testInputItemTag),
     )
 
     assertEquals(
       completeScanResult.completeScanResultType,
-      CompleteScanResultType.Reset
+      CompleteScanResultType.Reset,
     )
 
     assertEquals(
       uiStateValue.isAlreadyCompleted,
-      false
+      false,
     )
   }
 
@@ -287,8 +287,8 @@ private val testInputItemTagData =
       shopName = SHOP_NAME,
       customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED
-    )
+      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
+    ),
   )
 
 private val testInputItemTag = ItemTag(

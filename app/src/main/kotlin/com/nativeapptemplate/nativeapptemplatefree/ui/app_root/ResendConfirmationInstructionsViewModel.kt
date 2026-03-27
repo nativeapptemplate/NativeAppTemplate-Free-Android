@@ -26,7 +26,7 @@ data class ResendConfirmationInstructionsUiState(
 
 @HiltViewModel
 class ResendConfirmationInstructionsViewModel @Inject constructor(
-  private val signUpRepository: SignUpRepository
+  private val signUpRepository: SignUpRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ResendConfirmationInstructionsUiState())
   val uiState: StateFlow<ResendConfirmationInstructionsUiState> = _uiState.asStateFlow()
@@ -42,7 +42,7 @@ class ResendConfirmationInstructionsViewModel @Inject constructor(
     viewModelScope.launch {
       val sendConfirmation = SendConfirmation(
         email = uiState.value.email.trim(),
-        redirectUrl = SendConfirmation.redirectUrlString(NatConstants.baseUrlString())
+        redirectUrl = SendConfirmation.redirectUrlString(NatConstants.baseUrlString()),
       )
 
       val booleanFlow = signUpRepository.sendConfirmationInstruction(sendConfirmation)
@@ -67,11 +67,11 @@ class ResendConfirmationInstructionsViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     return hasInvalidDataEmail()
   }
 
-  fun hasInvalidDataEmail() : Boolean {
+  fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
     return !uiState.value.email.validateEmail()

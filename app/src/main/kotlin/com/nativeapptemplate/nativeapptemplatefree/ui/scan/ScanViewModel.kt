@@ -169,7 +169,7 @@ class ScanViewModel @Inject constructor(
 
           _uiState.update {
             it.copy(
-              isLoading = false
+              isLoading = false,
             )
           }
         }
@@ -277,4 +277,3 @@ class ScanViewModel @Inject constructor(
     _uiState.update { it.copy(message = "") }
   }
 }
-

@@ -94,7 +94,7 @@ internal fun ItemTagDetailView(
 
   if (uiState.isDeleted) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.message_item_tag_deleted),
+      dialogTitle = stringResource(R.string.message_item_tag_deleted),
       onDismissRequest = { onBackClick() },
     )
   }
@@ -173,7 +173,7 @@ private fun ItemTagDetailContentView(
 
   if (isShowingDeleteConfirmationDialog) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.are_you_sure),
+      dialogTitle = stringResource(R.string.are_you_sure),
       confirmButtonTitle = stringResource(R.string.title_delete_item_tag),
       onDismissRequest = { isShowingDeleteConfirmationDialog = false },
       onConfirmation = { viewModel.deleteItemTag() },
@@ -196,7 +196,7 @@ private fun ItemTagDetailContentView(
       modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .padding(padding)
+        .padding(padding),
     ) {
       Column(
         modifier = Modifier
@@ -217,7 +217,7 @@ private fun ItemTagDetailContentView(
           textAlign = TextAlign.Center,
           modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp)
+            .padding(top = 12.dp),
         )
 
         Text(
@@ -227,7 +227,7 @@ private fun ItemTagDetailContentView(
           textAlign = TextAlign.Center,
           modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp)
+            .padding(top = 12.dp),
         )
 
         Card(
@@ -235,12 +235,12 @@ private fun ItemTagDetailContentView(
           colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
           modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 24.dp)
+            .padding(top = 24.dp),
         ) {
           Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
-              .padding(24.dp)
+              .padding(24.dp),
           ) {
             Row(
               horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -294,12 +294,12 @@ private fun ItemTagDetailContentView(
           shape = RoundedCornerShape(16.dp),
           colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.error),
           modifier = Modifier
-            .padding(top = 24.dp)
+            .padding(top = 24.dp),
         ) {
           Column(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             modifier = Modifier
-              .padding(24.dp)
+              .padding(24.dp),
           ) {
             Row(
               horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -326,10 +326,10 @@ private fun ItemTagDetailContentView(
                   viewModel.updateMessage(deviceDoesNotSupportTagScanningMessage)
                 }
               },
-              color =  MaterialTheme.colorScheme.onError,
-              titleColor =  MaterialTheme.colorScheme.onError,
-              modifier =  Modifier
-                .padding(horizontal = 24.dp)
+              color = MaterialTheme.colorScheme.onError,
+              titleColor = MaterialTheme.colorScheme.onError,
+              modifier = Modifier
+                .padding(horizontal = 24.dp),
             )
           }
         }
@@ -338,12 +338,12 @@ private fun ItemTagDetailContentView(
           shape = RoundedCornerShape(16.dp),
           colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
           modifier = Modifier
-            .padding(top = 48.dp)
+            .padding(top = 48.dp),
         ) {
           Column(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             modifier = Modifier
-              .padding(24.dp)
+              .padding(24.dp),
           ) {
             Row(
               horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -370,10 +370,10 @@ private fun ItemTagDetailContentView(
                   viewModel.updateMessage(deviceDoesNotSupportTagScanningMessage)
                 }
               },
-              color =  MaterialTheme.colorScheme.onPrimary,
-              titleColor =  MaterialTheme.colorScheme.onPrimary,
-              modifier =  Modifier
-                .padding(horizontal = 24.dp)
+              color = MaterialTheme.colorScheme.onPrimary,
+              titleColor = MaterialTheme.colorScheme.onPrimary,
+              modifier = Modifier
+                .padding(horizontal = 24.dp),
             )
 
             val captureController = rememberCaptureController()
@@ -395,7 +395,7 @@ private fun ItemTagDetailContentView(
                       context.shareImage(
                         uiState.itemTag.getQueueNumber(),
                         bitmap,
-                        uiState.itemTag.getQueueNumber()
+                        uiState.itemTag.getQueueNumber(),
                       )
                       // Do something with `bitmap`.
                     } catch (error: Throwable) {
@@ -403,7 +403,7 @@ private fun ItemTagDetailContentView(
                       viewModel.updateMessage(error.localizedMessage ?: "")
                     }
                   }
-                }
+                },
               ) {
                 QrCode(viewModel, uiState, Modifier.capturable(captureController))
               }
@@ -433,9 +433,9 @@ fun QrCode(
       modifier = Modifier
         .fillMaxSize()
         .clip(
-          RectangleShape
+          RectangleShape,
         )
-        .background(Color.White)
+        .background(Color.White),
     ) {
       Text(
         uiState.itemTag.getQueueNumber(),
@@ -518,10 +518,10 @@ private fun ItemTagDetailErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
@@ -550,7 +550,7 @@ private fun ItemTagDetailLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

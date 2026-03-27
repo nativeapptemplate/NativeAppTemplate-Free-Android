@@ -50,7 +50,7 @@ class NatPreferencesDataSource @Inject constructor(
           DarkThemeConfigProto.DARK_THEME_CONFIG_UNSPECIFIED,
           DarkThemeConfigProto.UNRECOGNIZED,
           DarkThemeConfigProto.DARK_THEME_CONFIG_FOLLOW_SYSTEM,
-            ->
+          ->
             DarkThemeConfig.FOLLOW_SYSTEM
           DarkThemeConfigProto.DARK_THEME_CONFIG_LIGHT ->
             DarkThemeConfig.LIGHT
@@ -455,11 +455,11 @@ class NatPreferencesDataSource @Inject constructor(
 
   private fun showTagInfoScanResultFrom(scanResultProto: ScanResultProto): ShowTagInfoScanResult {
     val itemTagInfoFromNdefMessage = itemTagInfoFromNdefMessageFrom(
-      scanResultProto.itemTagInfoFromNdefMessage
+      scanResultProto.itemTagInfoFromNdefMessage,
     )
 
     val itemTagData = itemTagDataFrom(
-      scanResultProto.itemTagData
+      scanResultProto.itemTagData,
     )
 
     return ShowTagInfoScanResult(
@@ -472,11 +472,11 @@ class NatPreferencesDataSource @Inject constructor(
 
   private fun completeScanResultFrom(scanResultProto: ScanResultProto): CompleteScanResult {
     val itemTagInfoFromNdefMessage = itemTagInfoFromNdefMessageFrom(
-      scanResultProto.itemTagInfoFromNdefMessage
+      scanResultProto.itemTagInfoFromNdefMessage,
     )
 
     val itemTagData = itemTagDataFrom(
-      scanResultProto.itemTagData
+      scanResultProto.itemTagData,
     )
 
     return CompleteScanResult(
@@ -488,7 +488,7 @@ class NatPreferencesDataSource @Inject constructor(
   }
 
   private fun itemTagInfoFromNdefMessageFrom(
-    itemTagInfoFromNdefMessageProto: ItemTagInfoFromNdefMessageProto
+    itemTagInfoFromNdefMessageProto: ItemTagInfoFromNdefMessageProto,
   ): ItemTagInfoFromNdefMessage {
     return ItemTagInfoFromNdefMessage(
       id = itemTagInfoFromNdefMessageProto.id,

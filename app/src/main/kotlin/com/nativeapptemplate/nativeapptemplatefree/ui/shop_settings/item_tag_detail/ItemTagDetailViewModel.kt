@@ -124,4 +124,3 @@ class ItemTagDetailViewModel @Inject constructor(
     _uiState.update { it.copy(message = "") }
   }
 }
-

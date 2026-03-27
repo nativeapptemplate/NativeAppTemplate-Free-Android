@@ -14,7 +14,9 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.scan.ScanView
 import kotlinx.serialization.Serializable
 
 @Serializable data object ScanBaseRoute
+
 @Serializable data object ScanRoute
+
 @Serializable data class DoScanRoute(val isTest: Boolean)
 
 fun NavGraphBuilder.scanBaseView(
@@ -53,7 +55,7 @@ fun NavGraphBuilder.doScanView(
       usePlatformDefaultWidth = false,
       dismissOnBackPress = false,
       dismissOnClickOutside = false,
-    )
+    ),
   ) {
     DoScanView(
       onBackClick = onBackClick,

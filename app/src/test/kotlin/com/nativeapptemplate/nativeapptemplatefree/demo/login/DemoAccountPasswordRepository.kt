@@ -6,8 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
-class DemoAccountPasswordRepository @Inject constructor(
-) : AccountPasswordRepository {
+class DemoAccountPasswordRepository @Inject constructor() : AccountPasswordRepository {
 
   override fun updateAccountPassword(updatePasswordBody: UpdatePasswordBody): Flow<Boolean> = MutableStateFlow(true)
 }

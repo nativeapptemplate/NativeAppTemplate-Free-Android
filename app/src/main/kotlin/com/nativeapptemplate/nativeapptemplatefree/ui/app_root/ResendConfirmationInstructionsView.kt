@@ -59,7 +59,7 @@ fun ResendConfirmationInstructionsView(
 
   if (uiState.isSent) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.sent_confirmation_instruction),
+      dialogTitle = stringResource(R.string.sent_confirmation_instruction),
       onDismissRequest = { onBackClick() },
     )
   }
@@ -67,7 +67,7 @@ fun ResendConfirmationInstructionsView(
   ResendConfirmationInstructionsView(
     viewModel,
     uiState,
-    onBackClick
+    onBackClick,
   )
 }
 
@@ -110,14 +110,14 @@ fun ResendConfirmationInstructionsContentView(
         onClick = { viewModel.sendMeResetPasswordInstructions() },
         modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape
+        shape = CircleShape,
 
-      ){
+      ) {
         Icon(Icons.Filled.Done, contentDescription = null)
         Text(
           stringResource(R.string.button_send_me_confirmation_instructions),
           modifier = Modifier
-            .padding(start = 12.dp)
+            .padding(start = 12.dp),
         )
       }
     },
@@ -128,12 +128,12 @@ fun ResendConfirmationInstructionsContentView(
         .padding(padding)
         .padding(horizontal = 16.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
-      verticalArrangement = Arrangement.spacedBy(24.dp)
+      verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.email)
+            text = stringResource(R.string.email),
           )
         },
         placeholder = { Text(NatConstants.PLACEHOLDER_EMAIL) },
@@ -144,13 +144,13 @@ fun ResendConfirmationInstructionsContentView(
             Text(
               text = stringResource(id = R.string.email_is_required),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           } else if (viewModel.hasInvalidDataEmail()) {
             Text(
               text = stringResource(id = R.string.email_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           }
         },
@@ -201,7 +201,7 @@ private fun ResendConfirmationInstructionsLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

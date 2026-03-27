@@ -56,7 +56,7 @@ enum class ScanPage(
   @StringRes val titleResId: Int,
 ) {
   COMPLETE_SCAN(R.string.complete_scan),
-  SHOW_TAG_INFO_SCAN(R.string.show_tag_info_scan)
+  SHOW_TAG_INFO_SCAN(R.string.show_tag_info_scan),
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,7 +100,7 @@ internal fun ScanView(
       onDismissRequest = {
         viewModel.updateIsAlreadyCompleted(false)
       },
-      sheetState = sheetState
+      sheetState = sheetState,
     ) {
       Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -110,7 +110,7 @@ internal fun ScanView(
             alignment = Alignment.CenterVertically,
           ),
         modifier = Modifier
-          .padding(24.dp)
+          .padding(24.dp),
       ) {
         Text(stringResource(R.string.are_you_sure))
 
@@ -119,10 +119,10 @@ internal fun ScanView(
           onClick = {
             viewModel.resetItemTag(uiState.completeScanResult.itemTagInfoFromNdefMessage)
           },
-          color =  MaterialTheme.colorScheme.onErrorContainer,
-          titleColor =  MaterialTheme.colorScheme.onErrorContainer,
-          modifier =  Modifier
-            .padding(horizontal = 24.dp)
+          color = MaterialTheme.colorScheme.onErrorContainer,
+          titleColor = MaterialTheme.colorScheme.onErrorContainer,
+          modifier = Modifier
+            .padding(horizontal = 24.dp),
         )
       }
     }
@@ -200,7 +200,7 @@ private fun ScanContentView(
 
       // Tab Row
       TabRow(
-        selectedTabIndex = pagerState.currentPage
+        selectedTabIndex = pagerState.currentPage,
       ) {
         pages.forEachIndexed { index, page ->
           val title = stringResource(id = page.titleResId)
@@ -216,7 +216,7 @@ private fun ScanContentView(
                 lineHeight = lineHeightMedium.sp.nonScaledSp,
               )
             },
-            unselectedContentColor = MaterialTheme.colorScheme.secondary
+            unselectedContentColor = MaterialTheme.colorScheme.secondary,
           )
         }
       }
@@ -225,7 +225,7 @@ private fun ScanContentView(
       HorizontalPager(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         state = pagerState,
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
       ) { index ->
         when (pages[index]) {
           ScanPage.COMPLETE_SCAN -> {
@@ -244,7 +244,7 @@ private fun ScanContentView(
                   Column(
                     verticalArrangement = Arrangement.spacedBy(24.dp),
                     modifier = Modifier
-                      .padding(24.dp)
+                      .padding(24.dp),
                   ) {
                     Row(
                       horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -273,10 +273,10 @@ private fun ScanContentView(
                           viewModel.updateMessage(deviceDoesNotSupportTagScanningMessage)
                         }
                       },
-                      color =  MaterialTheme.colorScheme.onPrimary,
-                      titleColor =  MaterialTheme.colorScheme.onPrimary,
-                      modifier =  Modifier
-                        .padding(horizontal = 24.dp)
+                      color = MaterialTheme.colorScheme.onPrimary,
+                      titleColor = MaterialTheme.colorScheme.onPrimary,
+                      modifier = Modifier
+                        .padding(horizontal = 24.dp),
                     )
 
                     Text(
@@ -308,7 +308,7 @@ private fun ScanContentView(
                 Column(
                   verticalArrangement = Arrangement.spacedBy(24.dp),
                   modifier = Modifier
-                    .padding(24.dp)
+                    .padding(24.dp),
                 ) {
                   Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -337,10 +337,10 @@ private fun ScanContentView(
                         viewModel.updateMessage(deviceDoesNotSupportTagScanningMessage)
                       }
                     },
-                    color =  MaterialTheme.colorScheme.inverseOnSurface,
-                    titleColor =  MaterialTheme.colorScheme.inverseOnSurface,
-                    modifier =  Modifier
-                      .padding(horizontal = 24.dp)
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    titleColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    modifier = Modifier
+                      .padding(horizontal = 24.dp),
                   )
 
                   Text(
@@ -374,18 +374,17 @@ private fun ScanErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
 }
 
 @Composable
-private fun ScanLoadingView(
-) {
+private fun ScanLoadingView() {
   Scaffold(
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
@@ -394,12 +393,9 @@ private fun ScanLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }
   }
 }
-
-
-

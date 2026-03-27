@@ -23,7 +23,7 @@ data class ItemTagWriteUiState(
 class ItemTagWriteViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
 
-  ) : ViewModel() {
+) : ViewModel() {
   private val itemTagId = savedStateHandle.toRoute<ItemTagWriteRoute>().id
   val isLock = savedStateHandle.toRoute<ItemTagWriteRoute>().isLock
   val itemTagType = savedStateHandle.toRoute<ItemTagWriteRoute>().itemTagType
@@ -33,7 +33,7 @@ class ItemTagWriteViewModel @Inject constructor(
 
   val scanUri = Utility.scanUri(
     itemTagId = itemTagId,
-    itemTagType = itemTagType
+    itemTagType = itemTagType,
   )
 
   fun updateIsUpdated(newIsUpdated: Boolean) {
@@ -54,4 +54,3 @@ class ItemTagWriteViewModel @Inject constructor(
     }
   }
 }
-

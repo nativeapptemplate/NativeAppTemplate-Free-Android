@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -142,7 +142,7 @@ private fun ShopListContentView(
           Icon(Icons.Filled.Add, stringResource(id = R.string.add_shop))
         }
       }
-    }
+    },
   ) { padding ->
     val pullToRefreshState = rememberPullToRefreshState()
 
@@ -150,7 +150,7 @@ private fun ShopListContentView(
       NoResultsView(
         leftInShopSlots = leftInShopSlots,
         padding = padding,
-        onAddShopClick = onAddShopClick
+        onAddShopClick = onAddShopClick,
       )
     } else {
       Box(
@@ -162,10 +162,10 @@ private fun ShopListContentView(
             isRefreshing = uiState.isLoading,
             onRefresh = viewModel::reload,
           )
-          .padding(padding)
+          .padding(padding),
       ) {
         LazyColumn(
-          Modifier.padding(24.dp)
+          Modifier.padding(24.dp),
         ) {
           item {
             if (!uiState.didShowTapShopBelowTip) {
@@ -179,7 +179,7 @@ private fun ShopListContentView(
 
           items(
             items = uiState.shops.getDatumWithRelationships(),
-            key = { it.id!! }
+            key = { it.id!! },
           ) { shop ->
             ShopListCardView(
               data = shop,
@@ -240,25 +240,27 @@ fun TapShopBelowTip(
     onClick = {
       onDismiss()
     },
-    label = { Text(
-      text,
-      style = MaterialTheme.typography.titleLarge,
-      color = MaterialTheme.colorScheme.tertiary,
-    ) },
+    label = {
+      Text(
+        text,
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.tertiary,
+      )
+    },
     selected = false,
     avatar = {
       Icon(
         Icons.Outlined.Info,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.tertiary,
-        modifier = Modifier.size(InputChipDefaults.AvatarSize)
+        modifier = Modifier.size(InputChipDefaults.AvatarSize),
       )
     },
     trailingIcon = {
       Icon(
         Icons.Default.Close,
         contentDescription = null,
-        Modifier.size(InputChipDefaults.AvatarSize)
+        Modifier.size(InputChipDefaults.AvatarSize),
       )
     },
   )
@@ -277,10 +279,10 @@ private fun ShopListErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
@@ -297,43 +299,43 @@ private fun NoResultsView(
       .fillMaxWidth()
       .fillMaxHeight()
       .padding(padding),
-    contentAlignment = Alignment.Center
+    contentAlignment = Alignment.Center,
   ) {
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(24.dp),
-      modifier = Modifier.padding(16.dp)
+      modifier = Modifier.padding(16.dp),
     ) {
       if (leftInShopSlots > 0) {
         Icon(
           Icons.Outlined.Storefront,
           contentDescription = null,
-          modifier = Modifier.size(128.dp)
+          modifier = Modifier.size(128.dp),
         )
 
         Text(
           stringResource(R.string.add_shop_description),
           modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
         )
 
         MainButtonView(
           title = stringResource(R.string.add_shop),
           onClick = { onAddShopClick() },
-          modifier =  Modifier
-            .padding(horizontal = 12.dp, vertical = 24.dp)
+          modifier = Modifier
+            .padding(horizontal = 12.dp, vertical = 24.dp),
         )
       } else {
         Icon(
           Icons.Outlined.NoLuggage,
           contentDescription = null,
-          modifier = Modifier.size(128.dp)
+          modifier = Modifier.size(128.dp),
         )
 
         Column(
           verticalArrangement = Arrangement.spacedBy(8.dp),
           modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
         ) {
           Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -355,8 +357,7 @@ private fun NoResultsView(
 }
 
 @Composable
-private fun ShopListLoadingView(
-) {
+private fun ShopListLoadingView() {
   Scaffold(
     topBar = { TopAppBar() },
     modifier = Modifier.fillMaxSize(),
@@ -366,7 +367,7 @@ private fun ShopListLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

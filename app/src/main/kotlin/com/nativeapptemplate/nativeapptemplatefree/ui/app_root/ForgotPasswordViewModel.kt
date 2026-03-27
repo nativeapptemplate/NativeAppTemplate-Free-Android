@@ -26,7 +26,7 @@ data class ForgotPasswordUiState(
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
-  private val signUpRepository: SignUpRepository
+  private val signUpRepository: SignUpRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ForgotPasswordUiState())
   val uiState: StateFlow<ForgotPasswordUiState> = _uiState.asStateFlow()
@@ -42,7 +42,7 @@ class ForgotPasswordViewModel @Inject constructor(
     viewModelScope.launch {
       val sendResetPassword = SendResetPassword(
         email = uiState.value.email.trim(),
-        redirectUrl = SendResetPassword.redirectUrlString(NatConstants.baseUrlString())
+        redirectUrl = SendResetPassword.redirectUrlString(NatConstants.baseUrlString()),
       )
 
       val booleanFlow = signUpRepository.sendResetPasswordInstruction(sendResetPassword)
@@ -67,11 +67,11 @@ class ForgotPasswordViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     return hasInvalidDataEmail()
   }
 
-  fun hasInvalidDataEmail() : Boolean {
+  fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
     return !uiState.value.email.validateEmail()

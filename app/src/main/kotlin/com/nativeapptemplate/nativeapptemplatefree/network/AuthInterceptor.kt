@@ -14,15 +14,14 @@ import kotlin.coroutines.cancellation.CancellationException
 class AuthInterceptor @Inject constructor(
   private val natPreferencesDataSource: NatPreferencesDataSource,
 ) : Interceptor {
-  private suspend fun requestHelper(
-  ): RequestHelper {
+  private suspend fun requestHelper(): RequestHelper {
     val userData = natPreferencesDataSource.userData.first()
 
     return RequestHelper(
       apiAuthToken = userData.token,
       client = userData.client,
       expiry = userData.expiry,
-      uid = userData.uid
+      uid = userData.uid,
     )
   }
 

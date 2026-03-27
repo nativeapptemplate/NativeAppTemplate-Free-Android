@@ -26,19 +26,19 @@ fun ErrorView(
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(24.dp),
-    modifier = Modifier.padding(16.dp)
+    modifier = Modifier.padding(16.dp),
   ) {
     Icon(
       Icons.Outlined.CrisisAlert,
       contentDescription = null,
-      modifier = Modifier.size(128.dp)
+      modifier = Modifier.size(128.dp),
     )
 
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(8.dp),
       modifier = Modifier
-        .padding(horizontal = 16.dp)
+        .padding(horizontal = 16.dp),
     ) {
       Text(
         titleText,
@@ -51,8 +51,8 @@ fun ErrorView(
     MainButtonView(
       title = buttonTitle,
       onClick = { onClick() },
-      modifier =  Modifier
-        .padding(horizontal = 12.dp, vertical = 24.dp)
+      modifier = Modifier
+        .padding(horizontal = 12.dp, vertical = 24.dp),
     )
   }
 }

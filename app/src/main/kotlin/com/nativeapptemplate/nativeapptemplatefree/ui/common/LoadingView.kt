@@ -24,6 +24,7 @@ fun LoadingView() {
     )
   }
 }
+
 @Preview
 @Composable
 private fun LoadingStatePreview() {

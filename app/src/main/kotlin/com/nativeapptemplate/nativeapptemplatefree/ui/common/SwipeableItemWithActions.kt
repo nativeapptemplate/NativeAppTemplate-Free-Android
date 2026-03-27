@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.IntOffset
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-//https://github.com/philipplackner/ComposeSwipeToReveal
+// https://github.com/philipplackner/ComposeSwipeToReveal
 @Composable
 fun SwipeableItemWithActions(
   isRevealed: Boolean,
@@ -34,7 +34,7 @@ fun SwipeableItemWithActions(
   modifier: Modifier = Modifier,
   onExpanded: () -> Unit = {},
   onCollapsed: () -> Unit = {},
-  content: @Composable () -> Unit
+  content: @Composable () -> Unit,
 ) {
   var contextMenuWidth by remember {
     mutableFloatStateOf(0f)
@@ -45,7 +45,7 @@ fun SwipeableItemWithActions(
   val scope = rememberCoroutineScope()
 
   LaunchedEffect(key1 = isRevealed, contextMenuWidth) {
-    if(isRevealed) {
+    if (isRevealed) {
       offset.animateTo(contextMenuWidth)
     } else {
       offset.animateTo(0f)
@@ -55,14 +55,14 @@ fun SwipeableItemWithActions(
   Box(
     modifier = modifier
       .fillMaxWidth()
-      .height(IntrinsicSize.Min)
+      .height(IntrinsicSize.Min),
   ) {
     Row(
       modifier = Modifier
         .onSizeChanged {
           contextMenuWidth = it.width.toFloat()
         },
-      verticalAlignment = Alignment.CenterVertically
+      verticalAlignment = Alignment.CenterVertically,
     ) {
       actions()
     }
@@ -95,9 +95,9 @@ fun SwipeableItemWithActions(
                   }
                 }
               }
-            }
+            },
           )
-        }
+        },
     ) {
       content()
     }

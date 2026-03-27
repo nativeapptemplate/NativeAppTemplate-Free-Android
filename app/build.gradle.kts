@@ -26,9 +26,9 @@ android {
     debug {
       extra["alwaysUpdateBuildId"] = false
       isDebuggable = true
-      buildConfigField("String", "DOMAIN","\"api.nativeapptemplate.com\"")
-      buildConfigField("String", "PORT","\"\"")
-      buildConfigField("String", "SCHEME","\"https\"")
+      buildConfigField("String", "DOMAIN", "\"api.nativeapptemplate.com\"")
+      buildConfigField("String", "PORT", "\"\"")
+      buildConfigField("String", "SCHEME", "\"https\"")
 //      buildConfigField("String", "DOMAIN","\"192.168.1.21\"")
 //      buildConfigField("String", "PORT","\"3000\"")
 //      buildConfigField("String", "SCHEME","\"http\"")
@@ -37,9 +37,9 @@ android {
     release {
       isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      buildConfigField("String", "DOMAIN","\"api.nativeapptemplate.com\"")
-      buildConfigField("String", "PORT","\"\"")
-      buildConfigField("String", "SCHEME","\"https\"")
+      buildConfigField("String", "DOMAIN", "\"api.nativeapptemplate.com\"")
+      buildConfigField("String", "PORT", "\"\"")
+      buildConfigField("String", "SCHEME", "\"https\"")
     }
   }
 
@@ -124,5 +124,3 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.robolectric)
 }
-
-

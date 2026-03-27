@@ -13,8 +13,7 @@ interface SignUpRepository {
     signUpForUpdate: SignUpForUpdate,
   ): Flow<LoggedInShopkeeper>
 
-  fun deleteAccount(
-  ): Flow<Boolean>
+  fun deleteAccount(): Flow<Boolean>
 
   fun sendResetPasswordInstruction(
     sendResetPassword: SendResetPassword,

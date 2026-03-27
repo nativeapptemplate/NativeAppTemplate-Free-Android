@@ -1,9 +1,9 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.parcelize.Parcelize
 
 @Serializable
 @Parcelize
@@ -95,5 +95,5 @@ data class Attributes(
 
   val uid: String? = null,
 
-  val expiry: String? = null
+  val expiry: String? = null,
 ) : Parcelable

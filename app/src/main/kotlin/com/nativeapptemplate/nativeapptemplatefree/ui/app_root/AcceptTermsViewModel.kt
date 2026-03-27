@@ -23,7 +23,7 @@ data class AcceptTermsUiState(
 
 @HiltViewModel
 class AcceptTermsViewModel @Inject constructor(
-  private val loginRepository: LoginRepository
+  private val loginRepository: LoginRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(AcceptTermsUiState())
   val uiState: StateFlow<AcceptTermsUiState> = _uiState.asStateFlow()

@@ -1,13 +1,14 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 enum class CompleteScanResultType(val param: String, val title: String) {
-  Idled("idled","Idling"),
+  Idled("idled", "Idling"),
 
-  Completed("completed","Completed!"),
+  Completed("completed", "Completed!"),
 
-  Reset("reset","Reset!"),
+  Reset("reset", "Reset!"),
 
-  Failed("failed","Failed");
+  Failed("failed", "Failed"),
+  ;
 
   companion object {
     val titles: List<String> = entries.map { it.title }

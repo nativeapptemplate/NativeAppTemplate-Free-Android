@@ -96,7 +96,7 @@ private val testInputShopsData =
       name = SHOP_NAME,
       description = SHOP_DESCRIPTION,
       timeZone = SHOP_TIME_ZONE,
-    )
+    ),
   )
 
 private val testInputShop = Shop(

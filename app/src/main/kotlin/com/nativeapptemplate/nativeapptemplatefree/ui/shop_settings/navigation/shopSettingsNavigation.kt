@@ -17,12 +17,19 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_lis
 import kotlinx.serialization.Serializable
 
 @Serializable data class ShopSettingsRoute(val id: String)
+
 @Serializable data class ShopBasicSettingsRoute(val id: String)
+
 @Serializable data class NumberTagsWebpageListRoute(val id: String)
+
 @Serializable data class ItemTagListRoute(val shopId: String)
+
 @Serializable data class ItemTagCreateRoute(val shopId: String)
+
 @Serializable data class ItemTagDetailRoute(val id: String)
+
 @Serializable data class ItemTagEditRoute(val id: String)
+
 @Serializable data class ItemTagWriteRoute(val id: String, val isLock: Boolean, val itemTagType: String)
 
 fun NavController.navigateToShopSettings(shopId: String, navOptions: NavOptionsBuilder.() -> Unit = {}) {
@@ -168,7 +175,7 @@ fun NavController.navigateToItemTagWrite(
   itemTagId: String,
   isLock: Boolean,
   itemTagType: String,
-  navOptions: NavOptionsBuilder.() -> Unit = {}
+  navOptions: NavOptionsBuilder.() -> Unit = {},
 ) {
   navigate(route = ItemTagWriteRoute(itemTagId, isLock, itemTagType)) {
     navOptions()

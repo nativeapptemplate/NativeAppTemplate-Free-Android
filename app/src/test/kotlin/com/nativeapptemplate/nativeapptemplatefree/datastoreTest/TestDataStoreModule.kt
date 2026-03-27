@@ -28,13 +28,13 @@ import javax.inject.Singleton
 
 @Module
 @TestInstallIn(
-    components = [SingletonComponent::class],
-    replaces = [DataStoreModule::class],
+  components = [SingletonComponent::class],
+  replaces = [DataStoreModule::class],
 )
 internal object TestDataStoreModule {
-    @Provides
-    @Singleton
-    fun providesUserPreferencesDataStore(
-      serializer: UserPreferencesSerializer,
-    ): DataStore<UserPreferences> = InMemoryDataStore(serializer.defaultValue)
+  @Provides
+  @Singleton
+  fun providesUserPreferencesDataStore(
+    serializer: UserPreferencesSerializer,
+  ): DataStore<UserPreferences> = InMemoryDataStore(serializer.defaultValue)
 }

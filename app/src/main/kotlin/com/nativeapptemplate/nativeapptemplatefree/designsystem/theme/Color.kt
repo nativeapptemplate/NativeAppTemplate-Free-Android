@@ -45,4 +45,3 @@ internal val Yellow20 = Color(0xFFB44D12)
 internal val Yellow30 = Color(0xFFCB6E17)
 internal val Yellow40 = Color(0xFFDE911D)
 internal val Yellow90 = Color(0xFFFFF3C4)
-

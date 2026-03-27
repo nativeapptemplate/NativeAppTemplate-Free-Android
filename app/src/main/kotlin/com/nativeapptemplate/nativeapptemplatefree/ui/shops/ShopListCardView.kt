@@ -57,7 +57,7 @@ fun ShopListCardView(
           data.getDescription(),
           color = MaterialTheme.colorScheme.onSurfaceVariant,
           modifier = Modifier
-            .padding(top = 12.dp)
+            .padding(top = 12.dp),
         )
       }
     }
@@ -83,14 +83,14 @@ private fun CountRow(
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Right,
         modifier = Modifier
-          .width(32.dp)
+          .width(32.dp),
       )
 
       Text(
         text = countLabel,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier
-          .padding(start = 8.dp)
+          .padding(start = 8.dp),
       )
     }
   }

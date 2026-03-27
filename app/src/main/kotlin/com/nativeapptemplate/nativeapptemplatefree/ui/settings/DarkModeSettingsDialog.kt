@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
 import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 
 @Composable

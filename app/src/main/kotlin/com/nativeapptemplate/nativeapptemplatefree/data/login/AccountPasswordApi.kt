@@ -10,12 +10,12 @@ interface AccountPasswordApi {
   @PATCH("{account_id}/api/v1/shopkeeper/account/password")
   suspend fun updateAccountPassword(
     @Path("account_id") accountId: String,
-    @Body data: UpdatePasswordBody
+    @Body data: UpdatePasswordBody,
   ): ApiResponse<Status>
 
   companion object {
     fun create(retroFit: Retrofit): AccountPasswordApi = retroFit.create(
-      AccountPasswordApi::class.java
+      AccountPasswordApi::class.java,
     )
   }
 }

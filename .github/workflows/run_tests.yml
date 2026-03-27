@@ -15,7 +15,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Unit Tests
+      - name: Check lint (spotless)
         run: |
           chmod +x gradlew
-          ./gradlew test --stacktrace
+          ./gradlew spotlessCheck
+
+      - name: Android Lint
+        run: ./gradlew :app:lintDebug
+
+      - name: Unit Tests
+        run: ./gradlew test --stacktrace

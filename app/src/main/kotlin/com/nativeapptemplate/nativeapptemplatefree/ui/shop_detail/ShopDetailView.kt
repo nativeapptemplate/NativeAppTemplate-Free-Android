@@ -153,10 +153,10 @@ private fun ShopDetailContentView(
           isRefreshing = uiState.isLoading,
           onRefresh = viewModel::reload,
         )
-        .padding(padding)
+        .padding(padding),
     ) {
       LazyColumn(
-        Modifier.padding(24.dp)
+        Modifier.padding(24.dp),
       ) {
         item {
           if (!uiState.didShowReadInstructionsTip) {
@@ -171,7 +171,7 @@ private fun ShopDetailContentView(
         item {
           Surface(Modifier.fillParentMaxWidth()) {
             Header(
-              uiState = uiState
+              uiState = uiState,
             )
           }
         }
@@ -198,7 +198,7 @@ private fun ShopDetailContentView(
                   text = "Complete",
                   modifier = Modifier
                     .fillMaxHeight()
-                    .width(64.dp)
+                    .width(64.dp),
                 )
               } else {
                 ActionText(
@@ -207,7 +207,7 @@ private fun ShopDetailContentView(
                   },
                   backgroundColor = Color.Red,
                   text = "Reset",
-                  modifier = Modifier.fillMaxHeight()
+                  modifier = Modifier.fillMaxHeight(),
                 )
               }
             },
@@ -252,8 +252,8 @@ private fun Header(
       withLink(
         LinkAnnotation.Url(
           uiState.shop.displayShopServerUrlString(NatConstants.baseUrlString()),
-          TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
-        )
+          TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
+        ),
       ) {
         append(stringResource(R.string.server_number_tags_webpage))
       }
@@ -279,8 +279,8 @@ private fun Header(
       withLink(
         LinkAnnotation.Url(
           NatConstants.HOW_TO_USE_URL,
-          TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
-        )
+          TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
+        ),
       ) {
         append(stringResource(R.string.learn_more))
       }
@@ -312,25 +312,27 @@ fun ReadInstructionsTip(
     onClick = {
       onDismiss()
     },
-    label = { Text(
-      text,
-      style = MaterialTheme.typography.titleLarge,
-      color = MaterialTheme.colorScheme.tertiary,
-    ) },
+    label = {
+      Text(
+        text,
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.tertiary,
+      )
+    },
     selected = false,
     avatar = {
       Icon(
         Icons.Outlined.Info,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.tertiary,
-        modifier = Modifier.size(InputChipDefaults.AvatarSize)
+        modifier = Modifier.size(InputChipDefaults.AvatarSize),
       )
     },
     trailingIcon = {
       Icon(
         Icons.Default.Close,
         contentDescription = null,
-        Modifier.size(InputChipDefaults.AvatarSize)
+        Modifier.size(InputChipDefaults.AvatarSize),
       )
     },
   )
@@ -397,7 +399,7 @@ private fun ShopDetailErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(onClick = viewModel::reload)
     }
@@ -425,7 +427,7 @@ private fun ShopDetailLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

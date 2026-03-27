@@ -17,19 +17,27 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.SignUpView
 import kotlinx.serialization.Serializable
 
 @Serializable data object OnboardingRoute
+
 @Serializable data object SignUpOrSignInRoute
+
 @Serializable data object SignUpRoute
+
 @Serializable data object SignInEmailAndPasswordRoute
+
 @Serializable data object ForgotPasswordRoute
+
 @Serializable data object ResendConfirmationInstructionsRoute
+
 @Serializable data object NeedAppUpdatesRoute
+
 @Serializable data object AcceptPrivacyRoute
+
 @Serializable data object AcceptTermsRoute
 
 fun NavController.navigateToOnboarding(navOptions: NavOptions? = null) = navigate(route = OnboardingRoute, navOptions)
 
 fun NavGraphBuilder.onboardingView(
-  onStartClick: () -> Unit
+  onStartClick: () -> Unit,
 ) {
   composable<OnboardingRoute> {
     OnboardingView(onStartClick)
@@ -114,11 +122,9 @@ fun NavGraphBuilder.resendConfirmationInstructionsView(
 
 fun NavController.navigateToNeedAppUpdates() = navigate(NeedAppUpdatesRoute)
 
-fun NavGraphBuilder.needAppUpdatesView(
-) {
+fun NavGraphBuilder.needAppUpdatesView() {
   composable<NeedAppUpdatesRoute> {
-    NeedAppUpdatesView(
-    )
+    NeedAppUpdatesView()
   }
 }
 

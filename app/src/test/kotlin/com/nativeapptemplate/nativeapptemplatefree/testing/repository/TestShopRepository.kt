@@ -25,9 +25,9 @@ class TestShopRepository : ShopRepository {
 
   override fun updateShop(id: String, shopUpdateBody: ShopUpdateBody): Flow<Shop> = shopFlow
 
-  override fun deleteShop(id: String): Flow<Boolean> =  MutableStateFlow(true)
+  override fun deleteShop(id: String): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun resetShop(id: String): Flow<Boolean> =  MutableStateFlow(true)
+  override fun resetShop(id: String): Flow<Boolean> = MutableStateFlow(true)
 
   /**
    * A test-only API.

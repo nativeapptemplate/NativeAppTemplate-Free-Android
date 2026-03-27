@@ -72,7 +72,8 @@ class ItemTagListViewModel @Inject constructor(
       val itemTagsFlow: Flow<ItemTags> = itemTagRepository.getItemTags(shopId)
 
       combine(
-        shopFlow, itemTagsFlow
+        shopFlow,
+        itemTagsFlow,
       ) { shop, itemTags ->
         _uiState.update {
           it.copy(
@@ -130,4 +131,3 @@ class ItemTagListViewModel @Inject constructor(
     _uiState.update { it.copy(message = "") }
   }
 }
-

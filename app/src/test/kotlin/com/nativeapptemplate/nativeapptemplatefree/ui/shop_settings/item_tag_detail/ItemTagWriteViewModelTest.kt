@@ -39,7 +39,7 @@ class ItemTagWriteViewModelTest {
         route = ItemTagWriteRoute(
           id = testInputItemTagId,
           isLock = testInputIsLock,
-          itemTagType = testInputItemTagType
+          itemTagType = testInputItemTagType,
         ),
       ),
     )
@@ -50,7 +50,7 @@ class ItemTagWriteViewModelTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
     assertEquals(
       viewModel.scanUri,
-      Utility.scanUri(itemTagId = testInputItemTagId, itemTagType = testInputItemTagType)
+      Utility.scanUri(itemTagId = testInputItemTagId, itemTagType = testInputItemTagType),
     )
   }
 

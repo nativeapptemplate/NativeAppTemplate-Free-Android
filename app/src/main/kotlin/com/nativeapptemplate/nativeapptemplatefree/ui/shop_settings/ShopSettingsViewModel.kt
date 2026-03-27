@@ -33,7 +33,7 @@ class ShopSettingsViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
   private val shopRepository: ShopRepository,
-  ) : ViewModel() {
+) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ShopSettingsRoute>().id
 
   private val _uiState = MutableStateFlow(ShopSettingsUiState())
