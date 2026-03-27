@@ -56,6 +56,13 @@ MVVM layered architecture following [Android Modern App Architecture](https://de
 - Demo data: `demo/` package contains `DemoAssetManager` and `Demo*Repository` classes that load JSON fixtures from `app/src/test/assets/`.
 - JVM toolchain: Java 17.
 
+## Pre-push Hook
+
+A `scripts/pre-push` script runs Spotless, lint, and tests before each push. Install it with:
+```bash
+cp scripts/pre-push .git/hooks/pre-push
+```
+
 ## Connecting to Local API
 
 In `app/build.gradle.kts`, swap the debug `buildConfigField` values:

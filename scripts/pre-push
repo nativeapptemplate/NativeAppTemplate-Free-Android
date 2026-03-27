@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Git pre-push hook – runs local CI checks before pushing
+
+set -e
+
+# Skip checks for branch deletions
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+    exit 0
+  fi
+done
+
+echo "==> Running local CI checks before push..."
+
+echo "--- Spotless check ---"
+./gradlew spotlessCheck --stacktrace || exit 1
+
+echo "--- Lint ---"
+./gradlew lintDebug --stacktrace || exit 1
+
+echo "--- Tests ---"
+./gradlew test --stacktrace || exit 1
+
+echo "==> All checks passed!"
