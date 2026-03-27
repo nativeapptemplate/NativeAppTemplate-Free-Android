@@ -25,11 +25,12 @@ fun NatAlertDialog(
   AlertDialog(
     icon = {
       icon?.let {
-        Icon(icon,
+        Icon(
+          icon,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.onSurfaceVariant,
           modifier = Modifier
-            .size(48.dp)
+            .size(48.dp),
         )
       }
     },
@@ -53,11 +54,11 @@ fun NatAlertDialog(
         TextButton(
           onClick = {
             it()
-          }
+          },
         ) {
           Text(
             confirmButtonTitle ?: "OK",
-            color = confirmButtonTitleColor ?: Color.Red
+            color = confirmButtonTitleColor ?: Color.Red,
           )
         }
       }
@@ -67,11 +68,11 @@ fun NatAlertDialog(
         TextButton(
           onClick = {
             it()
-          }
+          },
         ) {
           Text("Dismiss")
         }
       }
-    }
+    },
   )
 }

@@ -128,9 +128,9 @@ class MainActivity : ComponentActivity() {
       val rawMessages = if (SDK_INT >= 33) { // TIRAMISU
         intent.getParcelableArrayExtra(
           NfcAdapter.EXTRA_NDEF_MESSAGES,
-          NdefMessage::class.java
+          NdefMessage::class.java,
         )
-      }else{
+      } else {
         @Suppress("DEPRECATION")
         intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
       }
@@ -140,7 +140,7 @@ class MainActivity : ComponentActivity() {
 
         val itemTagInfoFromNdefMessage = Utility.extractItemTagInfoFrom(
           context = this,
-          ndefMessage = ndefMessage
+          ndefMessage = ndefMessage,
         )
 
         updateItemTagInfoFromNdefMessage(itemTagInfoFromNdefMessage)
@@ -162,9 +162,9 @@ class MainActivity : ComponentActivity() {
       val rawMessages = if (SDK_INT >= 33) { // TIRAMISU
         intent.getParcelableArrayExtra(
           NfcAdapter.EXTRA_NDEF_MESSAGES,
-          NdefMessage::class.java
+          NdefMessage::class.java,
         )
-      }else{
+      } else {
         @Suppress("DEPRECATION")
         intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
       }
@@ -174,7 +174,7 @@ class MainActivity : ComponentActivity() {
 
         val itemTagInfoFromNdefMessage = Utility.extractItemTagInfoFrom(
           context = this,
-          ndefMessage = ndefMessage
+          ndefMessage = ndefMessage,
         )
 
         updateItemTagInfoFromNdefMessage(itemTagInfoFromNdefMessage)

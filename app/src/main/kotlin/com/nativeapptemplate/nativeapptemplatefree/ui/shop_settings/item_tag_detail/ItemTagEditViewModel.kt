@@ -38,7 +38,7 @@ data class ItemTagEditUiState(
 class ItemTagEditViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
-  private val itemTagRepository: ItemTagRepository
+  private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
   private val itemTagId = savedStateHandle.toRoute<ItemTagEditRoute>().id
 
@@ -123,14 +123,14 @@ class ItemTagEditViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     if (hasInvalidDataQueueNumber()) return true
 
     val itemTag = uiState.value.itemTag
     return itemTag.getQueueNumber() == uiState.value.queueNumber
   }
 
-  fun hasInvalidDataQueueNumber() : Boolean {
+  fun hasInvalidDataQueueNumber(): Boolean {
     val queueNumber = uiState.value.queueNumber
 
     if (queueNumber.isBlank()) return true
@@ -154,7 +154,7 @@ class ItemTagEditViewModel @Inject constructor(
 
   fun snackbarMessageShown() {
     _uiState.update { it.copy(message = "") }
-    _uiState.update {it.copy(isUpdated = false) }
+    _uiState.update { it.copy(isUpdated = false) }
     _uiState.update { it.copy(success = false) }
   }
 }

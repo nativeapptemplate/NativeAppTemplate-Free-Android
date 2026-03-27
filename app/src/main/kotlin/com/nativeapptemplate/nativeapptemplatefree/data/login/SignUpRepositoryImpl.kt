@@ -26,26 +26,26 @@ class SignUpRepositoryImpl @Inject constructor(
     signUp: SignUp,
   ) = flow {
     val response = api.signUp(
-      signUp
+      signUp,
     )
 
     response.suspendOnSuccess {
-     emit(data)
+      emit(data)
     }.suspendOnFailure {
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<LoggedInShopkeeper, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -66,22 +66,21 @@ class SignUpRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<LoggedInShopkeeper, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
   }.flowOn(ioDispatcher)
 
-  override fun deleteAccount(
-  ) = flow {
+  override fun deleteAccount() = flow {
     val response = api.deleteAccount()
 
     response.suspendOnSuccess {
@@ -92,15 +91,15 @@ class SignUpRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -119,15 +118,15 @@ class SignUpRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
@@ -146,15 +145,15 @@ class SignUpRepositoryImpl @Inject constructor(
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }

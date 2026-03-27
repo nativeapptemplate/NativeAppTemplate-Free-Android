@@ -35,7 +35,7 @@ fun MainButtonView(
     colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
     enabled = enabled,
     modifier = modifier
-      .padding(horizontal = 12.dp)
+      .padding(horizontal = 12.dp),
   ) {
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,

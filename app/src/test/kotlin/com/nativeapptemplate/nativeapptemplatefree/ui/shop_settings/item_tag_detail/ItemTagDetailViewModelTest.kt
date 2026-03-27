@@ -138,8 +138,8 @@ private val testInputItemTagData =
       shopName = SHOP_NAME,
       customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED
-    )
+      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
+    ),
   )
 
 private val testInputItemTag = ItemTag(

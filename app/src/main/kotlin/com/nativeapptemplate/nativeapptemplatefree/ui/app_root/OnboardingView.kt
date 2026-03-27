@@ -62,27 +62,27 @@ internal fun OnboardingView(
       HorizontalPager(
         state = pagerState,
         modifier = Modifier
-          .fillMaxSize()
+          .fillMaxSize(),
       ) { page ->
         Box(
           modifier = Modifier
             .fillMaxSize()
             .padding(12.dp)
-            .padding(top = 12.dp)
+            .padding(top = 12.dp),
         ) {
           Image(
             painter = painterResource(OnboardingViewModel.onboardingImageId(page)),
             contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier
-              .align(Alignment.TopCenter)
+              .align(Alignment.TopCenter),
           )
           Card(
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
 
             modifier = Modifier
-              .align(Alignment.BottomCenter)
+              .align(Alignment.BottomCenter),
           ) {
             Text(
               stringResource(OnboardingViewModel.onboardingDescription(page)),
@@ -91,7 +91,7 @@ internal fun OnboardingView(
               lineHeight = lineHeightLarge.sp.nonScaledSp,
               modifier = Modifier
                 .padding(24.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
             )
           }
         }
@@ -102,7 +102,7 @@ internal fun OnboardingView(
           .fillMaxWidth()
           .align(Alignment.BottomCenter)
           .padding(bottom = 8.dp),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
       ) {
         repeat(pagerState.pageCount) { iteration ->
           val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
@@ -111,7 +111,7 @@ internal fun OnboardingView(
               .padding(2.dp)
               .clip(CircleShape)
               .background(color)
-              .size(16.dp)
+              .size(16.dp),
           )
         }
       }
@@ -138,7 +138,7 @@ private fun TopAppBar(
       ) {
         Text(
           "Start",
-          style = MaterialTheme.typography.displaySmall
+          style = MaterialTheme.typography.displaySmall,
         )
       }
     },

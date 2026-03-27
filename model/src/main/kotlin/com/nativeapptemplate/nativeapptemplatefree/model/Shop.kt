@@ -1,9 +1,9 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.parcelize.Parcelize
 
 @Serializable
 @Parcelize
@@ -11,7 +11,7 @@ data class Shop(
   @SerialName("data")
   var datum: Data? = null,
   val meta: Meta? = null,
-  val included: List<Data>? = null
+  val included: List<Data>? = null,
 ) : Parcelable {
   fun getData(): Data? {
     if (included.isNullOrEmpty()) {
@@ -28,5 +28,5 @@ data class Shop(
 
   fun getCompletedItemTagsCount(): Int = getData()?.getCompletedItemTagsCount() ?: 0
 
-  fun displayShopServerUrlString(baseUrlString: String): String = "${baseUrlString}/${getData()?.getDisplayShopServerPath()}"
+  fun displayShopServerUrlString(baseUrlString: String): String = "$baseUrlString/${getData()?.getDisplayShopServerPath()}"
 }

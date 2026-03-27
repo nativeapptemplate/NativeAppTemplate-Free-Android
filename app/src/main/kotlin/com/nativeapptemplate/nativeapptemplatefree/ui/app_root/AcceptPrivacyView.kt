@@ -56,7 +56,7 @@ fun AcceptPrivacyView(
   if (uiState.isUpdated) {
     val context = LocalContext.current
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.confirmed_privacy_version_updated),
+      dialogTitle = stringResource(R.string.confirmed_privacy_version_updated),
       onDismissRequest = { context.restartApp() },
     )
   }
@@ -102,7 +102,7 @@ fun AcceptPrivacyContentView(
         .padding(padding)
         .padding(horizontal = 24.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
-      verticalArrangement = Arrangement.spacedBy(24.dp)
+      verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
       val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
@@ -113,8 +113,8 @@ fun AcceptPrivacyContentView(
         withLink(
           LinkAnnotation.Url(
             NatConstants.PRIVACY_POLICY_URL,
-            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
-          )
+            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
+          ),
         ) {
           append(stringResource(R.string.privacy_policy))
         }
@@ -132,8 +132,8 @@ fun AcceptPrivacyContentView(
       MainButtonView(
         title = stringResource(R.string.accept),
         onClick = { viewModel.updateConfirmedPrivacyVersion() },
-        modifier =  Modifier
-          .padding(horizontal = 12.dp, vertical = 24.dp)
+        modifier = Modifier
+          .padding(horizontal = 12.dp, vertical = 24.dp),
       )
     }
   }
@@ -141,8 +141,7 @@ fun AcceptPrivacyContentView(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopAppBar(
-) {
+private fun TopAppBar() {
   CenterAlignedTopAppBar(
     colors = TopAppBarDefaults.topAppBarColors(
       containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -154,12 +153,10 @@ private fun TopAppBar(
 }
 
 @Composable
-private fun AcceptPrivacyLoadingView(
-) {
+private fun AcceptPrivacyLoadingView() {
   Scaffold(
     topBar = {
-      TopAppBar(
-      )
+      TopAppBar()
     },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
@@ -168,7 +165,7 @@ private fun AcceptPrivacyLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

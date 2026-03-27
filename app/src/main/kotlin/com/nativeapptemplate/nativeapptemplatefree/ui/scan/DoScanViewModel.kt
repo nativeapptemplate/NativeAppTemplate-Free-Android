@@ -29,7 +29,7 @@ data class DoScanUiState(
 class DoScanViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
-  ) : ViewModel() {
+) : ViewModel() {
   val isTest = savedStateHandle.toRoute<DoScanRoute>().isTest
 
   private val _uiState = MutableStateFlow(DoScanUiState())
@@ -91,8 +91,7 @@ class DoScanViewModel @Inject constructor(
     }
   }
 
-  fun updateScanViewSelectedTabIndex(
-  ) {
+  fun updateScanViewSelectedTabIndex() {
     val scanViewSelectedTabIndex = if (isTest) 1 else 0
     _uiState.update { it.copy(isLoading = true) }
 
@@ -127,4 +126,3 @@ class DoScanViewModel @Inject constructor(
     }
   }
 }
-

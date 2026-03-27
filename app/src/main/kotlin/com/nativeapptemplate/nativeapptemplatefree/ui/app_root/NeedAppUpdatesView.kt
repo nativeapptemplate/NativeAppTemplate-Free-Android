@@ -31,8 +31,7 @@ import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 
 @Composable
-fun NeedAppUpdatesView(
-) {
+fun NeedAppUpdatesView() {
   val context = LocalContext.current
 
   Scaffold(
@@ -43,26 +42,26 @@ fun NeedAppUpdatesView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp),
         modifier = Modifier
           .verticalScroll(rememberScrollState())
-          .padding(16.dp)
+          .padding(16.dp),
       ) {
         Icon(
           Icons.Outlined.Update,
           contentDescription = null,
-          modifier = Modifier.size(128.dp)
+          modifier = Modifier.size(128.dp),
         )
 
         Column(
           horizontalAlignment = Alignment.CenterHorizontally,
           verticalArrangement = Arrangement.spacedBy(8.dp),
           modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
         ) {
           Text(
             stringResource(R.string.update_app),
@@ -83,7 +82,7 @@ fun NeedAppUpdatesView(
         ) {
           Text(
             stringResource(R.string.update_app),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
           )
         }
       }
@@ -95,7 +94,6 @@ fun NeedAppUpdatesView(
 @Composable
 private fun LoadingStatePreview() {
   NatTheme {
-    NeedAppUpdatesView(
-    )
+    NeedAppUpdatesView()
   }
 }

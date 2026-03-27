@@ -31,7 +31,7 @@ data class SignInEmailAndPasswordUiState(
 
 @HiltViewModel
 class SignInEmailAndPasswordViewModel @Inject constructor(
-  private val loginRepository: LoginRepository
+  private val loginRepository: LoginRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(SignInEmailAndPasswordUiState())
   val uiState: StateFlow<SignInEmailAndPasswordUiState> = _uiState.asStateFlow()
@@ -83,20 +83,20 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     if (hasInvalidDataEmail()) return true
     if (hasInvalidDataPassword()) return true
 
     return false
   }
 
-  fun hasInvalidDataEmail() : Boolean {
+  fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
     return !uiState.value.email.validateEmail()
   }
 
-  fun hasInvalidDataPassword() : Boolean {
+  fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true
     if (uiState.value.password.length < NatConstants.MINIMUM_PASSWORD_LENGTH) return true
 

@@ -165,7 +165,7 @@ object TimeZones {
     "Chatham Is." to "(GMT+12:45) Chatham Is.",
     "Nuku'alofa" to "(GMT+13:00) Nuku'alofa",
     "Samoa" to "(GMT+13:00) Samoa",
-    "Tokelau Is." to "(GMT+13:00) Tokelau Is."
+    "Tokelau Is." to "(GMT+13:00) Tokelau Is.",
   )
 
   /**

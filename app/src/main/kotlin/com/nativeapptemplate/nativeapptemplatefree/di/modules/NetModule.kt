@@ -24,7 +24,6 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-
 /**
  * Dagger module for network ops
  */
@@ -53,7 +52,7 @@ class NetModule {
   @Provides
   fun provideOkHttp(
     loggingInterceptor: HttpLoggingInterceptor,
-    authInterceptor: AuthInterceptor
+    authInterceptor: AuthInterceptor,
   ): OkHttpClient =
     OkHttpClient.Builder()
       .connectTimeout(30, TimeUnit.SECONDS)
@@ -63,7 +62,6 @@ class NetModule {
       .addNetworkInterceptor(authInterceptor)
       .addInterceptor(loggingInterceptor)
       .build()
-
 
   private val json = Json {
     prettyPrint = true

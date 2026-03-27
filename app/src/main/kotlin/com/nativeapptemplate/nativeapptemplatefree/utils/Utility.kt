@@ -40,10 +40,10 @@ object Utility {
     return text.matches("^[a-zA-Z0-9]*$".toRegex())
   }
 
-  fun scanUri (
+  fun scanUri(
     itemTagId: String,
     itemTagType: String,
-  ) : Uri {
+  ): Uri {
     val baseUri = Uri.parse(NatConstants.baseUrlString())
     val uriBuilder = baseUri.buildUpon()
     val path = if (itemTagType == "server") NatConstants.SCAN_PATH else NatConstants.SCAN_PATH_CUSTOMER
@@ -57,7 +57,7 @@ object Utility {
   fun extractItemTagInfoFrom(
     context: Context,
     ndefMessage: NdefMessage,
-    isTest: Boolean = false
+    isTest: Boolean = false,
   ): ItemTagInfoFromNdefMessage {
     val itemTagInfo = ItemTagInfoFromNdefMessage()
     itemTagInfo.message = context.getString(R.string.message_written_on_tag_is_wrong)
@@ -152,15 +152,15 @@ object Utility {
     val appName = ctx.getString(R.string.app_name)
     val systemVersion = Build.VERSION.RELEASE
     val device = Build.MODEL
-    val appVersion= BuildConfig.VERSION_NAME
+    val appVersion = BuildConfig.VERSION_NAME
     val language = Locale.getDefault().language
     val body = "\n\n\n-----\n$appName $appVersion\n$device ($systemVersion)\n$language"
 
     val emailIntent = Intent(Intent.ACTION_SENDTO)
 
     val uriText = "mailto:" + Uri.encode(NatConstants.SUPPORT_MAIL) +
-            "?subject=" + Uri.encode("$appName for Android support") +
-            "&body=" + Uri.encode(body)
+      "?subject=" + Uri.encode("$appName for Android support") +
+      "&body=" + Uri.encode(body)
 
     emailIntent.setData(Uri.parse(uriText))
     ctx.startActivity(emailIntent)

@@ -106,7 +106,7 @@ private fun ContentView(
   onBackClick: () -> Unit,
 ) {
   if (uiState.isLoading) {
-    ItemTagListLoadingView( onBackClick)
+    ItemTagListLoadingView(onBackClick)
   } else if (uiState.success) {
     ItemTagListContentView(
       viewModel = viewModel,
@@ -170,10 +170,10 @@ private fun ItemTagListContentView(
             isRefreshing = uiState.isLoading,
             onRefresh = viewModel::reload,
           )
-          .padding(padding)
+          .padding(padding),
       ) {
         LazyColumn(
-          Modifier.padding(24.dp)
+          Modifier.padding(24.dp),
         ) {
           item {
             Text(
@@ -181,7 +181,7 @@ private fun ItemTagListContentView(
               style = MaterialTheme.typography.titleLarge,
               textAlign = TextAlign.Center,
               modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
             )
           }
           itemsIndexed(
@@ -202,7 +202,7 @@ private fun ItemTagListContentView(
                   },
                   backgroundColor = Color.Red,
                   icon = Icons.Default.Delete,
-                  modifier = Modifier.fillMaxHeight()
+                  modifier = Modifier.fillMaxHeight(),
                 )
               },
             ) {
@@ -257,30 +257,30 @@ private fun NoResultsView(
       .fillMaxWidth()
       .fillMaxHeight()
       .padding(padding),
-    contentAlignment = Alignment.Center
+    contentAlignment = Alignment.Center,
   ) {
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(24.dp),
-      modifier = Modifier.padding(16.dp)
+      modifier = Modifier.padding(16.dp),
     ) {
       Icon(
         Icons.Outlined.Rectangle,
         contentDescription = null,
-        modifier = Modifier.size(128.dp)
+        modifier = Modifier.size(128.dp),
       )
 
       Text(
         stringResource(R.string.add_tag_description),
         modifier = Modifier
-          .padding(horizontal = 16.dp)
+          .padding(horizontal = 16.dp),
       )
 
       MainButtonView(
         title = stringResource(R.string.label_add_tag),
         onClick = { onAddItemTagClick(viewModel.shopId) },
-        modifier =  Modifier
-          .padding(horizontal = 12.dp, vertical = 24.dp)
+        modifier = Modifier
+          .padding(horizontal = 12.dp, vertical = 24.dp),
       )
     }
   }
@@ -304,10 +304,10 @@ private fun ItemTagListErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
@@ -330,7 +330,7 @@ private fun ItemTagListLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

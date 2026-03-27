@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccountPasswordRepository {
   fun updateAccountPassword(
-    updatePasswordBody: UpdatePasswordBody
+    updatePasswordBody: UpdatePasswordBody,
   ): Flow<Boolean>
 }

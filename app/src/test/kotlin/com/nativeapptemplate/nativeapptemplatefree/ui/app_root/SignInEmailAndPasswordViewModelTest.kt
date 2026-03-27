@@ -140,7 +140,7 @@ private val testInputLoggedInShopkeeperData =
       client = LOGGED_IN_SHOPKEEPER_CLIENT,
       uid = LOGGED_IN_SHOPKEEPER_UID,
       expiry = LOGGED_IN_SHOPKEEPER_EXPIRY,
-    )
+    ),
   )
 
 private val testInputLoggedInShopkeeper = LoggedInShopkeeper(
@@ -172,8 +172,8 @@ private val testInputPermissionsData = listOf(
       name = PERMISSION_1_NAME,
       tag = PERMISSION_1_TAG,
       createdAt = PERMISSION_CREATED_AT,
-      updatedAt = PERMISSION_UPDATED_AT
-    )
+      updatedAt = PERMISSION_UPDATED_AT,
+    ),
   ),
   Data(
     id = PERMISSION_2_ID,
@@ -182,8 +182,8 @@ private val testInputPermissionsData = listOf(
       name = PERMISSION_2_NAME,
       tag = PERMISSION_2_TAG,
       createdAt = PERMISSION_CREATED_AT,
-      updatedAt = PERMISSION_UPDATED_AT
-    )
+      updatedAt = PERMISSION_UPDATED_AT,
+    ),
   ),
   Data(
     id = PERMISSION_3_ID,
@@ -192,8 +192,8 @@ private val testInputPermissionsData = listOf(
       name = PERMISSION_3_NAME,
       tag = PERMISSION_3_TAG,
       createdAt = PERMISSION_CREATED_AT,
-      updatedAt = PERMISSION_UPDATED_AT
-    )
+      updatedAt = PERMISSION_UPDATED_AT,
+    ),
   ),
 )
 
@@ -204,7 +204,7 @@ private val testInputPermissions = Permissions(
     shouldUpdatePrivacy = PERMISSION_SHOULD_UPDATE_PRIVACY,
     shouldUpdateTerms = PERMISSION_SHOULD_UPDATE_TERMS,
     shopLimitCount = PERMISSION_SHOP_LIMIT_COUNT,
-  )
+  ),
 )
 
 private const val testInputPassword = "password"

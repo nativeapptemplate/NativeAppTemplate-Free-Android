@@ -42,7 +42,8 @@ private fun ContentView(
 ) {
   when (completeScanResult.completeScanResultType) {
     CompleteScanResultType.Completed,
-    CompleteScanResultType.Reset -> SucceededView(completeScanResult)
+    CompleteScanResultType.Reset,
+    -> SucceededView(completeScanResult)
     CompleteScanResultType.Failed -> FailedView(completeScanResult)
     CompleteScanResultType.Idled -> IdledView()
   }
@@ -57,7 +58,7 @@ private fun SucceededView(
     colors = CardDefaults.cardColors(containerColor = LocalCustomColorScheme.current.successContainer),
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 24.dp)
+      .padding(top = 24.dp),
   ) {
     val fontSizeMedium = 16
     val fontSizeLarge = 20
@@ -67,7 +68,7 @@ private fun SucceededView(
     Column(
       verticalArrangement = Arrangement.spacedBy(12.dp),
       modifier = Modifier
-        .padding(24.dp)
+        .padding(24.dp),
     ) {
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -144,7 +145,7 @@ private fun SucceededView(
           fontSize = fontSizeLarge.sp.nonScaledSp,
           lineHeight = lineHeightLarge.sp.nonScaledSp,
           color = LocalCustomColorScheme.current.onSuccessContainer,
-          style = MaterialTheme.typography.titleMedium
+          style = MaterialTheme.typography.titleMedium,
         )
         Text(
           "complete scanned",
@@ -166,12 +167,12 @@ private fun FailedView(
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 24.dp)
+      .padding(top = 24.dp),
   ) {
     Column(
       verticalArrangement = Arrangement.spacedBy(12.dp),
       modifier = Modifier
-        .padding(24.dp)
+        .padding(24.dp),
     ) {
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -206,19 +207,18 @@ private fun FailedView(
 }
 
 @Composable
-private fun IdledView(
-) {
+private fun IdledView() {
   Card(
     shape = RoundedCornerShape(16.dp),
     colors = CardDefaults.cardColors(containerColor = LocalCustomColorScheme.current.successContainer),
     modifier = Modifier
       .fillMaxWidth()
-      .padding(top = 24.dp)
+      .padding(top = 24.dp),
   ) {
     Column(
       verticalArrangement = Arrangement.spacedBy(12.dp),
       modifier = Modifier
-        .padding(24.dp)
+        .padding(24.dp),
     ) {
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),

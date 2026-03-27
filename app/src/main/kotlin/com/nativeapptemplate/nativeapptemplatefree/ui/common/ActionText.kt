@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScaledSp
 
-//https://github.com/philipplackner/ComposeSwipeToReveal
+// https://github.com/philipplackner/ComposeSwipeToReveal
 @Composable
 fun ActionText(
   onClick: () -> Unit,
@@ -24,7 +24,7 @@ fun ActionText(
   IconButton(
     onClick = onClick,
     modifier = modifier
-      .background(backgroundColor)
+      .background(backgroundColor),
   ) {
     Text(
       text = text,

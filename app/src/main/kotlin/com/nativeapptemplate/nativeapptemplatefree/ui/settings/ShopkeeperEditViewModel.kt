@@ -38,7 +38,7 @@ data class ShopkeeperEditUiState(
 @HiltViewModel
 class ShopkeeperEditViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
-  private val signUpRepository: SignUpRepository
+  private val signUpRepository: SignUpRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopkeeperEditUiState())
   val uiState: StateFlow<ShopkeeperEditUiState> = _uiState.asStateFlow()
@@ -87,7 +87,7 @@ class ShopkeeperEditViewModel @Inject constructor(
         }
     }
   }
-  
+
   fun updateShopkeeper() {
     _uiState.update {
       it.copy(
@@ -182,7 +182,7 @@ class ShopkeeperEditViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     if (uiState.value.name.isBlank()) return true
 
     if (hasInvalidDataEmail()) return true
@@ -190,11 +190,11 @@ class ShopkeeperEditViewModel @Inject constructor(
     val userData = uiState.value.userData
 
     return userData.name == uiState.value.name &&
-            userData.email == uiState.value.email &&
-            userData.timeZone == uiState.value.timeZone
+      userData.email == uiState.value.email &&
+      userData.timeZone == uiState.value.timeZone
   }
 
-  fun hasInvalidDataEmail() : Boolean {
+  fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
     return !uiState.value.email.validateEmail()
@@ -220,6 +220,6 @@ class ShopkeeperEditViewModel @Inject constructor(
 
   fun snackbarMessageShown() {
     _uiState.update { it.copy(message = "") }
-    _uiState.update {it.copy(success = false) }
+    _uiState.update { it.copy(success = false) }
   }
 }

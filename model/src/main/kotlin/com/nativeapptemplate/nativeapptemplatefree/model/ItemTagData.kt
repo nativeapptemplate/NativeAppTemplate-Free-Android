@@ -6,9 +6,9 @@ data class ItemTagData(
   var queueNumber: String = "",
   var state: ItemTagState = ItemTagState.Idled,
   var scanState: ScanState = ScanState.Unscanned,
-  var createdAt: String =  "",
-  var customerReadAt: String=  "",
-  var completedAt: String=  "",
+  var createdAt: String = "",
+  var customerReadAt: String = "",
+  var completedAt: String = "",
   var shopName: String = "",
   var alreadyCompleted: Boolean = false,
 ) {

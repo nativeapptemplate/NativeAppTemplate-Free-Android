@@ -73,7 +73,7 @@ fun PasswordEditView(
   PasswordEditView(
     viewModel,
     uiState,
-    onBackClick
+    onBackClick,
   )
 }
 
@@ -109,7 +109,6 @@ fun PasswordEditContentView(
   var passwordVisible by rememberSaveable { mutableStateOf(false) }
   var passwordConfirmationVisible by rememberSaveable { mutableStateOf(false) }
 
-
   Scaffold(
     topBar = {
       TopAppBar(onBackClick)
@@ -121,9 +120,9 @@ fun PasswordEditContentView(
         onClick = { viewModel.updatePassword() },
         modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape
+        shape = CircleShape,
 
-      ){
+      ) {
         Icon(Icons.Filled.Done, contentDescription = null)
       }
     },
@@ -134,12 +133,12 @@ fun PasswordEditContentView(
         .padding(padding)
         .padding(horizontal = 16.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
-      verticalArrangement = Arrangement.spacedBy(16.dp)
+      verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.current_password)
+            text = stringResource(R.string.current_password),
           )
         },
         placeholder = { Text(stringResource(R.string.current_password)) },
@@ -156,21 +155,23 @@ fun PasswordEditContentView(
             Text(
               text = stringResource(id = R.string.current_password_is_required),
               style = MaterialTheme.typography.bodyLarge,
-              color = if (uiState.currentPassword.isBlank()) Color.Red else Color.Transparent
+              color = if (uiState.currentPassword.isBlank()) Color.Red else Color.Transparent,
             )
           }
         },
         visualTransformation = if (currentPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
-          val image = if (currentPasswordVisible)
+          val image = if (currentPasswordVisible) {
             Icons.Filled.Visibility
-          else Icons.Filled.VisibilityOff
+          } else {
+            Icons.Filled.VisibilityOff
+          }
 
           val description = if (currentPasswordVisible) "Hide password" else "Show password"
 
-          IconButton(onClick = {currentPasswordVisible = !currentPasswordVisible}){
-            Icon(imageVector  = image, description)
+          IconButton(onClick = { currentPasswordVisible = !currentPasswordVisible }) {
+            Icon(imageVector = image, description)
           }
         },
         modifier = Modifier
@@ -180,7 +181,7 @@ fun PasswordEditContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.new_password)
+            text = stringResource(R.string.new_password),
           )
         },
         placeholder = { Text(stringResource(R.string.new_password)) },
@@ -191,20 +192,20 @@ fun PasswordEditContentView(
             Text(
               text = "${NatConstants.MINIMUM_PASSWORD_LENGTH} characters minimum.",
               style = MaterialTheme.typography.bodyLarge,
-              color = MaterialTheme.colorScheme.onSurfaceVariant
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             if (uiState.password.isBlank()) {
               Text(
                 text = stringResource(id = R.string.password_is_required),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.Red
+                color = Color.Red,
               )
             } else if (viewModel.hasInvalidDataPassword()) {
               Text(
                 text = stringResource(id = R.string.password_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.Red
+                color = Color.Red,
               )
             }
           }
@@ -212,14 +213,16 @@ fun PasswordEditContentView(
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
-          val image = if (passwordVisible)
+          val image = if (passwordVisible) {
             Icons.Filled.Visibility
-          else Icons.Filled.VisibilityOff
+          } else {
+            Icons.Filled.VisibilityOff
+          }
 
           val description = if (passwordVisible) "Hide password" else "Show password"
 
-          IconButton(onClick = {passwordVisible = !passwordVisible}){
-            Icon(imageVector  = image, description)
+          IconButton(onClick = { passwordVisible = !passwordVisible }) {
+            Icon(imageVector = image, description)
           }
         },
         modifier = Modifier
@@ -229,7 +232,7 @@ fun PasswordEditContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.confirm_new_password)
+            text = stringResource(R.string.confirm_new_password),
           )
         },
         placeholder = { Text(stringResource(R.string.confirm_new_password)) },
@@ -239,20 +242,22 @@ fun PasswordEditContentView(
           Text(
             text = stringResource(id = R.string.confirm_new_password_is_required),
             style = MaterialTheme.typography.bodyLarge,
-            color = if (uiState.passwordConfirmation.isBlank()) Color.Red else Color.Transparent
+            color = if (uiState.passwordConfirmation.isBlank()) Color.Red else Color.Transparent,
           )
         },
         visualTransformation = if (passwordConfirmationVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
-          val image = if (passwordConfirmationVisible)
+          val image = if (passwordConfirmationVisible) {
             Icons.Filled.Visibility
-          else Icons.Filled.VisibilityOff
+          } else {
+            Icons.Filled.VisibilityOff
+          }
 
           val description = if (passwordConfirmationVisible) "Hide password" else "Show password"
 
-          IconButton(onClick = {passwordConfirmationVisible = !passwordConfirmationVisible}){
-            Icon(imageVector  = image, description)
+          IconButton(onClick = { passwordConfirmationVisible = !passwordConfirmationVisible }) {
+            Icon(imageVector = image, description)
           }
         },
         modifier = Modifier
@@ -301,7 +306,7 @@ private fun PasswordEditLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

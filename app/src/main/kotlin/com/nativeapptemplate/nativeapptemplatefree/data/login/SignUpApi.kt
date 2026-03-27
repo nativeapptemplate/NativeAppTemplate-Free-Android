@@ -13,31 +13,30 @@ import retrofit2.http.*
 interface SignUpApi {
   @POST("shopkeeper_auth")
   suspend fun signUp(
-    @Body data: SignUp
+    @Body data: SignUp,
   ): ApiResponse<LoggedInShopkeeper>
 
   @PATCH("shopkeeper_auth")
   suspend fun updateAccount(
-    @Body data: SignUpForUpdate
+    @Body data: SignUpForUpdate,
   ): ApiResponse<LoggedInShopkeeper>
 
   @DELETE("shopkeeper_auth")
-  suspend fun deleteAccount(
-  ): ApiResponse<Status>
+  suspend fun deleteAccount(): ApiResponse<Status>
 
   @POST("shopkeeper_auth/password")
   suspend fun sendResetPasswordInstruction(
-    @Body data: SendResetPassword
+    @Body data: SendResetPassword,
   ): ApiResponse<Status>
 
   @POST("shopkeeper_auth/confirmation")
   suspend fun sendConfirmationInstruction(
-    @Body data: SendConfirmation
+    @Body data: SendConfirmation,
   ): ApiResponse<Status>
 
   companion object {
     fun create(retroFit: Retrofit): SignUpApi = retroFit.create(
-      SignUpApi::class.java
+      SignUpApi::class.java,
     )
   }
 }

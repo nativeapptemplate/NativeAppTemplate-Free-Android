@@ -115,10 +115,10 @@ private fun NumberTagsWebpageListContentView(
       modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .padding(padding)
+        .padding(padding),
     ) {
       LazyColumn(
-        Modifier.padding(24.dp)
+        Modifier.padding(24.dp),
       ) {
         item {
           Text(
@@ -187,7 +187,7 @@ private fun NumberTagsWebpageListErrorView(
   Scaffold(
     topBar = {
       TopAppBar(
-        onBackClick
+        onBackClick,
       )
     },
     modifier = Modifier.fillMaxSize(),
@@ -197,7 +197,7 @@ private fun NumberTagsWebpageListErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(onClick = viewModel::reload)
     }
@@ -221,7 +221,7 @@ private fun NumberTagsWebpageListLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

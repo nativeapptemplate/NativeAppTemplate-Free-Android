@@ -34,7 +34,7 @@ data class ShopListUiState(
 @HiltViewModel
 class ShopListViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
-  private val shopRepository: ShopRepository
+  private val shopRepository: ShopRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopListUiState())
   val uiState: StateFlow<ShopListUiState> = _uiState.asStateFlow()
@@ -72,7 +72,8 @@ class ShopListViewModel @Inject constructor(
         shopsFlow,
         didShowTapShopBelowTipFlow,
       ) { shops,
-          didShowTapShopBelowTip ->
+          didShowTapShopBelowTip,
+        ->
         _uiState.update {
           it.copy(
             shops = shops,
@@ -104,4 +105,3 @@ class ShopListViewModel @Inject constructor(
     _uiState.update { it.copy(message = "") }
   }
 }
-

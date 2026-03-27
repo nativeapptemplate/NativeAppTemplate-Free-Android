@@ -148,10 +148,10 @@ private fun SettingsContentView(
       modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .padding(padding)
+        .padding(padding),
     ) {
       LazyColumn(
-        Modifier.padding(24.dp)
+        Modifier.padding(24.dp),
       ) {
         item {
           ListItem(
@@ -169,7 +169,7 @@ private fun SettingsContentView(
             headlineContent = {
               Text(
                 stringResource(R.string.profile),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
             leadingContent = {
@@ -192,7 +192,7 @@ private fun SettingsContentView(
             headlineContent = {
               Text(
                 stringResource(R.string.label_password),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
             leadingContent = {
@@ -214,7 +214,7 @@ private fun SettingsContentView(
             headlineContent = {
               Text(
                 "",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
           )
@@ -245,7 +245,7 @@ private fun SettingsContentView(
             headlineContent = {
               Text(
                 "",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
           )
@@ -256,7 +256,7 @@ private fun SettingsContentView(
             headlineContent = {
               Text(
                 stringResource(R.string.information),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
               )
             },
           )
@@ -283,8 +283,8 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.SUPPORT_WEBSITE_URL)
-                  )
+                    Uri.parse(NatConstants.SUPPORT_WEBSITE_URL),
+                  ),
                 )
               },
           )
@@ -311,8 +311,8 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.HOW_TO_USE_URL)
-                  )
+                    Uri.parse(NatConstants.HOW_TO_USE_URL),
+                  ),
                 )
               },
           )
@@ -362,8 +362,8 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.DISCUSSIONS_URL)
-                  )
+                    Uri.parse(NatConstants.DISCUSSIONS_URL),
+                  ),
                 )
               },
           )
@@ -439,8 +439,8 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.PRIVACY_POLICY_URL)
-                  )
+                    Uri.parse(NatConstants.PRIVACY_POLICY_URL),
+                  ),
                 )
               },
           )
@@ -460,8 +460,8 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.TERMS_OF_USE_URL)
-                  )
+                    Uri.parse(NatConstants.TERMS_OF_USE_URL),
+                  ),
                 )
               },
           )
@@ -472,7 +472,7 @@ private fun SettingsContentView(
           Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-              .padding(top = 48.dp)
+              .padding(top = 48.dp),
           ) {
             Text("Logged in as ${userData.name}")
 
@@ -480,7 +480,7 @@ private fun SettingsContentView(
               title = stringResource(R.string.button_sign_out),
               onClick = { viewModel.logout() },
               modifier = Modifier
-                .padding(top = 12.dp)
+                .padding(top = 12.dp),
             )
           }
         }
@@ -515,8 +515,7 @@ private fun SettingsErrorView(
 ) {
   Scaffold(
     topBar = {
-      TopAppBar(
-      )
+      TopAppBar()
     },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
@@ -525,18 +524,17 @@ private fun SettingsErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
 }
 
 @Composable
-private fun SettingsLoadingView(
-) {
+private fun SettingsLoadingView() {
   Scaffold(
     topBar = { TopAppBar() },
     modifier = Modifier.fillMaxSize(),
@@ -546,7 +544,7 @@ private fun SettingsLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

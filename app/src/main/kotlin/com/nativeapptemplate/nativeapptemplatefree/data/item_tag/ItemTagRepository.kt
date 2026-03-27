@@ -19,7 +19,7 @@ interface ItemTagRepository {
 
   fun updateItemTag(
     id: String,
-    itemTagBody: ItemTagBody
+    itemTagBody: ItemTagBody,
   ): Flow<ItemTag>
 
   fun deleteItemTag(

@@ -143,7 +143,7 @@ private val testInputLoggedInShopkeeperData =
       client = LOGGED_IN_SHOPKEEPER_CLIENT,
       uid = LOGGED_IN_SHOPKEEPER_UID,
       expiry = LOGGED_IN_SHOPKEEPER_EXPIRY,
-    )
+    ),
   )
 
 private val testInputLoggedInShopkeeper = LoggedInShopkeeper(

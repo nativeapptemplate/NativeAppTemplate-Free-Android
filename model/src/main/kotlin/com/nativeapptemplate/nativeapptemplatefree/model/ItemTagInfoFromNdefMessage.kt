@@ -6,6 +6,6 @@ data class ItemTagInfoFromNdefMessage(
   var success: Boolean = false,
   var message: String = "",
 
-  var isReadOnly : Boolean = false,
+  var isReadOnly: Boolean = false,
   var scannedAt: String = "",
 )

@@ -9,18 +9,16 @@ interface LoginRepository {
   val userData: Flow<UserData>
 
   fun login(
-    login: Login
+    login: Login,
   ): Flow<LoggedInShopkeeper>
 
   fun logout(): Flow<Boolean>
 
   fun getPermissions(): Flow<Permissions>
 
-  fun updateConfirmedPrivacyVersion(
-  ): Flow<Boolean>
+  fun updateConfirmedPrivacyVersion(): Flow<Boolean>
 
-  fun updateConfirmedTermsVersion(
-  ): Flow<Boolean>
+  fun updateConfirmedTermsVersion(): Flow<Boolean>
 
   suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean)
 
@@ -88,4 +86,3 @@ interface LoginRepository {
 
   fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult>
 }
-

@@ -121,9 +121,9 @@ class DemoLoginRepository @Inject constructor(
 
   override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun didShowTapShopBelowTip(): Flow<Boolean> =MutableStateFlow(true)
+  override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun didShowReadInstructionsTip(): Flow<Boolean> =MutableStateFlow(true)
+  override fun didShowReadInstructionsTip(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun getMaximumQueueNumberLength(): Flow<Int> = MutableStateFlow(5)
 

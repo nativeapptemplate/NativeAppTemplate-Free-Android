@@ -37,7 +37,7 @@ data class ShopBasicSettingsUiState(
 @HiltViewModel
 class ShopBasicSettingsViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  private val shopRepository: ShopRepository
+  private val shopRepository: ShopRepository,
 ) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ShopBasicSettingsRoute>().id
 
@@ -84,7 +84,7 @@ class ShopBasicSettingsViewModel @Inject constructor(
         }
     }
   }
-  
+
   fun updateShop() {
     _uiState.update {
       it.copy(
@@ -125,14 +125,14 @@ class ShopBasicSettingsViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     if (uiState.value.name.isBlank()) return true
 
     val shopData = uiState.value.shop.getData()!!
 
     return shopData.getName() == uiState.value.name &&
-        shopData.getDescription() == uiState.value.description &&
-        shopData.getTimeZone() == uiState.value.timeZone
+      shopData.getDescription() == uiState.value.description &&
+      shopData.getTimeZone() == uiState.value.timeZone
   }
 
   fun updateName(newName: String) {

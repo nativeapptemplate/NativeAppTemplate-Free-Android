@@ -30,7 +30,7 @@ data class SignUpUiState(
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-  private val signUpRepository: SignUpRepository
+  private val signUpRepository: SignUpRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(SignUpUiState())
   val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
@@ -49,7 +49,7 @@ class SignUpViewModel @Inject constructor(
         email = uiState.value.email.trim(),
         password = uiState.value.password.trim(),
         timeZone = uiState.value.timeZone,
-        currentPlatform = "android"
+        currentPlatform = "android",
       )
 
       val loggedInShopkeeperFlow = signUpRepository.signUp(signUp)
@@ -74,7 +74,7 @@ class SignUpViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     if (uiState.value.name.isBlank()) return true
 
     if (hasInvalidDataEmail()) return true
@@ -84,13 +84,13 @@ class SignUpViewModel @Inject constructor(
     return false
   }
 
-  fun hasInvalidDataEmail() : Boolean {
+  fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
     return !uiState.value.email.validateEmail()
   }
 
-  fun hasInvalidDataPassword() : Boolean {
+  fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true
     if (uiState.value.password.length < NatConstants.MINIMUM_PASSWORD_LENGTH) return true
 

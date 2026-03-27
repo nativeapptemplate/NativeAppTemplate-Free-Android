@@ -27,9 +27,9 @@ class DemoAccountPasswordRepositoryTest {
             currentPassword = "password",
             password = "updatingPassword",
             passwordConfirmation = "updatingPassword",
-          )
-        )
-      ).first()
+          ),
+        ),
+      ).first(),
     )
   }
 }

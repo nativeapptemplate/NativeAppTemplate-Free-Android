@@ -11,7 +11,9 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.shops.ShopListView
 import kotlinx.serialization.Serializable
 
 @Serializable data object ShopBaseRoute
+
 @Serializable data object ShopsRoute
+
 @Serializable data object ShopCreateRoute
 
 fun NavGraphBuilder.shopBaseView(

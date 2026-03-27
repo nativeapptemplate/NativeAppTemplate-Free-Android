@@ -44,7 +44,7 @@ class DemoLoginRepositoryTest {
           name = "update shops",
           tag = "update_shops",
           createdAt = "2024-07-01T15:30:35.000Z",
-          updatedAt = "2024-07-01T15:30:35.000Z"
+          updatedAt = "2024-07-01T15:30:35.000Z",
         ),
       ),
       Data(
@@ -54,7 +54,7 @@ class DemoLoginRepositoryTest {
           name = "update organizations",
           tag = "update_organizations",
           createdAt = "2024-07-01T15:30:35.000Z",
-          updatedAt = "2024-07-01T15:30:35.000Z"
+          updatedAt = "2024-07-01T15:30:35.000Z",
         ),
       ),
       Data(
@@ -64,7 +64,7 @@ class DemoLoginRepositoryTest {
           name = "invitation",
           tag = "invitation",
           createdAt = "2024-07-01T15:30:35.000Z",
-          updatedAt = "2024-07-01T15:30:35.000Z"
+          updatedAt = "2024-07-01T15:30:35.000Z",
         ),
       ),
     ),
@@ -73,7 +73,7 @@ class DemoLoginRepositoryTest {
       shouldUpdatePrivacy = false,
       shouldUpdateTerms = false,
       shopLimitCount = 99,
-    )
+    ),
   )
 
   @Before

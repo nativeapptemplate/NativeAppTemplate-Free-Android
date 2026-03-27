@@ -57,7 +57,7 @@ class DemoSignUpRepositoryTest {
           email = "john@example.com",
           password = "password",
           timeZone = "Tokyo",
-          currentPlatform = "android"
+          currentPlatform = "android",
         ),
       ).first(),
     )
@@ -89,8 +89,8 @@ class DemoSignUpRepositoryTest {
         SendResetPassword(
           email = "john@example.com",
           redirectUrl = SendResetPassword.redirectUrlString(NatConstants.baseUrlString()),
-        )
-      ).first()
+        ),
+      ).first(),
     )
   }
 
@@ -101,8 +101,8 @@ class DemoSignUpRepositoryTest {
         SendConfirmation(
           email = "john@example.com",
           redirectUrl = SendConfirmation.redirectUrlString(NatConstants.baseUrlString()),
-        )
-      ).first()
+        ),
+      ).first(),
     )
   }
 }

@@ -21,12 +21,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType.Companion.PrimaryEditable
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ExposedDropdownMenuAnchorType.Companion.PrimaryEditable
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -73,7 +73,7 @@ fun SignUpView(
 
   if (uiState.isCreated) {
     NatAlertDialog(
-      dialogTitle= stringResource(R.string.signed_up_but_unconfirmed),
+      dialogTitle = stringResource(R.string.signed_up_but_unconfirmed),
       onDismissRequest = { onBackClick() },
     )
   }
@@ -81,7 +81,7 @@ fun SignUpView(
   SignUpView(
     viewModel,
     uiState,
-    onBackClick
+    onBackClick,
   )
 }
 
@@ -129,14 +129,14 @@ fun SignUpContentView(
         onClick = { viewModel.createShopkeeper() },
         modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape
+        shape = CircleShape,
 
-      ){
+      ) {
         Icon(Icons.Filled.Done, contentDescription = null)
         Text(
           stringResource(R.string.sign_up),
           modifier = Modifier
-            .padding(start = 12.dp)
+            .padding(start = 12.dp),
         )
       }
     },
@@ -147,12 +147,12 @@ fun SignUpContentView(
         .padding(padding)
         .padding(horizontal = 16.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
-      verticalArrangement = Arrangement.spacedBy(24.dp)
+      verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.full_name)
+            text = stringResource(R.string.full_name),
           )
         },
         placeholder = { Text(NatConstants.PLACEHOLDER_FULLNAME) },
@@ -162,7 +162,7 @@ fun SignUpContentView(
           Text(
             text = stringResource(id = R.string.full_name_is_required),
             style = MaterialTheme.typography.bodyLarge,
-            color = if (uiState.name.isBlank()) Color.Red else Color.Transparent
+            color = if (uiState.name.isBlank()) Color.Red else Color.Transparent,
           )
         },
         modifier = Modifier
@@ -172,7 +172,7 @@ fun SignUpContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.email)
+            text = stringResource(R.string.email),
           )
         },
         placeholder = { Text(NatConstants.PLACEHOLDER_EMAIL) },
@@ -183,13 +183,13 @@ fun SignUpContentView(
             Text(
               text = stringResource(id = R.string.email_is_required),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           } else if (viewModel.hasInvalidDataEmail()) {
             Text(
               text = stringResource(id = R.string.email_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
-              color = Color.Red
+              color = Color.Red,
             )
           }
         },
@@ -232,7 +232,7 @@ fun SignUpContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.password)
+            text = stringResource(R.string.password),
           )
         },
         placeholder = { Text(NatConstants.PLACEHOLDER_PASSWORD) },
@@ -243,20 +243,20 @@ fun SignUpContentView(
             Text(
               text = "${NatConstants.MINIMUM_PASSWORD_LENGTH} characters minimum.",
               style = MaterialTheme.typography.bodyLarge,
-              color = MaterialTheme.colorScheme.onSurfaceVariant
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             if (uiState.password.isBlank()) {
               Text(
                 text = stringResource(id = R.string.new_password_is_required),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.Red
+                color = Color.Red,
               )
             } else if (viewModel.hasInvalidDataPassword()) {
               Text(
                 text = stringResource(id = R.string.password_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.Red
+                color = Color.Red,
               )
             }
           }
@@ -264,14 +264,16 @@ fun SignUpContentView(
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
-          val image = if (passwordVisible)
+          val image = if (passwordVisible) {
             Icons.Filled.Visibility
-          else Icons.Filled.VisibilityOff
+          } else {
+            Icons.Filled.VisibilityOff
+          }
 
           val description = if (passwordVisible) "Hide password" else "Show password"
 
-          IconButton(onClick = {passwordVisible = !passwordVisible}){
-            Icon(imageVector  = image, description)
+          IconButton(onClick = { passwordVisible = !passwordVisible }) {
+            Icon(imageVector = image, description)
           }
         },
         modifier = Modifier
@@ -320,7 +322,7 @@ private fun SignUpLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

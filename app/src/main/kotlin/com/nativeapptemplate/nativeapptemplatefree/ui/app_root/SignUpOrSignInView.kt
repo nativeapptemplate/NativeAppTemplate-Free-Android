@@ -46,9 +46,11 @@ internal fun SignUpOrSignInView(
   onBackClick: () -> Unit,
 ) {
   Scaffold(
-    topBar = { TopAppBar(
-      onBackClick = onBackClick
-    ) },
+    topBar = {
+      TopAppBar(
+        onBackClick = onBackClick,
+      )
+    },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
     Column(
@@ -57,14 +59,14 @@ internal fun SignUpOrSignInView(
       modifier = Modifier
         .verticalScroll(rememberScrollState())
         .padding(padding)
-        .padding(24.dp)
+        .padding(24.dp),
     ) {
       Text(
         stringResource(R.string.app_name),
         style = MaterialTheme.typography.displaySmall,
         modifier = Modifier
           .fillMaxWidth()
-          .padding(horizontal = 24.dp)
+          .padding(horizontal = 24.dp),
       )
 
       Image(
@@ -73,7 +75,7 @@ internal fun SignUpOrSignInView(
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
           .fillMaxWidth()
-          .padding(vertical = 24.dp)
+          .padding(vertical = 24.dp),
       )
 
       val agreement = buildAnnotatedString {
@@ -84,8 +86,8 @@ internal fun SignUpOrSignInView(
         withLink(
           LinkAnnotation.Url(
             NatConstants.TERMS_OF_USE_URL,
-            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
-          )
+            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
+          ),
         ) {
           append(stringResource(R.string.terms_of_use))
         }
@@ -97,8 +99,8 @@ internal fun SignUpOrSignInView(
         withLink(
           LinkAnnotation.Url(
             NatConstants.PRIVACY_POLICY_URL,
-            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary))
-          )
+            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
+          ),
         ) {
           append(stringResource(R.string.privacy_policy))
         }
@@ -116,8 +118,8 @@ internal fun SignUpOrSignInView(
       MainButtonView(
         title = stringResource(R.string.sign_up_for_an_account),
         onClick = { onSignUpClick() },
-        modifier =  Modifier
-          .padding(horizontal = 24.dp)
+        modifier = Modifier
+          .padding(horizontal = 24.dp),
       )
 
       Text(
@@ -126,12 +128,12 @@ internal fun SignUpOrSignInView(
       )
 
       TextButton(
-        onClick = {onSignInClick() },
+        onClick = { onSignInClick() },
       ) {
         Text(
           stringResource(R.string.sign_in_to_your_account),
           color = MaterialTheme.colorScheme.primary,
-          style = MaterialTheme.typography.titleLarge
+          style = MaterialTheme.typography.titleLarge,
         )
       }
     }
@@ -166,7 +168,6 @@ private fun TopAppBar(
       }) {
         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
       }
-
     },
     modifier = Modifier.fillMaxWidth(),
   )

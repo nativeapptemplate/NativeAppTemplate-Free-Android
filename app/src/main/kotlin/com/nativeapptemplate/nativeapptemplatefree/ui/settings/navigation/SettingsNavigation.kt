@@ -12,8 +12,11 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.settings.ShopkeeperEditVie
 import kotlinx.serialization.Serializable
 
 @Serializable data object SettingBaseRoute
+
 @Serializable data object SettingsRoute
+
 @Serializable data object ShopkeeperEditRoute
+
 @Serializable data object PasswordEditRoute
 
 fun NavGraphBuilder.settingBaseView(

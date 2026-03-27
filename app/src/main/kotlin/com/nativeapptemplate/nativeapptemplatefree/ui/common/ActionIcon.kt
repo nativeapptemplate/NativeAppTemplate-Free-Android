@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
-//https://github.com/philipplackner/ComposeSwipeToReveal
+// https://github.com/philipplackner/ComposeSwipeToReveal
 @Composable
 fun ActionIcon(
   onClick: () -> Unit,
@@ -16,17 +16,17 @@ fun ActionIcon(
   icon: ImageVector,
   modifier: Modifier = Modifier,
   contentDescription: String? = null,
-  tint: Color = Color.White
+  tint: Color = Color.White,
 ) {
   IconButton(
     onClick = onClick,
     modifier = modifier
-      .background(backgroundColor)
+      .background(backgroundColor),
   ) {
     Icon(
       imageVector = icon,
       contentDescription = contentDescription,
-      tint = tint
+      tint = tint,
     )
   }
 }

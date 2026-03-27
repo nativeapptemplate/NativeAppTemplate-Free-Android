@@ -44,7 +44,7 @@ interface ShopApi {
 
   companion object {
     fun create(retroFit: Retrofit): ShopApi = retroFit.create(
-      ShopApi::class.java
+      ShopApi::class.java,
     )
   }
 }

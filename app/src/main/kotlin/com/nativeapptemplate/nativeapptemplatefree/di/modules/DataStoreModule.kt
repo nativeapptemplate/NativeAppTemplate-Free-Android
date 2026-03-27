@@ -24,8 +24,6 @@ import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.datastore.UserPreferencesSerializer
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers.IO
-
-
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

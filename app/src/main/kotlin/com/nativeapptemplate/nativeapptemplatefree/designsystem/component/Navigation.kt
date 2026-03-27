@@ -18,10 +18,8 @@ package com.nativeapptemplate.nativeapptemplatefree.designsystem.component
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Storefront
-import androidx.compose.material.icons.rounded.People
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Storefront
 import androidx.compose.material3.Icon

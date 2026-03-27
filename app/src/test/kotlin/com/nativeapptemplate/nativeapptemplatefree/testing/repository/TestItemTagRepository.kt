@@ -16,7 +16,6 @@ class TestItemTagRepository : ItemTagRepository {
   private val itemTagFlow: MutableSharedFlow<ItemTag> =
     MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
-
   override fun getItemTags(shopId: String): Flow<ItemTags> = itemTagsFlow
 
   override fun getItemTag(id: String): Flow<ItemTag> = itemTagFlow

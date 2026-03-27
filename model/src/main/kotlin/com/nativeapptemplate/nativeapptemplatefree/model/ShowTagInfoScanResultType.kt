@@ -1,11 +1,12 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 enum class ShowTagInfoScanResultType(val param: String, val title: String) {
-  Idled("idled","Idling"),
+  Idled("idled", "Idling"),
 
-  Succeeded("succeeded","Succeeded"),
+  Succeeded("succeeded", "Succeeded"),
 
-  Failed("failed","Failed");
+  Failed("failed", "Failed"),
+  ;
 
   companion object {
     val titles: List<String> = entries.map { it.title }

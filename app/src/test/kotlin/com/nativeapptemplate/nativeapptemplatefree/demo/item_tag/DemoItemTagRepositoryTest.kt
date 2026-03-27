@@ -22,7 +22,7 @@ class DemoItemTagRepositoryTest {
   private lateinit var subject: DemoItemTagRepository
   private val testDispatcher = StandardTestDispatcher()
 
-    private val itemTagData = Data(
+  private val itemTagData = Data(
     id = "9712F2DF-DFC7-A3AA-66BC-191203654A1A",
     type = "item_tag",
     attributes = Attributes(
@@ -34,7 +34,7 @@ class DemoItemTagRepositoryTest {
       shopName = "8th & Townsend",
       customerReadAt = "2025-01-02T12:00:01.000Z",
       completedAt = "2025-01-02T12:00:03.000Z",
-      alreadyCompleted = false
+      alreadyCompleted = false,
     ),
   )
 
@@ -71,9 +71,9 @@ class DemoItemTagRepositoryTest {
         itemTagData.getShopId()!!,
         ItemTagBody(
           itemTagBodyDetail = ItemTagBodyDetail(
-            queueNumber = itemTagData.getQueueNumber()
-          )
-         )
+            queueNumber = itemTagData.getQueueNumber(),
+          ),
+        ),
       ).first(),
     )
   }
@@ -86,7 +86,7 @@ class DemoItemTagRepositoryTest {
         id = itemTagData.id!!,
         itemTagBody = ItemTagBody(
           itemTagBodyDetail = ItemTagBodyDetail(
-            queueNumber = itemTagData.getQueueNumber()
+            queueNumber = itemTagData.getQueueNumber(),
           ),
         ),
       ).first(),

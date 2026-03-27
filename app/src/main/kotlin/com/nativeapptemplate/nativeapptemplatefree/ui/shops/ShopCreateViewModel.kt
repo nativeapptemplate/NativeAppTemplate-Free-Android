@@ -29,7 +29,7 @@ data class ShopCreateUiState(
 
 @HiltViewModel
 class ShopCreateViewModel @Inject constructor(
-  private val shopRepository: ShopRepository
+  private val shopRepository: ShopRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopCreateUiState())
   val uiState: StateFlow<ShopCreateUiState> = _uiState.asStateFlow()
@@ -70,7 +70,7 @@ class ShopCreateViewModel @Inject constructor(
     }
   }
 
-  fun hasInvalidData() : Boolean {
+  fun hasInvalidData(): Boolean {
     return uiState.value.name.isBlank()
   }
 

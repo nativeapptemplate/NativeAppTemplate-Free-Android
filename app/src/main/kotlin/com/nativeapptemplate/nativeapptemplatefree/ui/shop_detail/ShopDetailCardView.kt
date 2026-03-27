@@ -43,9 +43,8 @@ fun ShopDetailCardView(
     Spacer(modifier = Modifier.weight(1f))
 
     Column(
-      horizontalAlignment = Alignment.End
+      horizontalAlignment = Alignment.End,
     ) {
-
       data.getScanState()?.let { scanState ->
         if (scanState == ScanState.Scanned) {
           CustomerScannedTag()
@@ -63,7 +62,7 @@ fun ShopDetailCardView(
     Spacer(modifier = Modifier.weight(1f))
 
     Column(
-      horizontalAlignment = Alignment.End
+      horizontalAlignment = Alignment.End,
     ) {
       data.getItemTagState()?.let { itemTagState ->
         when (itemTagState) {

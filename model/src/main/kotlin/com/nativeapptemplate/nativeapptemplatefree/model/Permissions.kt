@@ -1,9 +1,9 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.parcelize.Parcelize
 
 @Serializable
 @Parcelize
@@ -13,7 +13,7 @@ data class Permissions(
 
   val included: List<Data>? = null,
 
-  val meta: Meta? = null
+  val meta: Meta? = null,
 ) : Parcelable {
   fun getAndroidAppVersion(): Int? = meta?.androidAppVersion
 

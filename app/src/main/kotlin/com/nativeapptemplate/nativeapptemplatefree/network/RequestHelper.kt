@@ -7,7 +7,7 @@ data class RequestHelper @JvmOverloads constructor(
   private val apiAuthToken: String = "",
   private val client: String = "",
   private val expiry: String = "",
-  private val uid: String = ""
+  private val uid: String = "",
 ) {
 
   fun getHeaders(): ArrayMap<String, String> {

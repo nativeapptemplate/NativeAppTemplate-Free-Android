@@ -28,17 +28,17 @@ import kotlinx.coroutines.test.TestDispatcher
 
 @Module
 @TestInstallIn(
-    components = [SingletonComponent::class],
-    replaces = [DispatchersModule::class],
+  components = [SingletonComponent::class],
+  replaces = [DispatchersModule::class],
 )
 internal object TestDispatchersModule {
-    @Provides
-    @Dispatcher(NatDispatchers.IO)
-    fun providesIODispatcher(testDispatcher: TestDispatcher): CoroutineDispatcher = testDispatcher
+  @Provides
+  @Dispatcher(NatDispatchers.IO)
+  fun providesIODispatcher(testDispatcher: TestDispatcher): CoroutineDispatcher = testDispatcher
 
-    @Provides
-    @Dispatcher(NatDispatchers.Default)
-    fun providesDefaultDispatcher(
-        testDispatcher: TestDispatcher,
-    ): CoroutineDispatcher = testDispatcher
+  @Provides
+  @Dispatcher(NatDispatchers.Default)
+  fun providesDefaultDispatcher(
+    testDispatcher: TestDispatcher,
+  ): CoroutineDispatcher = testDispatcher
 }

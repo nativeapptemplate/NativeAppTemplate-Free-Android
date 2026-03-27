@@ -19,12 +19,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType.Companion.PrimaryEditable
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ExposedDropdownMenuAnchorType.Companion.PrimaryEditable
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -80,7 +80,7 @@ fun ShopBasicSettingsView(
   ShopBasicSettingsView(
     viewModel,
     uiState,
-    onBackClick
+    onBackClick,
   )
 }
 
@@ -129,9 +129,9 @@ fun ShopBasicSettingsContentView(
         onClick = { viewModel.updateShop() },
         modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape
+        shape = CircleShape,
 
-      ){
+      ) {
         Icon(Icons.Filled.Done, contentDescription = null)
       }
     },
@@ -142,12 +142,12 @@ fun ShopBasicSettingsContentView(
         .padding(padding)
         .padding(horizontal = 16.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
-      verticalArrangement = Arrangement.spacedBy(16.dp)
+      verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.shop_name)
+            text = stringResource(R.string.shop_name),
           )
         },
         placeholder = { Text(stringResource(R.string.shop_name)) },
@@ -157,7 +157,7 @@ fun ShopBasicSettingsContentView(
           Text(
             text = stringResource(id = R.string.shop_name_is_required),
             style = MaterialTheme.typography.bodyLarge,
-            color = if (uiState.name.isBlank()) Color.Red else Color.Transparent
+            color = if (uiState.name.isBlank()) Color.Red else Color.Transparent,
           )
         },
         modifier = Modifier
@@ -167,14 +167,14 @@ fun ShopBasicSettingsContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.label_description)
+            text = stringResource(R.string.label_description),
           )
         },
         value = uiState.description,
         onValueChange = { viewModel.updateDescription(it) },
         modifier = Modifier
           .fillMaxWidth()
-          .height(128.dp)
+          .height(128.dp),
       )
 
       ExposedDropdownMenuBox(
@@ -251,10 +251,10 @@ private fun ShopBasicSettingsErrorView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       ErrorView(
-        onClick = { viewModel.reload() }
+        onClick = { viewModel.reload() },
       )
     }
   }
@@ -277,7 +277,7 @@ private fun ShopBasicSettingsLoadingView(
         .fillMaxWidth()
         .fillMaxHeight()
         .padding(padding),
-      contentAlignment = Alignment.Center
+      contentAlignment = Alignment.Center,
     ) {
       LoadingView()
     }

@@ -24,29 +24,28 @@ class AccountPasswordRepositoryImpl @Inject constructor(
   ) = flow {
     val response = api.updateAccountPassword(
       natPreferencesDataSource.userData.first().accountId,
-      updatePasswordBody
+      updatePasswordBody,
     )
 
     response.suspendOnSuccess {
-       emit(true)
+      emit(true)
     }.suspendOnFailure {
       val nativeAppTemplateApiError: NativeAppTemplateApiError?
 
       try {
         nativeAppTemplateApiError = response.deserializeErrorBody<Status, NativeAppTemplateApiError>()
       } catch (exception: Exception) {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
 
       if (nativeAppTemplateApiError != null) {
-        val message= "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
+        val message = "${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]"
         throw Exception(message)
       } else {
-        val message= "Not processable error(${message()})."
+        val message = "Not processable error(${message()})."
         throw Exception(message)
       }
     }
-
   }.flowOn(ioDispatcher)
 }
