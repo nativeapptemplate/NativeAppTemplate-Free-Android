@@ -18,28 +18,44 @@ package com.nativeapptemplate.nativeapptemplatefree.datastore
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
+import com.google.crypto.tink.Aead
 import com.google.protobuf.InvalidProtocolBufferException
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import java.io.InputStream
 import java.io.OutputStream
+import java.security.GeneralSecurityException
 import javax.inject.Inject
 
 /**
  * An [androidx.datastore.core.Serializer] for the [UserPreferences] proto.
+ *
+ * Encrypts data at rest using Tink AEAD. On read, falls back to parsing
+ * unencrypted proto for migration from the previous unencrypted format.
  */
-class UserPreferencesSerializer @Inject constructor() : Serializer<UserPreferences> {
+class UserPreferencesSerializer @Inject constructor(
+  private val aead: Aead,
+) : Serializer<UserPreferences> {
   override val defaultValue: UserPreferences = UserPreferences.getDefaultInstance()
 
-  override suspend fun readFrom(input: InputStream): UserPreferences =
-    try {
-      // readFrom is already called on the data store background thread
-      UserPreferences.parseFrom(input)
-    } catch (exception: InvalidProtocolBufferException) {
-      throw CorruptionException("Cannot read proto.", exception)
+  override suspend fun readFrom(input: InputStream): UserPreferences {
+    val bytes = input.readBytes()
+    if (bytes.isEmpty()) return defaultValue
+    return try {
+      val decrypted = aead.decrypt(bytes, null)
+      UserPreferences.parseFrom(decrypted)
+    } catch (_: GeneralSecurityException) {
+      // Fallback: try parsing as unencrypted proto (migration from legacy format).
+      // The data will be re-encrypted on the next write.
+      try {
+        UserPreferences.parseFrom(bytes)
+      } catch (e: InvalidProtocolBufferException) {
+        throw CorruptionException("Cannot read proto.", e)
+      }
     }
+  }
 
   override suspend fun writeTo(t: UserPreferences, output: OutputStream) {
-    // writeTo is already called on the data store background thread
-    t.writeTo(output)
+    val encrypted = aead.encrypt(t.toByteArray(), null)
+    output.write(encrypted)
   }
 }
