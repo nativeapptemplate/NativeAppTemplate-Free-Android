@@ -36,7 +36,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +64,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScaledSp
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.shareImage
 import dev.shreyaspatil.capturable.capturable
@@ -85,12 +85,11 @@ internal fun ItemTagDetailView(
     viewModel.reload()
   }
 
-  LaunchedEffect(uiState.message) {
-    if (uiState.message.isNotBlank()) {
-      onShowSnackbar(uiState.message, "dismiss", SnackbarDuration.Indefinite)
-      viewModel.snackbarMessageShown()
-    }
-  }
+  SnackbarMessageEffect(
+    message = uiState.message,
+    onShowSnackbar = onShowSnackbar,
+    onMessageShown = viewModel::snackbarMessageShown,
+  )
 
   if (uiState.isDeleted) {
     NatAlertDialog(

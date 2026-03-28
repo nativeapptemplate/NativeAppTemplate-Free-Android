@@ -50,6 +50,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScaledSp
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import kotlinx.coroutines.launch
 
 enum class ScanPage(
@@ -74,12 +75,11 @@ internal fun ScanView(
     viewModel.reload()
   }
 
-  LaunchedEffect(uiState.message) {
-    if (uiState.message.isNotBlank()) {
-      onShowSnackbar(uiState.message, "dismiss", SnackbarDuration.Indefinite)
-      viewModel.snackbarMessageShown()
-    }
-  }
+  SnackbarMessageEffect(
+    message = uiState.message,
+    onShowSnackbar = onShowSnackbar,
+    onMessageShown = viewModel::snackbarMessageShown,
+  )
 
   LaunchedEffect(uiState.userData.shouldFetchItemTagForShowTagInfoScan) {
     if (uiState.userData.shouldFetchItemTagForShowTagInfoScan) {

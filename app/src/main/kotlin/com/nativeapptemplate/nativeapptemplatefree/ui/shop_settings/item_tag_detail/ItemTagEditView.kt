@@ -42,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
 @Composable
 fun ItemTagEditView(
@@ -56,12 +57,11 @@ fun ItemTagEditView(
     viewModel.reload()
   }
 
-  LaunchedEffect(uiState.message) {
-    if (uiState.message.isNotBlank()) {
-      onShowSnackbar(uiState.message, "dismiss", SnackbarDuration.Indefinite)
-      viewModel.snackbarMessageShown()
-    }
-  }
+  SnackbarMessageEffect(
+    message = uiState.message,
+    onShowSnackbar = onShowSnackbar,
+    onMessageShown = viewModel::snackbarMessageShown,
+  )
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {

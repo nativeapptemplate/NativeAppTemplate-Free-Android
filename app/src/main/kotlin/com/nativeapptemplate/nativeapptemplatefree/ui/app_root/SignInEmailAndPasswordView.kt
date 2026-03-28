@@ -25,7 +25,6 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -44,6 +43,7 @@ import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
 @Composable
 fun SignInEmailAndPasswordView(
@@ -117,12 +117,11 @@ fun SignInEmailAndPasswordContentView(
 ) {
   var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-  LaunchedEffect(uiState.message) {
-    if (uiState.message.isNotBlank()) {
-      onShowSnackbar(uiState.message, "dismiss", SnackbarDuration.Indefinite)
-      viewModel.snackbarMessageShown()
-    }
-  }
+  SnackbarMessageEffect(
+    message = uiState.message,
+    onShowSnackbar = onShowSnackbar,
+    onMessageShown = viewModel::snackbarMessageShown,
+  )
 
   Scaffold(
     topBar = {
