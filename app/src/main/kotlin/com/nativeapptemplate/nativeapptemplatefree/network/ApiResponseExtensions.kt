@@ -53,8 +53,11 @@ inline fun <reified T : Any> throwApiError(
   }
 
   if (nativeAppTemplateApiError != null) {
-    throw Exception("${nativeAppTemplateApiError.message} [Status: ${nativeAppTemplateApiError.code}]")
+    throw ApiException.ApiError(
+      code = nativeAppTemplateApiError.code,
+      apiMessage = nativeAppTemplateApiError.message,
+    )
   } else {
-    throw Exception("Not processable error($errorMessage).")
+    throw ApiException.UnprocessableError(rawMessage = errorMessage)
   }
 }
