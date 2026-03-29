@@ -169,7 +169,7 @@ private fun ShopSettingsContentView(
       dialogTitle = stringResource(R.string.are_you_sure),
       confirmButtonTitle = stringResource(R.string.title_reset_number_tags),
       onDismissRequest = { isShowingResetConfirmationDialog = false },
-      onConfirmation = { viewModel.resetShop(uiState.shop.getData()?.id!!) },
+      onConfirmation = { uiState.shop.getData()?.id?.let { viewModel.resetShop(it) } },
       icon = Icons.Outlined.AddAlert,
     )
   }
@@ -179,7 +179,7 @@ private fun ShopSettingsContentView(
       dialogTitle = stringResource(R.string.are_you_sure),
       confirmButtonTitle = stringResource(R.string.title_delete_shop),
       onDismissRequest = { isShowingDeleteConfirmationDialog = false },
-      onConfirmation = { viewModel.deleteShop(uiState.shop.getData()?.id!!) },
+      onConfirmation = { uiState.shop.getData()?.id?.let { viewModel.deleteShop(it) } },
       icon = Icons.Outlined.AddAlert,
     )
   }
@@ -230,7 +230,7 @@ private fun ShopSettingsContentView(
               )
             },
             modifier = Modifier
-              .clickable { onShowBasicSettingsClick(uiState.shop.getData()?.id!!) },
+              .clickable { uiState.shop.getData()?.id?.let { onShowBasicSettingsClick(it) } },
           )
 
           HorizontalDivider()
@@ -265,7 +265,7 @@ private fun ShopSettingsContentView(
               )
             },
             modifier = Modifier
-              .clickable { onShowItemTagListClick(uiState.shop.getData()?.id!!) },
+              .clickable { uiState.shop.getData()?.id?.let { onShowItemTagListClick(it) } },
           )
 
           HorizontalDivider()
@@ -300,7 +300,7 @@ private fun ShopSettingsContentView(
               )
             },
             modifier = Modifier
-              .clickable { onShowNumberTagsWebpageListClick(uiState.shop.getData()?.id!!) },
+              .clickable { uiState.shop.getData()?.id?.let { onShowNumberTagsWebpageListClick(it) } },
           )
 
           HorizontalDivider()

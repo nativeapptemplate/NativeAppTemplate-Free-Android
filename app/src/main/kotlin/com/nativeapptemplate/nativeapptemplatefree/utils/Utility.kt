@@ -116,15 +116,10 @@ object Utility {
   // https://stackoverflow.com/a/75714502/1160200
   // https://qiita.com/irgaly/items/b942bd985a4647e372ea
   fun Context.shareImage(title: String, image: ImageBitmap, filename: String) {
-    val file = try {
-      val outputFile = File(cacheDir, "$filename.png")
-      val outPutStream = FileOutputStream(outputFile)
-      image.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, outPutStream)
-      outPutStream.flush()
-      outPutStream.close()
-      outputFile
-    } catch (e: Throwable) {
-      throw e
+    val file = File(cacheDir, "$filename.png").also { outputFile ->
+      FileOutputStream(outputFile).use { outputStream ->
+        image.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+      }
     }
 
     val uri = file.toUriCompat(this)
@@ -145,8 +140,8 @@ object Utility {
   // https://stackoverflow.com/a/78039163/1160200
   fun Context.restartApp() {
     val packageManager = packageManager
-    val intent = packageManager.getLaunchIntentForPackage(packageName)!!
-    val componentName = intent.component!!
+    val intent = packageManager.getLaunchIntentForPackage(packageName) ?: return
+    val componentName = intent.component ?: return
     val restartIntent = Intent.makeRestartActivityTask(componentName)
     startActivity(restartIntent)
     Runtime.getRuntime().exit(0)
