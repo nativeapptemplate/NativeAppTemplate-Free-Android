@@ -361,7 +361,7 @@ private fun TopAppBar(
       IconButton(
         onClick = {
           if (uiState.success) {
-            onSettingsClick(uiState.shop.getData()?.id!!)
+            uiState.shop.getData()?.id?.let { onSettingsClick(it) }
           }
         },
       ) {
