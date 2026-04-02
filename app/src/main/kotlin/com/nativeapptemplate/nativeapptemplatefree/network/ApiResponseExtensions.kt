@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.network
 
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.model.NativeAppTemplateApiError
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message

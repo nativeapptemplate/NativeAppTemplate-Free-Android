@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,10 +42,10 @@ class AcceptPrivacyViewModel @Inject constructor(
 
       booleanFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message ?: "Unknown Error",
+              message = message,
               isLoading = false,
             )
           }

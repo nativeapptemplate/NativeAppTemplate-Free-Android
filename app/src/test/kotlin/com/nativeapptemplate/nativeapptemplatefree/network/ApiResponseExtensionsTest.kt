@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.network
 
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.skydoves.sandwich.ApiResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow

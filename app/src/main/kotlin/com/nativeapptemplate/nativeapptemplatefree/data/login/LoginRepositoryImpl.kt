@@ -1,11 +1,11 @@
 package com.nativeapptemplate.nativeapptemplatefree.data.login
 
 import androidx.annotation.VisibleForTesting
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
-import com.nativeapptemplate.nativeapptemplatefree.network.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse

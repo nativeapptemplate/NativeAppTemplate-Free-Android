@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.NumberTagsWebpageListRoute
@@ -55,10 +56,10 @@ class NumberTagsWebpageListViewModel @Inject constructor(
 
       shopFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message ?: "Unknown Error",
+              message = message,
               isLoading = false,
             )
           }
