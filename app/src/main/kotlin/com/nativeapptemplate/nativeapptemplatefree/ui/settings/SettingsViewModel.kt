@@ -3,6 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,10 +46,10 @@ class SettingsViewModel @Inject constructor(
 
       userDataFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message ?: "Unknown Error",
+              message = message,
               isLoading = false,
             )
           }
@@ -75,9 +76,9 @@ class SettingsViewModel @Inject constructor(
 
       booleanFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           if (BuildConfig.DEBUG) {
-            _uiState.update { it.copy(message = message ?: "Unknown Error") }
+            _uiState.update { it.copy(message = message) }
           }
           _uiState.update { it.copy(isLoading = false) }
         }

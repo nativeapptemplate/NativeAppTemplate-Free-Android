@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -57,10 +58,10 @@ class ShopSettingsViewModel @Inject constructor(
 
       shopFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message ?: "Unknown Error",
+              message = message,
               isLoading = false,
             )
           }
@@ -90,10 +91,10 @@ class ShopSettingsViewModel @Inject constructor(
 
       booleanFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message ?: "Unknown Error",
+              message = message,
               isLoading = false,
             )
           }
@@ -121,10 +122,10 @@ class ShopSettingsViewModel @Inject constructor(
 
       booleanFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message ?: "Unknown Error",
+              message = message,
               isLoading = false,
             )
           }

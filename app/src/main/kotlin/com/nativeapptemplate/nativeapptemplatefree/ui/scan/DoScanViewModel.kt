@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResultType
@@ -53,8 +54,8 @@ class DoScanViewModel @Inject constructor(
         try {
           loginRepository.setShowTagInfoScanResult(showTagInfoScanResult)
         } catch (exception: Exception) {
-          val message = exception.message
-          showTagInfoScanResult.message = message ?: "Unknown Error"
+          val message = exception.codedDescription
+          showTagInfoScanResult.message = message
           showTagInfoScanResult.showTagInfoScanResultType = ShowTagInfoScanResultType.Failed
 
           loginRepository.setShowTagInfoScanResult(showTagInfoScanResult)
@@ -73,8 +74,8 @@ class DoScanViewModel @Inject constructor(
         try {
           loginRepository.setCompleteScanResult(completeScanResult)
         } catch (exception: Exception) {
-          val message = exception.message
-          completeScanResult.message = message ?: "Unknown Error"
+          val message = exception.codedDescription
+          completeScanResult.message = message
           completeScanResult.completeScanResultType = CompleteScanResultType.Failed
 
           loginRepository.setCompleteScanResult(completeScanResult)

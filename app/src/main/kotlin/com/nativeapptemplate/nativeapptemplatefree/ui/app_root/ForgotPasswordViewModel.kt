@@ -3,6 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SendResetPassword
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
@@ -49,10 +50,10 @@ class ForgotPasswordViewModel @Inject constructor(
 
       booleanFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message ?: "Unknown Error",
+              message = message,
               isLoading = false,
             )
           }

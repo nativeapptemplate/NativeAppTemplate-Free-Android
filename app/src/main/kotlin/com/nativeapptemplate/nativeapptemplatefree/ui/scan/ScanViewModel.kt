@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.scan
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResult
@@ -86,10 +87,10 @@ class ScanViewModel @Inject constructor(
           )
         }
       }.catch { exception ->
-        val message = exception.message
+        val message = exception.codedDescription
         _uiState.update {
           it.copy(
-            message = message ?: "Unknown Error",
+            message = message,
             isLoading = false,
           )
         }
@@ -109,10 +110,10 @@ class ScanViewModel @Inject constructor(
 
       itemTagFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           val showTagInfoScanResult = uiState.value.showTagInfoScanResult
           showTagInfoScanResult.showTagInfoScanResultType = ShowTagInfoScanResultType.Failed
-          showTagInfoScanResult.message = message ?: "Unknown Error"
+          showTagInfoScanResult.message = message
 
           loginRepository.setShowTagInfoScanResult(showTagInfoScanResult)
 
@@ -160,10 +161,10 @@ class ScanViewModel @Inject constructor(
 
       itemTagFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           val completeScanResult = uiState.value.completeScanResult
           completeScanResult.completeScanResultType = CompleteScanResultType.Failed
-          completeScanResult.message = message ?: "Unknown Error"
+          completeScanResult.message = message
 
           loginRepository.setCompleteScanResult(completeScanResult)
 
@@ -214,10 +215,10 @@ class ScanViewModel @Inject constructor(
 
       itemTagFlow
         .catch { exception ->
-          val message = exception.message
+          val message = exception.codedDescription
           val completeScanResult = uiState.value.completeScanResult
           completeScanResult.completeScanResultType = CompleteScanResultType.Failed
-          completeScanResult.message = message ?: "Unknown Error"
+          completeScanResult.message = message
 
           loginRepository.setCompleteScanResult(completeScanResult)
 

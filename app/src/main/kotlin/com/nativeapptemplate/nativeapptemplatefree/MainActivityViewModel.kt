@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Loading
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.CompleteScanResultType
@@ -125,8 +126,8 @@ class MainActivityViewModel @Inject constructor(
       try {
         loginRepository.setCompleteScanResult(completeScanResult)
       } catch (exception: Exception) {
-        val message = exception.message
-        completeScanResult.message = message ?: "Unknown Error"
+        val message = exception.codedDescription
+        completeScanResult.message = message
         completeScanResult.completeScanResultType = CompleteScanResultType.Failed
 
         loginRepository.setCompleteScanResult(completeScanResult)

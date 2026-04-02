@@ -48,6 +48,18 @@ MVVM layered architecture following [Android Modern App Architecture](https://de
 - **Navigation routes**: Defined as extension functions on `NavGraphBuilder` (e.g., `shopListView()`, `navigateToShopDetail()`). Routes use type-safe navigation.
 - **Proto DataStore**: User preferences and NFC scan state are persisted via Protocol Buffers (lite).
 
+## Error Handling (CodedError System)
+All errors should use the `CodedError` interface. Error codes use the `NATA-XXXX` prefix (NativeAppTemplate Android).
+
+| Range | Type | Description |
+|-------|------|-------------|
+| NATA-1xxx | App/general errors | Unexpected errors, catch-all |
+| NATA-2xxx | API/network errors | HTTP request failures, parsing errors |
+| NATA-3xxx | NFC/scan errors | NFC tag read/write/scan failures |
+
+- New error types must implement `CodedError`
+- Use `codedDescription` (not `message` or `localizedMessage`) in all user-facing error messages — this prepends `[NATA-XXXX]` for `CodedError` types
+
 ## Testing
 
 - Tests use JUnit 4 with `kotlinx.coroutines.test` and Robolectric.

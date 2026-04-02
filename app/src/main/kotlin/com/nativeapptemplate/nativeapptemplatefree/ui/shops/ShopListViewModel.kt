@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shops
@@ -83,10 +84,10 @@ class ShopListViewModel @Inject constructor(
           )
         }
       }.catch { exception ->
-        val message = exception.message
+        val message = exception.codedDescription
         _uiState.update {
           it.copy(
-            message = message ?: "Unknown Error",
+            message = message,
             isLoading = false,
           )
         }
