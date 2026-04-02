@@ -56,20 +56,6 @@ class CodedErrorTest {
   }
 
   @Test
-  fun subscriptionError_restoreFailed_hasCorrectCode() {
-    val error = SubscriptionError.RestoreFailed()
-    assertEquals("NATA-6001", error.errorCode)
-    assertEquals("[NATA-6001] Failed to restore purchases", error.formattedDescription)
-  }
-
-  @Test
-  fun subscriptionError_subscriptionRequired_hasCorrectCode() {
-    val error = SubscriptionError.SubscriptionRequired()
-    assertEquals("NATA-6002", error.errorCode)
-    assertEquals("[NATA-6002] User needs an active subscription", error.formattedDescription)
-  }
-
-  @Test
   fun codedDescription_forCodedError_returnsFormattedDescription() {
     val error: Throwable = ApiException.ApiError(code = 500, apiMessage = "Server error")
     assertEquals("[NATA-2001] Server error [Status: 500]", error.codedDescription)

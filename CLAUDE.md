@@ -56,7 +56,6 @@ All errors should use the `CodedError` interface. Error codes use the `NATA-XXXX
 | NATA-1xxx | App/general errors | Unexpected errors, catch-all |
 | NATA-2xxx | API/network errors | HTTP request failures, parsing errors |
 | NATA-3xxx | NFC/scan errors | NFC tag read/write/scan failures |
-| NATA-6xxx | Subscription errors | Purchase, restore, offering failures |
 
 - New error types must implement `CodedError`
 - Use `codedDescription` (not `message` or `localizedMessage`) in all user-facing error messages — this prepends `[NATA-XXXX]` for `CodedError` types
