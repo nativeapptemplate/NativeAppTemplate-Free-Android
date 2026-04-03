@@ -30,4 +30,15 @@ data class Meta(
   var shopLimitCount: Int = 0,
 
   var count: Int = 0,
+
+  @SerialName("current_page")
+  val currentPage: Int? = null,
+
+  @SerialName("total_pages")
+  val totalPages: Int? = null,
+
+  @SerialName("total_count")
+  val totalCount: Int? = null,
+
+  val limit: Int? = null,
 ) : Parcelable

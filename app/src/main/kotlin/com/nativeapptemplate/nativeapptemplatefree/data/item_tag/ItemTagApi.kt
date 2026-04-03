@@ -10,6 +10,7 @@ interface ItemTagApi {
   suspend fun getItemTags(
     @Path("account_id") accountId: String,
     @Path("shop_id") shopId: String,
+    @Query("page") page: Int? = null,
   ): ApiResponse<ItemTags>
 
   @GET("{account_id}/api/v1/shopkeeper/item_tags/{id}")

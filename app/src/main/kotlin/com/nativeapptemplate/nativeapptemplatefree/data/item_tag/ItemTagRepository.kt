@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface ItemTagRepository {
   fun getItemTags(
     shopId: String,
+    page: Int? = null,
   ): Flow<ItemTags>
 
   fun getItemTag(

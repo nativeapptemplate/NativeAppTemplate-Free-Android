@@ -8,15 +8,15 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
 
 class TestItemTagRepository : ItemTagRepository {
-  private val itemTagsFlow: MutableSharedFlow<ItemTags> =
-    MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+  private var currentItemTags: ItemTags = ItemTags()
 
   private val itemTagFlow: MutableSharedFlow<ItemTag> =
     MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
-  override fun getItemTags(shopId: String): Flow<ItemTags> = itemTagsFlow
+  override fun getItemTags(shopId: String, page: Int?): Flow<ItemTags> = flow { emit(currentItemTags) }
 
   override fun getItemTag(id: String): Flow<ItemTag> = itemTagFlow
 
@@ -34,7 +34,7 @@ class TestItemTagRepository : ItemTagRepository {
    * A test-only API.
    */
   fun sendItemTags(itemTags: ItemTags) {
-    itemTagsFlow.tryEmit(itemTags)
+    currentItemTags = itemTags
   }
 
   fun sendItemTag(itemTag: ItemTag) {

@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Rectangle
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -31,7 +33,10 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.pullToRefresh
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -132,7 +137,19 @@ private fun ItemTagListContentView(
   onBackClick: () -> Unit,
 ) {
   val isEmpty: Boolean by viewModel.isEmpty().collectAsStateWithLifecycle()
-  val itemTags = uiState.itemTags.getDatumWithRelationships().toMutableList()
+  val itemTags = uiState.itemTags.toMutableList()
+  val listState = rememberLazyListState()
+
+  val prefetchDistance = 3
+  val shouldLoadMore by remember {
+    derivedStateOf {
+      val lastVisibleIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+      lastVisibleIndex >= itemTags.size - prefetchDistance && uiState.hasMorePages && !uiState.isLoadingMore
+    }
+  }
+  LaunchedEffect(shouldLoadMore) {
+    if (shouldLoadMore) viewModel.loadMore()
+  }
 
   Scaffold(
     topBar = {
@@ -172,7 +189,8 @@ private fun ItemTagListContentView(
           .padding(padding),
       ) {
         LazyColumn(
-          Modifier.padding(24.dp),
+          state = listState,
+          modifier = Modifier.padding(24.dp),
         ) {
           item {
             Text(
@@ -211,6 +229,18 @@ private fun ItemTagListContentView(
               )
             }
             HorizontalDivider()
+          }
+          if (uiState.isLoadingMore) {
+            item {
+              Box(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(16.dp),
+                contentAlignment = Alignment.Center,
+              ) {
+                CircularProgressIndicator()
+              }
+            }
           }
         }
         Indicator(
