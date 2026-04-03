@@ -6,6 +6,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTags
+import com.nativeapptemplate.nativeapptemplatefree.model.Meta
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
@@ -88,7 +89,7 @@ class ItemTagListViewModelTest {
     val itemTagsFromRepository = itemTagRepository.getItemTags(shopId).first()
 
     assertEquals(shopFromRepository, uiStateValue.shop)
-    assertEquals(itemTagsFromRepository, uiStateValue.itemTags)
+    assertEquals(itemTagsFromRepository.getDatumWithRelationships(), uiStateValue.itemTags)
   }
 
   @Test
@@ -104,6 +105,78 @@ class ItemTagListViewModelTest {
 
     val uiStateValue = viewModel.uiState.value
     assertFalse(uiStateValue.isLoading)
+  }
+
+  @Test
+  fun paginationMeta_whenPresent_isReflectedInUiState() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTagsPage1)
+
+    viewModel.reload()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(1, uiStateValue.currentPage)
+    assertEquals(2, uiStateValue.totalPages)
+    assertTrue(uiStateValue.hasMorePages)
+  }
+
+  @Test
+  fun loadMore_accumulatesItemsFromNextPage() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTagsPage1)
+
+    viewModel.reload()
+    assertEquals(2, viewModel.uiState.value.itemTags.size)
+
+    itemTagRepository.sendItemTags(testInputItemTagsPage2)
+    viewModel.loadMore()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(3, uiStateValue.itemTags.size)
+    assertEquals(2, uiStateValue.currentPage)
+    assertEquals(2, uiStateValue.totalPages)
+    assertFalse(uiStateValue.hasMorePages)
+  }
+
+  @Test
+  fun loadMore_doesNotFire_whenNoMorePages() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTagsPage2)
+
+    viewModel.reload()
+
+    val itemCountBefore = viewModel.uiState.value.itemTags.size
+    viewModel.loadMore()
+    assertEquals(itemCountBefore, viewModel.uiState.value.itemTags.size)
+    assertFalse(viewModel.uiState.value.isLoadingMore)
+  }
+
+  @Test
+  fun reload_resetsToFirstPage() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTagsPage1)
+
+    viewModel.reload()
+    assertEquals(2, viewModel.uiState.value.itemTags.size)
+
+    itemTagRepository.sendItemTags(testInputItemTagsPage2)
+    viewModel.loadMore()
+    assertEquals(3, viewModel.uiState.value.itemTags.size)
+
+    itemTagRepository.sendItemTags(testInputItemTagsPage1)
+    viewModel.reload()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(2, uiStateValue.itemTags.size)
+    assertEquals(1, uiStateValue.currentPage)
   }
 }
 
@@ -196,4 +269,14 @@ private val testInputItemTags = ItemTags(
 
 private val testInputItemTag = ItemTag(
   datum = testInputItemTagsData.first(),
+)
+
+private val testInputItemTagsPage1 = ItemTags(
+  datum = listOf(testInputItemTagsData[0], testInputItemTagsData[1]),
+  meta = Meta(currentPage = 1, totalPages = 2, totalCount = 3, limit = 2),
+)
+
+private val testInputItemTagsPage2 = ItemTags(
+  datum = listOf(testInputItemTagsData[2]),
+  meta = Meta(currentPage = 2, totalPages = 2, totalCount = 3, limit = 2),
 )

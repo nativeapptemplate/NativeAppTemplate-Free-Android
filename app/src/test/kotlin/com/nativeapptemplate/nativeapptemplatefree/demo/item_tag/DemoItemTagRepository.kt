@@ -36,7 +36,7 @@ class DemoItemTagRepository @Inject constructor(
     emit(itemTag)
   }.flowOn(ioDispatcher)
 
-  override fun getItemTags(shopId: String): Flow<ItemTags> = itemTagsFlow
+  override fun getItemTags(shopId: String, page: Int?): Flow<ItemTags> = itemTagsFlow
 
   override fun getItemTag(id: String): Flow<ItemTag> = itemTagFlow
 

@@ -19,10 +19,12 @@ class ItemTagRepositoryImpl @Inject constructor(
 
   override fun getItemTags(
     shopId: String,
+    page: Int?,
   ) = flow {
     val response = api.getItemTags(
       mtcPreferencesDataSource.userData.first().accountId,
       shopId,
+      page,
     )
     emitApiResponse(response)
   }.flowOn(ioDispatcher)
