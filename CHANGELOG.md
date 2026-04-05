@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-04-05
+
+### Added
+- Implemented pagination for item tags list screen.
+- Implemented CodedError system with NATA-XXXX error codes.
+- Added unit tests for utils, network, and pre-push hook.
+- Added Spotless + ktlint for Kotlin code formatting.
+- Added app version and reorganized settings sections.
+
+### Changed
+- Updated compileSdk and targetSdk to 36.
+- Updated libraries and dependencies.
+- Extracted SnackbarMessageEffect composable.
+- Replaced generic Exception with sealed ApiException hierarchy.
+- Extracted duplicated API error handling into shared extensions.
+
+### Fixed
+- Fixed null safety bugs and resource leak.
+- Fixed security vulnerabilities from audit.
+
 ## [2.0.1] - 2025-06-24
 
 ### Changed
