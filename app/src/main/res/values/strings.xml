@@ -159,11 +159,14 @@
   <string name="dark_mode_preference">Dark Mode Preference</string>
   <string name="my_account">My Account</string>
   <string name="profile">Profile</string>
-  <string name="information">Information</string>
+  <string name="support">Support</string>
+  <string name="about">About</string>
+  <string name="app_section">App</string>
+  <string name="version">Version</string>
+  <string name="website">Website</string>
   <string name="how_to_use">How To Use</string>
   <string name="support_website">Support Website</string>
   <string name="faqs">FAQs</string>
-  <string name="discussions">Discussions</string>
   <string name="rate_app">Rate or Review the App</string>
   <string name="contact">Contact</string>
   <string name="email_app_is_not_found">Email app is not found.</string>

@@ -6,13 +6,14 @@ import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Forum
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Language
@@ -254,38 +255,10 @@ private fun SettingsContentView(
           ListItem(
             headlineContent = {
               Text(
-                stringResource(R.string.information),
+                stringResource(R.string.support),
                 style = MaterialTheme.typography.titleMedium,
               )
             },
-          )
-          HorizontalDivider()
-        }
-        item {
-          ListItem(
-            headlineContent = {
-              Text(
-                stringResource(R.string.support_website),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-              )
-            },
-            leadingContent = {
-              Icon(
-                Icons.Outlined.Language,
-                contentDescription = stringResource(R.string.support_website),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-            },
-            modifier = Modifier
-              .clickable {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.SUPPORT_WEBSITE_URL),
-                  ),
-                )
-              },
           )
           HorizontalDivider()
         }
@@ -336,34 +309,6 @@ private fun SettingsContentView(
             modifier = Modifier
               .clickable {
                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NatConstants.FAQS_URL)))
-              },
-          )
-          HorizontalDivider()
-        }
-        item {
-          ListItem(
-            headlineContent = {
-              Text(
-                stringResource(R.string.discussions),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-              )
-            },
-            leadingContent = {
-              Icon(
-                Icons.Outlined.Forum,
-                contentDescription = stringResource(R.string.discussions),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-            },
-            modifier = Modifier
-              .clickable {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.DISCUSSIONS_URL),
-                  ),
-                )
               },
           )
           HorizontalDivider()
@@ -422,6 +367,56 @@ private fun SettingsContentView(
                 }
               },
           )
+        }
+
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                "",
+                style = MaterialTheme.typography.titleMedium,
+              )
+            },
+          )
+        }
+
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                stringResource(R.string.about),
+                style = MaterialTheme.typography.titleMedium,
+              )
+            },
+          )
+          HorizontalDivider()
+        }
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                stringResource(R.string.website),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+              )
+            },
+            leadingContent = {
+              Icon(
+                Icons.Outlined.Language,
+                contentDescription = stringResource(R.string.website),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            },
+            modifier = Modifier
+              .clickable {
+                context.startActivity(
+                  Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(NatConstants.SUPPORT_WEBSITE_URL),
+                  ),
+                )
+              },
+          )
           HorizontalDivider()
         }
         item {
@@ -431,6 +426,13 @@ private fun SettingsContentView(
                 stringResource(R.string.privacy_policy),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
+              )
+            },
+            leadingContent = {
+              Icon(
+                Icons.Outlined.Info,
+                contentDescription = stringResource(R.string.privacy_policy),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
               )
             },
             modifier = Modifier
@@ -454,6 +456,13 @@ private fun SettingsContentView(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
               )
             },
+            leadingContent = {
+              Icon(
+                Icons.Outlined.Info,
+                contentDescription = stringResource(R.string.terms_of_use),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            },
             modifier = Modifier
               .clickable {
                 context.startActivity(
@@ -464,7 +473,47 @@ private fun SettingsContentView(
                 )
               },
           )
+        }
+
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                "",
+                style = MaterialTheme.typography.titleMedium,
+              )
+            },
+          )
+        }
+
+        item {
+          ListItem(
+            headlineContent = {
+              Text(
+                stringResource(R.string.app_section),
+                style = MaterialTheme.typography.titleMedium,
+              )
+            },
+          )
           HorizontalDivider()
+        }
+        item {
+          ListItem(
+            headlineContent = {
+              Row {
+                Text(
+                  stringResource(R.string.version),
+                  style = MaterialTheme.typography.titleMedium,
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                  "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                  style = MaterialTheme.typography.titleMedium,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+              }
+            },
+          )
         }
 
         item {
