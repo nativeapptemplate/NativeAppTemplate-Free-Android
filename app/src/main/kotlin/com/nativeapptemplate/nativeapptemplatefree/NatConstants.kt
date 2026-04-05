@@ -8,7 +8,6 @@ object NatConstants {
   const val HOW_TO_USE_URL: String = "https://myturntag.com/how"
   const val SUPPORT_WEBSITE_URL: String = "https://nativeapptemplate.com"
   const val FAQS_URL: String = "https://nativeapptemplate.com/faqs"
-  const val DISCUSSIONS_URL: String = "https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/discussions"
   const val PRIVACY_POLICY_URL: String = "https://nativeapptemplate.com/privacy"
   const val TERMS_OF_USE_URL: String = "https://nativeapptemplate.com/terms"
 
