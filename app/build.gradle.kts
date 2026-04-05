@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "com.nativeapptemplate.nativeapptemplatefree"
-    targetSdk = 35
+    targetSdk = 36
     minSdk = 26
     versionCode = 3
     versionName = "2.0.1"
