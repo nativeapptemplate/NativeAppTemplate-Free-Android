@@ -1,6 +1,6 @@
 # NativeAppTemplate-Free-Android
 
-NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and [background tag reading](https://developer.apple.com/documentation/corenfc/adding-support-for-background-tag-reading).  
+NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and [background tag reading](https://developer.android.com/develop/connectivity/nfc/nfc).  
 This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).  
 
 The iOS version is available here: [NativeAppTemplate-Free-iOS](https://github.com/nativeapptemplate/NativeAppTemplate-Free-iOS).  
@@ -37,9 +37,11 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 - Sign Up / Sign In / Sign Out
 - Email Confirmation
 - Forgot Password
-- Input Validation
 - CRUD Operations for Shops (Create/Read/Update/Delete)
-- CRUD Operations for Shops’ Nested Resource, Number Tags (ItemTags) (Create/Read/Update/Delete)
+- CRUD Operations for Shops' Nested Resource, Number Tags (ItemTags) (Create/Read/Update/Delete)
+- Force App Version Update
+- Force Privacy Policy Version Update
+- Force Terms of Use Version Update
 - Generate QR Code Image for Number Tags (ItemTags) with a Centered Number
 - NFC features for Number Tags (ItemTags): Write Application Info to a Tag, Read a Tag, Background Tag Reading
 - And more!
@@ -99,6 +101,7 @@ The full versions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.
 - URL Path-Based Multitenancy (prepends `/:account_id/` to URLs)
 - User Invitation to Organizations
 - Role-Based Permissions and Access Control
+- Organization Switching UI
 
 ## Getting Started
 
