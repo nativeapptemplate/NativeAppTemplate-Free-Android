@@ -48,6 +48,9 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 
 ## NFC Tag Operations
 
+<details>
+<summary><strong>How NFC tag writing and background reading works</strong></summary>
+
 ### Overview  
 
 ![Screenshot showing Overview before](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/overview_before.png "Screenshot showing Overview before")
@@ -91,6 +94,8 @@ This functionality is available in:
 
 > **Note:**  
 > The GIF above shows [MyTurnTag Creator for iOS](https://apps.apple.com/app/myturntag-creator/id1516198303) in action, which may behave slightly differently from **NativeAppTemplate-Free-Android**.
+
+</details>
 
 ## Not Included in the Free Version
 
