@@ -1,7 +1,5 @@
 # NativeAppTemplate-Free-Android
 
-<a href="https://www.producthunt.com/products/nativeapptemplate?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-nativeapptemplate-2-0" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1124956&theme=light" alt="NativeAppTemplate 2.0 - Native iOS + Android + Rails boilerplate, now open source | Product Hunt" width="250" height="54" /></a>
-
 NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and [background tag reading](https://developer.android.com/develop/connectivity/nfc/nfc).  
 This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).  
 
