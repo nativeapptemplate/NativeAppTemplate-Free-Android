@@ -124,7 +124,8 @@ To run this app successfully, ensure you have:
 By default the debug build hits the hosted API (`https://api.nativeapptemplate.com`). To point it at a Rails server running on your LAN, add to `~/.gradle/gradle.properties`:
 
 ```
-NATEMPLATE_API_DOMAIN=192.168.1.6   # LAN IP, or 10.0.2.2 for emulator → host
+# Use your LAN IP, or 10.0.2.2 for emulator → host
+NATEMPLATE_API_DOMAIN=192.168.1.6
 NATEMPLATE_API_PORT=3000
 NATEMPLATE_API_SCHEME=http
 ```
