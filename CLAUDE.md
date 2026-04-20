@@ -77,9 +77,4 @@ cp scripts/pre-push .git/hooks/pre-push
 
 ## Connecting to Local API
 
-In `app/build.gradle.kts`, swap the debug `buildConfigField` values:
-```kotlin
-buildConfigField("String", "DOMAIN","\"192.168.1.21\"")
-buildConfigField("String", "PORT","\"3000\"")
-buildConfigField("String", "SCHEME","\"http\"")
-```
+The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATEMPLATE_API_DOMAIN`, `NATEMPLATE_API_PORT`, and `NATEMPLATE_API_SCHEME` via `project.findProperty(...)` (not `System.getenv` — Android Studio launched from Finder/Dock does not inherit shell env). Set them in `~/.gradle/gradle.properties` (user-global, per-developer); the same config then works from both the terminal and the IDE. Falls back to `https://api.nativeapptemplate.com` when unset. One-off override: `./gradlew -PNATEMPLATE_API_DOMAIN=... assembleDebug`.
