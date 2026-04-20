@@ -77,9 +77,7 @@ cp scripts/pre-push .git/hooks/pre-push
 
 ## Connecting to Local API
 
-In `app/build.gradle.kts`, swap the debug `buildConfigField` values:
-```kotlin
-buildConfigField("String", "DOMAIN","\"192.168.1.21\"")
-buildConfigField("String", "PORT","\"3000\"")
-buildConfigField("String", "SCHEME","\"http\"")
+The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATEMPLATE_API_DOMAIN`, `NATEMPLATE_API_PORT`, and `NATEMPLATE_API_SCHEME` from the environment (`System.getenv`), falling back to `https://api.nativeapptemplate.com` when unset. Invoke Gradle with:
+```bash
+NATEMPLATE_API_DOMAIN=<your-lan-ip> NATEMPLATE_API_PORT=3000 NATEMPLATE_API_SCHEME=http ./gradlew assembleDebug
 ```

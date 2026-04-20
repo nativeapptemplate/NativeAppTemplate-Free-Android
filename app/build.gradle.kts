@@ -26,12 +26,9 @@ android {
     debug {
       extra["alwaysUpdateBuildId"] = false
       isDebuggable = true
-      buildConfigField("String", "DOMAIN", "\"api.nativeapptemplate.com\"")
-      buildConfigField("String", "PORT", "\"\"")
-      buildConfigField("String", "SCHEME", "\"https\"")
-//      buildConfigField("String", "DOMAIN","\"192.168.1.21\"")
-//      buildConfigField("String", "PORT","\"3000\"")
-//      buildConfigField("String", "SCHEME","\"http\"")
+      buildConfigField("String", "DOMAIN", "\"${System.getenv("NATEMPLATE_API_DOMAIN") ?: "api.nativeapptemplate.com"}\"")
+      buildConfigField("String", "PORT",   "\"${System.getenv("NATEMPLATE_API_PORT")   ?: ""}\"")
+      buildConfigField("String", "SCHEME", "\"${System.getenv("NATEMPLATE_API_SCHEME") ?: "https"}\"")
     }
 
     release {

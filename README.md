@@ -121,13 +121,13 @@ To run this app successfully, ensure you have:
 
 ## Running with the NativeAppTemplate-API on localhost
 
-To connect to a local API server, update the following configuration in the build.gradle.kts (Module: app):
+To connect to a local API server, set the `NATEMPLATE_API_*` env vars when invoking Gradle:
 
-```kotlin
-buildConfigField("String", "DOMAIN","\"192.168.1.21\"")
-buildConfigField("String", "PORT","\"3000\"")
-buildConfigField("String", "SCHEME","\"http\"")
+```bash
+NATEMPLATE_API_DOMAIN=<your-lan-ip> NATEMPLATE_API_PORT=3000 NATEMPLATE_API_SCHEME=http ./gradlew assembleDebug
 ```
+
+The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATEMPLATE_API_DOMAIN`, `NATEMPLATE_API_PORT`, and `NATEMPLATE_API_SCHEME` via `System.getenv(...)`, falling back to `https://api.nativeapptemplate.com` when unset. These are evaluated at Gradle configuration time, so Android Studio's built-in run action needs to be launched with the env vars set (or use the Gradle-properties approach as an alternative).
 
 ## Blog
 
