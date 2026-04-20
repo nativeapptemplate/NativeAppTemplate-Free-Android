@@ -121,10 +121,11 @@ To run this app successfully, ensure you have:
 
 ## Running with the NativeAppTemplate-API on localhost
 
-By default the debug build hits the hosted API (`https://api.nativeapptemplate.com`). To point it at a Rails server running on your LAN, add the following to `~/.gradle/gradle.properties` (here `~` is your user home directory — `/Users/<you>` on macOS, `/home/<you>` on Linux, `C:\Users\<you>` on Windows; create the file if it doesn't exist):
+By default the debug build hits the hosted API (`https://api.nativeapptemplate.com`). To point it at a Rails server running on your Wi-Fi, add the following to `~/.gradle/gradle.properties` (here `~` is your user home directory — `/Users/<you>` on macOS, `/home/<you>` on Linux, `C:\Users\<you>` on Windows; create the file if it doesn't exist):
 
 ```
-# Use your LAN IP, or 10.0.2.2 for emulator → host
+# Use your current Wi-Fi IP (macOS: `ipconfig getifaddr en0`), or 10.0.2.2 for emulator → host.
+# Never use 127.0.0.1, localhost, or 0.0.0.0 — Rails and this app must agree on one reachable address.
 NATEMPLATE_API_DOMAIN=192.168.1.6
 NATEMPLATE_API_PORT=3000
 NATEMPLATE_API_SCHEME=http
@@ -132,7 +133,7 @@ NATEMPLATE_API_SCHEME=http
 
 Then `./gradlew assembleDebug` — or Build → Rebuild Project from Android Studio. The debug `buildConfigField` entries in `app/build.gradle.kts` read these via `project.findProperty(...)`, so the same config works from both the terminal and the IDE. Remove the three properties to fall back to the hosted default. For a one-off override: `./gradlew -PNATEMPLATE_API_DOMAIN=192.168.1.6 -PNATEMPLATE_API_PORT=3000 -PNATEMPLATE_API_SCHEME=http assembleDebug`.
 
-Cleartext HTTP to LAN IPs is already permitted in debug via `app/src/debug/res/xml/network_security_config.xml`; the release config (in `app/src/main/`) keeps `api.nativeapptemplate.com` HTTPS-only.
+Cleartext HTTP to private IPs is already permitted in debug via `app/src/debug/res/xml/network_security_config.xml`; the release config (in `app/src/main/`) keeps `api.nativeapptemplate.com` HTTPS-only.
 
 ## Blog
 
