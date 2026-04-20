@@ -121,13 +121,17 @@ To run this app successfully, ensure you have:
 
 ## Running with the NativeAppTemplate-API on localhost
 
-To connect to a local API server, set the `NATEMPLATE_API_*` env vars when invoking Gradle:
+By default the debug build hits the hosted API (`https://api.nativeapptemplate.com`). To point it at a Rails server running on your LAN, add to `~/.gradle/gradle.properties`:
 
-```bash
-NATEMPLATE_API_DOMAIN=<your-lan-ip> NATEMPLATE_API_PORT=3000 NATEMPLATE_API_SCHEME=http ./gradlew assembleDebug
+```
+NATEMPLATE_API_DOMAIN=192.168.1.6   # LAN IP, or 10.0.2.2 for emulator → host
+NATEMPLATE_API_PORT=3000
+NATEMPLATE_API_SCHEME=http
 ```
 
-The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATEMPLATE_API_DOMAIN`, `NATEMPLATE_API_PORT`, and `NATEMPLATE_API_SCHEME` via `System.getenv(...)`, falling back to `https://api.nativeapptemplate.com` when unset. These are evaluated at Gradle configuration time, so Android Studio's built-in run action needs to be launched with the env vars set (or use the Gradle-properties approach as an alternative).
+Then `./gradlew assembleDebug` — or Build → Rebuild Project from Android Studio. The debug `buildConfigField` entries in `app/build.gradle.kts` read these via `project.findProperty(...)`, so the same config works from both the terminal and the IDE. Remove the three properties to fall back to the hosted default. For a one-off override: `./gradlew -PNATEMPLATE_API_DOMAIN=192.168.1.6 -PNATEMPLATE_API_PORT=3000 -PNATEMPLATE_API_SCHEME=http assembleDebug`.
+
+Cleartext HTTP to LAN IPs is already permitted in debug via `app/src/debug/res/xml/network_security_config.xml`; the release config (in `app/src/main/`) keeps `api.nativeapptemplate.com` HTTPS-only.
 
 ## Blog
 
