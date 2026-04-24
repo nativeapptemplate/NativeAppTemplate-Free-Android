@@ -253,14 +253,14 @@ private fun ShopSettingsContentView(
           ListItem(
             headlineContent = {
               Text(
-                stringResource(R.string.label_shop_settings_manage_number_tags),
+                stringResource(R.string.label_shop_settings_manage_item_tags),
                 style = MaterialTheme.typography.titleMedium,
               )
             },
             leadingContent = {
               Icon(
                 Icons.Outlined.Rectangle,
-                contentDescription = stringResource(R.string.label_shop_settings_manage_number_tags),
+                contentDescription = stringResource(R.string.label_shop_settings_manage_item_tags),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
               )
             },

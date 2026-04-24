@@ -263,7 +263,7 @@ private fun TopAppBar(
       containerColor = MaterialTheme.colorScheme.primaryContainer,
       titleContentColor = MaterialTheme.colorScheme.primary,
     ),
-    title = { Text(stringResource(R.string.label_shop_settings_manage_number_tags)) },
+    title = { Text(stringResource(R.string.label_shop_settings_manage_item_tags)) },
     navigationIcon = {
       IconButton(onClick = {
         onBackClick()
