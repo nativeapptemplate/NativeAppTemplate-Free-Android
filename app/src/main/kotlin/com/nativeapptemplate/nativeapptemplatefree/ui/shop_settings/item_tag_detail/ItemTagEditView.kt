@@ -144,7 +144,7 @@ fun ItemTagEditContentView(
         supportingText = {
           Column {
             Text(
-              text = "Tag Number must be a 2-${uiState.maximumQueueNumberLength} alphanumeric characters.",
+              text = "Name must be a 2-${uiState.maximumQueueNumberLength} alphanumeric characters.",
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

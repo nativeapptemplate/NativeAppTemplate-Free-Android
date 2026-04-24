@@ -107,16 +107,16 @@
 
   <string name="label_shop_settings">Shop Settings</string>
   <string name="label_shop_settings_basic_settings">Basic Settings</string>
-  <string name="label_shop_settings_manage_number_tags">Manage Number Tags</string>
+  <string name="label_shop_settings_manage_item_tags">Manage Item Tags</string>
   <string name="label_shop_settings_number_tags_webpage">Number Tags Webpage</string>
   <string name="reset_number_tags_description">Reset all number tag statuses.</string>
   <string name="message_shop_reset">All number tags reset.</string>
 
   <!-- Item Tag -->
-  <string name="tag_number">Tag Number</string>
+  <string name="tag_number">Name</string>
   <string name="label_add_tag">Add Tag</string>
-  <string name="add_tag_description">Add a new number tag and start changing the tag status.</string>
-  <string name="tag_number_is_invalid">Tag number is invalid.</string>
+  <string name="add_tag_description">Add a new item tag and start changing the tag status.</string>
+  <string name="tag_number_is_invalid">Item tag name is invalid.</string>
   <string name="write_server_tag">Write Server Tag</string>
   <string name="write_customer_tag">Write Customer Tag</string>
   <string name="zero_padding">Zero padding(e.g. 07).</string>
