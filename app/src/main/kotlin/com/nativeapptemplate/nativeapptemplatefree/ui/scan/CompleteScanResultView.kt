@@ -96,7 +96,7 @@ private fun SucceededView(
           .fillMaxWidth(),
       ) {
         Text(
-          completeScanResult.itemTagData.queueNumber,
+          completeScanResult.itemTagData.name,
           style = MaterialTheme.typography.displaySmall,
           color = LocalCustomColorScheme.current.onSuccessContainer,
         )

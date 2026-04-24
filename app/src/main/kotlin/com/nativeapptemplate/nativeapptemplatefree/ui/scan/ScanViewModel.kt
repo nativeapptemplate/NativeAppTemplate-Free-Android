@@ -181,12 +181,8 @@ class ScanViewModel @Inject constructor(
           val itemTagData = ItemTagData(itemTag)
           completeScanResult.itemTagData = itemTagData
 
-          if (itemTagData.alreadyCompleted) {
-            _uiState.update { it.copy(isAlreadyCompleted = true) }
-            completeScanResult.completeScanResultType = CompleteScanResultType.Completed
-          } else {
-            completeScanResult.completeScanResultType = CompleteScanResultType.Completed
-          }
+          // TODO: removed in Phase 2A-2 — alreadyCompleted branch dropped with ItemTag schema v2
+          completeScanResult.completeScanResultType = CompleteScanResultType.Completed
 
           loginRepository.setCompleteScanResult(completeScanResult)
 

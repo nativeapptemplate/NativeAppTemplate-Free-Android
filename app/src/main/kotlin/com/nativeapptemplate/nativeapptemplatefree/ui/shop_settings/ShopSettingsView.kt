@@ -14,7 +14,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AddAlert
 import androidx.compose.material.icons.outlined.Rectangle
 import androidx.compose.material.icons.outlined.Storefront
-import androidx.compose.material.icons.outlined.Web
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -55,7 +54,6 @@ internal fun ShopSettingsView(
 
   onShowBasicSettingsClick: (String) -> Unit,
   onShowItemTagListClick: (String) -> Unit,
-  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
@@ -92,7 +90,6 @@ internal fun ShopSettingsView(
 
     onShowBasicSettingsClick = onShowBasicSettingsClick,
     onShowItemTagListClick = onShowItemTagListClick,
-    onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
 
     onBackClick = onBackClick,
   )
@@ -105,7 +102,6 @@ fun ShopSettingsView(
 
   onShowBasicSettingsClick: (String) -> Unit,
   onShowItemTagListClick: (String) -> Unit,
-  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onBackClick: () -> Unit,
 ) {
@@ -115,7 +111,6 @@ fun ShopSettingsView(
 
     onShowBasicSettingsClick = onShowBasicSettingsClick,
     onShowItemTagListClick = onShowItemTagListClick,
-    onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
 
     onBackClick = onBackClick,
   )
@@ -128,7 +123,6 @@ private fun ContentView(
 
   onShowBasicSettingsClick: (String) -> Unit,
   onShowItemTagListClick: (String) -> Unit,
-  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onBackClick: () -> Unit,
 ) {
@@ -141,7 +135,6 @@ private fun ContentView(
 
       onShowBasicSettingsClick = onShowBasicSettingsClick,
       onShowItemTagListClick = onShowItemTagListClick,
-      onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
 
       onBackClick = onBackClick,
     )
@@ -157,7 +150,6 @@ private fun ShopSettingsContentView(
 
   onShowBasicSettingsClick: (String) -> Unit,
   onShowItemTagListClick: (String) -> Unit,
-  onShowNumberTagsWebpageListClick: (String) -> Unit,
 
   onBackClick: () -> Unit,
 ) {
@@ -266,41 +258,6 @@ private fun ShopSettingsContentView(
             },
             modifier = Modifier
               .clickable { uiState.shop.getData()?.id?.let { onShowItemTagListClick(it) } },
-          )
-
-          HorizontalDivider()
-        }
-
-        item {
-          ListItem(
-            headlineContent = {
-              Text(
-                "",
-                style = MaterialTheme.typography.titleMedium,
-              )
-            },
-          )
-        }
-
-        item {
-          HorizontalDivider()
-
-          ListItem(
-            headlineContent = {
-              Text(
-                stringResource(R.string.label_shop_settings_number_tags_webpage),
-                style = MaterialTheme.typography.titleMedium,
-              )
-            },
-            leadingContent = {
-              Icon(
-                Icons.Outlined.Web,
-                contentDescription = stringResource(R.string.label_shop_settings_number_tags_webpage),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-            },
-            modifier = Modifier
-              .clickable { uiState.shop.getData()?.id?.let { onShowNumberTagsWebpageListClick(it) } },
           )
 
           HorizontalDivider()

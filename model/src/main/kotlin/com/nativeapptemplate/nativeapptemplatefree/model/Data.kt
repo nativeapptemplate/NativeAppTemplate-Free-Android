@@ -39,10 +39,6 @@ data class Data(
     return ItemTagState.fromParam(getState())
   }
 
-  fun getScanState(): ScanState? {
-    return ScanState.fromParam(attributes?.scanState)
-  }
-
   fun getToken(): String? = attributes?.token
 
   fun getClient(): String? = attributes?.client
@@ -59,11 +55,7 @@ data class Data(
 
   fun getCurrentAccountName(): String? = attributes?.accountName
 
-  fun getQueueNumber(): String = attributes?.queueNumber ?: ""
-
-  fun getCustomerReadAt(): String = attributes?.customerReadAt ?: ""
-
-  fun getAlreadyCompleted(): Boolean = attributes?.alreadyCompleted ?: false
+  fun getPosition(): Int? = attributes?.position
 
   fun getCompletedAt(): String = attributes?.completedAt ?: ""
 
@@ -78,6 +70,4 @@ data class Data(
   fun getScannedItemTagsCount(): Int = attributes?.scannedItemTagsCount ?: 0
 
   fun getCompletedItemTagsCount(): Int = attributes?.completedItemTagsCount ?: 0
-
-  fun getDisplayShopServerPath(): String = attributes?.displayShopServerPath ?: ""
 }

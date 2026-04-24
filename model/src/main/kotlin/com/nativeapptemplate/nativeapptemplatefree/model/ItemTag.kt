@@ -23,21 +23,19 @@ data class ItemTag(
 
   fun getId(): String = getData()?.id ?: ""
 
-  fun getQueueNumber(): String = getData()?.getQueueNumber() ?: ""
+  fun getName(): String = getData()?.getName() ?: ""
+
+  fun getDescription(): String = getData()?.getDescription() ?: ""
+
+  fun getPosition(): Int? = getData()?.getPosition()
 
   fun getState(): String = getData()?.getState() ?: ""
-
-  fun getScanState(): ScanState = getData()?.getScanState() ?: ScanState.Unscanned
 
   fun getShopId(): String = getData()?.getShopId() ?: ""
 
   fun getShopName(): String = getData()?.getShopName() ?: ""
 
-  fun getCustomerReadAt(): String? = getData()?.getCustomerReadAt()
-
   fun getCompletedAt(): String? = getData()?.getCompletedAt()
-
-  fun getAlreadyCompleted(): Boolean = getData()?.getAlreadyCompleted() ?: false
 
   fun getCreatedAt(): String? = getData()?.getCreatedAt()
 }

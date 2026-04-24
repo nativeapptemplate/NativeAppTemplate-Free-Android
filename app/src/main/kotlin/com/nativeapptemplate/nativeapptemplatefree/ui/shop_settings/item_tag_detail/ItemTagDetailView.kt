@@ -220,7 +220,7 @@ private fun ItemTagDetailContentView(
         )
 
         Text(
-          uiState.itemTag.getQueueNumber(),
+          uiState.itemTag.getName(),
           style = MaterialTheme.typography.titleLarge,
           color = MaterialTheme.colorScheme.primary,
           textAlign = TextAlign.Center,
@@ -392,9 +392,9 @@ private fun ItemTagDetailContentView(
                     try {
                       val bitmap = bitmapAsync.await()
                       context.shareImage(
-                        uiState.itemTag.getQueueNumber(),
+                        uiState.itemTag.getName(),
                         bitmap,
-                        uiState.itemTag.getQueueNumber(),
+                        uiState.itemTag.getName(),
                       )
                       // Do something with `bitmap`.
                     } catch (error: Throwable) {
@@ -437,7 +437,7 @@ fun QrCode(
         .background(Color.White),
     ) {
       Text(
-        uiState.itemTag.getQueueNumber(),
+        uiState.itemTag.getName(),
         color = Color.Black,
         fontSize = 7.sp.nonScaledSp,
         textAlign = TextAlign.Center,

@@ -173,15 +173,12 @@ private const val ITEM_TAG_TYPE = "item_tag"
 private const val ITEM_TAG_1_ID = "9712F2DF-DFC7-A3AA-66BC-191203654A1A"
 private const val ITEM_TAG_2_ID = "9712F2DF-DFC7-A3AA-66BC-191203654A1B"
 private const val ITEM_TAG_3_ID = "9712F2DF-DFC7-A3AA-66BC-191203654A1C"
-private const val ITEM_TAG_1_QUEUE_NUMBER = "A001"
-private const val ITEM_TAG_2_QUEUE_NUMBER = "A002"
-private const val ITEM_TAG_3_QUEUE_NUMBER = "A003"
+private const val ITEM_TAG_1_NAME = "A001"
+private const val ITEM_TAG_2_NAME = "A002"
+private const val ITEM_TAG_3_NAME = "A003"
 private const val ITEM_TAG_STATE = "idled"
-private const val ITEM_TAG_SCAN_STATE = "unscanned"
 private const val ITEM_TAG_CREATED_AT = "2025-01-02T12:00:00.000Z"
-private const val ITEM_TAG_CUSTOMER_READ_AT = "2025-01-02T12:00:01.000Z"
 private const val ITEM_TAG_COMPLETED_AT = "2025-01-02T12:00:03.000Z"
-private const val ITEM_TAG_ALREADY_COMPLETED = false
 
 private val testInputItemTagsData = listOf(
   Data(
@@ -189,14 +186,13 @@ private val testInputItemTagsData = listOf(
     type = ITEM_TAG_TYPE,
     attributes = Attributes(
       shopId = SHOP_ID,
-      queueNumber = ITEM_TAG_1_QUEUE_NUMBER,
+      name = ITEM_TAG_1_NAME,
+      description = "",
+      position = 1,
       state = ITEM_TAG_STATE,
-      scanState = ITEM_TAG_SCAN_STATE,
       createdAt = ITEM_TAG_CREATED_AT,
       shopName = SHOP_NAME,
-      customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
     ),
   ),
   Data(
@@ -204,14 +200,13 @@ private val testInputItemTagsData = listOf(
     type = ITEM_TAG_TYPE,
     attributes = Attributes(
       shopId = SHOP_ID,
-      queueNumber = ITEM_TAG_2_QUEUE_NUMBER,
+      name = ITEM_TAG_2_NAME,
+      description = "",
+      position = 2,
       state = ITEM_TAG_STATE,
-      scanState = ITEM_TAG_SCAN_STATE,
       createdAt = ITEM_TAG_CREATED_AT,
       shopName = SHOP_NAME,
-      customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
     ),
   ),
   Data(
@@ -219,14 +214,13 @@ private val testInputItemTagsData = listOf(
     type = ITEM_TAG_TYPE,
     attributes = Attributes(
       shopId = SHOP_ID,
-      queueNumber = ITEM_TAG_3_QUEUE_NUMBER,
+      name = ITEM_TAG_3_NAME,
+      description = "",
+      position = 3,
       state = ITEM_TAG_STATE,
-      scanState = ITEM_TAG_SCAN_STATE,
       createdAt = ITEM_TAG_CREATED_AT,
       shopName = SHOP_NAME,
-      customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
     ),
   ),
 )

@@ -18,7 +18,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagType
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
-import com.nativeapptemplate.nativeapptemplatefree.model.ScanState
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResultType
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
@@ -265,14 +264,13 @@ class NatPreferencesDataSource @Inject constructor(
     return ItemTagDataProto.newBuilder()
       .setId(itemTagData.id)
       .setShopId(itemTagData.shopId)
-      .setQueueNumber(itemTagData.queueNumber)
+      .setName(itemTagData.name)
+      .setDescription(itemTagData.description)
+      .setPosition(itemTagData.position ?: 0)
       .setState(itemTagData.state.param)
-      .setScanState(itemTagData.scanState.param)
       .setCreatedAt(itemTagData.createdAt)
-      .setCustomerReadAt(itemTagData.customerReadAt)
       .setCompletedAt(itemTagData.completedAt)
       .setShopName(itemTagData.shopName)
-      .setAlreadyCompleted(itemTagData.alreadyCompleted)
       .build()
   }
 
@@ -505,14 +503,13 @@ class NatPreferencesDataSource @Inject constructor(
     return ItemTagData(
       id = itemTagDataProto.id,
       shopId = itemTagDataProto.shopId,
-      queueNumber = itemTagDataProto.queueNumber,
+      name = itemTagDataProto.name,
+      description = itemTagDataProto.description,
+      position = itemTagDataProto.position.takeIf { it != 0 },
       state = ItemTagState.fromParam(itemTagDataProto.state) ?: ItemTagState.Idled,
-      scanState = ScanState.fromParam(itemTagDataProto.scanState) ?: ScanState.Unscanned,
       createdAt = itemTagDataProto.createdAt,
-      customerReadAt = itemTagDataProto.customerReadAt,
       completedAt = itemTagDataProto.completedAt,
       shopName = itemTagDataProto.shopName,
-      alreadyCompleted = itemTagDataProto.alreadyCompleted,
     )
   }
 }

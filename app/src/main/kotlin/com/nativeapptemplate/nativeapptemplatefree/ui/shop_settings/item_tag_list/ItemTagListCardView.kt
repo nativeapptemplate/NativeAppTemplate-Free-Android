@@ -16,7 +16,7 @@ fun ItemTagListCardView(
   ListItem(
     headlineContent = {
       Text(
-        data.getQueueNumber(),
+        data.getName(),
         style = MaterialTheme.typography.titleMedium,
       )
     },

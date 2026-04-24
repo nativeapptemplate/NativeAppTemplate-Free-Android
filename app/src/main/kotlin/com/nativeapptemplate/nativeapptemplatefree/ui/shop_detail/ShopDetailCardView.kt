@@ -14,9 +14,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
-import com.nativeapptemplate.nativeapptemplatefree.model.ScanState
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.CompletedTag
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.CustomerScannedTag
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdlingTag
 import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardTimeString
 
@@ -29,37 +27,19 @@ fun ShopDetailCardView(
     verticalAlignment = Alignment.CenterVertically,
     modifier = Modifier.padding(16.dp),
   ) {
-    val queueNumberFontSize = with(LocalDensity.current) { MaterialTheme.typography.titleLarge.fontSize.value.dp.toSp() }
+    val nameFontSize = with(LocalDensity.current) { MaterialTheme.typography.titleLarge.fontSize.value.dp.toSp() }
     val timestampFontSize = with(LocalDensity.current) { MaterialTheme.typography.bodySmall.fontSize.value.dp.toSp() }
-    val customerReadAt = data.getCustomerReadAt()
     val completedAt = data.getCompletedAt()
 
     Text(
-      data.getQueueNumber(),
+      data.getName(),
       style = MaterialTheme.typography.titleLarge,
-      fontSize = queueNumberFontSize,
+      fontSize = nameFontSize,
     )
 
     Spacer(modifier = Modifier.weight(1f))
 
-    Column(
-      horizontalAlignment = Alignment.End,
-    ) {
-      data.getScanState()?.let { scanState ->
-        if (scanState == ScanState.Scanned) {
-          CustomerScannedTag()
-          Text(
-            customerReadAt.cardTimeString(),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier
-              .padding(top = 4.dp),
-            fontSize = timestampFontSize,
-          )
-        }
-      }
-    }
-
-    Spacer(modifier = Modifier.weight(1f))
+    // TODO: removed in Phase 2A-2 — scanState/customerReadAt column dropped with ItemTag schema v2
 
     Column(
       horizontalAlignment = Alignment.End,

@@ -43,7 +43,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withLink
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -242,35 +241,14 @@ private fun Header(
     )
 
     val instruction1 = buildAnnotatedString {
-      withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-        append("1. ")
-        append(stringResource(R.string.open))
-        append(" ")
-      }
-
-      withLink(
-        LinkAnnotation.Url(
-          uiState.shop.displayShopServerUrlString(NatConstants.baseUrlString()),
-          TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
-        ),
-      ) {
-        append(stringResource(R.string.server_number_tags_webpage))
-      }
-
-      withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-        append(".")
-      }
-    }
-
-    val instruction2 = buildAnnotatedString {
-      append("2. ")
+      append("1. ")
       append(stringResource(R.string.swipe_number_tag_below))
       append(" ")
       append(stringResource(R.string.tap_displayed_button))
     }
 
-    val instruction3 = buildAnnotatedString {
-      append("3. ")
+    val instruction2 = buildAnnotatedString {
+      append("2. ")
       append(stringResource(R.string.server_number_tags_webpage_will_be_updated))
     }
 
@@ -285,15 +263,13 @@ private fun Header(
       }
     }
 
-    Text(instruction1)
-
     Text(
-      instruction2,
+      instruction1,
       style = MaterialTheme.typography.bodyMedium,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     Text(
-      instruction3,
+      instruction2,
       style = MaterialTheme.typography.bodyMedium,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
