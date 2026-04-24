@@ -24,7 +24,7 @@ data class Meta(
   var shouldUpdateTerms: Boolean? = null,
 
   @SerialName("maximum_queue_number_length")
-  var maximumQueueNumberLength: Int = 0,
+  var maximumQueueNumberLength: Int = 256,
 
   @SerialName("shop_limit_count")
   var shopLimitCount: Int = 0,

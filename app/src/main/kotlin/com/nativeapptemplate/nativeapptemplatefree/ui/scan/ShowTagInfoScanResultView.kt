@@ -13,7 +13,6 @@ import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.FlagCircle
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Rectangle
 import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material3.Card
@@ -32,7 +31,6 @@ import androidx.compose.ui.unit.sp
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagType
-import com.nativeapptemplate.nativeapptemplatefree.model.ScanState
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResult
 import com.nativeapptemplate.nativeapptemplatefree.model.ShowTagInfoScanResultType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScaledSp
@@ -113,7 +111,7 @@ private fun SucceededView(
           .fillMaxWidth(),
       ) {
         Text(
-          showTagInfoScanResult.itemTagData.queueNumber,
+          showTagInfoScanResult.itemTagData.name,
           color = itemTagTypeColor,
           style = MaterialTheme.typography.displaySmall,
         )
@@ -194,20 +192,7 @@ private fun SucceededView(
           }
         }
 
-        if (itemTagData.scanState == ScanState.Scanned && itemTagData.customerReadAt.isNotBlank()) {
-          InfoRow(
-            Icons.Outlined.People,
-            "scanned by a customer",
-          ) {
-            Text(
-              itemTagData.customerReadAt.cardTimeString(),
-              fontSize = fontSizeLarge.sp.nonScaledSp,
-              lineHeight = lineHeightLarge.sp.nonScaledSp,
-              color = MaterialTheme.colorScheme.inverseOnSurface,
-              style = MaterialTheme.typography.titleLarge,
-            )
-          }
-        }
+        // TODO: removed in Phase 2A-2 — scanState/customerReadAt block dropped with ItemTag schema v2
 
         if (itemTagData.state == ItemTagState.Completed && itemTagData.completedAt.isNotBlank()) {
           InfoRow(

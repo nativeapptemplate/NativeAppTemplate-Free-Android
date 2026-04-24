@@ -48,10 +48,8 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.n
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagEdit
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagList
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagWrite
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToNumberTagsWebpageList
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopBasicSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopSettings
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.numberTagsWebpageListView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopBasicSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
@@ -166,17 +164,11 @@ fun NatNavHost(
       shopSettingsView(
         onShowBasicSettingsClick = { shopId -> navController.navigateToShopBasicSettings(shopId) },
         onShowItemTagListClick = { shopId -> navController.navigateToItemTagList(shopId) },
-        onShowNumberTagsWebpageListClick = { shopId -> navController.navigateToNumberTagsWebpageList(shopId) },
 
         onShowSnackbar = onShowSnackbar,
         onBackClick = navController::popBackStack,
       )
       shopBasicSettingsView(
-        onShowSnackbar = onShowSnackbar,
-        onBackClick = navController::popBackStack,
-      )
-
-      numberTagsWebpageListView(
         onShowSnackbar = onShowSnackbar,
         onBackClick = navController::popBackStack,
       )

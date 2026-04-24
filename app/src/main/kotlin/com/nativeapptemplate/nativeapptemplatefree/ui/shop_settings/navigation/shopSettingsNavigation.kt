@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.NumberTagsWebpageListView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.ShopBasicSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.ShopSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_detail.ItemTagDetailView
@@ -19,8 +18,6 @@ import kotlinx.serialization.Serializable
 @Serializable data class ShopSettingsRoute(val id: String)
 
 @Serializable data class ShopBasicSettingsRoute(val id: String)
-
-@Serializable data class NumberTagsWebpageListRoute(val id: String)
 
 @Serializable data class ItemTagListRoute(val shopId: String)
 
@@ -41,7 +38,6 @@ fun NavController.navigateToShopSettings(shopId: String, navOptions: NavOptionsB
 fun NavGraphBuilder.shopSettingsView(
   onShowBasicSettingsClick: (String) -> Unit,
   onShowItemTagListClick: (String) -> Unit,
-  onShowNumberTagsWebpageListClick: (String) -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
@@ -49,7 +45,6 @@ fun NavGraphBuilder.shopSettingsView(
     ShopSettingsView(
       onShowBasicSettingsClick = onShowBasicSettingsClick,
       onShowItemTagListClick = onShowItemTagListClick,
-      onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
     )
@@ -67,24 +62,6 @@ fun NavGraphBuilder.shopBasicSettingsView(
 ) {
   composable<ShopBasicSettingsRoute> {
     ShopBasicSettingsView(
-      onShowSnackbar = onShowSnackbar,
-      onBackClick = onBackClick,
-    )
-  }
-}
-
-fun NavController.navigateToNumberTagsWebpageList(shopId: String, navOptions: NavOptionsBuilder.() -> Unit = {}) {
-  navigate(route = NumberTagsWebpageListRoute(shopId)) {
-    navOptions()
-  }
-}
-
-fun NavGraphBuilder.numberTagsWebpageListView(
-  onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
-  onBackClick: () -> Unit,
-) {
-  composable<NumberTagsWebpageListRoute> {
-    NumberTagsWebpageListView(
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
     )

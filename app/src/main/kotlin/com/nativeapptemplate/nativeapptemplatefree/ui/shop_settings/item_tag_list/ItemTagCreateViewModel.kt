@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ItemTagCreateUiState(
-  val queueNumber: String = "",
+  val name: String = "",
   val maximumQueueNumberLength: Int = -1,
   val isCreated: Boolean = false,
 
@@ -91,7 +91,7 @@ class ItemTagCreateViewModel @Inject constructor(
 
     viewModelScope.launch {
       val itemTagBodyDetail = ItemTagBodyDetail(
-        queueNumber = uiState.value.queueNumber,
+        name = uiState.value.name,
       )
       val itemTagBody = ItemTagBody(itemTagBodyDetail)
 
@@ -118,27 +118,27 @@ class ItemTagCreateViewModel @Inject constructor(
   }
 
   fun hasInvalidData(): Boolean {
-    return hasInvalidDataQueueNumber()
+    return hasInvalidDataName()
   }
 
-  fun hasInvalidDataQueueNumber(): Boolean {
-    val queueNumber = uiState.value.queueNumber
+  fun hasInvalidDataName(): Boolean {
+    val name = uiState.value.name
 
-    if (queueNumber.isBlank()) return true
+    if (name.isBlank()) return true
 
-    if (!Utility.isAlphanumeric(queueNumber)) return true
+    if (!Utility.isAlphanumeric(name)) return true
 
-    if (!(2 <= queueNumber.length && queueNumber.length <= uiState.value.maximumQueueNumberLength)) {
+    if (!(2 <= name.length && name.length <= uiState.value.maximumQueueNumberLength)) {
       return true
     }
 
     return false
   }
 
-  fun updateQueueNumber(newQueueNumber: String) {
-    if (newQueueNumber.length <= uiState.value.maximumQueueNumberLength) {
+  fun updateName(newName: String) {
+    if (newName.length <= uiState.value.maximumQueueNumberLength) {
       _uiState.update {
-        it.copy(queueNumber = newQueueNumber)
+        it.copy(name = newName)
       }
     }
   }

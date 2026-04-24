@@ -139,8 +139,8 @@ fun ItemTagEditContentView(
           )
         },
         placeholder = { Text("A001") },
-        value = uiState.queueNumber,
-        onValueChange = { viewModel.updateQueueNumber(it) },
+        value = uiState.name,
+        onValueChange = { viewModel.updateName(it) },
         supportingText = {
           Column {
             Text(
@@ -156,7 +156,7 @@ fun ItemTagEditContentView(
             Text(
               text = stringResource(id = R.string.tag_number_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
-              color = if (viewModel.hasInvalidDataQueueNumber()) Color.Red else Color.Transparent,
+              color = if (viewModel.hasInvalidDataName()) Color.Red else Color.Transparent,
             )
           }
         },

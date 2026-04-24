@@ -25,7 +25,6 @@
   <string name="not_connected">⚠️ You aren’t connected to the internet</string>
   <string name="instructions">Instructions</string>
   <string name="open">Open</string>
-  <string name="server_number_tags_webpage">Server Number Tags Webpage</string>
   <string name="learn_more">Learn More</string>
   <string name="are_you_sure">Are you sure?</string>
   <string name="full_name">Full Name</string>
@@ -108,7 +107,6 @@
   <string name="label_shop_settings">Shop Settings</string>
   <string name="label_shop_settings_basic_settings">Basic Settings</string>
   <string name="label_shop_settings_manage_item_tags">Manage Item Tags</string>
-  <string name="label_shop_settings_number_tags_webpage">Number Tags Webpage</string>
   <string name="reset_number_tags_description">Reset all number tag statuses.</string>
   <string name="message_shop_reset">All number tags reset.</string>
 
