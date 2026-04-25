@@ -1,9 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,15 +67,6 @@ internal fun ShopSettingsView(
     onShowSnackbar = onShowSnackbar,
     onMessageShown = viewModel::snackbarMessageShown,
   )
-
-  if (uiState.isShopReset) {
-    NatAlertDialog(
-      dialogTitle = stringResource(R.string.message_shop_reset),
-      onDismissRequest = {
-        onBackClick()
-      },
-    )
-  }
 
   if (uiState.isShopDeleted) {
     val context = LocalContext.current
@@ -153,18 +142,7 @@ private fun ShopSettingsContentView(
 
   onBackClick: () -> Unit,
 ) {
-  var isShowingResetConfirmationDialog by remember { mutableStateOf(false) }
   var isShowingDeleteConfirmationDialog by remember { mutableStateOf(false) }
-
-  if (isShowingResetConfirmationDialog) {
-    NatAlertDialog(
-      dialogTitle = stringResource(R.string.are_you_sure),
-      confirmButtonTitle = stringResource(R.string.title_reset_number_tags),
-      onDismissRequest = { isShowingResetConfirmationDialog = false },
-      onConfirmation = { uiState.shop.getData()?.id?.let { viewModel.resetShop(it) } },
-      icon = Icons.Outlined.AddAlert,
-    )
-  }
 
   if (isShowingDeleteConfirmationDialog) {
     NatAlertDialog(
@@ -261,31 +239,6 @@ private fun ShopSettingsContentView(
           )
 
           HorizontalDivider()
-        }
-
-        item {
-          Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-              .padding(top = 48.dp),
-          ) {
-            MainButtonView(
-              title = stringResource(R.string.title_reset_number_tags),
-              onClick = { isShowingResetConfirmationDialog = true },
-              modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .padding(top = 24.dp),
-            )
-
-            Text(
-              stringResource(R.string.reset_number_tags_description),
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-              textAlign = TextAlign.Center,
-              modifier = Modifier
-                .fillMaxWidth(),
-            )
-          }
         }
 
         item {

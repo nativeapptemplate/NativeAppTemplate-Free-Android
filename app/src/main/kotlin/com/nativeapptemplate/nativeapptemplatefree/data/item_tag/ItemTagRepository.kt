@@ -31,7 +31,7 @@ interface ItemTagRepository {
     id: String,
   ): Flow<ItemTag>
 
-  fun resetItemTag(
+  fun idleItemTag(
     id: String,
   ): Flow<ItemTag>
 }

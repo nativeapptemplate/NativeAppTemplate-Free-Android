@@ -77,10 +77,10 @@ class ItemTagRepositoryImpl @Inject constructor(
     emitApiResponse(response)
   }.flowOn(ioDispatcher)
 
-  override fun resetItemTag(
+  override fun idleItemTag(
     id: String,
   ) = flow {
-    val response = api.resetItemTag(mtcPreferencesDataSource.userData.first().accountId, id)
+    val response = api.idleItemTag(mtcPreferencesDataSource.userData.first().accountId, id)
     emitApiResponse(response)
   }.flowOn(ioDispatcher)
 }

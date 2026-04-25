@@ -5,9 +5,6 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-  <uses-permission android:name="android.permission.NFC" />
-  <uses-feature android:name="android.hardware.nfc" android:required="false" />
-
   <application
           android:name=".NativeAppTemplateApplication"
           android:allowBackup="false"
@@ -21,25 +18,12 @@
           android:networkSecurityConfig="@xml/network_security_config"
           tools:ignore="GoogleAppIndexingWarning"
           tools:targetApi="tiramisu">
-    <!--
-    `singleTask` for Background Tag Reading. Avoid running MainActivity onCreate again with Background Tag Reading.
-    https://qiita.com/takagimeow/items/48b37c55ad8d73d5da88
-    -->
     <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <data android:scheme="https"
-                android:host="api.nativeapptemplate.com"
-                android:path="/scan"
-                />
       </intent-filter>
     </activity>
     <provider

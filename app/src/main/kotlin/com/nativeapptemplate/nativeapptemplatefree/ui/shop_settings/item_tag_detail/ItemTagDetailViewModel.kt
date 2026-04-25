@@ -21,8 +21,6 @@ import javax.inject.Inject
 data class ItemTagDetailUiState(
   val itemTag: ItemTag = ItemTag(),
 
-  val isLock: Boolean = false,
-
   val isDeleted: Boolean = false,
 
   val isLoading: Boolean = true,
@@ -106,12 +104,6 @@ class ItemTagDetailViewModel @Inject constructor(
             )
           }
         }
-    }
-  }
-
-  fun updateIsLock(newIsLock: Boolean) {
-    _uiState.update {
-      it.copy(isLock = newIsLock)
     }
   }
 

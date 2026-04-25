@@ -83,21 +83,6 @@ class ItemTagDetailViewModelTest {
   }
 
   @Test
-  fun stateIsLock_isUpdated() = runTest {
-    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
-
-    itemTagRepository.sendItemTag(testInputItemTag)
-
-    viewModel.reload()
-
-    viewModel.updateIsLock(true)
-    assertTrue(viewModel.uiState.value.isLock)
-
-    viewModel.updateIsLock(false)
-    assertFalse(viewModel.uiState.value.isLock)
-  }
-
-  @Test
   fun stateMessage_isUpdated() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 

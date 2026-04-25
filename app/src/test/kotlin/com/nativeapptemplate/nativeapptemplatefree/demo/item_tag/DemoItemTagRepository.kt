@@ -48,7 +48,7 @@ class DemoItemTagRepository @Inject constructor(
 
   override fun completeItemTag(id: String): Flow<ItemTag> = itemTagFlow
 
-  override fun resetItemTag(id: String): Flow<ItemTag> = itemTagFlow
+  override fun idleItemTag(id: String): Flow<ItemTag> = itemTagFlow
 
   @OptIn(ExperimentalSerializationApi::class)
   private suspend inline fun <reified T> getDataFromJsonFile(fileName: String): T =

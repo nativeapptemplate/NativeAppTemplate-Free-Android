@@ -1,7 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.utils
 
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -63,31 +62,5 @@ class UtilityTest {
   @Test
   fun isAlphanumeric_blank_returnsFalse() {
     assertFalse(Utility.isAlphanumeric(""))
-  }
-
-  // scanUri tests
-
-  @Test
-  fun scanUri_serverType_usesScanPath() {
-    val uri = Utility.scanUri("test-id", "server")
-    assertTrue(uri.toString().contains("/scan?"))
-  }
-
-  @Test
-  fun scanUri_customerType_usesScanCustomerPath() {
-    val uri = Utility.scanUri("test-id", "customer")
-    assertTrue(uri.toString().contains("/scan_customer?"))
-  }
-
-  @Test
-  fun scanUri_containsItemTagId() {
-    val uri = Utility.scanUri("test-id-123", "server")
-    assertEquals("test-id-123", uri.getQueryParameter("item_tag_id"))
-  }
-
-  @Test
-  fun scanUri_containsType() {
-    val uri = Utility.scanUri("test-id", "server")
-    assertEquals("server", uri.getQueryParameter("type"))
   }
 }

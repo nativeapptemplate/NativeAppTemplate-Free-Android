@@ -51,7 +51,6 @@ class ShopDetailViewModelTest {
       savedStateHandle = SavedStateHandle(
         route = ShopDetailRoute(id = testInputShop.datum!!.id!!),
       ),
-      loginRepository = loginRepository,
       shopRepository = shopRepository,
       itemTagRepository = itemTagRepository,
     )
@@ -97,7 +96,7 @@ class ShopDetailViewModelTest {
   }
 
   @Test
-  fun stateIsLoading_whenResettingItemTag_becomesFalse() = runTest {
+  fun stateIsLoading_whenIdlingItemTag_becomesFalse() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
     loginRepository.sendUserData(emptyUserData)
@@ -106,28 +105,10 @@ class ShopDetailViewModelTest {
     itemTagRepository.sendItemTag(testInputItemTag)
 
     viewModel.reload()
-    viewModel.resetItemTag(testInputItemTags.datum.first().id!!)
+    viewModel.idleItemTag(testInputItemTags.datum.first().id!!)
 
     val uiStateValue = viewModel.uiState.value
     assertFalse(uiStateValue.isLoading)
-  }
-
-  @Test
-  fun didShowReadInstructionsTip_whenUpdatingDidShowReadInstructionsTip_isSavedInPreference() = runTest {
-    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
-
-    val userData = emptyUserData.copy(didShowReadInstructionsTip = false)
-    loginRepository.sendUserData(userData)
-    shopRepository.sendShop(testInputShop)
-    itemTagRepository.sendItemTags(testInputItemTags)
-
-    viewModel.reload()
-    assertFalse(viewModel.uiState.value.didShowReadInstructionsTip)
-
-    viewModel.updateDidShowReadInstructionsTip(true)
-
-    val uiStateValue = viewModel.uiState.value
-    assertTrue(uiStateValue.didShowReadInstructionsTip)
   }
 
   @Test

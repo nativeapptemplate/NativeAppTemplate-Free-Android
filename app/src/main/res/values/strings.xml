@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">NativeAppTemplate Free</string>
   <string name="title_shops">Shops</string>
-  <string name="title_scan">Scan</string>
   <string name="title_settings">Settings</string>
 
   <!-- Sign up screen -->
@@ -37,7 +36,6 @@
   <string name="unauthorized">You are not authorized to perform this action.</string>
   <string name="cancel">Cancel</string>
   <string name="button_label_ok">OK</string>
-  <string name="this_device_does_not_support_tag_scanning">This device doesn’t support tag scanning.</string>
   <string name="accept">Accept</string>
 
   <!-- Welcome screen -->
@@ -69,19 +67,19 @@
   <string name="terms_of_use_updated">Terms of Use Updated</string>
 
   <!-- On-boarding -->
-  <string name="onboarding_description1">A Server Tag and a Customer Tag are NFCs.</string>
-  <string name="onboarding_description2">The staff gives the Customer Tag to the customer.</string>
-  <string name="onboarding_description3">The customer scans the Customer Tag or the Customer QR code.</string>
-  <string name="onboarding_description4">The customer can view the Number Tags Webpage on his mobile browser.</string>
-  <string name="onboarding_description5">The staff is cooking KILITANPOs.</string>
-  <string name="onboarding_description6">The staff completed cooking KILITANPOs. The staff scans the Server Tag.</string>
-  <string name="onboarding_description7">Tag completed with Background Tag Reading.</string>
-  <string name="onboarding_description8">If you do not want to scan, you can complete the tag by swiping the tag(Shops > [Shop]).</string>
-  <string name="onboarding_description9">Number Tags Webpage displays the completed number tag.</string>
-  <string name="onboarding_description10">The customer\'s Number Tags Webpage updated.</string>
-  <string name="onboarding_description11">The customer\'s Number Tags Webpage displays the completed Customer Tag(A07).</string>
-  <string name="onboarding_description12">The customer returns the Customer Tag.</string>
-  <string name="onboarding_description13">The customer finally got the delicious KILITANPO!</string>
+  <string name="onboarding_description1">Welcome to the app.</string>
+  <string name="onboarding_description2">Welcome to the app.</string>
+  <string name="onboarding_description3">Welcome to the app.</string>
+  <string name="onboarding_description4">Welcome to the app.</string>
+  <string name="onboarding_description5">Welcome to the app.</string>
+  <string name="onboarding_description6">Welcome to the app.</string>
+  <string name="onboarding_description7">Welcome to the app.</string>
+  <string name="onboarding_description8">Welcome to the app.</string>
+  <string name="onboarding_description9">Welcome to the app.</string>
+  <string name="onboarding_description10">Welcome to the app.</string>
+  <string name="onboarding_description11">Welcome to the app.</string>
+  <string name="onboarding_description12">Welcome to the app.</string>
+  <string name="onboarding_description13">Welcome to the app.</string>
 
   <!-- Shops Screen -->
   <string name="add_shop">Add Shop</string>
@@ -95,28 +93,21 @@
   <string name="message_shop_created">Shop added.</string>
   <string name="message_shop_deleted">Shop removed.</string>
   <string name="message_shop_updated">Shop updated.</string>
-  <string name="swipe_number_tag_below">Swipe a number tag below.</string>
-  <string name="tap_displayed_button">Tap the displayed button.</string>
-  <string name="server_number_tags_webpage_will_be_updated">The Server Number Tags Webpage will be updated.</string>
-  <string name="read_instructions">Read Instructions</string>
+  <string name="complete">Complete</string>
+  <string name="idle">Idle</string>
 
   <!-- Shop Settings Screen -->
-  <string name="title_reset_number_tags">Reset Number Tags</string>
   <string name="title_delete_shop">Delete Shop</string>
 
   <string name="label_shop_settings">Shop Settings</string>
   <string name="label_shop_settings_basic_settings">Basic Settings</string>
   <string name="label_shop_settings_manage_item_tags">Manage Item Tags</string>
-  <string name="reset_number_tags_description">Reset all number tag statuses.</string>
-  <string name="message_shop_reset">All number tags reset.</string>
 
   <!-- Item Tag -->
   <string name="tag_number">Name</string>
   <string name="label_add_tag">Add Tag</string>
   <string name="add_tag_description">Add a new item tag and start changing the tag status.</string>
   <string name="tag_number_is_invalid">Item tag name is invalid.</string>
-  <string name="write_server_tag">Write Server Tag</string>
-  <string name="write_customer_tag">Write Customer Tag</string>
   <string name="zero_padding">Zero padding(e.g. 07).</string>
 
   <string name="message_item_tag_created">Tag created successfully.</string>
@@ -126,27 +117,6 @@
   <!-- Item Tag Detail Screen -->
   <string name="label_edit_item_tag">Edit Tag</string>
   <string name="title_delete_item_tag">Delete Tag</string>
-  <string name="you_cannot_undo_after_locking_tag">You cannot undo. After locking the tag, you can no longer write data to it.</string>
-
-  <!-- Write item tag screen -->
-  <string name="tag_cannot_be_made_read_only">Tag cannot be made read-only.</string>
-  <string name="ready_for_scanning">Ready for scanning.</string>
-  <string name="hold_your_android_near_the_item">Hold your Android near the item to learn more about it.</string>
-
-  <!-- Scan Screen -->
-  <string name="message_written_on_tag_is_wrong">Message written on tag is wrong.</string>
-  <string name="message_this_tag_is_a_customer_tag">This tag is a “CUSTOMER” tag. Scan a “SERVER” tag!</string>
-
-  <string name="complete_scan">Complete Scan</string>
-  <string name="show_tag_info_scan">Show Tag Info Scan</string>
-  <string name="tag_info">Tag info</string>
-  <string name="read_only">Read Only</string>
-  <string name="writable">Writable</string>
-  <string name="reset">Reset</string>
-  <string name="complete_scan_help">Read a NFC Number Tag for changing the Number Tag status.</string>
-  <string name="show_tag_info_scan_help">Read a NFC Number Tag for showing the Number Tag information.</string>
-  <string name="tag_is_not_writable">Tag is not writable.</string>
-  <string name="update_success">Update success!</string>
 
   <!-- Settings Screen -->
   <string name="mode">Mode</string>
