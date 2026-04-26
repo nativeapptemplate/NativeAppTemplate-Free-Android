@@ -26,10 +26,6 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.resend
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signInEmailAndPasswordView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpOrSignInView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.signUpView
-import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.doScanView
-import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.navigateToDoScan
-import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.scanBaseView
-import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.scanView
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToPasswordEdit
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToShopkeeperEdit
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.passwordEditView
@@ -42,12 +38,10 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.i
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagDetailView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagEditView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagListView
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.itemTagWriteView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagCreate
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagEdit
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagList
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToItemTagWrite
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopBasicSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.navigateToShopSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopBasicSettingsView
@@ -77,7 +71,6 @@ fun NatNavHost(
   val shouldUpdateApp by appState.shouldUpdateApp.collectAsStateWithLifecycle()
   val shouldUpdatePrivacy by appState.shouldUpdatePrivacy.collectAsStateWithLifecycle()
   val shouldUpdateTerms by appState.shouldUpdateTerms.collectAsStateWithLifecycle()
-  val shouldNavigateToScanView by appState.shouldNavigateToScanView.collectAsStateWithLifecycle()
 
   LaunchedEffect(
     isLoggedIn,
@@ -97,12 +90,6 @@ fun NatNavHost(
       }
     } else {
       navController.navigateToOnboarding()
-    }
-  }
-
-  LaunchedEffect(shouldNavigateToScanView) {
-    if (shouldNavigateToScanView) {
-      appState.navigateToScan()
     }
   }
 
@@ -185,25 +172,11 @@ fun NatNavHost(
       )
       itemTagDetailView(
         onShowItemTagEditClick = { itemTagId -> navController.navigateToItemTagEdit(itemTagId) },
-        onShowItemTagWriteClick = { itemTagId, isLock, itemTagType -> navController.navigateToItemTagWrite(itemTagId, isLock, itemTagType) },
         onShowSnackbar = onShowSnackbar,
         onBackClick = navController::popBackStack,
       )
       itemTagEditView(
         onShowSnackbar = onShowSnackbar,
-        onBackClick = navController::popBackStack,
-      )
-      itemTagWriteView(
-        onBackClick = navController::popBackStack,
-      )
-    }
-
-    scanBaseView {
-      scanView(
-        onShowDoScanViewClick = { isTest -> navController.navigateToDoScan(isTest) },
-        onShowSnackbar = onShowSnackbar,
-      )
-      doScanView(
         onBackClick = navController::popBackStack,
       )
     }

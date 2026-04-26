@@ -43,19 +43,6 @@ class CodedErrorTest {
   }
 
   @Test
-  fun nfcError_scanFailed_hasCorrectCode() {
-    val error = NfcError.ScanFailed()
-    assertEquals("NATA-3001", error.errorCode)
-    assertEquals("[NATA-3001] NFC scan operation failed", error.formattedDescription)
-  }
-
-  @Test
-  fun nfcError_scanFailed_withDetail_includesDetail() {
-    val error = NfcError.ScanFailed(detail = "tag lost")
-    assertEquals("[NATA-3001] NFC scan operation failed: tag lost", error.formattedDescription)
-  }
-
-  @Test
   fun codedDescription_forCodedError_returnsFormattedDescription() {
     val error: Throwable = ApiException.ApiError(code = 500, apiMessage = "Server error")
     assertEquals("[NATA-2001] Server error [Status: 500]", error.codedDescription)

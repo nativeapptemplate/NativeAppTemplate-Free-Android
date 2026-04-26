@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTags
@@ -29,7 +28,6 @@ data class ShopDetailUiState(
   val message: String = "",
   val shop: Shop = Shop(),
   val itemTags: ItemTags = ItemTags(),
-  val didShowReadInstructionsTip: Boolean = false,
 )
 
 /**
@@ -38,7 +36,6 @@ data class ShopDetailUiState(
 @HiltViewModel
 class ShopDetailViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  private val loginRepository: LoginRepository,
   private val shopRepository: ShopRepository,
   private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
@@ -61,20 +58,15 @@ class ShopDetailViewModel @Inject constructor(
     viewModelScope.launch {
       val shopFlow: Flow<Shop> = shopRepository.getShop(shopId)
       val itemTagsFlow: Flow<ItemTags> = itemTagRepository.getItemTags(shopId)
-      val didShowReadInstructionsTipFlow = loginRepository.didShowReadInstructionsTip()
 
       combine(
         shopFlow,
         itemTagsFlow,
-        didShowReadInstructionsTipFlow,
-      ) { shop,
-          itemTags,
-          didShowReadInstructionsTip, ->
+      ) { shop, itemTags ->
         _uiState.update {
           it.copy(
             shop = shop,
             itemTags = itemTags,
-            didShowReadInstructionsTip = didShowReadInstructionsTip,
             success = true,
             isLoading = false,
           )
@@ -93,65 +85,44 @@ class ShopDetailViewModel @Inject constructor(
   }
 
   fun completeItemTag(itemTagId: String) {
-    _uiState.update {
-      it.copy(
-        isLoading = true,
-      )
-    }
+    _uiState.update { it.copy(isLoading = true) }
 
     viewModelScope.launch {
       val itemTagFlow: Flow<ItemTag> = itemTagRepository.completeItemTag(itemTagId)
 
       itemTagFlow
         .catch { exception ->
-          val message = exception.codedDescription
-
           _uiState.update {
             it.copy(
-              message = message,
+              message = exception.codedDescription,
               isLoading = false,
             )
           }
         }
         .collect {
-          _uiState.update {
-            it.copy(
-              isLoading = false,
-            )
-          }
-
+          _uiState.update { it.copy(isLoading = false) }
           reload()
         }
     }
   }
 
-  fun resetItemTag(itemTagId: String) {
-    _uiState.update {
-      it.copy(
-        isLoading = true,
-      )
-    }
+  fun idleItemTag(itemTagId: String) {
+    _uiState.update { it.copy(isLoading = true) }
 
     viewModelScope.launch {
-      val itemTagFlow: Flow<ItemTag> = itemTagRepository.resetItemTag(itemTagId)
+      val itemTagFlow: Flow<ItemTag> = itemTagRepository.idleItemTag(itemTagId)
 
       itemTagFlow
         .catch { exception ->
-          val message = exception.codedDescription
           _uiState.update {
             it.copy(
-              message = message,
+              message = exception.codedDescription,
               isLoading = false,
             )
           }
         }
         .collect {
-          _uiState.update {
-            it.copy(
-              isLoading = false,
-            )
-          }
-
+          _uiState.update { it.copy(isLoading = false) }
           reload()
         }
     }
@@ -160,12 +131,6 @@ class ShopDetailViewModel @Inject constructor(
   fun updateMessage(newMessage: String) {
     _uiState.update {
       it.copy(message = newMessage)
-    }
-  }
-
-  fun updateDidShowReadInstructionsTip(didShowReadInstructionsTip: Boolean) {
-    viewModelScope.launch {
-      loginRepository.setDidShowReadInstructionsTip(didShowReadInstructionsTip)
     }
   }
 

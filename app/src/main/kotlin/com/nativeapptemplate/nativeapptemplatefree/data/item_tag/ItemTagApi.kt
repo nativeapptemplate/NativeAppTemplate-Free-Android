@@ -45,8 +45,8 @@ interface ItemTagApi {
     @Path("id") id: String,
   ): ApiResponse<ItemTag>
 
-  @PATCH("{account_id}/api/v1/shopkeeper/item_tags/{id}/reset")
-  suspend fun resetItemTag(
+  @PATCH("{account_id}/api/v1/shopkeeper/item_tags/{id}/idle")
+  suspend fun idleItemTag(
     @Path("account_id") accountId: String,
     @Path("id") id: String,
   ): ApiResponse<ItemTag>

@@ -62,11 +62,4 @@ class ShopRepositoryImpl @Inject constructor(
     val response = api.deleteShop(natPreferencesDataSource.userData.first().accountId, id)
     emitApiResponse<Status, Boolean>(response) { true }
   }.flowOn(ioDispatcher)
-
-  override fun resetShop(
-    id: String,
-  ) = flow {
-    val response = api.resetShop(natPreferencesDataSource.userData.first().accountId, id)
-    emitApiResponse<Status, Boolean>(response) { true }
-  }.flowOn(ioDispatcher)
 }
