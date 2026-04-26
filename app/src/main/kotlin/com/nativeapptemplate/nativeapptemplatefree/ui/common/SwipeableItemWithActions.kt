@@ -46,7 +46,7 @@ fun SwipeableItemWithActions(
 
   LaunchedEffect(key1 = isRevealed, contextMenuWidth) {
     if (isRevealed) {
-      offset.animateTo(contextMenuWidth)
+      offset.animateTo(-contextMenuWidth)
     } else {
       offset.animateTo(0f)
     }
@@ -59,6 +59,7 @@ fun SwipeableItemWithActions(
   ) {
     Row(
       modifier = Modifier
+        .align(Alignment.CenterEnd)
         .onSizeChanged {
           contextMenuWidth = it.width.toFloat()
         },
@@ -75,15 +76,15 @@ fun SwipeableItemWithActions(
             onHorizontalDrag = { _, dragAmount ->
               scope.launch {
                 val newOffset = (offset.value + dragAmount)
-                  .coerceIn(0f, contextMenuWidth)
+                  .coerceIn(-contextMenuWidth, 0f)
                 offset.snapTo(newOffset)
               }
             },
             onDragEnd = {
               when {
-                offset.value >= contextMenuWidth / 2f -> {
+                offset.value <= -contextMenuWidth / 2f -> {
                   scope.launch {
-                    offset.animateTo(contextMenuWidth)
+                    offset.animateTo(-contextMenuWidth)
                     onExpanded()
                   }
                 }
