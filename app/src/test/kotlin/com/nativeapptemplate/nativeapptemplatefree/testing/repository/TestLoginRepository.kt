@@ -134,7 +134,7 @@ class TestLoginRepository : LoginRepository {
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun getMaximumQueueNumberLength(): Flow<Int> = userData.map { it.maximumQueueNumberLength }
+  override fun getMaximumNameLength(): Flow<Int> = userData.map { it.maximumNameLength }
 
   /**
    * A test-only API.

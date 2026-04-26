@@ -61,7 +61,7 @@ class ItemTagEditViewModelTest {
   fun stateItemTag_whenSuccess_matchesItemTagFromRepository() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData)
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
     itemTagRepository.sendItemTag((testInputItemTag))
 
     viewModel.reload()
@@ -78,16 +78,16 @@ class ItemTagEditViewModelTest {
   fun stateIsUpdated_whenUpdatingItemTag_becomesTrue() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    val maximumQueueNumberLength = 5
+    val maximumNameLength = 100
     val userData = emptyUserData.copy(
-      maximumQueueNumberLength = maximumQueueNumberLength,
+      maximumNameLength = maximumNameLength,
     )
 
     loginRepository.sendUserData(userData)
     itemTagRepository.sendItemTag(testInputItemTag)
 
     viewModel.reload()
-    val newName = "Z0001"
+    val newName = "Buy bread"
     viewModel.updateName(newName)
     assertEquals(viewModel.uiState.value.name, newName)
     assertFalse(viewModel.hasInvalidData())
@@ -99,8 +99,37 @@ class ItemTagEditViewModelTest {
   }
 
   @Test
+  fun unchangedNameAndDescription_isInvalid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+
+    // No edits — name and description equal current values
+    assertTrue(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun changedDescriptionOnly_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+
+    viewModel.updateDescription("a new description")
+
+    assertFalse(viewModel.hasInvalidData())
+  }
+
+  @Test
   fun blankName_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
 
     viewModel.updateName("")
 
@@ -109,23 +138,16 @@ class ItemTagEditViewModelTest {
   }
 
   @Test
-  fun nameWithIncorrectLength_isInvalid() = runTest {
+  fun nameWithSymbolsAndUnicode_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateName("123456")
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
 
-    assertTrue(viewModel.hasInvalidDataName())
-    assertTrue(viewModel.hasInvalidData())
-  }
+    viewModel.updateName("Buy milk 🥛 + bread")
 
-  @Test
-  fun wrongFormatName_isInvalid() = runTest {
-    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
-
-    viewModel.updateName("@1234")
-
-    assertTrue(viewModel.hasInvalidDataName())
-    assertTrue(viewModel.hasInvalidData())
+    assertFalse(viewModel.hasInvalidDataName())
   }
 }
 

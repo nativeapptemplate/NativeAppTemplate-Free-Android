@@ -128,5 +128,5 @@ class LoginRepositoryImpl @Inject constructor(
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = natPreferencesDataSource.didShowTapShopBelowTip()
 
-  override fun getMaximumQueueNumberLength(): Flow<Int> = natPreferencesDataSource.getMaximumQueueNumberLength()
+  override fun getMaximumNameLength(): Flow<Int> = natPreferencesDataSource.getMaximumNameLength()
 }

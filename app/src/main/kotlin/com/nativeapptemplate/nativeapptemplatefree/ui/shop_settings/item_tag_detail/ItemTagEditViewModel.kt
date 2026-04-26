@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
@@ -11,7 +12,6 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBodyDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagEditRoute
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +27,8 @@ data class ItemTagEditUiState(
   val itemTag: ItemTag = ItemTag(),
 
   val name: String = "",
-  val maximumQueueNumberLength: Int = -1,
+  val description: String = "",
+  val maximumNameLength: Int = -1,
   val isUpdated: Boolean = false,
 
   val isLoading: Boolean = true,
@@ -61,14 +62,15 @@ class ItemTagEditViewModel @Inject constructor(
 
     viewModelScope.launch {
       val itemTagFlow: Flow<ItemTag> = itemTagRepository.getItemTag(itemTagId)
-      val maximumQueueNumberLengthFlow = loginRepository.getMaximumQueueNumberLength()
+      val maximumNameLengthFlow = loginRepository.getMaximumNameLength()
 
-      combine(itemTagFlow, maximumQueueNumberLengthFlow) { itemTag, maximumQueueNumberLength ->
+      combine(itemTagFlow, maximumNameLengthFlow) { itemTag, maximumNameLength ->
         _uiState.update {
           it.copy(
             itemTag = itemTag,
             name = itemTag.getName(),
-            maximumQueueNumberLength = maximumQueueNumberLength,
+            description = itemTag.getDescription(),
+            maximumNameLength = maximumNameLength,
             success = true,
             isLoading = false,
           )
@@ -97,6 +99,7 @@ class ItemTagEditViewModel @Inject constructor(
     viewModelScope.launch {
       val itemTagBodyDetail = ItemTagBodyDetail(
         name = uiState.value.name,
+        description = uiState.value.description,
       )
       val itemTagBody = ItemTagBody(itemTagBodyDetail)
 
@@ -126,30 +129,41 @@ class ItemTagEditViewModel @Inject constructor(
 
   fun hasInvalidData(): Boolean {
     if (hasInvalidDataName()) return true
+    if (hasInvalidDataDescription()) return true
 
     val itemTag = uiState.value.itemTag
-    return itemTag.getName() == uiState.value.name
+    val nameUnchanged = itemTag.getName() == uiState.value.name
+    val descriptionUnchanged = itemTag.getDescription() == uiState.value.description
+    return nameUnchanged && descriptionUnchanged
   }
 
   fun hasInvalidDataName(): Boolean {
     val name = uiState.value.name
+    val maximumNameLength = uiState.value.maximumNameLength
 
     if (name.isBlank()) return true
+    if (maximumNameLength <= 0) return false
+    return name.length > maximumNameLength
+  }
 
-    if (!Utility.isAlphanumeric(name)) return true
-
-    if (!(2 <= name.length && name.length <= uiState.value.maximumQueueNumberLength)) {
-      return true
-    }
-
-    return false
+  fun hasInvalidDataDescription(): Boolean {
+    return uiState.value.description.length > NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH
   }
 
   fun updateName(newName: String) {
-    if (newName.length <= uiState.value.maximumQueueNumberLength) {
-      _uiState.update {
-        it.copy(name = newName)
-      }
+    val maximumNameLength = uiState.value.maximumNameLength
+    if (maximumNameLength > 0 && newName.length > maximumNameLength) return
+
+    _uiState.update {
+      it.copy(name = newName)
+    }
+  }
+
+  fun updateDescription(newDescription: String) {
+    if (newDescription.length > NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH) return
+
+    _uiState.update {
+      it.copy(description = newDescription)
     }
   }
 

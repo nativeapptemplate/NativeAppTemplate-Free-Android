@@ -23,8 +23,8 @@ data class Meta(
   @SerialName("should_update_terms")
   var shouldUpdateTerms: Boolean? = null,
 
-  @SerialName("maximum_queue_number_length")
-  var maximumQueueNumberLength: Int = 256,
+  @SerialName("maximum_name_length")
+  var maximumNameLength: Int = 100,
 
   @SerialName("shop_limit_count")
   var shopLimitCount: Int = 0,

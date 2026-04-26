@@ -50,7 +50,7 @@ class NatPreferencesDataSource @Inject constructor(
         androidAppVersion = it.androidAppVersion,
         shouldUpdatePrivacy = it.shouldUpdatePrivacy,
         shouldUpdateTerms = it.shouldUpdateTerms,
-        maximumQueueNumberLength = it.maximumQueueNumberLength,
+        maximumNameLength = it.maximumNameLength,
         shopLimitCount = it.shopLimitCount,
 
         isEmailUpdated = it.isEmailUpdated,
@@ -109,7 +109,7 @@ class NatPreferencesDataSource @Inject constructor(
 
           this.shouldUpdatePrivacy = permissions.getShouldUpdatePrivacy()!!
           this.shouldUpdateTerms = permissions.getShouldUpdateTerms()!!
-          this.maximumQueueNumberLength = permissions.getMaximumQueueNumberLength()!!
+          this.maximumNameLength = permissions.getMaximumNameLength()!!
           this.shopLimitCount = permissions.getShopLimitCount()!!
         }
       }
@@ -245,8 +245,8 @@ class NatPreferencesDataSource @Inject constructor(
       data.didShowTapShopBelowTip
     }
 
-  fun getMaximumQueueNumberLength(): Flow<Int> = userPreferences.data
+  fun getMaximumNameLength(): Flow<Int> = userPreferences.data
     .map { data ->
-      data.maximumQueueNumberLength
+      data.maximumNameLength
     }
 }

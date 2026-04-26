@@ -3,6 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_de
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,17 +32,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
+import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.CompletedTag
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdlingTag
+import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardDateTimeString
 
 @Composable
 internal fun ItemTagDetailView(
@@ -158,46 +164,106 @@ private fun ItemTagDetailContentView(
         .padding(padding),
     ) {
       Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
           .padding(horizontal = 16.dp, vertical = 16.dp)
           .verticalScroll(rememberScrollState()),
       ) {
-        Text(
-          uiState.itemTag.getName(),
-          style = MaterialTheme.typography.titleLarge,
-          color = MaterialTheme.colorScheme.primary,
-          textAlign = TextAlign.Center,
-          modifier = Modifier.fillMaxWidth(),
-        )
-
-        Text(
-          uiState.itemTag.getDescription(),
-          style = MaterialTheme.typography.bodyMedium,
-          textAlign = TextAlign.Center,
-          modifier = Modifier.fillMaxWidth(),
-        )
-
-        Text(
-          uiState.itemTag.getState(),
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-          textAlign = TextAlign.Center,
-          modifier = Modifier.fillMaxWidth(),
-        )
-
-        uiState.itemTag.getCompletedAt()?.takeIf { it.isNotBlank() }?.let { completedAt ->
-          Text(
-            completedAt,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
-          )
-        }
+        HeaderRow(itemTag = uiState.itemTag)
+        DescriptionSection(description = uiState.itemTag.getDescription())
+        CompletedAtRow(itemTag = uiState.itemTag)
+        StateToggleButton(viewModel = viewModel, uiState = uiState)
       }
     }
   }
+}
+
+@Composable
+private fun HeaderRow(itemTag: ItemTag) {
+  Row(
+    horizontalArrangement = Arrangement.spacedBy(12.dp),
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = Modifier.fillMaxWidth(),
+  ) {
+    Text(
+      itemTag.getName(),
+      style = MaterialTheme.typography.titleLarge,
+      color = MaterialTheme.colorScheme.primary,
+      modifier = Modifier.weight(1f),
+    )
+
+    when (itemTag.getData()?.getItemTagState()) {
+      ItemTagState.Completed -> CompletedTag()
+      ItemTagState.Idled -> IdlingTag()
+      null -> Unit
+    }
+  }
+}
+
+@Composable
+private fun DescriptionSection(description: String) {
+  if (description.isBlank()) return
+  Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Text(
+      stringResource(R.string.description_label),
+      style = MaterialTheme.typography.titleSmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+    Text(
+      description,
+      style = MaterialTheme.typography.bodyMedium,
+    )
+  }
+}
+
+@Composable
+private fun CompletedAtRow(itemTag: ItemTag) {
+  if (itemTag.getData()?.getItemTagState() != ItemTagState.Completed) return
+  val completedAt = itemTag.getCompletedAt()
+  if (completedAt.isNullOrBlank()) return
+
+  Row(
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    modifier = Modifier.fillMaxWidth(),
+  ) {
+    Text(
+      stringResource(R.string.completed_at_label),
+      style = MaterialTheme.typography.titleSmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+    Text(
+      completedAt.cardDateTimeString(),
+      style = MaterialTheme.typography.bodyMedium,
+    )
+  }
+}
+
+@Composable
+private fun StateToggleButton(
+  viewModel: ItemTagDetailViewModel,
+  uiState: ItemTagDetailUiState,
+) {
+  val state = uiState.itemTag.getData()?.getItemTagState() ?: return
+
+  val title = when (state) {
+    ItemTagState.Idled -> stringResource(R.string.mark_as_completed)
+    ItemTagState.Completed -> stringResource(R.string.mark_as_idled)
+  }
+  val onClick: () -> Unit = when (state) {
+    ItemTagState.Idled -> viewModel::completeItemTag
+    ItemTagState.Completed -> viewModel::idleItemTag
+  }
+
+  MainButtonView(
+    title = title,
+    onClick = onClick,
+    enabled = !uiState.isToggling,
+    color = MaterialTheme.colorScheme.primary,
+    titleColor = MaterialTheme.colorScheme.primary,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(top = 16.dp),
+  )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

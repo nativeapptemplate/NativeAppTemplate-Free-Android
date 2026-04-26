@@ -16,7 +16,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.CompletedTag
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdlingTag
-import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardTimeString
+import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardDateTimeString
 
 @Composable
 fun ShopDetailCardView(
@@ -50,7 +50,7 @@ fun ShopDetailCardView(
             CompletedTag()
 
             Text(
-              completedAt.cardTimeString(),
+              completedAt.cardDateTimeString(),
               color = MaterialTheme.colorScheme.onSurfaceVariant,
               modifier = Modifier
                 .padding(top = 4.dp),

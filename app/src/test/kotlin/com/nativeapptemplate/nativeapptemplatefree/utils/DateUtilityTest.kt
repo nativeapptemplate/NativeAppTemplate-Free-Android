@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.utils
 
 import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardDateString
+import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardDateTimeString
 import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardTimeString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -34,6 +35,19 @@ class DateUtilityTest {
   @Test
   fun zonedDateTime_cardTimeString_formatsCorrectly() {
     assertEquals("14:30", testZonedDateTime.cardTimeString())
+  }
+
+  @Test
+  fun zonedDateTime_cardDateTimeString_combinesDateAndTime() {
+    val result = testZonedDateTime.cardDateTimeString()
+    assertTrue(result.contains("15"))
+    assertTrue(result.contains("2025"))
+    assertTrue(result.contains("14:30"))
+  }
+
+  @Test
+  fun string_cardDateTimeString_returnsEmptyForBlankString() {
+    assertEquals("", "".cardDateTimeString())
   }
 
   // String extension tests with UTC zone

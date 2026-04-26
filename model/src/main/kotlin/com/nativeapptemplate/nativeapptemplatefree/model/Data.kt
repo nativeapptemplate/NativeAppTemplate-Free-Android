@@ -55,7 +55,7 @@ data class Data(
 
   fun getCurrentAccountName(): String? = attributes?.accountName
 
-  fun getPosition(): Int? = attributes?.position
+  fun getPosition(): Int = attributes?.position ?: 0
 
   fun getCompletedAt(): String = attributes?.completedAt ?: ""
 
