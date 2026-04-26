@@ -104,11 +104,18 @@
   <string name="label_shop_settings_manage_item_tags">Manage Item Tags</string>
 
   <!-- Item Tag -->
-  <string name="tag_number">Name</string>
+  <string name="name_label">Name</string>
+  <string name="description_label">Description</string>
+  <string name="completed_at_label">Completed at</string>
+  <string name="item_tag_name_placeholder">Buy milk</string>
   <string name="label_add_tag">Add Tag</string>
   <string name="add_tag_description">Add a new item tag and start changing the tag status.</string>
-  <string name="tag_number_is_invalid">Item tag name is invalid.</string>
-  <string name="zero_padding">Zero padding(e.g. 07).</string>
+  <string name="item_tag_name_is_invalid">Tag name is invalid.</string>
+  <string name="item_tag_description_is_invalid">Tag description is invalid.</string>
+  <string name="item_tag_name_help">Name must be 1-%1$d characters.</string>
+  <string name="item_tag_description_help">Description must be 0-%1$d characters.</string>
+  <string name="mark_as_completed">Mark as completed</string>
+  <string name="mark_as_idled">Mark as idled</string>
 
   <string name="message_item_tag_created">Tag created successfully.</string>
   <string name="message_item_tag_updated">Tag updated successfully.</string>

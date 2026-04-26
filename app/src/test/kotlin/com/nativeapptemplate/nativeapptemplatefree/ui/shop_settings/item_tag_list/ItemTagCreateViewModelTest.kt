@@ -59,13 +59,13 @@ class ItemTagCreateViewModelTest {
   }
 
   @Test
-  fun stateMaximumQueueNumberLength_whenSuccess_matchesMaximumQueueNumberLengthFromRepository() = runTest {
+  fun stateMaximumNameLength_whenSuccess_matchesMaximumNameLengthFromRepository() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    val maximumQueueNumberLength = 5
+    val maximumNameLength = 100
 
     val userData = emptyUserData.copy(
-      maximumQueueNumberLength = maximumQueueNumberLength,
+      maximumNameLength = maximumNameLength,
     )
 
     loginRepository.sendUserData(userData)
@@ -75,23 +75,23 @@ class ItemTagCreateViewModelTest {
     assertTrue(uiStateValue.success)
     assertFalse(uiStateValue.isLoading)
 
-    assertEquals(loginRepository.getMaximumQueueNumberLength().first(), maximumQueueNumberLength)
+    assertEquals(loginRepository.getMaximumNameLength().first(), maximumNameLength)
   }
 
   @Test
   fun stateIsCreated_whenCreatingItemTag_becomesTrue() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    val maximumQueueNumberLength = 5
+    val maximumNameLength = 100
     val userData = emptyUserData.copy(
-      maximumQueueNumberLength = maximumQueueNumberLength,
+      maximumNameLength = maximumNameLength,
     )
 
     loginRepository.sendUserData(userData)
     itemTagRepository.sendItemTag(testInputItemTag)
 
     viewModel.reload()
-    val newName = "A0001"
+    val newName = "Buy milk"
     viewModel.updateName(newName)
     assertEquals(viewModel.uiState.value.name, newName)
     assertFalse(viewModel.hasInvalidData())
@@ -106,6 +106,8 @@ class ItemTagCreateViewModelTest {
   fun blankName_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    viewModel.reload()
     viewModel.updateName("")
 
     assertTrue(viewModel.hasInvalidDataName())
@@ -113,23 +115,70 @@ class ItemTagCreateViewModelTest {
   }
 
   @Test
-  fun nameWithIncorrectLength_isInvalid() = runTest {
+  fun singleCharacterName_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateName("123456")
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    viewModel.reload()
+    viewModel.updateName("A")
 
-    assertTrue(viewModel.hasInvalidDataName())
-    assertTrue(viewModel.hasInvalidData())
+    assertFalse(viewModel.hasInvalidDataName())
   }
 
   @Test
-  fun wrongFormatName_isInvalid() = runTest {
+  fun nameWithSymbolsAndUnicode_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateName("@1234")
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    viewModel.reload()
+    viewModel.updateName("Buy milk 🥛 + bread")
 
-    assertTrue(viewModel.hasInvalidDataName())
-    assertTrue(viewModel.hasInvalidData())
+    assertFalse(viewModel.hasInvalidDataName())
+  }
+
+  @Test
+  fun nameAtMaximumLength_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    viewModel.reload()
+    viewModel.updateName("A".repeat(100))
+
+    assertFalse(viewModel.hasInvalidDataName())
+  }
+
+  @Test
+  fun nameAboveMaximumLength_isRejectedByUpdater() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    viewModel.reload()
+    viewModel.updateName("A".repeat(101))
+
+    // updater clamps; value should remain blank (initial)
+    assertEquals("", viewModel.uiState.value.name)
+  }
+
+  @Test
+  fun descriptionAtMaximumLength_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    viewModel.reload()
+    viewModel.updateDescription("D".repeat(1_000))
+
+    assertFalse(viewModel.hasInvalidDataDescription())
+  }
+
+  @Test
+  fun descriptionAboveMaximumLength_isRejectedByUpdater() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
+    viewModel.reload()
+    viewModel.updateDescription("D".repeat(1_001))
+
+    assertEquals("", viewModel.uiState.value.description)
   }
 }
 

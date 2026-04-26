@@ -9,5 +9,4 @@ import kotlinx.serialization.Serializable
 data class ItemTagBodyDetail(
   val name: String,
   val description: String = "",
-  val position: Int? = null,
 ) : Parcelable

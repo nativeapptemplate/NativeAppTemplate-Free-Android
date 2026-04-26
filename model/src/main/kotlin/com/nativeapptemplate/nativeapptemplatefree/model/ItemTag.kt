@@ -27,7 +27,7 @@ data class ItemTag(
 
   fun getDescription(): String = getData()?.getDescription() ?: ""
 
-  fun getPosition(): Int? = getData()?.getPosition()
+  fun getPosition(): Int = getData()?.getPosition() ?: 0
 
   fun getState(): String = getData()?.getState() ?: ""
 

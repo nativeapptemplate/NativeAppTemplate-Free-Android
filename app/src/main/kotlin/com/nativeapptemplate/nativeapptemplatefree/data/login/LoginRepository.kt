@@ -56,5 +56,5 @@ interface LoginRepository {
 
   fun didShowTapShopBelowTip(): Flow<Boolean>
 
-  fun getMaximumQueueNumberLength(): Flow<Int>
+  fun getMaximumNameLength(): Flow<Int>
 }

@@ -83,6 +83,36 @@ class ItemTagDetailViewModelTest {
   }
 
   @Test
+  fun completeItemTag_updatesItemTagAndClearsToggling() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+
+    itemTagRepository.sendItemTag(testInputCompletedItemTag)
+    viewModel.completeItemTag()
+
+    val uiStateValue = viewModel.uiState.value
+    assertFalse(uiStateValue.isToggling)
+    assertEquals(testInputCompletedItemTag, uiStateValue.itemTag)
+  }
+
+  @Test
+  fun idleItemTag_updatesItemTagAndClearsToggling() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    itemTagRepository.sendItemTag(testInputCompletedItemTag)
+    viewModel.reload()
+
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.idleItemTag()
+
+    val uiStateValue = viewModel.uiState.value
+    assertFalse(uiStateValue.isToggling)
+    assertEquals(testInputItemTag, uiStateValue.itemTag)
+  }
+
+  @Test
   fun stateMessage_isUpdated() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
@@ -125,4 +155,10 @@ private val testInputItemTagData =
 
 private val testInputItemTag = ItemTag(
   datum = testInputItemTagData,
+)
+
+private val testInputCompletedItemTag = ItemTag(
+  datum = testInputItemTagData.copy(
+    attributes = testInputItemTagData.attributes!!.copy(state = "completed"),
+  ),
 )

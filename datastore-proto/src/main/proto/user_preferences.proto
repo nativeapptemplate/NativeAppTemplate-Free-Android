@@ -29,7 +29,7 @@ message UserPreferences {
   int32 android_app_version = 20;
   bool should_update_privacy = 21;
   bool should_update_terms = 22;
-  int32 maximum_queue_number_length = 23;
+  int32 maximum_name_length = 23;
   int32 shop_limit_count = 28;
 
   bool is_email_updated = 32;

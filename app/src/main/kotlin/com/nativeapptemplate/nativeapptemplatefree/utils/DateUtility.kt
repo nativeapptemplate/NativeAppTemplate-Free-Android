@@ -29,6 +29,17 @@ object DateUtility {
     return date.cardTimeString()
   }
 
+  fun ZonedDateTime.cardDateTimeString(): String {
+    return "${this.cardDateString()} ${this.cardTimeString()}"
+  }
+
+  fun String.cardDateTimeString(zoneId: ZoneId = ZoneId.systemDefault()): String {
+    if (this.isBlank()) return ""
+
+    val date = ZonedDateTime.parse(this).withZoneSameInstant(zoneId)
+    return date.cardDateTimeString()
+  }
+
   fun ZonedDateTime.cardTimeAgoInWordsDateString(): String {
     return DateUtils.getRelativeTimeSpanString(this.toInstant().toEpochMilli(), System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS).toString()
   }

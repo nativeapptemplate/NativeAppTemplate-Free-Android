@@ -24,7 +24,7 @@ data class Attributes(
 
   val state: String? = null,
 
-  val position: Int? = null,
+  val position: Int = 0,
 
   @SerialName("completed_at")
   val completedAt: String? = null,

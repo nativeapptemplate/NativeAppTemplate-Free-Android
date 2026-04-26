@@ -100,7 +100,7 @@ class DemoLoginRepository @Inject constructor(
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
 
-  override fun getMaximumQueueNumberLength(): Flow<Int> = MutableStateFlow(5)
+  override fun getMaximumNameLength(): Flow<Int> = MutableStateFlow(100)
 
   @OptIn(ExperimentalSerializationApi::class)
   private suspend inline fun <reified T> getDataFromJsonFile(fileName: String): T =
