@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBodyDetail
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +26,7 @@ data class ItemTagEditUiState(
 
   val name: String = "",
   val description: String = "",
-  val maximumNameLength: Int = -1,
+  val maximumNameLength: Int = NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH,
   val isUpdated: Boolean = false,
 
   val isLoading: Boolean = true,
@@ -39,7 +37,6 @@ data class ItemTagEditUiState(
 @HiltViewModel
 class ItemTagEditViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  private val loginRepository: LoginRepository,
   private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
   private val itemTagId = savedStateHandle.toRoute<ItemTagEditRoute>().id
@@ -62,29 +59,28 @@ class ItemTagEditViewModel @Inject constructor(
 
     viewModelScope.launch {
       val itemTagFlow: Flow<ItemTag> = itemTagRepository.getItemTag(itemTagId)
-      val maximumNameLengthFlow = loginRepository.getMaximumNameLength()
 
-      combine(itemTagFlow, maximumNameLengthFlow) { itemTag, maximumNameLength ->
-        _uiState.update {
-          it.copy(
-            itemTag = itemTag,
-            name = itemTag.getName(),
-            description = itemTag.getDescription(),
-            maximumNameLength = maximumNameLength,
-            success = true,
-            isLoading = false,
-          )
+      itemTagFlow
+        .catch { exception ->
+          val message = exception.codedDescription
+          _uiState.update {
+            it.copy(
+              message = message,
+              isLoading = false,
+            )
+          }
         }
-      }.catch { exception ->
-        val message = exception.codedDescription
-        _uiState.update {
-          it.copy(
-            message = message,
-            isLoading = false,
-          )
+        .collect { itemTag ->
+          _uiState.update {
+            it.copy(
+              itemTag = itemTag,
+              name = itemTag.getName(),
+              description = itemTag.getDescription(),
+              success = true,
+              isLoading = false,
+            )
+          }
         }
-      }.collect {
-      }
     }
   }
 

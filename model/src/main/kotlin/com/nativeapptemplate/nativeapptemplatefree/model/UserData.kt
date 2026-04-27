@@ -40,7 +40,6 @@ data class UserData(
   var androidAppVersion: Int = -1,
   var shouldUpdatePrivacy: Boolean = false,
   var shouldUpdateTerms: Boolean = false,
-  var maximumNameLength: Int = -1,
   var shopLimitCount: Int = -1,
 
   var isEmailUpdated: Boolean = false,

@@ -2,12 +2,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_de
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
-import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagEditRoute
 import kotlinx.coroutines.flow.collect
@@ -36,7 +35,6 @@ class ItemTagEditViewModelTest {
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
-  private val loginRepository = TestLoginRepository()
   private val itemTagRepository = TestItemTagRepository()
 
   private lateinit var viewModel: ItemTagEditViewModel
@@ -47,7 +45,6 @@ class ItemTagEditViewModelTest {
       savedStateHandle = SavedStateHandle(
         route = ItemTagEditRoute(id = testInputItemTag.datum!!.id!!),
       ),
-      loginRepository = loginRepository,
       itemTagRepository = itemTagRepository,
     )
   }
@@ -58,10 +55,14 @@ class ItemTagEditViewModelTest {
   }
 
   @Test
+  fun maximumNameLength_matchesConstant() = runTest {
+    assertEquals(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
+  }
+
+  @Test
   fun stateItemTag_whenSuccess_matchesItemTagFromRepository() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
     itemTagRepository.sendItemTag((testInputItemTag))
 
     viewModel.reload()
@@ -78,12 +79,6 @@ class ItemTagEditViewModelTest {
   fun stateIsUpdated_whenUpdatingItemTag_becomesTrue() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    val maximumNameLength = 100
-    val userData = emptyUserData.copy(
-      maximumNameLength = maximumNameLength,
-    )
-
-    loginRepository.sendUserData(userData)
     itemTagRepository.sendItemTag(testInputItemTag)
 
     viewModel.reload()
@@ -102,7 +97,6 @@ class ItemTagEditViewModelTest {
   fun unchangedNameAndDescription_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
     itemTagRepository.sendItemTag(testInputItemTag)
     viewModel.reload()
 
@@ -114,7 +108,6 @@ class ItemTagEditViewModelTest {
   fun changedDescriptionOnly_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
     itemTagRepository.sendItemTag(testInputItemTag)
     viewModel.reload()
 
@@ -127,7 +120,6 @@ class ItemTagEditViewModelTest {
   fun blankName_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
     itemTagRepository.sendItemTag(testInputItemTag)
     viewModel.reload()
 
@@ -141,7 +133,6 @@ class ItemTagEditViewModelTest {
   fun nameWithSymbolsAndUnicode_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
     itemTagRepository.sendItemTag(testInputItemTag)
     viewModel.reload()
 
