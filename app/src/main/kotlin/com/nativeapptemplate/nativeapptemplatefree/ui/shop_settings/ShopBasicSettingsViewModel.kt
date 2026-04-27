@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -27,6 +28,8 @@ data class ShopBasicSettingsUiState(
   val name: String = "",
   val description: String = "",
   val timeZone: String = TimeZones.DEFAULT_TIME_ZONE,
+  val maximumNameLength: Int = NatConstants.MAXIMUM_SHOP_NAME_LENGTH,
+  val maximumDescriptionLength: Int = NatConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
 
   val isLoading: Boolean = true,
   val success: Boolean = false,
@@ -127,7 +130,8 @@ class ShopBasicSettingsViewModel @Inject constructor(
   }
 
   fun hasInvalidData(): Boolean {
-    if (uiState.value.name.isBlank()) return true
+    if (hasInvalidDataName()) return true
+    if (hasInvalidDataDescription()) return true
 
     val shopData = uiState.value.shop.getData()!!
 
@@ -136,15 +140,29 @@ class ShopBasicSettingsViewModel @Inject constructor(
       shopData.getTimeZone() == uiState.value.timeZone
   }
 
+  fun hasInvalidDataName(): Boolean {
+    val name = uiState.value.name
+    val maximumNameLength = uiState.value.maximumNameLength
+    return name.isBlank() || name.length > maximumNameLength
+  }
+
+  fun hasInvalidDataDescription(): Boolean {
+    return uiState.value.description.length > uiState.value.maximumDescriptionLength
+  }
+
   fun updateName(newName: String) {
-    _uiState.update {
-      it.copy(name = newName)
+    if (newName.length <= uiState.value.maximumNameLength) {
+      _uiState.update {
+        it.copy(name = newName)
+      }
     }
   }
 
   fun updateDescription(newDescription: String) {
-    _uiState.update {
-      it.copy(description = newDescription)
+    if (newDescription.length <= uiState.value.maximumDescriptionLength) {
+      _uiState.update {
+        it.copy(description = newDescription)
+      }
     }
   }
 

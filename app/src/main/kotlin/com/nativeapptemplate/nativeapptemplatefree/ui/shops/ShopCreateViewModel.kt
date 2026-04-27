@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -22,6 +23,8 @@ data class ShopCreateUiState(
   val name: String = "",
   val description: String = "",
   val timeZone: String = TimeZones.currentTimeZoneKey(),
+  val maximumNameLength: Int = NatConstants.MAXIMUM_SHOP_NAME_LENGTH,
+  val maximumDescriptionLength: Int = NatConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
 
   val isLoading: Boolean = false,
   val isCreated: Boolean = false,
@@ -72,18 +75,32 @@ class ShopCreateViewModel @Inject constructor(
   }
 
   fun hasInvalidData(): Boolean {
-    return uiState.value.name.isBlank()
+    return hasInvalidDataName() || hasInvalidDataDescription()
+  }
+
+  fun hasInvalidDataName(): Boolean {
+    val name = uiState.value.name
+    val maximumNameLength = uiState.value.maximumNameLength
+    return name.isBlank() || name.length > maximumNameLength
+  }
+
+  fun hasInvalidDataDescription(): Boolean {
+    return uiState.value.description.length > uiState.value.maximumDescriptionLength
   }
 
   fun updateName(newName: String) {
-    _uiState.update {
-      it.copy(name = newName)
+    if (newName.length <= uiState.value.maximumNameLength) {
+      _uiState.update {
+        it.copy(name = newName)
+      }
     }
   }
 
   fun updateDescription(newDescription: String) {
-    _uiState.update {
-      it.copy(description = newDescription)
+    if (newDescription.length <= uiState.value.maximumDescriptionLength) {
+      _uiState.update {
+        it.copy(description = newDescription)
+      }
     }
   }
 

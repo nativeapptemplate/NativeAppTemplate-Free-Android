@@ -86,6 +86,10 @@
   <string name="shops">Shops</string>
   <string name="shop_name">Shop Name</string>
   <string name="shop_name_is_required">Shop name is required.</string>
+  <string name="shop_name_is_invalid">Shop name is invalid.</string>
+  <string name="shop_description_is_invalid">Shop description is invalid.</string>
+  <string name="shop_name_help">Name must be 1-%1$d characters.</string>
+  <string name="shop_description_help">Description must be 0-%1$d characters.</string>
   <string name="add_shop_description">Add a new shop.</string>
   <string name="tap_shop_below">Tap a shop below</string>
 
