@@ -21,7 +21,5 @@ data class Permissions(
 
   fun getShouldUpdateTerms(): Boolean? = meta?.shouldUpdateTerms
 
-  fun getMaximumNameLength(): Int? = meta?.maximumNameLength
-
   fun getShopLimitCount(): Int? = meta?.shopLimitCount
 }

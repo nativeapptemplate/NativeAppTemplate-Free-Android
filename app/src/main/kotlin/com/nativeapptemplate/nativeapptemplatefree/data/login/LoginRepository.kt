@@ -55,6 +55,4 @@ interface LoginRepository {
   fun isShopDeleted(): Flow<Boolean>
 
   fun didShowTapShopBelowTip(): Flow<Boolean>
-
-  fun getMaximumNameLength(): Flow<Int>
 }

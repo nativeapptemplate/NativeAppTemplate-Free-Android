@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 
 val emptyUserData = UserData()
 
@@ -133,8 +132,6 @@ class TestLoginRepository : LoginRepository {
   override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(false)
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
-
-  override fun getMaximumNameLength(): Flow<Int> = userData.map { it.maximumNameLength }
 
   /**
    * A test-only API.

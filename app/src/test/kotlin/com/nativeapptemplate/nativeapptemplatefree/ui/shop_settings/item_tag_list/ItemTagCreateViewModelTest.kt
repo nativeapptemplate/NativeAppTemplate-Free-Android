@@ -2,17 +2,15 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_li
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
-import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagCreateRoute
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -37,7 +35,6 @@ class ItemTagCreateViewModelTest {
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
-  private val loginRepository = TestLoginRepository()
   private val itemTagRepository = TestItemTagRepository()
 
   private lateinit var viewModel: ItemTagCreateViewModel
@@ -48,49 +45,21 @@ class ItemTagCreateViewModelTest {
       savedStateHandle = SavedStateHandle(
         route = ItemTagCreateRoute(shopId = testInputShop.datum!!.id!!),
       ),
-      loginRepository = loginRepository,
       itemTagRepository = itemTagRepository,
     )
   }
 
   @Test
-  fun stateIsInitiallyLoading() = runTest {
-    assertTrue(viewModel.uiState.value.isLoading)
-  }
-
-  @Test
-  fun stateMaximumNameLength_whenSuccess_matchesMaximumNameLengthFromRepository() = runTest {
-    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
-
-    val maximumNameLength = 100
-
-    val userData = emptyUserData.copy(
-      maximumNameLength = maximumNameLength,
-    )
-
-    loginRepository.sendUserData(userData)
-
-    viewModel.reload()
-    val uiStateValue = viewModel.uiState.value
-    assertTrue(uiStateValue.success)
-    assertFalse(uiStateValue.isLoading)
-
-    assertEquals(loginRepository.getMaximumNameLength().first(), maximumNameLength)
+  fun maximumNameLength_matchesConstant() = runTest {
+    assertEquals(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
   }
 
   @Test
   fun stateIsCreated_whenCreatingItemTag_becomesTrue() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    val maximumNameLength = 100
-    val userData = emptyUserData.copy(
-      maximumNameLength = maximumNameLength,
-    )
-
-    loginRepository.sendUserData(userData)
     itemTagRepository.sendItemTag(testInputItemTag)
 
-    viewModel.reload()
     val newName = "Buy milk"
     viewModel.updateName(newName)
     assertEquals(viewModel.uiState.value.name, newName)
@@ -106,8 +75,6 @@ class ItemTagCreateViewModelTest {
   fun blankName_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
-    viewModel.reload()
     viewModel.updateName("")
 
     assertTrue(viewModel.hasInvalidDataName())
@@ -118,8 +85,6 @@ class ItemTagCreateViewModelTest {
   fun singleCharacterName_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
-    viewModel.reload()
     viewModel.updateName("A")
 
     assertFalse(viewModel.hasInvalidDataName())
@@ -129,8 +94,6 @@ class ItemTagCreateViewModelTest {
   fun nameWithSymbolsAndUnicode_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
-    viewModel.reload()
     viewModel.updateName("Buy milk 🥛 + bread")
 
     assertFalse(viewModel.hasInvalidDataName())
@@ -140,9 +103,7 @@ class ItemTagCreateViewModelTest {
   fun nameAtMaximumLength_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
-    viewModel.reload()
-    viewModel.updateName("A".repeat(100))
+    viewModel.updateName("A".repeat(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH))
 
     assertFalse(viewModel.hasInvalidDataName())
   }
@@ -151,9 +112,7 @@ class ItemTagCreateViewModelTest {
   fun nameAboveMaximumLength_isRejectedByUpdater() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
-    viewModel.reload()
-    viewModel.updateName("A".repeat(101))
+    viewModel.updateName("A".repeat(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH + 1))
 
     // updater clamps; value should remain blank (initial)
     assertEquals("", viewModel.uiState.value.name)
@@ -163,9 +122,7 @@ class ItemTagCreateViewModelTest {
   fun descriptionAtMaximumLength_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
-    viewModel.reload()
-    viewModel.updateDescription("D".repeat(1_000))
+    viewModel.updateDescription("D".repeat(NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH))
 
     assertFalse(viewModel.hasInvalidDataDescription())
   }
@@ -174,9 +131,7 @@ class ItemTagCreateViewModelTest {
   fun descriptionAboveMaximumLength_isRejectedByUpdater() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData.copy(maximumNameLength = 100))
-    viewModel.reload()
-    viewModel.updateDescription("D".repeat(1_001))
+    viewModel.updateDescription("D".repeat(NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH + 1))
 
     assertEquals("", viewModel.uiState.value.description)
   }

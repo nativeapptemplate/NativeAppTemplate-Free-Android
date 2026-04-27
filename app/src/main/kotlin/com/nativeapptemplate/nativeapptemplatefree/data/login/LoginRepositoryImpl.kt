@@ -127,6 +127,4 @@ class LoginRepositoryImpl @Inject constructor(
   override fun isShopDeleted(): Flow<Boolean> = natPreferencesDataSource.isShopDeleted()
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = natPreferencesDataSource.didShowTapShopBelowTip()
-
-  override fun getMaximumNameLength(): Flow<Int> = natPreferencesDataSource.getMaximumNameLength()
 }

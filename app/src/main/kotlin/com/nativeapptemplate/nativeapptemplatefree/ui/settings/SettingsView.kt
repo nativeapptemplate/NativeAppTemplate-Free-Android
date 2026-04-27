@@ -266,34 +266,6 @@ private fun SettingsContentView(
           ListItem(
             headlineContent = {
               Text(
-                stringResource(R.string.how_to_use),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-              )
-            },
-            leadingContent = {
-              Icon(
-                Icons.Outlined.Info,
-                contentDescription = stringResource(R.string.how_to_use),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-            },
-            modifier = Modifier
-              .clickable {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.HOW_TO_USE_URL),
-                  ),
-                )
-              },
-          )
-          HorizontalDivider()
-        }
-        item {
-          ListItem(
-            headlineContent = {
-              Text(
                 stringResource(R.string.faqs),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,

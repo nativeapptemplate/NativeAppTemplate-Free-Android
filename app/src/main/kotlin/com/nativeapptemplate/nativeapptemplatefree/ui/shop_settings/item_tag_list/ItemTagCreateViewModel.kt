@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.NatConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBodyDetail
@@ -25,18 +24,17 @@ import javax.inject.Inject
 data class ItemTagCreateUiState(
   val name: String = "",
   val description: String = "",
-  val maximumNameLength: Int = -1,
+  val maximumNameLength: Int = NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH,
   val isCreated: Boolean = false,
 
-  val isLoading: Boolean = true,
-  val success: Boolean = false,
+  val isLoading: Boolean = false,
+  val success: Boolean = true,
   val message: String = "",
 )
 
 @HiltViewModel
 class ItemTagCreateViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  private val loginRepository: LoginRepository,
   private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ItemTagCreateRoute>().shopId
@@ -45,40 +43,8 @@ class ItemTagCreateViewModel @Inject constructor(
   val uiState: StateFlow<ItemTagCreateUiState> = _uiState.asStateFlow()
 
   fun reload() {
-    fetchData()
-  }
-
-  private fun fetchData() {
     _uiState.update {
-      it.copy(
-        isLoading = true,
-        success = false,
-        isCreated = false,
-      )
-    }
-
-    viewModelScope.launch {
-      val maximumNameLengthFlow = loginRepository.getMaximumNameLength()
-
-      maximumNameLengthFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
-        .collect { maximumNameLength ->
-          _uiState.update {
-            it.copy(
-              maximumNameLength = maximumNameLength,
-              success = true,
-              isLoading = false,
-            )
-          }
-        }
+      ItemTagCreateUiState()
     }
   }
 
