@@ -9,6 +9,8 @@ object NatConstants {
   const val TERMS_OF_USE_URL: String = "https://nativeapptemplate.com/terms"
 
   const val MINIMUM_PASSWORD_LENGTH: Int = 8
+  const val MAXIMUM_SHOP_NAME_LENGTH: Int = 100
+  const val MAXIMUM_SHOP_DESCRIPTION_LENGTH: Int = 1_000
   const val MAXIMUM_ITEM_TAG_NAME_LENGTH: Int = 100
   const val MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH: Int = 1_000
 
