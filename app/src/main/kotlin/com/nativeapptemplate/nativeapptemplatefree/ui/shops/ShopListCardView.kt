@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Flag
-import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Rectangle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -48,7 +47,6 @@ fun ShopListCardView(
           modifier = Modifier
             .padding(top = 16.dp),
         ) {
-          CountRow(icon = Icons.Outlined.People, count = data.getScannedItemTagsCount(), countLabel = "tags scanned by customers")
           CountRow(icon = Icons.Outlined.Flag, count = data.getCompletedItemTagsCount(), countLabel = "completed tags")
           CountRow(icon = Icons.Outlined.Rectangle, count = data.getItemTagsCount(), countLabel = "all tags")
         }

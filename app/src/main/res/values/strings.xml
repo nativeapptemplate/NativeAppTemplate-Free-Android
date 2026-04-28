@@ -24,7 +24,6 @@
   <string name="not_connected">⚠️ You aren’t connected to the internet</string>
   <string name="instructions">Instructions</string>
   <string name="open">Open</string>
-  <string name="learn_more">Learn More</string>
   <string name="are_you_sure">Are you sure?</string>
   <string name="full_name">Full Name</string>
   <string name="full_name_is_required">Full name is required.</string>
@@ -67,19 +66,14 @@
   <string name="terms_of_use_updated">Terms of Use Updated</string>
 
   <!-- On-boarding -->
-  <string name="onboarding_description1">Welcome to the app.</string>
-  <string name="onboarding_description2">Welcome to the app.</string>
-  <string name="onboarding_description3">Welcome to the app.</string>
-  <string name="onboarding_description4">Welcome to the app.</string>
-  <string name="onboarding_description5">Welcome to the app.</string>
-  <string name="onboarding_description6">Welcome to the app.</string>
-  <string name="onboarding_description7">Welcome to the app.</string>
-  <string name="onboarding_description8">Welcome to the app.</string>
-  <string name="onboarding_description9">Welcome to the app.</string>
-  <string name="onboarding_description10">Welcome to the app.</string>
-  <string name="onboarding_description11">Welcome to the app.</string>
-  <string name="onboarding_description12">Welcome to the app.</string>
-  <string name="onboarding_description13">Welcome to the app.</string>
+  <string name="onboarding_description1">Welcome to NativeAppTemplate.</string>
+  <string name="onboarding_description2">Sign in to manage your shops and item tags.</string>
+  <string name="onboarding_description3">Organize your work across multiple organizations.</string>
+  <string name="onboarding_description4">Invite teammates to collaborate.</string>
+  <string name="onboarding_description5">Track item tags with a simple idle/completed state.</string>
+  <string name="onboarding_description6">Create, edit, and delete item tags from your shop.</string>
+  <string name="onboarding_description7">Switch between personal and shared organizations.</string>
+  <string name="onboarding_description8">Have fun!</string>
 
   <!-- Shops Screen -->
   <string name="add_shop">Add Shop</string>
@@ -97,6 +91,7 @@
   <string name="message_shop_created">Shop added.</string>
   <string name="message_shop_deleted">Shop removed.</string>
   <string name="message_shop_updated">Shop updated.</string>
+  <string name="shop_detail_instruction">Swipe an item tag to change its status.</string>
   <string name="complete">Complete</string>
   <string name="idle">Idle</string>
 
@@ -112,8 +107,8 @@
   <string name="description_label">Description</string>
   <string name="completed_at_label">Completed at</string>
   <string name="item_tag_name_placeholder">Buy milk</string>
-  <string name="label_add_tag">Add Tag</string>
-  <string name="add_tag_description">Add a new item tag and start changing the tag status.</string>
+  <string name="label_add_item_tag">Add Item Tag</string>
+  <string name="add_item_tag_description">Add a new item tag and start changing the item tag status.</string>
   <string name="item_tag_name_is_invalid">Tag name is invalid.</string>
   <string name="item_tag_description_is_invalid">Tag description is invalid.</string>
   <string name="item_tag_name_help">Name must be 1-%1$d characters.</string>
@@ -121,13 +116,13 @@
   <string name="mark_as_completed">Mark as completed</string>
   <string name="mark_as_idled">Mark as idled</string>
 
-  <string name="message_item_tag_created">Tag created successfully.</string>
-  <string name="message_item_tag_updated">Tag updated successfully.</string>
-  <string name="message_item_tag_deleted">Tag deleted successfully.</string>
+  <string name="message_item_tag_created">Item tag created successfully.</string>
+  <string name="message_item_tag_updated">Item tag updated successfully.</string>
+  <string name="message_item_tag_deleted">Item tag deleted successfully.</string>
 
   <!-- Item Tag Detail Screen -->
-  <string name="label_edit_item_tag">Edit Tag</string>
-  <string name="title_delete_item_tag">Delete Tag</string>
+  <string name="label_edit_item_tag">Edit Item Tag</string>
+  <string name="title_delete_item_tag">Delete Item Tag</string>
 
   <!-- Settings Screen -->
   <string name="mode">Mode</string>
@@ -143,7 +138,6 @@
   <string name="app_section">App</string>
   <string name="version">Version</string>
   <string name="website">Website</string>
-  <string name="how_to_use">How To Use</string>
   <string name="support_website">Support Website</string>
   <string name="faqs">FAQs</string>
   <string name="rate_app">Rate or Review the App</string>

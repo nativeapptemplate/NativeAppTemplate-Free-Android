@@ -67,7 +67,5 @@ data class Data(
 
   fun getItemTagsCount(): Int = attributes?.itemTagsCount ?: 0
 
-  fun getScannedItemTagsCount(): Int = attributes?.scannedItemTagsCount ?: 0
-
   fun getCompletedItemTagsCount(): Int = attributes?.completedItemTagsCount ?: 0
 }

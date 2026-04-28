@@ -68,9 +68,6 @@ data class Attributes(
   @SerialName("item_tags_count")
   val itemTagsCount: Int? = null,
 
-  @SerialName("scanned_item_tags_count")
-  val scannedItemTagsCount: Int? = null,
-
   @SerialName("completed_item_tags_count")
   val completedItemTagsCount: Int? = null,
 
