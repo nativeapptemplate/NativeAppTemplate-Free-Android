@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ListItem
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,40 +28,40 @@ fun ItemTagListCardView(
   val state = data.getItemTagState()
   val completedAt = data.getCompletedAt()
 
-  ListItem(
-    headlineContent = {
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth(),
-      ) {
+  Row(
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalAlignment = Alignment.CenterVertically,
+    modifier = Modifier
+      .fillMaxWidth()
+      .clickable { onItemClick(data.id!!) }
+      .padding(horizontal = 16.dp, vertical = 12.dp),
+  ) {
+    Column(
+      modifier = Modifier.weight(1f),
+      verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+      Text(
+        data.getName(),
+        style = MaterialTheme.typography.titleMedium,
+      )
+      if (description.isNotBlank()) {
         Text(
-          data.getName(),
-          style = MaterialTheme.typography.titleMedium,
-          modifier = Modifier.weight(1f),
+          description,
+          style = MaterialTheme.typography.bodySmall,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        when (state) {
-          ItemTagState.Completed -> CompletedTag()
-          ItemTagState.Idled -> IdlingTag()
-          null -> Unit
-        }
       }
-    },
-    supportingContent = if (description.isBlank() && state != ItemTagState.Completed) {
-      null
-    } else {
-      {
-        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-          if (description.isNotBlank()) {
-            Text(
-              description,
-              style = MaterialTheme.typography.bodySmall,
-              maxLines = 2,
-              overflow = TextOverflow.Ellipsis,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-          }
-          if (state == ItemTagState.Completed && completedAt.isNotBlank()) {
+    }
+    Column(
+      horizontalAlignment = Alignment.End,
+      verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+      when (state) {
+        ItemTagState.Completed -> {
+          CompletedTag()
+          if (completedAt.isNotBlank()) {
             Text(
               completedAt.cardDateTimeString(),
               style = MaterialTheme.typography.bodySmall,
@@ -69,11 +69,9 @@ fun ItemTagListCardView(
             )
           }
         }
+        ItemTagState.Idled -> IdlingTag()
+        null -> Unit
       }
-    },
-    modifier = Modifier
-      .clickable {
-        onItemClick(data.id!!)
-      },
-  )
+    }
+  }
 }
