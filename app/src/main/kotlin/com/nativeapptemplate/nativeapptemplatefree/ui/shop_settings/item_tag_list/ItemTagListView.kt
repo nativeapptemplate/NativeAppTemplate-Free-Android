@@ -300,13 +300,13 @@ private fun NoResultsView(
       )
 
       Text(
-        stringResource(R.string.add_tag_description),
+        stringResource(R.string.add_item_tag_description),
         modifier = Modifier
           .padding(horizontal = 16.dp),
       )
 
       MainButtonView(
-        title = stringResource(R.string.label_add_tag),
+        title = stringResource(R.string.label_add_item_tag),
         onClick = { onAddItemTagClick(viewModel.shopId) },
         modifier = Modifier
           .padding(horizontal = 12.dp, vertical = 24.dp),

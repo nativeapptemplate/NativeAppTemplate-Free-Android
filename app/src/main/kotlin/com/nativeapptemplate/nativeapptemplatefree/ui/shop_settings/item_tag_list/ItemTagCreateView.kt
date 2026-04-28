@@ -119,7 +119,7 @@ fun ItemTagCreateContentView(
         shape = CircleShape,
 
       ) {
-        Icon(Icons.Filled.Done, contentDescription = stringResource(R.string.label_add_tag))
+        Icon(Icons.Filled.Done, contentDescription = stringResource(R.string.label_add_item_tag))
       }
     },
     modifier = Modifier.fillMaxSize(),
@@ -198,7 +198,7 @@ private fun TopAppBar(
       containerColor = MaterialTheme.colorScheme.primaryContainer,
       titleContentColor = MaterialTheme.colorScheme.primary,
     ),
-    title = { Text(text = stringResource(id = R.string.label_add_tag)) },
+    title = { Text(text = stringResource(id = R.string.label_add_item_tag)) },
     navigationIcon = {
       IconButton(onClick = {
         onBackClick()
