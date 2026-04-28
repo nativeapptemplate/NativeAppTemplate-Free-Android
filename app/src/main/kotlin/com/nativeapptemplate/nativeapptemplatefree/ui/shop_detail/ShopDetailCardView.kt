@@ -1,9 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +21,6 @@ fun ShopDetailCardView(
   data: Data,
 ) {
   Row(
-    horizontalArrangement = Arrangement.Center,
     verticalAlignment = Alignment.CenterVertically,
     modifier = Modifier.padding(16.dp),
   ) {
@@ -35,9 +32,10 @@ fun ShopDetailCardView(
       data.getName(),
       style = MaterialTheme.typography.titleLarge,
       fontSize = nameFontSize,
+      modifier = Modifier
+        .weight(1f)
+        .padding(end = 8.dp),
     )
-
-    Spacer(modifier = Modifier.weight(1f))
 
     // TODO: removed in Phase 2A-2 — scanState/customerReadAt column dropped with ItemTag schema v2
 
