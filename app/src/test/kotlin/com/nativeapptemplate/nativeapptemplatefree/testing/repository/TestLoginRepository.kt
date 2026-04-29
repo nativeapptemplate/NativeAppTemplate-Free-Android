@@ -97,6 +97,9 @@ class TestLoginRepository : LoginRepository {
   }
 
   override suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
+    currentUserData.let { current ->
+      _userData.tryEmit(current.copy(didShowTapShopBelowTip = didShowTapShopBelowTip))
+    }
   }
 
   override suspend fun setIsEmailUpdated(isEmailUpdated: Boolean) {
