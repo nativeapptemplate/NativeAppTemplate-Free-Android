@@ -17,13 +17,10 @@ object NatConstants {
   const val PLACEHOLDER_EMAIL: String = "you@example.com"
   const val PLACEHOLDER_PASSWORD: String = "password"
 
-  fun baseUrlString(): String {
-    val result = if (BuildConfig.PORT.isEmpty()) {
+  fun baseUrlString(): String =
+    if (BuildConfig.PORT.isEmpty()) {
       "${BuildConfig.SCHEME}://${BuildConfig.DOMAIN}"
     } else {
       "${BuildConfig.SCHEME}://${BuildConfig.DOMAIN}:${BuildConfig.PORT}"
     }
-
-    return result
-  }
 }
