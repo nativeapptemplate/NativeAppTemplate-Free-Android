@@ -82,4 +82,4 @@ replay_pid*.log
 .claude/logs/
 .claude/tmp/
 .claude/*.log
-
+.claude/scheduled_tasks.lock
