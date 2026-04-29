@@ -6,10 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Loading
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
-import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -43,19 +41,15 @@ class MainActivityViewModel @Inject constructor(
       val isLoggedIn = loginRepository.isLoggedIn().first()
 
       if (isLoggedIn) {
-        val permissionsFlow: Flow<Permissions> = loginRepository.getPermissions()
-
-        permissionsFlow
+        loginRepository.getPermissions()
           .catch { exception ->
             Log.e("MainActivityViewModel", "Failed to update permissions", exception)
 
-            val booleanFlow = loginRepository.logout()
-            booleanFlow
+            loginRepository.logout()
               .catch { logoutException ->
                 Log.e("MainActivityViewModel", "Logout error", logoutException)
               }
-              .collect {
-              }
+              .collect { }
           }
           .collect { permissions ->
             loginRepository.setPermissions(permissions)

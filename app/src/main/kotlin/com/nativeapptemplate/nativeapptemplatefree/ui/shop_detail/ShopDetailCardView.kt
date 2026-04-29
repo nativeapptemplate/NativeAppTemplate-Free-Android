@@ -37,8 +37,6 @@ fun ShopDetailCardView(
         .padding(end = 8.dp),
     )
 
-    // TODO: removed in Phase 2A-2 — scanState/customerReadAt column dropped with ItemTag schema v2
-
     Column(
       horizontalAlignment = Alignment.End,
     ) {
