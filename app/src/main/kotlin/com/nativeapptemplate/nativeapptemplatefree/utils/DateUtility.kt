@@ -1,6 +1,5 @@
 package com.nativeapptemplate.nativeapptemplatefree.utils
 
-import android.text.format.DateUtils
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -38,16 +37,5 @@ object DateUtility {
 
     val date = ZonedDateTime.parse(this).withZoneSameInstant(zoneId)
     return date.cardDateTimeString()
-  }
-
-  fun ZonedDateTime.cardTimeAgoInWordsDateString(): String {
-    return DateUtils.getRelativeTimeSpanString(this.toInstant().toEpochMilli(), System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS).toString()
-  }
-
-  fun String.cardTimeAgoInWordsDateString(zoneId: ZoneId = ZoneId.systemDefault()): String {
-    if (this.isBlank()) return ""
-
-    val date = ZonedDateTime.parse(this).withZoneSameInstant(zoneId)
-    return date.cardTimeAgoInWordsDateString()
   }
 }

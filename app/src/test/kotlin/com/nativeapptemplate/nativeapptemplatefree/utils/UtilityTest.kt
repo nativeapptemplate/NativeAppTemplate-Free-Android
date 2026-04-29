@@ -31,36 +31,4 @@ class UtilityTest {
   fun validateEmail_noDomain_returnsFalse() {
     assertFalse("test@".validateEmail())
   }
-
-  // isAlphanumeric tests
-
-  @Test
-  fun isAlphanumeric_alphanumericText_returnsTrue() {
-    assertTrue(Utility.isAlphanumeric("abc123"))
-  }
-
-  @Test
-  fun isAlphanumeric_lettersOnly_returnsTrue() {
-    assertTrue(Utility.isAlphanumeric("abcdef"))
-  }
-
-  @Test
-  fun isAlphanumeric_numbersOnly_returnsTrue() {
-    assertTrue(Utility.isAlphanumeric("123456"))
-  }
-
-  @Test
-  fun isAlphanumeric_specialChars_returnsFalse() {
-    assertFalse(Utility.isAlphanumeric("abc!@#"))
-  }
-
-  @Test
-  fun isAlphanumeric_null_returnsFalse() {
-    assertFalse(Utility.isAlphanumeric(null))
-  }
-
-  @Test
-  fun isAlphanumeric_blank_returnsFalse() {
-    assertFalse(Utility.isAlphanumeric(""))
-  }
 }
