@@ -70,7 +70,7 @@ internal fun SignUpOrSignInView(
       )
 
       Image(
-        painter = painterResource(R.drawable.ic_overview1_slim),
+        painter = painterResource(R.drawable.ic_hero),
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
         modifier = Modifier

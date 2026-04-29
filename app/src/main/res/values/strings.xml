@@ -66,14 +66,10 @@
   <string name="terms_of_use_updated">Terms of Use Updated</string>
 
   <!-- On-boarding -->
-  <string name="onboarding_description1">Welcome to NativeAppTemplate.</string>
-  <string name="onboarding_description2">Sign in to manage your shops and item tags.</string>
-  <string name="onboarding_description3">Organize your work across multiple organizations.</string>
-  <string name="onboarding_description4">Invite teammates to collaborate.</string>
-  <string name="onboarding_description5">Track item tags with a simple idle/completed state.</string>
-  <string name="onboarding_description6">Create, edit, and delete item tags from your shop.</string>
-  <string name="onboarding_description7">Switch between personal and shared organizations.</string>
-  <string name="onboarding_description8">Have fun!</string>
+  <string name="onboarding_description1">Onboarding description 1.</string>
+  <string name="onboarding_description2">Onboarding description 2.</string>
+  <string name="onboarding_description3">Onboarding description 3.</string>
+  <string name="onboarding_description4">Onboarding description 4.</string>
 
   <!-- Shops Screen -->
   <string name="add_shop">Add Shop</string>
