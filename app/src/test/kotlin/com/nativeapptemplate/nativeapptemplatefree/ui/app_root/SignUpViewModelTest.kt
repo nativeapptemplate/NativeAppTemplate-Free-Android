@@ -109,7 +109,7 @@ class SignUpViewModelTest {
 
     viewModel.updatePassword("1234567")
 
-    assertTrue(viewModel.hasInvalidDataEmail())
+    assertTrue(viewModel.hasInvalidDataPassword())
   }
 }
 
