@@ -46,8 +46,9 @@ internal fun OnboardingView(
 ) {
   val fontSizeLarge = 24
   val lineHeightLarge = 26
+  val onboardings = OnboardingViewModel.onboardings
   val pagerState = rememberPagerState(pageCount = {
-    8
+    onboardings.size
   })
 
   Scaffold(
@@ -64,6 +65,8 @@ internal fun OnboardingView(
         modifier = Modifier
           .fillMaxSize(),
       ) { page ->
+        val onboarding = onboardings[page]
+        val imageBottomPadding = if (onboarding.imageOrientation == ImageOrientation.LANDSCAPE) 192.dp else 0.dp
         Box(
           modifier = Modifier
             .fillMaxSize()
@@ -71,11 +74,12 @@ internal fun OnboardingView(
             .padding(top = 12.dp),
         ) {
           Image(
-            painter = painterResource(OnboardingViewModel.onboardingImageId(page)),
+            painter = painterResource(OnboardingViewModel.onboardingImageId(onboarding.id)),
             contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier
-              .align(Alignment.TopCenter),
+              .align(Alignment.TopCenter)
+              .padding(bottom = imageBottomPadding),
           )
           Card(
             shape = RoundedCornerShape(16.dp),
@@ -85,7 +89,7 @@ internal fun OnboardingView(
               .align(Alignment.BottomCenter),
           ) {
             Text(
-              stringResource(OnboardingViewModel.onboardingDescription(page)),
+              stringResource(OnboardingViewModel.onboardingDescription(onboarding.id)),
               color = MaterialTheme.colorScheme.onSurfaceVariant,
               fontSize = fontSizeLarge.sp.nonScaledSp,
               lineHeight = lineHeightLarge.sp.nonScaledSp,
