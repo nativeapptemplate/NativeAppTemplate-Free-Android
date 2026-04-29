@@ -130,6 +130,19 @@ class ItemTagEditViewModelTest {
   }
 
   @Test
+  fun whitespaceOnlyName_isInvalid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+
+    viewModel.updateName("   ")
+
+    assertTrue(viewModel.hasInvalidDataName())
+    assertTrue(viewModel.hasInvalidData())
+  }
+
+  @Test
   fun nameWithSymbolsAndUnicode_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 

@@ -97,7 +97,7 @@ class SignInEmailAndPasswordViewModelTest {
 
     viewModel.updatePassword("")
 
-    assertTrue(viewModel.hasInvalidDataEmail())
+    assertTrue(viewModel.hasInvalidDataPassword())
   }
 
   @Test
@@ -106,7 +106,7 @@ class SignInEmailAndPasswordViewModelTest {
 
     viewModel.updatePassword("1234567")
 
-    assertTrue(viewModel.hasInvalidDataEmail())
+    assertTrue(viewModel.hasInvalidDataPassword())
   }
 }
 
