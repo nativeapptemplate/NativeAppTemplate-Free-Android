@@ -77,8 +77,6 @@ fun NatTheme(
     tonalElevation = 2.dp,
   )
 
-  val tintTheme = TintTheme()
-
   val customColorsPalette =
     if (darkTheme) {
       DarkCustomColorScheme
@@ -90,7 +88,6 @@ fun NatTheme(
   CompositionLocalProvider(
     LocalCustomColorScheme provides customColorsPalette,
     LocalBackgroundTheme provides backgroundTheme,
-    LocalTintTheme provides tintTheme,
   ) {
     MaterialTheme(
       colorScheme = colorScheme,
