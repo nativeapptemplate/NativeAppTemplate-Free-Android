@@ -105,8 +105,8 @@
   <string name="item_tag_name_placeholder">Buy milk</string>
   <string name="label_add_item_tag">Add Item Tag</string>
   <string name="add_item_tag_description">Add a new item tag and start changing the item tag status.</string>
-  <string name="item_tag_name_is_invalid">Tag name is invalid.</string>
-  <string name="item_tag_description_is_invalid">Tag description is invalid.</string>
+  <string name="item_tag_name_is_invalid">Item tag name is invalid.</string>
+  <string name="item_tag_description_is_invalid">Item tag description is invalid.</string>
   <string name="item_tag_name_help">Name must be 1-%1$d characters.</string>
   <string name="item_tag_description_help">Description must be 0-%1$d characters.</string>
   <string name="mark_as_completed">Mark as completed</string>
