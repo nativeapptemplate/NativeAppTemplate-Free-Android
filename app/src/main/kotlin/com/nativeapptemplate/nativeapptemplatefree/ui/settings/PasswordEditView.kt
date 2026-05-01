@@ -44,7 +44,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
@@ -190,7 +190,7 @@ fun PasswordEditContentView(
         supportingText = {
           Column {
             Text(
-              text = "${NatConstants.MINIMUM_PASSWORD_LENGTH} characters minimum.",
+              text = "${NativeAppTemplateConstants.MINIMUM_PASSWORD_LENGTH} characters minimum.",
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

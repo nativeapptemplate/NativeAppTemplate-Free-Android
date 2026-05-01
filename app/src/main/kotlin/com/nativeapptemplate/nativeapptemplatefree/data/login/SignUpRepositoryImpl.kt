@@ -6,7 +6,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.Status
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class SignUpRepositoryImpl @Inject constructor(
   private val api: SignUpApi,
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : SignUpRepository {
   override fun signUp(
     signUp: SignUp,

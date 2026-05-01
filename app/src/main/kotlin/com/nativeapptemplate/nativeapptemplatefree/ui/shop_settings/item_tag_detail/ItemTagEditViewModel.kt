@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
@@ -26,7 +26,7 @@ data class ItemTagEditUiState(
 
   val name: String = "",
   val description: String = "",
-  val maximumNameLength: Int = NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH,
+  val maximumNameLength: Int = NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH,
   val isUpdated: Boolean = false,
 
   val isLoading: Boolean = true,
@@ -143,7 +143,7 @@ class ItemTagEditViewModel @Inject constructor(
   }
 
   fun hasInvalidDataDescription(): Boolean {
-    return uiState.value.description.length > NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH
+    return uiState.value.description.length > NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH
   }
 
   fun updateName(newName: String) {
@@ -156,7 +156,7 @@ class ItemTagEditViewModel @Inject constructor(
   }
 
   fun updateDescription(newDescription: String) {
-    if (newDescription.length > NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH) return
+    if (newDescription.length > NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH) return
 
     _uiState.update {
       it.copy(description = newDescription)

@@ -47,7 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
 @Composable
@@ -64,7 +64,7 @@ fun ShopCreateView(
   )
 
   if (uiState.isCreated) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.message_shop_created),
       onDismissRequest = { onBackClick() },
     )

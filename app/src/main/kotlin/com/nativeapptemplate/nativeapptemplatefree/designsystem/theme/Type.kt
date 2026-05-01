@@ -8,7 +8,7 @@ import androidx.compose.ui.text.style.LineHeightStyle.Alignment
 import androidx.compose.ui.text.style.LineHeightStyle.Trim
 import androidx.compose.ui.unit.sp
 
-internal val NatTypography = Typography(
+internal val NativeAppTemplateTypography = Typography(
   displayLarge = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 57.sp,

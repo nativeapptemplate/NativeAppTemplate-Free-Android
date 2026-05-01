@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 
 @Composable
 fun LoadingView() {
@@ -28,7 +28,7 @@ fun LoadingView() {
 @Preview
 @Composable
 private fun LoadingStatePreview() {
-  NatTheme {
+  NativeAppTemplateTheme {
     LoadingView()
   }
 }

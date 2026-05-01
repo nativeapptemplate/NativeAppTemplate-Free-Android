@@ -30,7 +30,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 
 @Composable
@@ -158,7 +158,7 @@ fun SettingsDialogThemeChooserRow(
 @Preview
 @Composable
 private fun PreviewSettingsDialog() {
-  NatTheme {
+  NativeAppTemplateTheme {
     DarkModeSettingsDialog(
       onDismiss = {},
       settingsUiState = DarkModeSettingsUiState.Success(
@@ -174,7 +174,7 @@ private fun PreviewSettingsDialog() {
 @Preview
 @Composable
 private fun PreviewSettingsDialogLoading() {
-  NatTheme {
+  NativeAppTemplateTheme {
     DarkModeSettingsDialog(
       onDismiss = {},
       settingsUiState = DarkModeSettingsUiState.Loading,

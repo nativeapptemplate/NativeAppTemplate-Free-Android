@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.activity.ComponentActivity
 import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import java.util.Locale
 
@@ -52,7 +52,7 @@ object Utility {
 
     val emailIntent = Intent(Intent.ACTION_SENDTO)
 
-    val uriText = "mailto:" + Uri.encode(NatConstants.SUPPORT_MAIL) +
+    val uriText = "mailto:" + Uri.encode(NativeAppTemplateConstants.SUPPORT_MAIL) +
       "?subject=" + Uri.encode("$appName for Android support") +
       "&body=" + Uri.encode(body)
 

@@ -2,7 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_de
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
@@ -56,7 +56,7 @@ class ItemTagEditViewModelTest {
 
   @Test
   fun maximumNameLength_matchesConstant() = runTest {
-    assertEquals(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
+    assertEquals(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
   }
 
   @Test

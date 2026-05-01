@@ -35,10 +35,10 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.nativeapptemplate.nativeapptemplatefree.R
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NatBackground
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NatNavigationBar
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NatNavigationBarItem
-import com.nativeapptemplate.nativeapptemplatefree.navigation.NatNavHost
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NativeAppTemplateBackground
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NativeAppTemplateNavigationBar
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NativeAppTemplateNavigationBarItem
+import com.nativeapptemplate.nativeapptemplatefree.navigation.NativeAppTemplateNavHost
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
 import kotlin.reflect.KClass
 
@@ -46,8 +46,8 @@ import kotlin.reflect.KClass
   ExperimentalComposeUiApi::class,
 )
 @Composable
-fun NatApp(appState: NatAppState) {
-  NatBackground {
+fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
+  NativeAppTemplateBackground {
     val snackbarHostState = remember { SnackbarHostState() }
 
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
@@ -116,11 +116,11 @@ fun NatApp(appState: NatAppState) {
       bottomBar = {
         val shouldShowBottomBar by appState.shouldShowBottomBar.collectAsStateWithLifecycle()
         if (shouldShowBottomBar) {
-          NatBottomBar(
+          NativeAppTemplateBottomBar(
             destinations = appState.topLevelDestinations,
             onNavigateToDestination = appState::navigateToTopLevelDestination,
             currentDestination = appState.currentDestination,
-            modifier = Modifier.testTag("NatBottomBar"),
+            modifier = Modifier.testTag("NativeAppTemplateBottomBar"),
           )
         }
       },
@@ -137,7 +137,7 @@ fun NatApp(appState: NatAppState) {
           ),
       ) {
         Column(Modifier.fillMaxSize()) {
-          NatNavHost(
+          NativeAppTemplateNavHost(
             appState = appState,
             onShowSnackbar = { message, action, duration ->
               snackbarHostState.showSnackbar(
@@ -154,19 +154,19 @@ fun NatApp(appState: NatAppState) {
 }
 
 @Composable
-private fun NatBottomBar(
+private fun NativeAppTemplateBottomBar(
   destinations: List<TopLevelDestination>,
   onNavigateToDestination: (TopLevelDestination) -> Unit,
   currentDestination: NavDestination?,
   modifier: Modifier = Modifier,
 ) {
-  NatNavigationBar(
+  NativeAppTemplateNavigationBar(
     modifier = modifier,
   ) {
     destinations.forEach { destination ->
       val selected = currentDestination.isRouteInHierarchy(destination.baseRoute)
 
-      NatNavigationBarItem(
+      NativeAppTemplateNavigationBarItem(
         selected = selected,
         onClick = { onNavigateToDestination(destination) },
         icon = {

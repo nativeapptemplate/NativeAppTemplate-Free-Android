@@ -1,7 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.network
 
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
-import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
+import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataStore
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -26,14 +26,14 @@ class AuthInterceptorTest {
     client: String,
     uid: String,
     expiry: String,
-  ): NatPreferencesDataSource {
+  ): NativeAppTemplatePreferencesDataSource {
     val initial = UserPreferences.newBuilder()
       .setToken(token)
       .setClient(client)
       .setUid(uid)
       .setExpiry(expiry)
       .build()
-    return NatPreferencesDataSource(InMemoryDataStore(initial))
+    return NativeAppTemplatePreferencesDataSource(InMemoryDataStore(initial))
   }
 
   @Test
@@ -78,7 +78,7 @@ class AuthInterceptorTest {
 
   @Test
   fun intercept_withoutAuthData_omitsAuthHeaders() = testScope.runTest {
-    val dataSource = NatPreferencesDataSource(
+    val dataSource = NativeAppTemplatePreferencesDataSource(
       InMemoryDataStore(UserPreferences.getDefaultInstance()),
     )
     val interceptor = AuthInterceptor(dataSource)
@@ -97,7 +97,7 @@ class AuthInterceptorTest {
 
   @Test
   fun intercept_preservesOriginalRequestUrl() = testScope.runTest {
-    val dataSource = NatPreferencesDataSource(
+    val dataSource = NativeAppTemplatePreferencesDataSource(
       InMemoryDataStore(UserPreferences.getDefaultInstance()),
     )
     val interceptor = AuthInterceptor(dataSource)

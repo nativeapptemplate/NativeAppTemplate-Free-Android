@@ -37,7 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
@@ -170,7 +170,7 @@ fun ItemTagEditContentView(
         supportingText = {
           Column {
             Text(
-              text = stringResource(R.string.item_tag_description_help, NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH),
+              text = stringResource(R.string.item_tag_description_help, NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH),
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

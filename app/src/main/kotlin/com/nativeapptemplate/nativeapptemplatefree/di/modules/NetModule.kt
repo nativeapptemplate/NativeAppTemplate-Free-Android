@@ -3,7 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.di.modules
 import androidx.tracing.trace
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginApi
@@ -84,7 +84,7 @@ class NetModule {
   @Provides
   fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-      .baseUrl(NatConstants.baseUrlString())
+      .baseUrl(NativeAppTemplateConstants.baseUrlString())
       .client(okHttpClient)
       .addConverterFactory(converter)
       .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
@@ -108,7 +108,7 @@ class NetModule {
 
   @Provides
   @Singleton
-  fun okHttpCallFactory(): Call.Factory = trace("NatOkHttpClient") {
+  fun okHttpCallFactory(): Call.Factory = trace("NativeAppTemplateOkHttpClient") {
     OkHttpClient.Builder()
       .addInterceptor(
         HttpLoggingInterceptor()

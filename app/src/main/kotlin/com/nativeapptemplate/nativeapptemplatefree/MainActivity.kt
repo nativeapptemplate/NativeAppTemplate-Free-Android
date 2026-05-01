@@ -20,10 +20,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Loading
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NatApp
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.rememberNatAppState
+import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NativeAppTemplateApp
+import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.rememberNativeAppTemplateAppState
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -89,15 +89,15 @@ class MainActivity : ComponentActivity() {
         onDispose {}
       }
 
-      val appState = rememberNatAppState(
+      val appState = rememberNativeAppTemplateAppState(
         loginRepository = loginRepository,
         networkMonitor = networkMonitor,
       )
 
-      NatTheme(
+      NativeAppTemplateTheme(
         darkTheme = darkTheme,
       ) {
-        NatApp(appState)
+        NativeAppTemplateApp(appState)
       }
     }
   }

@@ -49,11 +49,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
 @Composable
@@ -71,7 +71,7 @@ fun SignUpView(
   )
 
   if (uiState.isCreated) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.signed_up_but_unconfirmed),
       onDismissRequest = { onBackClick() },
     )
@@ -154,7 +154,7 @@ fun SignUpContentView(
             text = stringResource(R.string.full_name),
           )
         },
-        placeholder = { Text(NatConstants.PLACEHOLDER_FULLNAME) },
+        placeholder = { Text(NativeAppTemplateConstants.PLACEHOLDER_FULLNAME) },
         value = uiState.name,
         onValueChange = { viewModel.updateName(it) },
         supportingText = {
@@ -174,7 +174,7 @@ fun SignUpContentView(
             text = stringResource(R.string.email),
           )
         },
-        placeholder = { Text(NatConstants.PLACEHOLDER_EMAIL) },
+        placeholder = { Text(NativeAppTemplateConstants.PLACEHOLDER_EMAIL) },
         value = uiState.email,
         onValueChange = { viewModel.updateEmail(it) },
         supportingText = {
@@ -234,13 +234,13 @@ fun SignUpContentView(
             text = stringResource(R.string.password),
           )
         },
-        placeholder = { Text(NatConstants.PLACEHOLDER_PASSWORD) },
+        placeholder = { Text(NativeAppTemplateConstants.PLACEHOLDER_PASSWORD) },
         value = uiState.password,
         onValueChange = { viewModel.updatePassword(it) },
         supportingText = {
           Column {
             Text(
-              text = "${NatConstants.MINIMUM_PASSWORD_LENGTH} characters minimum.",
+              text = "${NativeAppTemplateConstants.MINIMUM_PASSWORD_LENGTH} characters minimum.",
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

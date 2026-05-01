@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-class NatPreferencesDataSource @Inject constructor(
+class NativeAppTemplatePreferencesDataSource @Inject constructor(
   private val userPreferences: DataStore<UserPreferences>,
 ) {
   val userData = userPreferences.data
@@ -77,7 +77,7 @@ class NatPreferencesDataSource @Inject constructor(
         }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -93,7 +93,7 @@ class NatPreferencesDataSource @Inject constructor(
         }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -112,7 +112,7 @@ class NatPreferencesDataSource @Inject constructor(
         }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -125,7 +125,7 @@ class NatPreferencesDataSource @Inject constructor(
         }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -143,7 +143,7 @@ class NatPreferencesDataSource @Inject constructor(
         }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -154,7 +154,7 @@ class NatPreferencesDataSource @Inject constructor(
         it.copy { this.didShowTapShopBelowTip = didShowTapShopBelowTip }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -165,7 +165,7 @@ class NatPreferencesDataSource @Inject constructor(
         it.copy { this.isEmailUpdated = isEmailUpdated }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -176,7 +176,7 @@ class NatPreferencesDataSource @Inject constructor(
         it.copy { this.isMyAccountDeleted = isMyAccountDeleted }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -187,7 +187,7 @@ class NatPreferencesDataSource @Inject constructor(
         it.copy { this.isShopDeleted = isShopDeleted }
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to update user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
       throw ioException
     }
   }
@@ -198,7 +198,7 @@ class NatPreferencesDataSource @Inject constructor(
         it.toBuilder().clear().build()
       }
     } catch (ioException: IOException) {
-      Log.e("NatPreferences", "Failed to clear user preferences", ioException)
+      Log.e("NativeAppTemplatePreferences", "Failed to clear user preferences", ioException)
       throw ioException
     }
   }

@@ -14,7 +14,7 @@
           android:icon="@mipmap/ic_launcher"
           android:label="@string/app_name"
           android:supportsRtl="true"
-          android:theme="@style/Theme.Nat.Splash"
+          android:theme="@style/Theme.NativeAppTemplate.Splash"
           android:networkSecurityConfig="@xml/network_security_config"
           tools:ignore="GoogleAppIndexingWarning"
           tools:targetApi="tiramisu">

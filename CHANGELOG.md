@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Implemented pagination for item tags list screen.
-- Implemented CodedError system with NATA-XXXX error codes.
+- Implemented CodedError system with NATIVEAPPTEMPLATE-XXXX error codes.
 - Added unit tests for utils, network, and pre-push hook.
 - Added Spotless + ktlint for Kotlin code formatting.
 - Added app version and reorganized settings sections.

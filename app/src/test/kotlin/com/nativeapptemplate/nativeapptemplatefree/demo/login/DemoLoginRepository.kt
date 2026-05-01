@@ -11,7 +11,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,7 @@ import kotlinx.serialization.json.decodeFromStream
 import javax.inject.Inject
 
 class DemoLoginRepository @Inject constructor(
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
   private val networkJson: Json,
   private val assets: DemoAssetManager = DemoAssetManagerImpl,
 ) : LoginRepository {

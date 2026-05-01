@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativeapptemplate.nativeapptemplatefree.R
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 
 @Composable
@@ -93,7 +93,7 @@ fun NeedAppUpdatesView() {
 @Preview
 @Composable
 private fun LoadingStatePreview() {
-  NatTheme {
+  NativeAppTemplateTheme {
     NeedAppUpdatesView()
   }
 }

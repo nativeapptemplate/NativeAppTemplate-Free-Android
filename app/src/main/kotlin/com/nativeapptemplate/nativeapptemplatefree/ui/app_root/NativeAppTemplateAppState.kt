@@ -26,12 +26,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
-fun rememberNatAppState(
+fun rememberNativeAppTemplateAppState(
   loginRepository: LoginRepository,
   networkMonitor: NetworkMonitor,
   coroutineScope: CoroutineScope = rememberCoroutineScope(),
   navController: NavHostController = rememberNavController(),
-): NatAppState {
+): NativeAppTemplateAppState {
 //  NavigationTrackingSideEffect(navController)
   return remember(
     loginRepository,
@@ -39,7 +39,7 @@ fun rememberNatAppState(
     coroutineScope,
     networkMonitor,
   ) {
-    NatAppState(
+    NativeAppTemplateAppState(
       loginRepository = loginRepository,
       navController = navController,
       coroutineScope = coroutineScope,
@@ -49,7 +49,7 @@ fun rememberNatAppState(
 }
 
 @Stable
-class NatAppState(
+class NativeAppTemplateAppState(
   val loginRepository: LoginRepository,
   val navController: NavHostController,
   val coroutineScope: CoroutineScope,

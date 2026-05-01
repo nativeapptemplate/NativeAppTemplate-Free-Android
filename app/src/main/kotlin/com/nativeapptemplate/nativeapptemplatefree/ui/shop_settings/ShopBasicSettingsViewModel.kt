@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -28,8 +28,8 @@ data class ShopBasicSettingsUiState(
   val name: String = "",
   val description: String = "",
   val timeZone: String = TimeZones.DEFAULT_TIME_ZONE,
-  val maximumNameLength: Int = NatConstants.MAXIMUM_SHOP_NAME_LENGTH,
-  val maximumDescriptionLength: Int = NatConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
+  val maximumNameLength: Int = NativeAppTemplateConstants.MAXIMUM_SHOP_NAME_LENGTH,
+  val maximumDescriptionLength: Int = NativeAppTemplateConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
 
   val isLoading: Boolean = true,
   val success: Boolean = false,

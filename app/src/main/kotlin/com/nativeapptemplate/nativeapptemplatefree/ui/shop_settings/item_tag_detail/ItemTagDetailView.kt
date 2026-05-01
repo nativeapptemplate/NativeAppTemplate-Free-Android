@@ -43,7 +43,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.CompletedTag
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdlingTag
@@ -69,7 +69,7 @@ internal fun ItemTagDetailView(
   )
 
   if (uiState.isDeleted) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.message_item_tag_deleted),
       onDismissRequest = { onBackClick() },
     )
@@ -137,7 +137,7 @@ private fun ItemTagDetailContentView(
   var isShowingDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
   if (isShowingDeleteConfirmationDialog) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.are_you_sure),
       confirmButtonTitle = stringResource(R.string.title_delete_item_tag),
       onDismissRequest = { isShowingDeleteConfirmationDialog = false },

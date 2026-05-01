@@ -1,6 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree
 
-object NatConstants {
+object NativeAppTemplateConstants {
   const val SUPPORT_MAIL: String = "support@nativeapptemplate.com"
   const val SUPPORT_WEBSITE_URL: String = "https://nativeapptemplate.com"
   const val FAQS_URL: String = "https://nativeapptemplate.com/faqs"

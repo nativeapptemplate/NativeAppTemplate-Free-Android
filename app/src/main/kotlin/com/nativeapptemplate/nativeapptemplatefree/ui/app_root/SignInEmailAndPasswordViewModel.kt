@@ -3,7 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -99,7 +99,7 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
 
   fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true
-    if (uiState.value.password.length < NatConstants.MINIMUM_PASSWORD_LENGTH) return true
+    if (uiState.value.password.length < NativeAppTemplateConstants.MINIMUM_PASSWORD_LENGTH) return true
 
     return false
   }

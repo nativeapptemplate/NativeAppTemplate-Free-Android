@@ -13,14 +13,14 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class NatPreferencesDataSourceTest {
+class NativeAppTemplatePreferencesDataSourceTest {
   private val testScope = TestScope(UnconfinedTestDispatcher())
 
-  private lateinit var subject: NatPreferencesDataSource
+  private lateinit var subject: NativeAppTemplatePreferencesDataSource
 
   @Before
   fun setup() {
-    subject = NatPreferencesDataSource(InMemoryDataStore(UserPreferences.getDefaultInstance()))
+    subject = NativeAppTemplatePreferencesDataSource(InMemoryDataStore(UserPreferences.getDefaultInstance()))
   }
 
   @Test

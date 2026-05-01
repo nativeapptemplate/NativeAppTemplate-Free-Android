@@ -3,7 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.common.tags
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.LocalCustomColorScheme
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 
 @Composable
 fun CompletedTag() {
@@ -17,7 +17,7 @@ fun CompletedTag() {
 @Preview
 @Composable
 private fun CompletedTagPreview() {
-  NatTheme {
+  NativeAppTemplateTheme {
     CompletedTag()
   }
 }

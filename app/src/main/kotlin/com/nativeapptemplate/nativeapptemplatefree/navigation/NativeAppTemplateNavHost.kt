@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NatAppState
+import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NativeAppTemplateAppState
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptPrivacyView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptTermsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.forgotPasswordView
@@ -61,8 +61,8 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopListV
  * within each route is handled using state and Back Handlers.
  */
 @Composable
-fun NatNavHost(
-  appState: NatAppState,
+fun NativeAppTemplateNavHost(
+  appState: NativeAppTemplateAppState,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   modifier: Modifier = Modifier,
 ) {
