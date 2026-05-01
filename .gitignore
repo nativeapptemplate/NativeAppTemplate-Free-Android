@@ -42,6 +42,9 @@ local.properties
 # Sandbox stuff
 _sandbox
 
+# Private docs (local only)
+docs-private/
+
 # Android Studio captures folder
 captures/
 
