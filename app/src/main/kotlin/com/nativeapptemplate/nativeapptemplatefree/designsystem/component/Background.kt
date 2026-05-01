@@ -21,7 +21,7 @@ import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.LocalBackg
  * @param content The background content.
  */
 @Composable
-fun NatBackground(
+fun NativeAppTemplateBackground(
   modifier: Modifier = Modifier,
   content: @Composable () -> Unit,
 ) {

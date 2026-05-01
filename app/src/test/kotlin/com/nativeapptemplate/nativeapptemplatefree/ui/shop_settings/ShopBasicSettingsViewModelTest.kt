@@ -2,7 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -120,7 +120,7 @@ class ShopBasicSettingsViewModelTest {
   @Test
   fun maximumNameLength_matchesConstant() = runTest {
     assertEquals(
-      NatConstants.MAXIMUM_SHOP_NAME_LENGTH,
+      NativeAppTemplateConstants.MAXIMUM_SHOP_NAME_LENGTH,
       viewModel.uiState.value.maximumNameLength,
     )
   }
@@ -128,7 +128,7 @@ class ShopBasicSettingsViewModelTest {
   @Test
   fun maximumDescriptionLength_matchesConstant() = runTest {
     assertEquals(
-      NatConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
+      NativeAppTemplateConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
       viewModel.uiState.value.maximumDescriptionLength,
     )
   }

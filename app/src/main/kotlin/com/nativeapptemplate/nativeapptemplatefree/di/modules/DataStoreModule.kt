@@ -23,7 +23,7 @@ import androidx.datastore.dataStoreFile
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.datastore.UserPreferencesSerializer
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers.IO
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers.IO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

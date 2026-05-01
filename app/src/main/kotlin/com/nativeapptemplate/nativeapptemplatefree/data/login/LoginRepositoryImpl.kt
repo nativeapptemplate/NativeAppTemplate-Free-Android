@@ -2,12 +2,12 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 
 import androidx.annotation.VisibleForTesting
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
-import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
+import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnFailure
@@ -25,8 +25,8 @@ import javax.inject.Inject
 @VisibleForTesting
 class LoginRepositoryImpl @Inject constructor(
   private val api: LoginApi,
-  private val natPreferencesDataSource: NatPreferencesDataSource,
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : LoginRepository {
 
   override fun login(

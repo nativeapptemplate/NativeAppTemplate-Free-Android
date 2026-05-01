@@ -7,7 +7,7 @@ sealed class ApiException(message: String, cause: Throwable? = null) :
     val code: Int,
     val apiMessage: String,
   ) : ApiException("$apiMessage [Status: $code]") {
-    override val errorCode: String = "NATA-2001"
+    override val errorCode: String = "NATIVEAPPTEMPLATE-2001"
     override val errorDescription: String = "$apiMessage [Status: $code]"
   }
 
@@ -15,7 +15,7 @@ sealed class ApiException(message: String, cause: Throwable? = null) :
     val rawMessage: String,
     cause: Throwable? = null,
   ) : ApiException("Not processable error($rawMessage).", cause) {
-    override val errorCode: String = "NATA-2002"
+    override val errorCode: String = "NATIVEAPPTEMPLATE-2002"
     override val errorDescription: String = "Processing error: $rawMessage"
   }
 }

@@ -6,7 +6,7 @@ sealed class AppError(
 ) : Exception(errorDescription), CodedError {
 
   class Unexpected(detail: String? = null) : AppError(
-    errorCode = "NATA-1001",
+    errorCode = "NATIVEAPPTEMPLATE-1001",
     errorDescription = "Unexpected error" + if (detail != null) ": $detail" else "",
   )
 }

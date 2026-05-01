@@ -39,7 +39,7 @@ MVVM layered architecture following [Android Modern App Architecture](https://de
 - **Network Layer** (`network/`): `AuthInterceptor` for token injection, `RequestHelper` for request construction.
 - **DI** (`di/modules/`): Hilt modules — `NetModule` (Retrofit/OkHttp), `DataModule` (repository bindings), `DataStoreModule`, `DispatchersModule`, `CoroutineScopesModule`.
 - **DataStore** (`datastore/`): Proto DataStore for user preferences. Proto definitions live in `app/src/main/proto/`.
-- **Navigation**: `NatNavHost.kt` is the top-level nav graph. Three bottom-nav sections: Shops, Scan, Settings. Each section uses nested navigation graphs via `*BaseRoute`.
+- **Navigation**: `NativeAppTemplateNavHost.kt` is the top-level nav graph. Three bottom-nav sections: Shops, Scan, Settings. Each section uses nested navigation graphs via `*BaseRoute`.
 
 ## Key Patterns
 
@@ -49,15 +49,15 @@ MVVM layered architecture following [Android Modern App Architecture](https://de
 - **Proto DataStore**: User preferences and NFC scan state are persisted via Protocol Buffers (lite).
 
 ## Error Handling (CodedError System)
-All errors should use the `CodedError` interface. Error codes use the `NATA-XXXX` prefix (NativeAppTemplate Android).
+All errors should use the `CodedError` interface. Error codes use the `NATIVEAPPTEMPLATE-XXXX` prefix (NativeAppTemplate Android).
 
 | Range | Type | Description |
 |-------|------|-------------|
-| NATA-1xxx | App/general errors | Unexpected errors, catch-all |
-| NATA-2xxx | API/network errors | HTTP request failures, parsing errors |
+| NATIVEAPPTEMPLATE-1xxx | App/general errors | Unexpected errors, catch-all |
+| NATIVEAPPTEMPLATE-2xxx | API/network errors | HTTP request failures, parsing errors |
 
 - New error types must implement `CodedError`
-- Use `codedDescription` (not `message` or `localizedMessage`) in all user-facing error messages — this prepends `[NATA-XXXX]` for `CodedError` types
+- Use `codedDescription` (not `message` or `localizedMessage`) in all user-facing error messages — this prepends `[NATIVEAPPTEMPLATE-XXXX]` for `CodedError` types
 
 ## Testing
 
@@ -76,4 +76,4 @@ cp scripts/pre-push .git/hooks/pre-push
 
 ## Connecting to Local API
 
-The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATEMPLATE_API_DOMAIN`, `NATEMPLATE_API_PORT`, and `NATEMPLATE_API_SCHEME` via `project.findProperty(...)` (not `System.getenv` — Android Studio launched from Finder/Dock does not inherit shell env). Set them in `~/.gradle/gradle.properties` (user-global, per-developer); the same config then works from both the terminal and the IDE. Falls back to `https://api.nativeapptemplate.com` when unset. One-off override: `./gradlew -PNATEMPLATE_API_DOMAIN=... assembleDebug`.
+The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATIVEAPPTEMPLATE_API_DOMAIN`, `NATIVEAPPTEMPLATE_API_PORT`, and `NATIVEAPPTEMPLATE_API_SCHEME` via `project.findProperty(...)` (not `System.getenv` — Android Studio launched from Finder/Dock does not inherit shell env). Set them in `~/.gradle/gradle.properties` (user-global, per-developer); the same config then works from both the terminal and the IDE. Falls back to `https://api.nativeapptemplate.com` when unset. One-off override: `./gradlew -PNATIVEAPPTEMPLATE_API_DOMAIN=... assembleDebug`.

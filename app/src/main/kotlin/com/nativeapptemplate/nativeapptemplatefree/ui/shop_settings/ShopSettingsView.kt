@@ -42,7 +42,7 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.restartApp
 
@@ -145,7 +145,7 @@ private fun ShopSettingsContentView(
   var isShowingDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
   if (isShowingDeleteConfirmationDialog) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.are_you_sure),
       confirmButtonTitle = stringResource(R.string.title_delete_shop),
       onDismissRequest = { isShowingDeleteConfirmationDialog = false },

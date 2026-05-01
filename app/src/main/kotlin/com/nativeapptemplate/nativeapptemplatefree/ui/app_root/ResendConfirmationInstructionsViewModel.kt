@@ -2,7 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SendConfirmation
@@ -43,7 +43,7 @@ class ResendConfirmationInstructionsViewModel @Inject constructor(
     viewModelScope.launch {
       val sendConfirmation = SendConfirmation(
         email = uiState.value.email.trim(),
-        redirectUrl = SendConfirmation.redirectUrlString(NatConstants.baseUrlString()),
+        redirectUrl = SendConfirmation.redirectUrlString(NativeAppTemplateConstants.baseUrlString()),
       )
 
       val booleanFlow = signUpRepository.sendConfirmationInstruction(sendConfirmation)

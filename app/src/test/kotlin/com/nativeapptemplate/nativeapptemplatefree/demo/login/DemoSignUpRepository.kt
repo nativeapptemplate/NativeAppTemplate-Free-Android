@@ -11,7 +11,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.SendResetPassword
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +24,7 @@ import kotlinx.serialization.json.decodeFromStream
 import javax.inject.Inject
 
 class DemoSignUpRepository @Inject constructor(
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
   private val networkJson: Json,
   private val assets: DemoAssetManager = DemoAssetManagerImpl,
 ) : SignUpRepository {

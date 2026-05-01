@@ -31,7 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 
 /**
  * Now in Android navigation bar item with icon and label content slots. Wraps Material 3
@@ -49,7 +49,7 @@ import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
  * only be shown when this item is selected.
  */
 @Composable
-fun RowScope.NatNavigationBarItem(
+fun RowScope.NativeAppTemplateNavigationBarItem(
   selected: Boolean,
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
@@ -68,11 +68,11 @@ fun RowScope.NatNavigationBarItem(
     label = label,
     alwaysShowLabel = alwaysShowLabel,
     colors = NavigationBarItemDefaults.colors(
-      selectedIconColor = NatNavigationDefaults.navigationSelectedItemColor(),
-      unselectedIconColor = NatNavigationDefaults.navigationContentColor(),
-      selectedTextColor = NatNavigationDefaults.navigationSelectedItemColor(),
-      unselectedTextColor = NatNavigationDefaults.navigationContentColor(),
-      indicatorColor = NatNavigationDefaults.navigationIndicatorColor(),
+      selectedIconColor = NativeAppTemplateNavigationDefaults.navigationSelectedItemColor(),
+      unselectedIconColor = NativeAppTemplateNavigationDefaults.navigationContentColor(),
+      selectedTextColor = NativeAppTemplateNavigationDefaults.navigationSelectedItemColor(),
+      unselectedTextColor = NativeAppTemplateNavigationDefaults.navigationContentColor(),
+      indicatorColor = NativeAppTemplateNavigationDefaults.navigationIndicatorColor(),
     ),
   )
 }
@@ -85,13 +85,13 @@ fun RowScope.NatNavigationBarItem(
  * [NavigationBarItem]s.
  */
 @Composable
-fun NatNavigationBar(
+fun NativeAppTemplateNavigationBar(
   modifier: Modifier = Modifier,
   content: @Composable RowScope.() -> Unit,
 ) {
   NavigationBar(
     modifier = modifier,
-    contentColor = NatNavigationDefaults.navigationContentColor(),
+    contentColor = NativeAppTemplateNavigationDefaults.navigationContentColor(),
     tonalElevation = 0.dp,
     content = content,
   )
@@ -99,7 +99,7 @@ fun NatNavigationBar(
 
 @ThemePreviews
 @Composable
-fun NatNavigationBarPreview() {
+fun NativeAppTemplateNavigationBarPreview() {
   val items = listOf("Shops", "Settings")
   val icons = listOf(
     Icons.Outlined.Storefront,
@@ -110,10 +110,10 @@ fun NatNavigationBarPreview() {
     Icons.Rounded.Settings,
   )
 
-  NatTheme {
-    NatNavigationBar {
+  NativeAppTemplateTheme {
+    NativeAppTemplateNavigationBar {
       items.forEachIndexed { index, item ->
-        NatNavigationBarItem(
+        NativeAppTemplateNavigationBarItem(
           icon = {
             Icon(
               imageVector = icons[index],
@@ -138,7 +138,7 @@ fun NatNavigationBarPreview() {
 /**
  * Now in Android navigation default values.
  */
-object NatNavigationDefaults {
+object NativeAppTemplateNavigationDefaults {
   @Composable
   fun navigationContentColor() = MaterialTheme.colorScheme.onSurfaceVariant
 

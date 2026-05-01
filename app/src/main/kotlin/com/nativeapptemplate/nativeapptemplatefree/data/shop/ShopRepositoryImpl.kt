@@ -1,9 +1,9 @@
 package com.nativeapptemplate.nativeapptemplatefree.data.shop
 
-import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
+import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class ShopRepositoryImpl @Inject constructor(
-  private val natPreferencesDataSource: NatPreferencesDataSource,
+  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: ShopApi,
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ShopRepository {
 
   override fun getShops() = flow {

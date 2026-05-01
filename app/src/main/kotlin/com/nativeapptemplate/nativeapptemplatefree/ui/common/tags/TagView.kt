@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NatTheme
+import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScaledSp
 
 @Composable
@@ -46,7 +46,7 @@ fun TagView(
 @Preview
 @Composable
 private fun TagViewPreview() {
-  NatTheme {
+  NativeAppTemplateTheme {
     TagView(
       text = "COMPLETE",
       textColor = MaterialTheme.colorScheme.onError,

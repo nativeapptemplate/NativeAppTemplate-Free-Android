@@ -10,7 +10,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ShopBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopUpdateBody
 import com.nativeapptemplate.nativeapptemplatefree.model.Shops
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ import kotlinx.serialization.json.decodeFromStream
 import javax.inject.Inject
 
 class DemoShopRepository @Inject constructor(
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
   private val networkJson: Json,
   private val assets: DemoAssetManager = DemoAssetManagerImpl,
 ) : ShopRepository {

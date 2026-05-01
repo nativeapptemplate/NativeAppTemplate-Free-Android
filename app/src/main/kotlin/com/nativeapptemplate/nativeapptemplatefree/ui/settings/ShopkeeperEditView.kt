@@ -52,7 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
@@ -170,7 +170,7 @@ fun ShopkeeperEditContentView(
             text = stringResource(R.string.full_name),
           )
         },
-        placeholder = { Text(NatConstants.PLACEHOLDER_FULLNAME) },
+        placeholder = { Text(NativeAppTemplateConstants.PLACEHOLDER_FULLNAME) },
         value = uiState.name,
         onValueChange = { viewModel.updateName(it) },
         supportingText = {
@@ -190,7 +190,7 @@ fun ShopkeeperEditContentView(
             text = stringResource(R.string.email),
           )
         },
-        placeholder = { Text(NatConstants.PLACEHOLDER_EMAIL) },
+        placeholder = { Text(NativeAppTemplateConstants.PLACEHOLDER_EMAIL) },
         value = uiState.email,
         onValueChange = { viewModel.updateEmail(it) },
         supportingText = {

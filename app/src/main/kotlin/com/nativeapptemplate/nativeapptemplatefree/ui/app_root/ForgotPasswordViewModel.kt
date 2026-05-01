@@ -2,7 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SendResetPassword
@@ -43,7 +43,7 @@ class ForgotPasswordViewModel @Inject constructor(
     viewModelScope.launch {
       val sendResetPassword = SendResetPassword(
         email = uiState.value.email.trim(),
-        redirectUrl = SendResetPassword.redirectUrlString(NatConstants.baseUrlString()),
+        redirectUrl = SendResetPassword.redirectUrlString(NativeAppTemplateConstants.baseUrlString()),
       )
 
       val booleanFlow = signUpRepository.sendResetPasswordInstruction(sendResetPassword)

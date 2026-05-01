@@ -2,7 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.UpdatePasswordBody
@@ -89,7 +89,7 @@ class PasswordEditViewModel @Inject constructor(
 
   fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true
-    if (uiState.value.password.length < NatConstants.MINIMUM_PASSWORD_LENGTH) return true
+    if (uiState.value.password.length < NativeAppTemplateConstants.MINIMUM_PASSWORD_LENGTH) return true
 
     return false
   }

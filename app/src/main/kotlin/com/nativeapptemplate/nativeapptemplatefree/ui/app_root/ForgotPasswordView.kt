@@ -36,10 +36,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
 @Composable
@@ -57,7 +57,7 @@ fun ForgotPasswordView(
   )
 
   if (uiState.isSent) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.sent_reset_password_instruction),
       onDismissRequest = { onBackClick() },
     )
@@ -135,7 +135,7 @@ fun ForgotPasswordContentView(
             text = stringResource(R.string.email),
           )
         },
-        placeholder = { Text(NatConstants.PLACEHOLDER_EMAIL) },
+        placeholder = { Text(NativeAppTemplateConstants.PLACEHOLDER_EMAIL) },
         value = uiState.email,
         onValueChange = { viewModel.updateEmail(it) },
         supportingText = {

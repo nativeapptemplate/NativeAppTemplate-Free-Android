@@ -2,7 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_li
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
@@ -51,7 +51,7 @@ class ItemTagCreateViewModelTest {
 
   @Test
   fun maximumNameLength_matchesConstant() = runTest {
-    assertEquals(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
+    assertEquals(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
   }
 
   @Test
@@ -113,7 +113,7 @@ class ItemTagCreateViewModelTest {
   fun nameAtMaximumLength_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateName("A".repeat(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH))
+    viewModel.updateName("A".repeat(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH))
 
     assertFalse(viewModel.hasInvalidDataName())
   }
@@ -122,7 +122,7 @@ class ItemTagCreateViewModelTest {
   fun nameAboveMaximumLength_isRejectedByUpdater() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateName("A".repeat(NatConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH + 1))
+    viewModel.updateName("A".repeat(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH + 1))
 
     // updater clamps; value should remain blank (initial)
     assertEquals("", viewModel.uiState.value.name)
@@ -132,7 +132,7 @@ class ItemTagCreateViewModelTest {
   fun descriptionAtMaximumLength_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateDescription("D".repeat(NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH))
+    viewModel.updateDescription("D".repeat(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH))
 
     assertFalse(viewModel.hasInvalidDataDescription())
   }
@@ -141,7 +141,7 @@ class ItemTagCreateViewModelTest {
   fun descriptionAboveMaximumLength_isRejectedByUpdater() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateDescription("D".repeat(NatConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH + 1))
+    viewModel.updateDescription("D".repeat(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH + 1))
 
     assertEquals("", viewModel.uiState.value.description)
   }

@@ -36,7 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScaledSp
 
@@ -148,7 +148,7 @@ private fun TopAppBar(
     },
     navigationIcon = {
       TextButton(
-        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NatConstants.SUPPORT_WEBSITE_URL))) },
+        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NativeAppTemplateConstants.SUPPORT_WEBSITE_URL))) },
       ) {
         Text(
           stringResource(R.string.support_website),

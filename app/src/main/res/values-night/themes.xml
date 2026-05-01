@@ -16,7 +16,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="NightAdjusted.Theme.Nat" parent="android:Theme.Material.NoActionBar" />
+    <style name="NightAdjusted.Theme.NativeAppTemplate" parent="android:Theme.Material.NoActionBar" />
 
     <style name="NightAdjusted.Theme.Splash" parent="Theme.SplashScreen">
         <item name="android:windowLightStatusBar" >false</item>

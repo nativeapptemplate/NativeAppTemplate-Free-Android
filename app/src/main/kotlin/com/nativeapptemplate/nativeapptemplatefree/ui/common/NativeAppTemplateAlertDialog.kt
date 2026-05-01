@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun NatAlertDialog(
+fun NativeAppTemplateAlertDialog(
   dialogTitle: String? = null,
   confirmButtonTitle: String? = null,
   onDismissRequest: (() -> Unit)? = null,
