@@ -9,7 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
+import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,7 +94,7 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
   fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
-    return !uiState.value.email.validateEmail()
+    return !uiState.value.email.isValidEmail()
   }
 
   fun hasInvalidDataPassword(): Boolean {

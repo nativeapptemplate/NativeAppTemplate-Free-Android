@@ -1,6 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.utils
 
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
+import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -10,25 +10,25 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class UtilityTest {
 
-  // validateEmail tests
+  // isValidEmail tests
 
   @Test
-  fun validateEmail_validEmail_returnsTrue() {
-    assertTrue("test@example.com".validateEmail())
+  fun isValidEmail_validEmail_returnsTrue() {
+    assertTrue("test@example.com".isValidEmail())
   }
 
   @Test
-  fun validateEmail_emptyString_returnsFalse() {
-    assertFalse("".validateEmail())
+  fun isValidEmail_emptyString_returnsFalse() {
+    assertFalse("".isValidEmail())
   }
 
   @Test
-  fun validateEmail_noAtSign_returnsFalse() {
-    assertFalse("testexample.com".validateEmail())
+  fun isValidEmail_noAtSign_returnsFalse() {
+    assertFalse("testexample.com".isValidEmail())
   }
 
   @Test
-  fun validateEmail_noDomain_returnsFalse() {
-    assertFalse("test@".validateEmail())
+  fun isValidEmail_noDomain_returnsFalse() {
+    assertFalse("test@".isValidEmail())
   }
 }

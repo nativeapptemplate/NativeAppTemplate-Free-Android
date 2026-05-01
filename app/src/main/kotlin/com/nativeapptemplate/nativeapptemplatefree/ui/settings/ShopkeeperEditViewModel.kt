@@ -9,7 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
+import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -198,7 +198,7 @@ class ShopkeeperEditViewModel @Inject constructor(
   fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
-    return !uiState.value.email.validateEmail()
+    return !uiState.value.email.isValidEmail()
   }
 
   fun updateName(newName: String) {

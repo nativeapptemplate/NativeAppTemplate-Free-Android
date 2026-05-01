@@ -12,7 +12,7 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import java.util.Locale
 
 object Utility {
-  fun String.validateEmail(): Boolean {
+  fun String.isValidEmail(): Boolean {
     return this.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
   }
 

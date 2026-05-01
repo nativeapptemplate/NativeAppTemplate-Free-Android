@@ -7,7 +7,7 @@ import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescriptio
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
+import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -88,7 +88,7 @@ class SignUpViewModel @Inject constructor(
   fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
-    return !uiState.value.email.validateEmail()
+    return !uiState.value.email.isValidEmail()
   }
 
   fun hasInvalidDataPassword(): Boolean {
