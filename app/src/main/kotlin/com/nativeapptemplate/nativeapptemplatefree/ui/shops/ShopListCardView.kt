@@ -47,8 +47,8 @@ fun ShopListCardView(
           modifier = Modifier
             .padding(top = 16.dp),
         ) {
-          CountRow(icon = Icons.Outlined.Flag, count = data.getCompletedItemTagsCount(), countLabel = "completed tags")
-          CountRow(icon = Icons.Outlined.Rectangle, count = data.getItemTagsCount(), countLabel = "all tags")
+          CountRow(icon = Icons.Outlined.Flag, count = data.getCompletedItemTagsCount(), countLabel = "completed item tags")
+          CountRow(icon = Icons.Outlined.Rectangle, count = data.getItemTagsCount(), countLabel = "all item tags")
         }
 
         Text(
