@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0] - 2026-05-02
+
+### Changed
+- Normalized substrate naming to a single `NativeAppTemplate` stem: renamed all `Nat`-prefixed Kotlin symbols (and 8 source files), `Theme.Nat*` styles, `NATEMPLATE_API_*` Gradle properties, and the `NATA-XXXX` error-code prefix.
+
 ## [3.0.0] - 2026-04-05
 
 ### Added
