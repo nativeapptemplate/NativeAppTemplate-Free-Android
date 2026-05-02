@@ -1,9 +1,9 @@
 package com.nativeapptemplate.nativeapptemplatefree.data.login
 
-import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
+import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class AccountPasswordRepositoryImpl @Inject constructor(
-  private val natPreferencesDataSource: NatPreferencesDataSource,
+  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: AccountPasswordApi,
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : AccountPasswordRepository {
   override fun updateAccountPassword(
     updatePasswordBody: UpdatePasswordBody,

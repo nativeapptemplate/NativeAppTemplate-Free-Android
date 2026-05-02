@@ -35,7 +35,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 
@@ -70,7 +70,7 @@ internal fun SignUpOrSignInView(
       )
 
       Image(
-        painter = painterResource(R.drawable.ic_overview1_slim),
+        painter = painterResource(R.drawable.ic_hero),
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
@@ -85,7 +85,7 @@ internal fun SignUpOrSignInView(
 
         withLink(
           LinkAnnotation.Url(
-            NatConstants.TERMS_OF_USE_URL,
+            NativeAppTemplateConstants.TERMS_OF_USE_URL,
             TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
           ),
         ) {
@@ -98,7 +98,7 @@ internal fun SignUpOrSignInView(
 
         withLink(
           LinkAnnotation.Url(
-            NatConstants.PRIVACY_POLICY_URL,
+            NativeAppTemplateConstants.PRIVACY_POLICY_URL,
             TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
           ),
         ) {
@@ -155,7 +155,7 @@ private fun TopAppBar(
     title = { Text("") },
     actions = {
       TextButton(
-        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NatConstants.SUPPORT_WEBSITE_URL))) },
+        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NativeAppTemplateConstants.SUPPORT_WEBSITE_URL))) },
       ) {
         Text(
           stringResource(R.string.support_website),

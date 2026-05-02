@@ -2,12 +2,12 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 
 import androidx.annotation.VisibleForTesting
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
-import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
+import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnFailure
@@ -25,8 +25,8 @@ import javax.inject.Inject
 @VisibleForTesting
 class LoginRepositoryImpl @Inject constructor(
   private val api: LoginApi,
-  private val natPreferencesDataSource: NatPreferencesDataSource,
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : LoginRepository {
 
   override fun login(
@@ -72,30 +72,6 @@ class LoginRepositoryImpl @Inject constructor(
     emitApiResponse<Status, Boolean>(response) { true }
   }.flowOn(ioDispatcher)
 
-  override suspend fun setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan: Boolean) {
-    natPreferencesDataSource.setShouldFetchItemTagForShowTagInfoScan(shouldFetchItemTagForShowTagInfoScan)
-  }
-
-  override suspend fun setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan: Boolean) {
-    natPreferencesDataSource.setShouldCompleteItemTagForCompleteScan(shouldCompleteItemTagForCompleteScan)
-  }
-
-  override suspend fun setShouldNavigateToScanView(shouldNavigateToScanView: Boolean) {
-    natPreferencesDataSource.setShouldNavigateToScanView(shouldNavigateToScanView)
-  }
-
-  override suspend fun setScanViewSelectedTabIndex(scanViewSelectedTabIndex: Int) {
-    natPreferencesDataSource.setScanViewSelectedTabIndex(scanViewSelectedTabIndex)
-  }
-
-  override suspend fun setCompleteScanResult(completeScanResult: CompleteScanResult) {
-    natPreferencesDataSource.setCompleteScanResult(completeScanResult)
-  }
-
-  override suspend fun setShowTagInfoScanResult(showTagInfoScanResult: ShowTagInfoScanResult) {
-    natPreferencesDataSource.setShowTagInfoScanResult(showTagInfoScanResult)
-  }
-
   override suspend fun setAccountId(accountId: String) {
     natPreferencesDataSource.setAccountId(accountId)
   }
@@ -118,10 +94,6 @@ class LoginRepositoryImpl @Inject constructor(
 
   override suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
     natPreferencesDataSource.setDidShowTapShopBelowTip(didShowTapShopBelowTip)
-  }
-
-  override suspend fun setDidShowReadInstructionsTip(didShowReadInstructionsTip: Boolean) {
-    natPreferencesDataSource.setDidShowReadInstructionsTip(didShowReadInstructionsTip)
   }
 
   override suspend fun setIsEmailUpdated(isEmailUpdated: Boolean) {
@@ -155,20 +127,4 @@ class LoginRepositoryImpl @Inject constructor(
   override fun isShopDeleted(): Flow<Boolean> = natPreferencesDataSource.isShopDeleted()
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = natPreferencesDataSource.didShowTapShopBelowTip()
-
-  override fun didShowReadInstructionsTip(): Flow<Boolean> = natPreferencesDataSource.didShowReadInstructionsTip()
-
-  override fun getMaximumQueueNumberLength(): Flow<Int> = natPreferencesDataSource.getMaximumQueueNumberLength()
-
-  override fun shouldFetchItemTagForShowTagInfoScan(): Flow<Boolean> = natPreferencesDataSource.shouldFetchItemTagForShowTagInfoScan()
-
-  override fun shouldCompleteItemTagForCompleteScan(): Flow<Boolean> = natPreferencesDataSource.shouldCompleteItemTagForCompleteScan()
-
-  override fun shouldNavigateToScanView(): Flow<Boolean> = natPreferencesDataSource.shouldNavigateToScanView()
-
-  override fun scanViewSelectedTabIndex(): Flow<Int> = natPreferencesDataSource.scanViewSelectedTabIndex()
-
-  override fun completeScanResult(): Flow<CompleteScanResult> = natPreferencesDataSource.completeScanResult()
-
-  override fun showTagInfoScanResult(): Flow<ShowTagInfoScanResult> = natPreferencesDataSource.showTagInfoScanResult()
 }

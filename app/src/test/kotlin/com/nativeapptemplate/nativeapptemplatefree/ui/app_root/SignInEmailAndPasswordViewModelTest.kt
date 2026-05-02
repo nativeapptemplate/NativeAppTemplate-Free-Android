@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner
 
 /**
  * These tests use Robolectric because the subject under test (the ViewModel) uses
- * `String.validateEmail` which has a dependency on `android.util.Patterns.EMAIL_ADDRESS`.
+ * `String.isValidEmail` which has a dependency on `android.util.Patterns.EMAIL_ADDRESS`.
  */
 @RunWith(RobolectricTestRunner::class)
 class SignInEmailAndPasswordViewModelTest {
@@ -97,7 +97,7 @@ class SignInEmailAndPasswordViewModelTest {
 
     viewModel.updatePassword("")
 
-    assertTrue(viewModel.hasInvalidDataEmail())
+    assertTrue(viewModel.hasInvalidDataPassword())
   }
 
   @Test
@@ -106,7 +106,7 @@ class SignInEmailAndPasswordViewModelTest {
 
     viewModel.updatePassword("1234567")
 
-    assertTrue(viewModel.hasInvalidDataEmail())
+    assertTrue(viewModel.hasInvalidDataPassword())
   }
 }
 

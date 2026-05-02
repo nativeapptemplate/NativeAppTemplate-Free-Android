@@ -83,18 +83,33 @@ class ItemTagDetailViewModelTest {
   }
 
   @Test
-  fun stateIsLock_isUpdated() = runTest {
+  fun completeItemTag_updatesItemTagAndClearsToggling() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
     itemTagRepository.sendItemTag(testInputItemTag)
-
     viewModel.reload()
 
-    viewModel.updateIsLock(true)
-    assertTrue(viewModel.uiState.value.isLock)
+    itemTagRepository.sendItemTag(testInputCompletedItemTag)
+    viewModel.completeItemTag()
 
-    viewModel.updateIsLock(false)
-    assertFalse(viewModel.uiState.value.isLock)
+    val uiStateValue = viewModel.uiState.value
+    assertFalse(uiStateValue.isToggling)
+    assertEquals(testInputCompletedItemTag, uiStateValue.itemTag)
+  }
+
+  @Test
+  fun idleItemTag_updatesItemTagAndClearsToggling() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    itemTagRepository.sendItemTag(testInputCompletedItemTag)
+    viewModel.reload()
+
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.idleItemTag()
+
+    val uiStateValue = viewModel.uiState.value
+    assertFalse(uiStateValue.isToggling)
+    assertEquals(testInputItemTag, uiStateValue.itemTag)
   }
 
   @Test
@@ -117,13 +132,10 @@ private const val SHOP_NAME = "8th & Townsend"
 
 private const val ITEM_TAG_TYPE = "item_tag"
 private const val ITEM_TAG_ID = "9712F2DF-DFC7-A3AA-66BC-191203654A1A"
-private const val ITEM_TAG_QUEUE_NUMBER = "A001"
+private const val ITEM_TAG_NAME = "A001"
 private const val ITEM_TAG_STATE = "idled"
-private const val ITEM_TAG_SCAN_STATE = "unscanned"
 private const val ITEM_TAG_CREATED_AT = "2025-01-02T12:00:00.000Z"
-private const val ITEM_TAG_CUSTOMER_READ_AT = "2025-01-02T12:00:01.000Z"
 private const val ITEM_TAG_COMPLETED_AT = "2025-01-02T12:00:03.000Z"
-private const val ITEM_TAG_ALREADY_COMPLETED = false
 
 private val testInputItemTagData =
   Data(
@@ -131,17 +143,22 @@ private val testInputItemTagData =
     type = ITEM_TAG_TYPE,
     attributes = Attributes(
       shopId = SHOP_ID,
-      queueNumber = ITEM_TAG_QUEUE_NUMBER,
+      name = ITEM_TAG_NAME,
+      description = "",
+      position = 1,
       state = ITEM_TAG_STATE,
-      scanState = ITEM_TAG_SCAN_STATE,
       createdAt = ITEM_TAG_CREATED_AT,
       shopName = SHOP_NAME,
-      customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
     ),
   )
 
 private val testInputItemTag = ItemTag(
   datum = testInputItemTagData,
+)
+
+private val testInputCompletedItemTag = ItemTag(
+  datum = testInputItemTagData.copy(
+    attributes = testInputItemTagData.attributes!!.copy(state = "completed"),
+  ),
 )

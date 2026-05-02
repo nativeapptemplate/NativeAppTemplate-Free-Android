@@ -46,7 +46,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
@@ -266,34 +266,6 @@ private fun SettingsContentView(
           ListItem(
             headlineContent = {
               Text(
-                stringResource(R.string.how_to_use),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-              )
-            },
-            leadingContent = {
-              Icon(
-                Icons.Outlined.Info,
-                contentDescription = stringResource(R.string.how_to_use),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-            },
-            modifier = Modifier
-              .clickable {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.HOW_TO_USE_URL),
-                  ),
-                )
-              },
-          )
-          HorizontalDivider()
-        }
-        item {
-          ListItem(
-            headlineContent = {
-              Text(
                 stringResource(R.string.faqs),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -308,7 +280,7 @@ private fun SettingsContentView(
             },
             modifier = Modifier
               .clickable {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NatConstants.FAQS_URL)))
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NativeAppTemplateConstants.FAQS_URL)))
               },
           )
           HorizontalDivider()
@@ -412,7 +384,7 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.SUPPORT_WEBSITE_URL),
+                    Uri.parse(NativeAppTemplateConstants.SUPPORT_WEBSITE_URL),
                   ),
                 )
               },
@@ -440,7 +412,7 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.PRIVACY_POLICY_URL),
+                    Uri.parse(NativeAppTemplateConstants.PRIVACY_POLICY_URL),
                   ),
                 )
               },
@@ -468,7 +440,7 @@ private fun SettingsContentView(
                 context.startActivity(
                   Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(NatConstants.TERMS_OF_USE_URL),
+                    Uri.parse(NativeAppTemplateConstants.TERMS_OF_USE_URL),
                   ),
                 )
               },

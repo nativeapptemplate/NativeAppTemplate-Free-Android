@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -114,6 +115,73 @@ class ShopBasicSettingsViewModelTest {
     viewModel.reload()
 
     assertTrue(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun maximumNameLength_matchesConstant() = runTest {
+    assertEquals(
+      NativeAppTemplateConstants.MAXIMUM_SHOP_NAME_LENGTH,
+      viewModel.uiState.value.maximumNameLength,
+    )
+  }
+
+  @Test
+  fun maximumDescriptionLength_matchesConstant() = runTest {
+    assertEquals(
+      NativeAppTemplateConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
+      viewModel.uiState.value.maximumDescriptionLength,
+    )
+  }
+
+  @Test
+  fun nameAtMaximumLength_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    viewModel.reload()
+
+    viewModel.updateName("a".repeat(100))
+
+    assertFalse(viewModel.hasInvalidDataName())
+  }
+
+  @Test
+  fun nameAboveMaximumLength_isRejectedByUpdater() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    viewModel.reload()
+
+    val previous = viewModel.uiState.value.name
+    viewModel.updateName("a".repeat(101))
+
+    // updater clamps; value should remain unchanged from the loaded shop name
+    assertEquals(previous, viewModel.uiState.value.name)
+  }
+
+  @Test
+  fun descriptionAtMaximumLength_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    viewModel.reload()
+
+    viewModel.updateDescription("x".repeat(1_000))
+
+    assertFalse(viewModel.hasInvalidDataDescription())
+  }
+
+  @Test
+  fun descriptionAboveMaximumLength_isRejectedByUpdater() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    viewModel.reload()
+
+    val previous = viewModel.uiState.value.description
+    viewModel.updateDescription("x".repeat(1_001))
+
+    assertEquals(previous, viewModel.uiState.value.description)
   }
 }
 

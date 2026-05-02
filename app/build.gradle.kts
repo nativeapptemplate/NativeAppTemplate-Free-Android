@@ -26,9 +26,9 @@ android {
     debug {
       extra["alwaysUpdateBuildId"] = false
       isDebuggable = true
-      buildConfigField("String", "DOMAIN", "\"${(project.findProperty("NATEMPLATE_API_DOMAIN") as String?)?.trim() ?: "api.nativeapptemplate.com"}\"")
-      buildConfigField("String", "PORT", "\"${(project.findProperty("NATEMPLATE_API_PORT") as String?)?.trim() ?: ""}\"")
-      buildConfigField("String", "SCHEME", "\"${(project.findProperty("NATEMPLATE_API_SCHEME") as String?)?.trim() ?: "https"}\"")
+      buildConfigField("String", "DOMAIN", "\"${(project.findProperty("NATIVEAPPTEMPLATE_API_DOMAIN") as String?)?.trim() ?: "api.nativeapptemplate.com"}\"")
+      buildConfigField("String", "PORT", "\"${(project.findProperty("NATIVEAPPTEMPLATE_API_PORT") as String?)?.trim() ?: ""}\"")
+      buildConfigField("String", "SCHEME", "\"${(project.findProperty("NATIVEAPPTEMPLATE_API_SCHEME") as String?)?.trim() ?: "https"}\"")
     }
 
     release {
@@ -96,13 +96,10 @@ dependencies {
   implementation(libs.androidx.navigation.compose)
   implementation(libs.androidx.profileinstaller)
   implementation(libs.androidx.tracing.ktx)
-  implementation(libs.capturable)
-  implementation(libs.compose.qr.code)
   implementation(libs.hilt.android)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.coroutines.guava)
   implementation(libs.kotlinx.serialization.json)
-  implementation(libs.lottie.compose)
   implementation(libs.okhttp)
   implementation(libs.okhttp.logging.interceptor)
   implementation(libs.retrofit)

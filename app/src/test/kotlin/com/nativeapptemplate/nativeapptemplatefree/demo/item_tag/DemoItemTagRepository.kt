@@ -9,7 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTags
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +22,7 @@ import kotlinx.serialization.json.decodeFromStream
 import javax.inject.Inject
 
 class DemoItemTagRepository @Inject constructor(
-  @Dispatcher(NatDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
   private val networkJson: Json,
   private val assets: DemoAssetManager = DemoAssetManagerImpl,
 ) : ItemTagRepository {
@@ -48,7 +48,7 @@ class DemoItemTagRepository @Inject constructor(
 
   override fun completeItemTag(id: String): Flow<ItemTag> = itemTagFlow
 
-  override fun resetItemTag(id: String): Flow<ItemTag> = itemTagFlow
+  override fun idleItemTag(id: String): Flow<ItemTag> = itemTagFlow
 
   @OptIn(ExperimentalSerializationApi::class)
   private suspend inline fun <reified T> getDataFromJsonFile(fileName: String): T =

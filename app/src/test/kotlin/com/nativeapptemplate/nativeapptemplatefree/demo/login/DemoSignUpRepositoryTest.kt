@@ -1,6 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.demo.login
 
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManagerImpl
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -88,7 +88,7 @@ class DemoSignUpRepositoryTest {
       subject.sendResetPasswordInstruction(
         SendResetPassword(
           email = "john@example.com",
-          redirectUrl = SendResetPassword.redirectUrlString(NatConstants.baseUrlString()),
+          redirectUrl = SendResetPassword.redirectUrlString(NativeAppTemplateConstants.baseUrlString()),
         ),
       ).first(),
     )
@@ -100,7 +100,7 @@ class DemoSignUpRepositoryTest {
       subject.sendConfirmationInstruction(
         SendConfirmation(
           email = "john@example.com",
-          redirectUrl = SendConfirmation.redirectUrlString(NatConstants.baseUrlString()),
+          redirectUrl = SendConfirmation.redirectUrlString(NativeAppTemplateConstants.baseUrlString()),
         ),
       ).first(),
     )

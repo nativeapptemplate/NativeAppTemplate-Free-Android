@@ -27,14 +27,13 @@ class DemoItemTagRepositoryTest {
     type = "item_tag",
     attributes = Attributes(
       shopId = "5712F2DF-DFC7-A3AA-66BC-191203654A1A",
-      queueNumber = "A001",
+      name = "A001",
+      description = "",
+      position = 1,
       state = "idled",
-      scanState = "unscanned",
       createdAt = "2025-01-02T12:00:00.000Z",
       shopName = "8th & Townsend",
-      customerReadAt = "2025-01-02T12:00:01.000Z",
       completedAt = "2025-01-02T12:00:03.000Z",
-      alreadyCompleted = false,
     ),
   )
 
@@ -71,7 +70,7 @@ class DemoItemTagRepositoryTest {
         itemTagData.getShopId()!!,
         ItemTagBody(
           itemTagBodyDetail = ItemTagBodyDetail(
-            queueNumber = itemTagData.getQueueNumber(),
+            name = itemTagData.getName(),
           ),
         ),
       ).first(),
@@ -86,7 +85,7 @@ class DemoItemTagRepositoryTest {
         id = itemTagData.id!!,
         itemTagBody = ItemTagBody(
           itemTagBodyDetail = ItemTagBodyDetail(
-            queueNumber = itemTagData.getQueueNumber(),
+            name = itemTagData.getName(),
           ),
         ),
       ).first(),

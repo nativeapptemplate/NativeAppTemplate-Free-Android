@@ -21,11 +21,10 @@ import javax.inject.Inject
 data class ItemTagDetailUiState(
   val itemTag: ItemTag = ItemTag(),
 
-  val isLock: Boolean = false,
-
   val isDeleted: Boolean = false,
 
   val isLoading: Boolean = true,
+  val isToggling: Boolean = false,
   val success: Boolean = false,
   val message: String = "",
 )
@@ -109,9 +108,55 @@ class ItemTagDetailViewModel @Inject constructor(
     }
   }
 
-  fun updateIsLock(newIsLock: Boolean) {
-    _uiState.update {
-      it.copy(isLock = newIsLock)
+  fun completeItemTag() {
+    _uiState.update { it.copy(isToggling = true) }
+
+    viewModelScope.launch {
+      val itemTagFlow: Flow<ItemTag> = itemTagRepository.completeItemTag(itemTagId)
+
+      itemTagFlow
+        .catch { exception ->
+          _uiState.update {
+            it.copy(
+              message = exception.codedDescription,
+              isToggling = false,
+            )
+          }
+        }
+        .collect { itemTag ->
+          _uiState.update {
+            it.copy(
+              itemTag = itemTag,
+              isToggling = false,
+            )
+          }
+        }
+    }
+  }
+
+  fun idleItemTag() {
+    _uiState.update { it.copy(isToggling = true) }
+
+    viewModelScope.launch {
+      val itemTagFlow: Flow<ItemTag> = itemTagRepository.idleItemTag(itemTagId)
+
+      itemTagFlow
+        .catch { exception ->
+          _uiState.update {
+            it.copy(
+              message = exception.codedDescription,
+              isToggling = false,
+            )
+          }
+        }
+        .collect { itemTag ->
+          _uiState.update {
+            it.copy(
+              itemTag = itemTag,
+              isToggling = false,
+            )
+          }
+        }
     }
   }
 

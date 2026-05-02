@@ -18,19 +18,19 @@
 
     <!-- Allows us to override night specific attributes in the
          values-night folder. -->
-    <style name="NightAdjusted.Theme.Nat" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="NightAdjusted.Theme.NativeAppTemplate" parent="android:Theme.Material.Light.NoActionBar" />
 
     <!-- The final theme we use -->
-    <style name="Theme.Nat" parent="NightAdjusted.Theme.Nat" />
+    <style name="Theme.NativeAppTemplate" parent="NightAdjusted.Theme.NativeAppTemplate" />
 
     <style name="NightAdjusted.Theme.Splash" parent="Theme.SplashScreen">
         <item name="android:windowLightStatusBar" >true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     </style>
 
-    <style name="Theme.Nat.Splash" parent="NightAdjusted.Theme.Splash">
+    <style name="Theme.NativeAppTemplate.Splash" parent="NightAdjusted.Theme.Splash">
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
-        <item name="postSplashScreenTheme">@style/Theme.Nat</item>
+        <item name="postSplashScreenTheme">@style/Theme.NativeAppTemplate</item>
     </style>
 
 </resources>

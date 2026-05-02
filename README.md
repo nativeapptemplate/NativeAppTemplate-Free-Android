@@ -37,12 +37,10 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 - Email Confirmation
 - Forgot Password
 - CRUD Operations for Shops (Create/Read/Update/Delete)
-- CRUD Operations for Shops' Nested Resource, Number Tags (ItemTags) (Create/Read/Update/Delete)
+- CRUD Operations for Shops' Nested Resource, Item Tags (Create/Read/Update/Delete)
 - Force App Version Update
 - Force Privacy Policy Version Update
 - Force Terms of Use Version Update
-- Generate QR Code Image for Number Tags (ItemTags) with a Centered Number
-- NFC features for Number Tags (ItemTags): Write Application Info to a Tag, Read a Tag, Background Tag Reading
 - And more!
 
 ## NFC Tag Operations
@@ -126,12 +124,12 @@ By default the debug build hits the hosted API (`https://api.nativeapptemplate.c
 ```
 # Use your current Wi-Fi IP (macOS: `ipconfig getifaddr en0`), or 10.0.2.2 for emulator → host.
 # Never use 127.0.0.1, localhost, or 0.0.0.0 — Rails and this app must agree on one reachable address.
-NATEMPLATE_API_DOMAIN=192.168.1.21
-NATEMPLATE_API_PORT=3000
-NATEMPLATE_API_SCHEME=http
+NATIVEAPPTEMPLATE_API_DOMAIN=192.168.1.21
+NATIVEAPPTEMPLATE_API_PORT=3000
+NATIVEAPPTEMPLATE_API_SCHEME=http
 ```
 
-Then `./gradlew assembleDebug` — or Build → Rebuild Project from Android Studio. The debug `buildConfigField` entries in `app/build.gradle.kts` read these via `project.findProperty(...)`, so the same config works from both the terminal and the IDE. Remove the three properties to fall back to the hosted default. For a one-off override: `./gradlew -PNATEMPLATE_API_DOMAIN=192.168.1.21 -PNATEMPLATE_API_PORT=3000 -PNATEMPLATE_API_SCHEME=http assembleDebug`.
+Then `./gradlew assembleDebug` — or Build → Rebuild Project from Android Studio. The debug `buildConfigField` entries in `app/build.gradle.kts` read these via `project.findProperty(...)`, so the same config works from both the terminal and the IDE. Remove the three properties to fall back to the hosted default. For a one-off override: `./gradlew -PNATIVEAPPTEMPLATE_API_DOMAIN=192.168.1.21 -PNATIVEAPPTEMPLATE_API_PORT=3000 -PNATIVEAPPTEMPLATE_API_SCHEME=http assembleDebug`.
 
 Cleartext HTTP to private IPs is already permitted in debug via `app/src/debug/res/xml/network_security_config.xml`; the release config (in `app/src/main/`) keeps `api.nativeapptemplate.com` HTTPS-only.
 

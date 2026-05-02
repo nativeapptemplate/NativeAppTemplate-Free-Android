@@ -8,57 +8,44 @@ class CodedErrorTest {
   @Test
   fun apiError_hasCorrectErrorCode() {
     val error = ApiException.ApiError(code = 422, apiMessage = "Validation failed")
-    assertEquals("NATA-2001", error.errorCode)
+    assertEquals("NATIVEAPPTEMPLATE-2001", error.errorCode)
   }
 
   @Test
   fun apiError_formattedDescription_includesCodeAndMessage() {
     val error = ApiException.ApiError(code = 422, apiMessage = "Validation failed")
-    assertEquals("[NATA-2001] Validation failed [Status: 422]", error.formattedDescription)
+    assertEquals("[NATIVEAPPTEMPLATE-2001] Validation failed [Status: 422]", error.formattedDescription)
   }
 
   @Test
   fun unprocessableError_hasCorrectErrorCode() {
     val error = ApiException.UnprocessableError(rawMessage = "timeout")
-    assertEquals("NATA-2002", error.errorCode)
+    assertEquals("NATIVEAPPTEMPLATE-2002", error.errorCode)
   }
 
   @Test
   fun unprocessableError_formattedDescription_includesCodeAndMessage() {
     val error = ApiException.UnprocessableError(rawMessage = "timeout")
-    assertEquals("[NATA-2002] Processing error: timeout", error.formattedDescription)
+    assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: timeout", error.formattedDescription)
   }
 
   @Test
   fun appError_unexpected_hasCorrectCode() {
     val error = AppError.Unexpected()
-    assertEquals("NATA-1001", error.errorCode)
-    assertEquals("[NATA-1001] Unexpected error", error.formattedDescription)
+    assertEquals("NATIVEAPPTEMPLATE-1001", error.errorCode)
+    assertEquals("[NATIVEAPPTEMPLATE-1001] Unexpected error", error.formattedDescription)
   }
 
   @Test
   fun appError_unexpected_withDetail_includesDetail() {
     val error = AppError.Unexpected(detail = "null pointer")
-    assertEquals("[NATA-1001] Unexpected error: null pointer", error.formattedDescription)
-  }
-
-  @Test
-  fun nfcError_scanFailed_hasCorrectCode() {
-    val error = NfcError.ScanFailed()
-    assertEquals("NATA-3001", error.errorCode)
-    assertEquals("[NATA-3001] NFC scan operation failed", error.formattedDescription)
-  }
-
-  @Test
-  fun nfcError_scanFailed_withDetail_includesDetail() {
-    val error = NfcError.ScanFailed(detail = "tag lost")
-    assertEquals("[NATA-3001] NFC scan operation failed: tag lost", error.formattedDescription)
+    assertEquals("[NATIVEAPPTEMPLATE-1001] Unexpected error: null pointer", error.formattedDescription)
   }
 
   @Test
   fun codedDescription_forCodedError_returnsFormattedDescription() {
     val error: Throwable = ApiException.ApiError(code = 500, apiMessage = "Server error")
-    assertEquals("[NATA-2001] Server error [Status: 500]", error.codedDescription)
+    assertEquals("[NATIVEAPPTEMPLATE-2001] Server error [Status: 500]", error.codedDescription)
   }
 
   @Test

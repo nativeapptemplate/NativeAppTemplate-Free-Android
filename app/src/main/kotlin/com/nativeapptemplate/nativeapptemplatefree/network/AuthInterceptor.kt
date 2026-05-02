@@ -1,6 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.network
 
-import com.nativeapptemplate.nativeapptemplatefree.datastore.NatPreferencesDataSource
+import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -12,7 +12,7 @@ import kotlin.coroutines.cancellation.CancellationException
 
 @Singleton
 class AuthInterceptor @Inject constructor(
-  private val natPreferencesDataSource: NatPreferencesDataSource,
+  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
 ) : Interceptor {
   private suspend fun requestHelper(): RequestHelper {
     val userData = natPreferencesDataSource.userData.first()

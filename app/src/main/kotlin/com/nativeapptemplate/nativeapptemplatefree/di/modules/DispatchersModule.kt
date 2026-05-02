@@ -1,7 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.di.modules
 
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,10 +13,10 @@ import kotlinx.coroutines.Dispatchers
 @InstallIn(SingletonComponent::class)
 object DispatchersModule {
   @Provides
-  @Dispatcher(NatDispatchers.IO)
+  @Dispatcher(NativeAppTemplateDispatchers.IO)
   fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
   @Provides
-  @Dispatcher(NatDispatchers.Default)
+  @Dispatcher(NativeAppTemplateDispatchers.Default)
   fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }

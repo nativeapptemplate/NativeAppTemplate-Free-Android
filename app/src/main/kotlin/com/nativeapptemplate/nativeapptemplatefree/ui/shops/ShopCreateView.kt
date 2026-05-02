@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -47,7 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
 @Composable
@@ -64,7 +64,7 @@ fun ShopCreateView(
   )
 
   if (uiState.isCreated) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.message_shop_created),
       onDismissRequest = { onBackClick() },
     )
@@ -145,11 +145,18 @@ fun ShopCreateContentView(
         value = uiState.name,
         onValueChange = { viewModel.updateName(it) },
         supportingText = {
-          Text(
-            text = stringResource(id = R.string.shop_name_is_required),
-            style = MaterialTheme.typography.bodyLarge,
-            color = if (uiState.name.isBlank()) Color.Red else Color.Transparent,
-          )
+          Column {
+            Text(
+              text = stringResource(R.string.shop_name_help, uiState.maximumNameLength),
+              style = MaterialTheme.typography.bodyLarge,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+              text = stringResource(R.string.shop_name_is_invalid),
+              style = MaterialTheme.typography.bodyLarge,
+              color = if (viewModel.hasInvalidDataName()) Color.Red else Color.Transparent,
+            )
+          }
         },
         modifier = Modifier
           .fillMaxWidth(),
@@ -163,9 +170,24 @@ fun ShopCreateContentView(
         },
         value = uiState.description,
         onValueChange = { viewModel.updateDescription(it) },
+        supportingText = {
+          Column {
+            Text(
+              text = stringResource(R.string.shop_description_help, uiState.maximumDescriptionLength),
+              style = MaterialTheme.typography.bodyLarge,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+              text = stringResource(R.string.shop_description_is_invalid),
+              style = MaterialTheme.typography.bodyLarge,
+              color = if (viewModel.hasInvalidDataDescription()) Color.Red else Color.Transparent,
+            )
+          }
+        },
+        minLines = 4,
         modifier = Modifier
           .fillMaxWidth()
-          .height(128.dp),
+          .heightIn(min = 120.dp),
       )
 
       ExposedDropdownMenuBox(

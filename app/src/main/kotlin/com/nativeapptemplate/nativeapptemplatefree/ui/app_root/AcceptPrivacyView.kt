@@ -31,11 +31,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.restartApp
 
@@ -54,7 +54,7 @@ fun AcceptPrivacyView(
 
   if (uiState.isUpdated) {
     val context = LocalContext.current
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.confirmed_privacy_version_updated),
       onDismissRequest = { context.restartApp() },
     )
@@ -111,7 +111,7 @@ fun AcceptPrivacyContentView(
 
         withLink(
           LinkAnnotation.Url(
-            NatConstants.PRIVACY_POLICY_URL,
+            NativeAppTemplateConstants.PRIVACY_POLICY_URL,
             TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
           ),
         ) {

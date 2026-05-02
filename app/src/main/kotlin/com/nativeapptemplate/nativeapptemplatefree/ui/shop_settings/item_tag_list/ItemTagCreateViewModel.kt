@@ -4,14 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBodyDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagCreateRoute
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,19 +22,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ItemTagCreateUiState(
-  val queueNumber: String = "",
-  val maximumQueueNumberLength: Int = -1,
+  val name: String = "",
+  val description: String = "",
+  val maximumNameLength: Int = NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH,
   val isCreated: Boolean = false,
 
-  val isLoading: Boolean = true,
-  val success: Boolean = false,
+  val isLoading: Boolean = false,
+  val success: Boolean = true,
   val message: String = "",
 )
 
 @HiltViewModel
 class ItemTagCreateViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  private val loginRepository: LoginRepository,
   private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ItemTagCreateRoute>().shopId
@@ -44,40 +43,8 @@ class ItemTagCreateViewModel @Inject constructor(
   val uiState: StateFlow<ItemTagCreateUiState> = _uiState.asStateFlow()
 
   fun reload() {
-    fetchData()
-  }
-
-  private fun fetchData() {
     _uiState.update {
-      it.copy(
-        isLoading = true,
-        success = false,
-        isCreated = false,
-      )
-    }
-
-    viewModelScope.launch {
-      val maximumQueueNumberLengthFlow = loginRepository.getMaximumQueueNumberLength()
-
-      maximumQueueNumberLengthFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
-        .collect { maximumQueueNumberLength ->
-          _uiState.update {
-            it.copy(
-              maximumQueueNumberLength = maximumQueueNumberLength,
-              success = true,
-              isLoading = false,
-            )
-          }
-        }
+      ItemTagCreateUiState()
     }
   }
 
@@ -91,7 +58,8 @@ class ItemTagCreateViewModel @Inject constructor(
 
     viewModelScope.launch {
       val itemTagBodyDetail = ItemTagBodyDetail(
-        queueNumber = uiState.value.queueNumber,
+        name = uiState.value.name,
+        description = uiState.value.description,
       )
       val itemTagBody = ItemTagBody(itemTagBodyDetail)
 
@@ -118,28 +86,36 @@ class ItemTagCreateViewModel @Inject constructor(
   }
 
   fun hasInvalidData(): Boolean {
-    return hasInvalidDataQueueNumber()
+    return hasInvalidDataName() || hasInvalidDataDescription()
   }
 
-  fun hasInvalidDataQueueNumber(): Boolean {
-    val queueNumber = uiState.value.queueNumber
+  fun hasInvalidDataName(): Boolean {
+    val name = uiState.value.name
+    val maximumNameLength = uiState.value.maximumNameLength
 
-    if (queueNumber.isBlank()) return true
+    if (name.isBlank()) return true
+    if (maximumNameLength <= 0) return false
+    return name.length > maximumNameLength
+  }
 
-    if (!Utility.isAlphanumeric(queueNumber)) return true
+  fun hasInvalidDataDescription(): Boolean {
+    return uiState.value.description.length > NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH
+  }
 
-    if (!(2 <= queueNumber.length && queueNumber.length <= uiState.value.maximumQueueNumberLength)) {
-      return true
+  fun updateName(newName: String) {
+    val maximumNameLength = uiState.value.maximumNameLength
+    if (maximumNameLength > 0 && newName.length > maximumNameLength) return
+
+    _uiState.update {
+      it.copy(name = newName)
     }
-
-    return false
   }
 
-  fun updateQueueNumber(newQueueNumber: String) {
-    if (newQueueNumber.length <= uiState.value.maximumQueueNumberLength) {
-      _uiState.update {
-        it.copy(queueNumber = newQueueNumber)
-      }
+  fun updateDescription(newDescription: String) {
+    if (newDescription.length > NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH) return
+
+    _uiState.update {
+      it.copy(description = newDescription)
     }
   }
 

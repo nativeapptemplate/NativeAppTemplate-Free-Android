@@ -42,6 +42,9 @@ local.properties
 # Sandbox stuff
 _sandbox
 
+# Private docs (local only)
+docs-private/
+
 # Android Studio captures folder
 captures/
 
@@ -82,4 +85,4 @@ replay_pid*.log
 .claude/logs/
 .claude/tmp/
 .claude/*.log
-
+.claude/scheduled_tasks.lock

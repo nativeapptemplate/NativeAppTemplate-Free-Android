@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -32,16 +31,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NatAlertDialog
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
 @Composable
@@ -63,7 +62,7 @@ fun ItemTagCreateView(
   )
 
   if (uiState.isCreated) {
-    NatAlertDialog(
+    NativeAppTemplateAlertDialog(
       dialogTitle = stringResource(R.string.message_item_tag_created),
       onDismissRequest = { onBackClick() },
     )
@@ -120,7 +119,7 @@ fun ItemTagCreateContentView(
         shape = CircleShape,
 
       ) {
-        Icon(Icons.Filled.Done, contentDescription = stringResource(R.string.label_add_tag))
+        Icon(Icons.Filled.Done, contentDescription = stringResource(R.string.label_add_item_tag))
       }
     },
     modifier = Modifier.fillMaxSize(),
@@ -135,32 +134,53 @@ fun ItemTagCreateContentView(
       OutlinedTextField(
         label = {
           Text(
-            text = stringResource(R.string.tag_number),
+            text = stringResource(R.string.name_label),
           )
         },
-        placeholder = { Text("A001") },
-        value = uiState.queueNumber,
-        onValueChange = { viewModel.updateQueueNumber(it) },
+        placeholder = { Text(stringResource(R.string.item_tag_name_placeholder)) },
+        value = uiState.name,
+        onValueChange = { viewModel.updateName(it) },
         supportingText = {
           Column {
             Text(
-              text = "Name must be a 2-${uiState.maximumQueueNumberLength} alphanumeric characters.",
+              text = stringResource(R.string.item_tag_name_help, uiState.maximumNameLength),
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-              text = stringResource(R.string.zero_padding),
+              text = stringResource(R.string.item_tag_name_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-              text = stringResource(id = R.string.tag_number_is_invalid),
-              style = MaterialTheme.typography.bodyLarge,
-              color = if (viewModel.hasInvalidDataQueueNumber()) Color.Red else Color.Transparent,
+              color = if (viewModel.hasInvalidDataName()) Color.Red else Color.Transparent,
             )
           }
         },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii),
+        modifier = Modifier
+          .fillMaxWidth(),
+      )
+
+      OutlinedTextField(
+        label = {
+          Text(
+            text = stringResource(R.string.description_label),
+          )
+        },
+        value = uiState.description,
+        onValueChange = { viewModel.updateDescription(it) },
+        minLines = 4,
+        supportingText = {
+          Column {
+            Text(
+              text = stringResource(R.string.item_tag_description_help, NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH),
+              style = MaterialTheme.typography.bodyLarge,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+              text = stringResource(R.string.item_tag_description_is_invalid),
+              style = MaterialTheme.typography.bodyLarge,
+              color = if (viewModel.hasInvalidDataDescription()) Color.Red else Color.Transparent,
+            )
+          }
+        },
         modifier = Modifier
           .fillMaxWidth(),
       )
@@ -178,7 +198,7 @@ private fun TopAppBar(
       containerColor = MaterialTheme.colorScheme.primaryContainer,
       titleContentColor = MaterialTheme.colorScheme.primary,
     ),
-    title = { Text(text = stringResource(id = R.string.label_add_tag)) },
+    title = { Text(text = stringResource(id = R.string.label_add_item_tag)) },
     navigationIcon = {
       IconButton(onClick = {
         onBackClick()

@@ -2,11 +2,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.NatConstants
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SendConfirmation
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.validateEmail
+import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,7 +43,7 @@ class ResendConfirmationInstructionsViewModel @Inject constructor(
     viewModelScope.launch {
       val sendConfirmation = SendConfirmation(
         email = uiState.value.email.trim(),
-        redirectUrl = SendConfirmation.redirectUrlString(NatConstants.baseUrlString()),
+        redirectUrl = SendConfirmation.redirectUrlString(NativeAppTemplateConstants.baseUrlString()),
       )
 
       val booleanFlow = signUpRepository.sendConfirmationInstruction(sendConfirmation)
@@ -75,7 +75,7 @@ class ResendConfirmationInstructionsViewModel @Inject constructor(
   fun hasInvalidDataEmail(): Boolean {
     if (uiState.value.email.isBlank()) return true
 
-    return !uiState.value.email.validateEmail()
+    return !uiState.value.email.isValidEmail()
   }
 
   fun updateEmail(newEmail: String) {

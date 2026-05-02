@@ -17,7 +17,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.di.modules
 
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,6 +39,6 @@ internal object CoroutineScopesModule {
   @Singleton
   @ApplicationScope
   fun providesCoroutineScope(
-    @Dispatcher(NatDispatchers.Default) dispatcher: CoroutineDispatcher,
+    @Dispatcher(NativeAppTemplateDispatchers.Default) dispatcher: CoroutineDispatcher,
   ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 }

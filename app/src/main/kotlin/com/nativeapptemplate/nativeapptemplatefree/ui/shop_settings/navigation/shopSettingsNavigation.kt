@@ -5,13 +5,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.NumberTagsWebpageListView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.ShopBasicSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.ShopSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_detail.ItemTagDetailView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_detail.ItemTagEditView
-import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_detail.ItemTagWriteView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_list.ItemTagCreateView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_list.ItemTagListView
 import kotlinx.serialization.Serializable
@@ -20,8 +17,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable data class ShopBasicSettingsRoute(val id: String)
 
-@Serializable data class NumberTagsWebpageListRoute(val id: String)
-
 @Serializable data class ItemTagListRoute(val shopId: String)
 
 @Serializable data class ItemTagCreateRoute(val shopId: String)
@@ -29,8 +24,6 @@ import kotlinx.serialization.Serializable
 @Serializable data class ItemTagDetailRoute(val id: String)
 
 @Serializable data class ItemTagEditRoute(val id: String)
-
-@Serializable data class ItemTagWriteRoute(val id: String, val isLock: Boolean, val itemTagType: String)
 
 fun NavController.navigateToShopSettings(shopId: String, navOptions: NavOptionsBuilder.() -> Unit = {}) {
   navigate(route = ShopSettingsRoute(shopId)) {
@@ -41,7 +34,6 @@ fun NavController.navigateToShopSettings(shopId: String, navOptions: NavOptionsB
 fun NavGraphBuilder.shopSettingsView(
   onShowBasicSettingsClick: (String) -> Unit,
   onShowItemTagListClick: (String) -> Unit,
-  onShowNumberTagsWebpageListClick: (String) -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
@@ -49,7 +41,6 @@ fun NavGraphBuilder.shopSettingsView(
     ShopSettingsView(
       onShowBasicSettingsClick = onShowBasicSettingsClick,
       onShowItemTagListClick = onShowItemTagListClick,
-      onShowNumberTagsWebpageListClick = onShowNumberTagsWebpageListClick,
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
     )
@@ -67,24 +58,6 @@ fun NavGraphBuilder.shopBasicSettingsView(
 ) {
   composable<ShopBasicSettingsRoute> {
     ShopBasicSettingsView(
-      onShowSnackbar = onShowSnackbar,
-      onBackClick = onBackClick,
-    )
-  }
-}
-
-fun NavController.navigateToNumberTagsWebpageList(shopId: String, navOptions: NavOptionsBuilder.() -> Unit = {}) {
-  navigate(route = NumberTagsWebpageListRoute(shopId)) {
-    navOptions()
-  }
-}
-
-fun NavGraphBuilder.numberTagsWebpageListView(
-  onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
-  onBackClick: () -> Unit,
-) {
-  composable<NumberTagsWebpageListRoute> {
-    NumberTagsWebpageListView(
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
     )
@@ -139,14 +112,12 @@ fun NavController.navigateToItemTagDetail(itemTagId: String, navOptions: NavOpti
 
 fun NavGraphBuilder.itemTagDetailView(
   onShowItemTagEditClick: (String) -> Unit,
-  onShowItemTagWriteClick: (String, Boolean, String) -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
 ) {
   composable<ItemTagDetailRoute> {
     ItemTagDetailView(
       onShowItemTagEditClick = onShowItemTagEditClick,
-      onShowItemTagWriteClick = onShowItemTagWriteClick,
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
     )
@@ -166,27 +137,6 @@ fun NavGraphBuilder.itemTagEditView(
   composable<ItemTagEditRoute> {
     ItemTagEditView(
       onShowSnackbar = onShowSnackbar,
-      onBackClick = onBackClick,
-    )
-  }
-}
-
-fun NavController.navigateToItemTagWrite(
-  itemTagId: String,
-  isLock: Boolean,
-  itemTagType: String,
-  navOptions: NavOptionsBuilder.() -> Unit = {},
-) {
-  navigate(route = ItemTagWriteRoute(itemTagId, isLock, itemTagType)) {
-    navOptions()
-  }
-}
-
-fun NavGraphBuilder.itemTagWriteView(
-  onBackClick: () -> Unit,
-) {
-  dialog<ItemTagWriteRoute> {
-    ItemTagWriteView(
       onBackClick = onBackClick,
     )
   }

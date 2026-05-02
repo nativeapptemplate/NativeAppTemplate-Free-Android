@@ -66,7 +66,7 @@ val DarkDefaultColorScheme = darkColorScheme(
 )
 
 @Composable
-fun NatTheme(
+fun NativeAppTemplateTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
   content: @Composable () -> Unit,
 ) {
@@ -76,8 +76,6 @@ fun NatTheme(
     color = colorScheme.surface,
     tonalElevation = 2.dp,
   )
-
-  val tintTheme = TintTheme()
 
   val customColorsPalette =
     if (darkTheme) {
@@ -90,11 +88,10 @@ fun NatTheme(
   CompositionLocalProvider(
     LocalCustomColorScheme provides customColorsPalette,
     LocalBackgroundTheme provides backgroundTheme,
-    LocalTintTheme provides tintTheme,
   ) {
     MaterialTheme(
       colorScheme = colorScheme,
-      typography = NatTypography,
+      typography = NativeAppTemplateTypography,
       content = content,
     )
   }

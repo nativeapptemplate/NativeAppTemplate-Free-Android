@@ -2,12 +2,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_de
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
-import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagEditRoute
 import kotlinx.coroutines.flow.collect
@@ -36,7 +35,6 @@ class ItemTagEditViewModelTest {
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
-  private val loginRepository = TestLoginRepository()
   private val itemTagRepository = TestItemTagRepository()
 
   private lateinit var viewModel: ItemTagEditViewModel
@@ -47,7 +45,6 @@ class ItemTagEditViewModelTest {
       savedStateHandle = SavedStateHandle(
         route = ItemTagEditRoute(id = testInputItemTag.datum!!.id!!),
       ),
-      loginRepository = loginRepository,
       itemTagRepository = itemTagRepository,
     )
   }
@@ -58,10 +55,14 @@ class ItemTagEditViewModelTest {
   }
 
   @Test
+  fun maximumNameLength_matchesConstant() = runTest {
+    assertEquals(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
+  }
+
+  @Test
   fun stateItemTag_whenSuccess_matchesItemTagFromRepository() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    loginRepository.sendUserData(emptyUserData)
     itemTagRepository.sendItemTag((testInputItemTag))
 
     viewModel.reload()
@@ -78,18 +79,12 @@ class ItemTagEditViewModelTest {
   fun stateIsUpdated_whenUpdatingItemTag_becomesTrue() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    val maximumQueueNumberLength = 5
-    val userData = emptyUserData.copy(
-      maximumQueueNumberLength = maximumQueueNumberLength,
-    )
-
-    loginRepository.sendUserData(userData)
     itemTagRepository.sendItemTag(testInputItemTag)
 
     viewModel.reload()
-    val newQueueNumber = "Z0001"
-    viewModel.updateQueueNumber(newQueueNumber)
-    assertEquals(viewModel.uiState.value.queueNumber, newQueueNumber)
+    val newName = "Buy bread"
+    viewModel.updateName(newName)
+    assertEquals(viewModel.uiState.value.name, newName)
     assertFalse(viewModel.hasInvalidData())
 
     viewModel.updateItemTag()
@@ -99,33 +94,64 @@ class ItemTagEditViewModelTest {
   }
 
   @Test
-  fun blankQueueNumber_isInvalid() = runTest {
+  fun unchangedNameAndDescription_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateQueueNumber("")
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
 
-    assertTrue(viewModel.hasInvalidDataQueueNumber())
+    // No edits — name and description equal current values
     assertTrue(viewModel.hasInvalidData())
   }
 
   @Test
-  fun queueNumberWithIncorrectLength_isInvalid() = runTest {
+  fun changedDescriptionOnly_isValid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateQueueNumber("123456")
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
 
-    assertTrue(viewModel.hasInvalidDataQueueNumber())
+    viewModel.updateDescription("a new description")
+
+    assertFalse(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun blankName_isInvalid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+
+    viewModel.updateName("")
+
+    assertTrue(viewModel.hasInvalidDataName())
     assertTrue(viewModel.hasInvalidData())
   }
 
   @Test
-  fun wrongFormatQueueNumber_isInvalid() = runTest {
+  fun whitespaceOnlyName_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
-    viewModel.updateQueueNumber("@1234")
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
 
-    assertTrue(viewModel.hasInvalidDataQueueNumber())
+    viewModel.updateName("   ")
+
+    assertTrue(viewModel.hasInvalidDataName())
     assertTrue(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun nameWithSymbolsAndUnicode_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+
+    viewModel.updateName("Buy milk 🥛 + bread")
+
+    assertFalse(viewModel.hasInvalidDataName())
   }
 }
 
@@ -134,13 +160,10 @@ private const val SHOP_NAME = "8th & Townsend"
 
 private const val ITEM_TAG_TYPE = "item_tag"
 private const val ITEM_TAG_ID = "9712F2DF-DFC7-A3AA-66BC-191203654A1A"
-private const val ITEM_TAG_QUEUE_NUMBER = "A001"
+private const val ITEM_TAG_NAME = "A001"
 private const val ITEM_TAG_STATE = "idled"
-private const val ITEM_TAG_SCAN_STATE = "unscanned"
 private const val ITEM_TAG_CREATED_AT = "2025-01-02T12:00:00.000Z"
-private const val ITEM_TAG_CUSTOMER_READ_AT = "2025-01-02T12:00:01.000Z"
 private const val ITEM_TAG_COMPLETED_AT = "2025-01-02T12:00:03.000Z"
-private const val ITEM_TAG_ALREADY_COMPLETED = false
 
 private val testInputItemTagData =
   Data(
@@ -148,14 +171,13 @@ private val testInputItemTagData =
     type = ITEM_TAG_TYPE,
     attributes = Attributes(
       shopId = SHOP_ID,
-      queueNumber = ITEM_TAG_QUEUE_NUMBER,
+      name = ITEM_TAG_NAME,
+      description = "",
+      position = 1,
       state = ITEM_TAG_STATE,
-      scanState = ITEM_TAG_SCAN_STATE,
       createdAt = ITEM_TAG_CREATED_AT,
       shopName = SHOP_NAME,
-      customerReadAt = ITEM_TAG_CUSTOMER_READ_AT,
       completedAt = ITEM_TAG_COMPLETED_AT,
-      alreadyCompleted = ITEM_TAG_ALREADY_COMPLETED,
     ),
   )
 

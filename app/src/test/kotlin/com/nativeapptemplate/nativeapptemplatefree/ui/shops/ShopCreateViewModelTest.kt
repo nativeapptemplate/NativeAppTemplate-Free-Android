@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -79,6 +80,56 @@ class ShopCreateViewModelTest {
     viewModel.updateTimeZone(testInputShop.getTimeZone())
 
     assertTrue(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun maximumNameLength_matchesConstant() = runTest {
+    assertEquals(NativeAppTemplateConstants.MAXIMUM_SHOP_NAME_LENGTH, viewModel.uiState.value.maximumNameLength)
+  }
+
+  @Test
+  fun maximumDescriptionLength_matchesConstant() = runTest {
+    assertEquals(
+      NativeAppTemplateConstants.MAXIMUM_SHOP_DESCRIPTION_LENGTH,
+      viewModel.uiState.value.maximumDescriptionLength,
+    )
+  }
+
+  @Test
+  fun nameAtMaximumLength_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    viewModel.updateName("a".repeat(100))
+
+    assertFalse(viewModel.hasInvalidDataName())
+  }
+
+  @Test
+  fun nameAboveMaximumLength_isRejectedByUpdater() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    viewModel.updateName("a".repeat(101))
+
+    // updater clamps; value should remain blank (initial)
+    assertEquals("", viewModel.uiState.value.name)
+  }
+
+  @Test
+  fun descriptionAtMaximumLength_isValid() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    viewModel.updateDescription("x".repeat(1_000))
+
+    assertFalse(viewModel.hasInvalidDataDescription())
+  }
+
+  @Test
+  fun descriptionAboveMaximumLength_isRejectedByUpdater() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    viewModel.updateDescription("x".repeat(1_001))
+
+    assertEquals("", viewModel.uiState.value.description)
   }
 }
 

@@ -13,10 +13,8 @@ import androidx.navigation.navOptions
 import androidx.tracing.trace
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
-import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SCAN_TAB
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SETTINGS_TAB
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SHOPS_TAB
-import com.nativeapptemplate.nativeapptemplatefree.ui.scan.navigation.navigateToScan
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
@@ -26,15 +24,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 @Composable
-fun rememberNatAppState(
+fun rememberNativeAppTemplateAppState(
   loginRepository: LoginRepository,
   networkMonitor: NetworkMonitor,
   coroutineScope: CoroutineScope = rememberCoroutineScope(),
   navController: NavHostController = rememberNavController(),
-): NatAppState {
+): NativeAppTemplateAppState {
 //  NavigationTrackingSideEffect(navController)
   return remember(
     loginRepository,
@@ -42,7 +39,7 @@ fun rememberNatAppState(
     coroutineScope,
     networkMonitor,
   ) {
-    NatAppState(
+    NativeAppTemplateAppState(
       loginRepository = loginRepository,
       navController = navController,
       coroutineScope = coroutineScope,
@@ -52,7 +49,7 @@ fun rememberNatAppState(
 }
 
 @Stable
-class NatAppState(
+class NativeAppTemplateAppState(
   val loginRepository: LoginRepository,
   val navController: NavHostController,
   val coroutineScope: CoroutineScope,
@@ -122,13 +119,6 @@ class NatAppState(
       initialValue = false,
     )
 
-  val shouldNavigateToScanView = loginRepository.shouldNavigateToScanView()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
-
   val isShopDeleted = loginRepository.isShopDeleted()
     .stateIn(
       scope = coroutineScope,
@@ -158,8 +148,6 @@ class NatAppState(
    * @param topLevelDestination: The destination the app needs to navigate to.
    */
   fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
-    updateShouldNavigateToScanViewToFalse()
-
     trace("Navigation: ${topLevelDestination.name}") {
       val topLevelNavOptions = navOptions {
         // Pop up to the start destination of the graph to
@@ -177,33 +165,8 @@ class NatAppState(
 
       when (topLevelDestination) {
         SHOPS_TAB -> navController.navigateToShopList(topLevelNavOptions)
-        SCAN_TAB -> navController.navigateToScan(topLevelNavOptions)
         SETTINGS_TAB -> navController.navigateToSettings(topLevelNavOptions)
       }
-    }
-  }
-
-  fun navigateToScan() {
-    val topLevelNavOptions = navOptions {
-      // Pop up to the start destination of the graph to
-      // avoid building up a large stack of destinations
-      // on the back stack as users select items
-      popUpTo(navController.graph.findStartDestination().id) {
-        saveState = true
-      }
-      // Avoid multiple copies of the same destination when
-      // reselecting the same item
-      launchSingleTop = true
-      // Restore state when reselecting a previously selected item
-      restoreState = true
-    }
-
-    navController.navigateToScan(topLevelNavOptions)
-  }
-
-  private fun updateShouldNavigateToScanViewToFalse() {
-    coroutineScope.launch {
-      loginRepository.setShouldNavigateToScanView(false)
     }
   }
 }

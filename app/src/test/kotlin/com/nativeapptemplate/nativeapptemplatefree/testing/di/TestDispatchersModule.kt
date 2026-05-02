@@ -18,7 +18,7 @@ package com.nativeapptemplate.nativeapptemplatefree.testing.di
 
 import com.nativeapptemplate.nativeapptemplatefree.di.modules.DispatchersModule
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
-import com.nativeapptemplate.nativeapptemplatefree.network.NatDispatchers
+import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -33,11 +33,11 @@ import kotlinx.coroutines.test.TestDispatcher
 )
 internal object TestDispatchersModule {
   @Provides
-  @Dispatcher(NatDispatchers.IO)
+  @Dispatcher(NativeAppTemplateDispatchers.IO)
   fun providesIODispatcher(testDispatcher: TestDispatcher): CoroutineDispatcher = testDispatcher
 
   @Provides
-  @Dispatcher(NatDispatchers.Default)
+  @Dispatcher(NativeAppTemplateDispatchers.Default)
   fun providesDefaultDispatcher(
     testDispatcher: TestDispatcher,
   ): CoroutineDispatcher = testDispatcher

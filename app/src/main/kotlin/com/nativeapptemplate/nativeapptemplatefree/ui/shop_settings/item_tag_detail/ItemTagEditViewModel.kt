@@ -4,21 +4,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
-import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBodyDetail
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagEditRoute
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,8 +24,9 @@ import javax.inject.Inject
 data class ItemTagEditUiState(
   val itemTag: ItemTag = ItemTag(),
 
-  val queueNumber: String = "",
-  val maximumQueueNumberLength: Int = -1,
+  val name: String = "",
+  val description: String = "",
+  val maximumNameLength: Int = NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_NAME_LENGTH,
   val isUpdated: Boolean = false,
 
   val isLoading: Boolean = true,
@@ -38,7 +37,6 @@ data class ItemTagEditUiState(
 @HiltViewModel
 class ItemTagEditViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  private val loginRepository: LoginRepository,
   private val itemTagRepository: ItemTagRepository,
 ) : ViewModel() {
   private val itemTagId = savedStateHandle.toRoute<ItemTagEditRoute>().id
@@ -61,28 +59,28 @@ class ItemTagEditViewModel @Inject constructor(
 
     viewModelScope.launch {
       val itemTagFlow: Flow<ItemTag> = itemTagRepository.getItemTag(itemTagId)
-      val maximumQueueNumberLengthFlow = loginRepository.getMaximumQueueNumberLength()
 
-      combine(itemTagFlow, maximumQueueNumberLengthFlow) { itemTag, maximumQueueNumberLength ->
-        _uiState.update {
-          it.copy(
-            itemTag = itemTag,
-            queueNumber = itemTag.getQueueNumber(),
-            maximumQueueNumberLength = maximumQueueNumberLength,
-            success = true,
-            isLoading = false,
-          )
+      itemTagFlow
+        .catch { exception ->
+          val message = exception.codedDescription
+          _uiState.update {
+            it.copy(
+              message = message,
+              isLoading = false,
+            )
+          }
         }
-      }.catch { exception ->
-        val message = exception.codedDescription
-        _uiState.update {
-          it.copy(
-            message = message,
-            isLoading = false,
-          )
+        .collect { itemTag ->
+          _uiState.update {
+            it.copy(
+              itemTag = itemTag,
+              name = itemTag.getName(),
+              description = itemTag.getDescription(),
+              success = true,
+              isLoading = false,
+            )
+          }
         }
-      }.collect {
-      }
     }
   }
 
@@ -96,7 +94,8 @@ class ItemTagEditViewModel @Inject constructor(
 
     viewModelScope.launch {
       val itemTagBodyDetail = ItemTagBodyDetail(
-        queueNumber = uiState.value.queueNumber,
+        name = uiState.value.name,
+        description = uiState.value.description,
       )
       val itemTagBody = ItemTagBody(itemTagBodyDetail)
 
@@ -125,31 +124,42 @@ class ItemTagEditViewModel @Inject constructor(
   }
 
   fun hasInvalidData(): Boolean {
-    if (hasInvalidDataQueueNumber()) return true
+    if (hasInvalidDataName()) return true
+    if (hasInvalidDataDescription()) return true
 
     val itemTag = uiState.value.itemTag
-    return itemTag.getQueueNumber() == uiState.value.queueNumber
+    val nameUnchanged = itemTag.getName() == uiState.value.name
+    val descriptionUnchanged = itemTag.getDescription() == uiState.value.description
+    return nameUnchanged && descriptionUnchanged
   }
 
-  fun hasInvalidDataQueueNumber(): Boolean {
-    val queueNumber = uiState.value.queueNumber
+  fun hasInvalidDataName(): Boolean {
+    val name = uiState.value.name
+    val maximumNameLength = uiState.value.maximumNameLength
 
-    if (queueNumber.isBlank()) return true
+    if (name.isBlank()) return true
+    if (maximumNameLength <= 0) return false
+    return name.length > maximumNameLength
+  }
 
-    if (!Utility.isAlphanumeric(queueNumber)) return true
+  fun hasInvalidDataDescription(): Boolean {
+    return uiState.value.description.length > NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH
+  }
 
-    if (!(2 <= queueNumber.length && queueNumber.length <= uiState.value.maximumQueueNumberLength)) {
-      return true
+  fun updateName(newName: String) {
+    val maximumNameLength = uiState.value.maximumNameLength
+    if (maximumNameLength > 0 && newName.length > maximumNameLength) return
+
+    _uiState.update {
+      it.copy(name = newName)
     }
-
-    return false
   }
 
-  fun updateQueueNumber(newQueueNumber: String) {
-    if (newQueueNumber.length <= uiState.value.maximumQueueNumberLength) {
-      _uiState.update {
-        it.copy(queueNumber = newQueueNumber)
-      }
+  fun updateDescription(newDescription: String) {
+    if (newDescription.length > NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH) return
+
+    _uiState.update {
+      it.copy(description = newDescription)
     }
   }
 
