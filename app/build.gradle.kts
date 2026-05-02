@@ -14,8 +14,8 @@ android {
     applicationId = "com.nativeapptemplate.nativeapptemplatefree"
     targetSdk = 36
     minSdk = 26
-    versionCode = 4
-    versionName = "3.0.0"
+    versionCode = 5
+    versionName = "3.2.0"
 
     vectorDrawables {
       useSupportLibrary = true
