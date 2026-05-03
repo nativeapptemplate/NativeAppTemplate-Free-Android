@@ -34,6 +34,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
@@ -48,7 +50,7 @@ internal fun OnboardingView(
   val lineHeightLarge = 26
   val onboardings = OnboardingViewModel.onboardings
   val pagerState = rememberPagerState(pageCount = {
-    onboardings.size
+    onboardings.size + 1
   })
 
   Scaffold(
@@ -65,7 +67,11 @@ internal fun OnboardingView(
         modifier = Modifier
           .fillMaxSize(),
       ) { page ->
-        val onboarding = onboardings[page]
+        if (page == 0) {
+          WelcomePage()
+          return@HorizontalPager
+        }
+        val onboarding = onboardings[page - 1]
         val imageBottomPadding = if (onboarding.imageOrientation == ImageOrientation.LANDSCAPE) 192.dp else 0.dp
         Box(
           modifier = Modifier
@@ -119,6 +125,44 @@ internal fun OnboardingView(
           )
         }
       }
+    }
+  }
+}
+
+@Composable
+private fun WelcomePage() {
+  Box(
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(12.dp)
+      .padding(top = 12.dp),
+  ) {
+    Image(
+      painter = painterResource(R.drawable.ic_hero),
+      contentDescription = null,
+      contentScale = ContentScale.Fit,
+      modifier = Modifier
+        .align(Alignment.TopCenter)
+        .padding(bottom = 192.dp),
+    )
+    Box(
+      modifier = Modifier
+        .align(Alignment.BottomCenter)
+        .fillMaxWidth()
+        .background(MaterialTheme.colorScheme.background),
+    ) {
+      Text(
+        text = stringResource(R.string.welcome_to_app, stringResource(R.string.app_name)),
+        color = MaterialTheme.colorScheme.onBackground,
+        fontSize = 34.sp.nonScaledSp,
+        lineHeight = 41.sp.nonScaledSp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+          .align(Alignment.TopCenter)
+          .fillMaxWidth()
+          .padding(16.dp),
+      )
     }
   }
 }

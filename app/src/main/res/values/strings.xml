@@ -66,6 +66,7 @@
   <string name="terms_of_use_updated">Terms of Use Updated</string>
 
   <!-- On-boarding -->
+  <string name="welcome_to_app">Welcome to %1$s</string>
   <string name="onboarding_description1">Onboarding description 1.</string>
   <string name="onboarding_description2">Onboarding description 2.</string>
   <string name="onboarding_description3">Onboarding description 3.</string>
