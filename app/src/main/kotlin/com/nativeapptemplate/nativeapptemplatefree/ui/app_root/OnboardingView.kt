@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,8 +39,11 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScal
 internal fun OnboardingView(
   onStartClick: () -> Unit,
 ) {
+  val brandNavy = colorResource(R.color.ic_launcher_background)
+
   Scaffold(
-    topBar = { TopAppBar(onStartClick) },
+    topBar = { TopAppBar(onStartClick, brandNavy) },
+    containerColor = brandNavy,
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
     Column(
@@ -60,7 +64,7 @@ internal fun OnboardingView(
       Spacer(Modifier.height(24.dp))
       Text(
         text = stringResource(R.string.welcome_to_app, stringResource(R.string.app_name)),
-        color = MaterialTheme.colorScheme.onBackground,
+        color = Color.White,
         fontSize = 34.sp.nonScaledSp,
         lineHeight = 41.sp.nonScaledSp,
         fontWeight = FontWeight.Bold,
@@ -76,13 +80,16 @@ internal fun OnboardingView(
 @Composable
 private fun TopAppBar(
   onStartClick: () -> Unit,
+  containerColor: Color,
 ) {
   val context = LocalContext.current
 
   CenterAlignedTopAppBar(
     colors = TopAppBarDefaults.topAppBarColors(
-      containerColor = MaterialTheme.colorScheme.primaryContainer,
-      titleContentColor = MaterialTheme.colorScheme.primary,
+      containerColor = containerColor,
+      titleContentColor = Color.White,
+      navigationIconContentColor = Color.White,
+      actionIconContentColor = Color.White,
     ),
     title = { Text("") },
     actions = {
@@ -91,6 +98,7 @@ private fun TopAppBar(
       ) {
         Text(
           "Start",
+          color = Color.White,
           style = MaterialTheme.typography.displaySmall,
         )
       }
@@ -101,6 +109,7 @@ private fun TopAppBar(
       ) {
         Text(
           stringResource(R.string.support_website),
+          color = Color.White,
         )
       }
     },
