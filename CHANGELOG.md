@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.2.2] - 2026-05-04
+
+### Changed
+- Renamed `app_name` to "Native App Template" so the launcher label and in-app title share a single source of truth
+- Sign-up / sign-in title dropped to `headlineMedium` bold/centered so it fits on one line
+- Refreshed launcher icon with sparkle artwork (per-density webp + vector foreground/monochrome) and added a `<monochrome>` layer for Android 13+ themed icons
+- Replaced splash "N" letterform with the same four-pointed sparkle (white on navy via `windowSplashScreenBackground`)
+
+### Removed
+- Onboarding sample pages 1–4, the `Onboarding` data class, `ImageOrientation` enum, `OnboardingViewModel`, their tests, and the `ic_overview1-4` / `ic_hero` drawables — onboarding now shows just the welcome screen with an `AutoAwesome` icon
+
 ## [3.2.1] - 2026-05-02
 
 ### Changed
