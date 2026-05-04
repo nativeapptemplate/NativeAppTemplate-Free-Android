@@ -29,6 +29,7 @@
     </style>
 
     <style name="Theme.NativeAppTemplate.Splash" parent="NightAdjusted.Theme.Splash">
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
         <item name="postSplashScreenTheme">@style/Theme.NativeAppTemplate</item>
     </style>

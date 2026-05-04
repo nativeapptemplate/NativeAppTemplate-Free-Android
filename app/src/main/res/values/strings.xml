@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="app_name">NativeAppTemplate Free</string>
+  <string name="app_name">Native App Template</string>
   <string name="title_shops">Shops</string>
   <string name="title_settings">Settings</string>
 
@@ -67,10 +67,6 @@
 
   <!-- On-boarding -->
   <string name="welcome_to_app">Welcome to %1$s</string>
-  <string name="onboarding_description1">Onboarding description 1.</string>
-  <string name="onboarding_description2">Onboarding description 2.</string>
-  <string name="onboarding_description3">Onboarding description 3.</string>
-  <string name="onboarding_description4">Onboarding description 4.</string>
 
   <!-- Shops Screen -->
   <string name="add_shop">Add Shop</string>

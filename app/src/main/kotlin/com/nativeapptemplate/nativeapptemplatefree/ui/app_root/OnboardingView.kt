@@ -2,24 +2,16 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,11 +20,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,13 +35,6 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.NonScaledSp.nonScal
 internal fun OnboardingView(
   onStartClick: () -> Unit,
 ) {
-  val fontSizeLarge = 24
-  val lineHeightLarge = 26
-  val onboardings = OnboardingViewModel.onboardings
-  val pagerState = rememberPagerState(pageCount = {
-    onboardings.size + 1
-  })
-
   Scaffold(
     topBar = { TopAppBar(onStartClick) },
     modifier = Modifier.fillMaxSize(),
@@ -60,109 +42,38 @@ internal fun OnboardingView(
     Box(
       modifier = Modifier
         .fillMaxSize()
-        .padding(padding),
+        .padding(padding)
+        .padding(12.dp)
+        .padding(top = 12.dp),
     ) {
-      HorizontalPager(
-        state = pagerState,
-        modifier = Modifier
-          .fillMaxSize(),
-      ) { page ->
-        if (page == 0) {
-          WelcomePage()
-          return@HorizontalPager
-        }
-        val onboarding = onboardings[page - 1]
-        val imageBottomPadding = if (onboarding.imageOrientation == ImageOrientation.LANDSCAPE) 192.dp else 0.dp
-        Box(
-          modifier = Modifier
-            .fillMaxSize()
-            .padding(12.dp)
-            .padding(top = 12.dp),
-        ) {
-          Image(
-            painter = painterResource(OnboardingViewModel.onboardingImageId(onboarding.id)),
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-              .align(Alignment.TopCenter)
-              .padding(bottom = imageBottomPadding),
-          )
-          Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-
-            modifier = Modifier
-              .align(Alignment.BottomCenter),
-          ) {
-            Text(
-              stringResource(OnboardingViewModel.onboardingDescription(onboarding.id)),
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-              fontSize = fontSizeLarge.sp.nonScaledSp,
-              lineHeight = lineHeightLarge.sp.nonScaledSp,
-              modifier = Modifier
-                .padding(24.dp)
-                .padding(bottom = 16.dp),
-            )
-          }
-        }
-      }
-      Row(
-        Modifier
-          .wrapContentHeight()
-          .fillMaxWidth()
-          .align(Alignment.BottomCenter)
-          .padding(bottom = 8.dp),
-        horizontalArrangement = Arrangement.Center,
-      ) {
-        repeat(pagerState.pageCount) { iteration ->
-          val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
-          Box(
-            modifier = Modifier
-              .padding(2.dp)
-              .clip(CircleShape)
-              .background(color)
-              .size(16.dp),
-          )
-        }
-      }
-    }
-  }
-}
-
-@Composable
-private fun WelcomePage() {
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(12.dp)
-      .padding(top = 12.dp),
-  ) {
-    Image(
-      painter = painterResource(R.drawable.ic_hero),
-      contentDescription = null,
-      contentScale = ContentScale.Fit,
-      modifier = Modifier
-        .align(Alignment.TopCenter)
-        .padding(bottom = 192.dp),
-    )
-    Box(
-      modifier = Modifier
-        .align(Alignment.BottomCenter)
-        .fillMaxWidth()
-        .background(MaterialTheme.colorScheme.background),
-    ) {
-      Text(
-        text = stringResource(R.string.welcome_to_app, stringResource(R.string.app_name)),
-        color = MaterialTheme.colorScheme.onBackground,
-        fontSize = 34.sp.nonScaledSp,
-        lineHeight = 41.sp.nonScaledSp,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
+      Icon(
+        imageVector = Icons.Filled.AutoAwesome,
+        contentDescription = null,
+        tint = Color.White,
         modifier = Modifier
           .align(Alignment.TopCenter)
-          .fillMaxWidth()
-          .padding(16.dp),
+          .fillMaxSize()
+          .padding(bottom = 192.dp),
       )
+      Box(
+        modifier = Modifier
+          .align(Alignment.BottomCenter)
+          .fillMaxWidth()
+          .background(MaterialTheme.colorScheme.background),
+      ) {
+        Text(
+          text = stringResource(R.string.welcome_to_app, stringResource(R.string.app_name)),
+          color = MaterialTheme.colorScheme.onBackground,
+          fontSize = 34.sp.nonScaledSp,
+          lineHeight = 41.sp.nonScaledSp,
+          fontWeight = FontWeight.Bold,
+          textAlign = TextAlign.Center,
+          modifier = Modifier
+            .align(Alignment.TopCenter)
+            .fillMaxWidth()
+            .padding(16.dp),
+        )
+      }
     }
   }
 }
