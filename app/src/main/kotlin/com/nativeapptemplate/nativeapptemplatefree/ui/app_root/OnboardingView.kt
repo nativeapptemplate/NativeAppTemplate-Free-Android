@@ -2,11 +2,14 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -39,41 +42,32 @@ internal fun OnboardingView(
     topBar = { TopAppBar(onStartClick) },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
-    Box(
+    Column(
       modifier = Modifier
         .fillMaxSize()
         .padding(padding)
-        .padding(12.dp)
-        .padding(top = 12.dp),
+        .padding(horizontal = 24.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center,
     ) {
+      Spacer(Modifier.weight(1f))
       Icon(
         imageVector = Icons.Filled.AutoAwesome,
         contentDescription = null,
         tint = Color.White,
-        modifier = Modifier
-          .align(Alignment.TopCenter)
-          .fillMaxSize()
-          .padding(bottom = 192.dp),
+        modifier = Modifier.size(220.dp),
       )
-      Box(
-        modifier = Modifier
-          .align(Alignment.BottomCenter)
-          .fillMaxWidth()
-          .background(MaterialTheme.colorScheme.background),
-      ) {
-        Text(
-          text = stringResource(R.string.welcome_to_app, stringResource(R.string.app_name)),
-          color = MaterialTheme.colorScheme.onBackground,
-          fontSize = 34.sp.nonScaledSp,
-          lineHeight = 41.sp.nonScaledSp,
-          fontWeight = FontWeight.Bold,
-          textAlign = TextAlign.Center,
-          modifier = Modifier
-            .align(Alignment.TopCenter)
-            .fillMaxWidth()
-            .padding(16.dp),
-        )
-      }
+      Spacer(Modifier.height(24.dp))
+      Text(
+        text = stringResource(R.string.welcome_to_app, stringResource(R.string.app_name)),
+        color = MaterialTheme.colorScheme.onBackground,
+        fontSize = 34.sp.nonScaledSp,
+        lineHeight = 41.sp.nonScaledSp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth(),
+      )
+      Spacer(Modifier.weight(1f))
     }
   }
 }
