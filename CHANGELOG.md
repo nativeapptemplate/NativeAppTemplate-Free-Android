@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.2.4] - 2026-05-04
+
+### Fixed
+- Welcome screen sparkle was invisible (white-on-white) in light mode — pinned the screen to brand navy `#1A2332` (matching the launcher and splash) regardless of theme so the white sparkle and title always have contrast
+- Sign-up / sign-in sparkle was hard-coded to white and washed out on light backgrounds — switched to `MaterialTheme.colorScheme.primary` so it stays visible in both light and dark modes
+
 ## [3.2.3] - 2026-05-04
 
 ### Fixed
