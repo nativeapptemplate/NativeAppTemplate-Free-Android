@@ -4,7 +4,7 @@
     "type": "shop",
     "attributes": {
       "name": "Shop1",
-      "description": "This is a Shop1",
+      "description": "This is Shop1",
       "time_zone": "Tokyo"
     },
     "meta": {

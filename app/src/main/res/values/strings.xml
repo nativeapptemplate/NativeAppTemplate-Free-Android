@@ -78,13 +78,13 @@
   <string name="shop_name_help">Name must be 1-%1$d characters.</string>
   <string name="shop_description_help">Description must be 0-%1$d characters.</string>
   <string name="add_shop_description">Add a new shop.</string>
-  <string name="tap_shop_below">Tap a shop below</string>
+  <string name="tap_shop_below">Tap shop below</string>
 
   <!-- Shop Detail Screen -->
   <string name="message_shop_created">Shop added.</string>
   <string name="message_shop_deleted">Shop removed.</string>
   <string name="message_shop_updated">Shop updated.</string>
-  <string name="shop_detail_instruction">Swipe an item tag to change its status.</string>
+  <string name="shop_detail_instruction">Swipe to change item tag status.</string>
   <string name="complete">Complete</string>
   <string name="idle">Idle</string>
 
@@ -101,7 +101,7 @@
   <string name="completed_at_label">Completed at</string>
   <string name="item_tag_name_placeholder">Buy milk</string>
   <string name="label_add_item_tag">Add Item Tag</string>
-  <string name="add_item_tag_description">Add a new item tag and start changing the item tag status.</string>
+  <string name="add_item_tag_description">Add a new item tag and start changing item tag status.</string>
   <string name="item_tag_name_is_invalid">Item tag name is invalid.</string>
   <string name="item_tag_description_is_invalid">Item tag description is invalid.</string>
   <string name="item_tag_name_help">Name must be 1-%1$d characters.</string>
