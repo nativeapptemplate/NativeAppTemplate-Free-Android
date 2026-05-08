@@ -6,9 +6,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 
 @Composable
-fun IdlingTag() {
+fun IdledTag() {
   TagView(
-    text = "IDLING",
+    text = "IDLED",
     textColor = MaterialTheme.colorScheme.onSurfaceVariant,
     backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
   )
@@ -16,8 +16,8 @@ fun IdlingTag() {
 
 @Preview
 @Composable
-private fun IdlingTagPreview() {
+private fun IdledTagPreview() {
   NativeAppTemplateTheme {
-    IdlingTag()
+    IdledTag()
   }
 }

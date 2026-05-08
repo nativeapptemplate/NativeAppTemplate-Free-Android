@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.CompletedTag
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdlingTag
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdledTag
 import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardDateTimeString
 
 @Composable
@@ -69,7 +69,7 @@ fun ItemTagListCardView(
             )
           }
         }
-        ItemTagState.Idled -> IdlingTag()
+        ItemTagState.Idled -> IdledTag()
         null -> Unit
       }
     }
