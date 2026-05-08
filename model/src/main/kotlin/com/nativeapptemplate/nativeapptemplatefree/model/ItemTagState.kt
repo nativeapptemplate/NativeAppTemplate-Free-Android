@@ -1,7 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 enum class ItemTagState(val param: String, val title: String) {
-  Idled("idled", "Idling"),
+  Idled("idled", "Idled"),
 
   Completed("completed", "Completed"),
   ;

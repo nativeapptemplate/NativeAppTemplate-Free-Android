@@ -46,7 +46,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.CompletedTag
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdlingTag
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.tags.IdledTag
 import com.nativeapptemplate.nativeapptemplatefree.utils.DateUtility.cardDateTimeString
 
 @Composable
@@ -194,7 +194,7 @@ private fun HeaderRow(itemTag: ItemTag) {
 
     when (itemTag.getData()?.getItemTagState()) {
       ItemTagState.Completed -> CompletedTag()
-      ItemTagState.Idled -> IdlingTag()
+      ItemTagState.Idled -> IdledTag()
       null -> Unit
     }
   }
