@@ -28,7 +28,7 @@ class DemoShopRepositoryTest {
     type = "shop",
     attributes = Attributes(
       name = "Shop1",
-      description = "This is a Shop1",
+      description = "This is Shop1",
       timeZone = "Tokyo",
     ),
     meta = Meta(
@@ -70,7 +70,7 @@ class DemoShopRepositoryTest {
         ShopBody(
           shopBodyDetail = ShopBodyDetail(
             name = "Shop1",
-            description = "This is a Shop1",
+            description = "This is Shop1",
             timeZone = "Tokyo",
           ),
         ),
@@ -87,7 +87,7 @@ class DemoShopRepositoryTest {
         shopUpdateBody = ShopUpdateBody(
           shopUpdateBodyDetail = ShopUpdateBodyDetail(
             name = "Shop1",
-            description = "This is a Shop1",
+            description = "This is Shop1",
             timeZone = "Tokyo",
           ),
         ),

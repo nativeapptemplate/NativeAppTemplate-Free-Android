@@ -5,7 +5,7 @@
       "type": "shop",
       "attributes": {
         "name": "Shop1",
-        "description": "This is a Shop1",
+        "description": "This is Shop1",
         "time_zone": "Tokyo"
       },
       "meta": {
@@ -18,7 +18,7 @@
       "type": "shop",
       "attributes": {
         "name": "Shop2",
-        "description": "This is a Shop2",
+        "description": "This is Shop2",
         "time_zone": "Tokyo"
       },
       "meta": {
@@ -31,7 +31,7 @@
       "type": "shop",
       "attributes": {
         "name": "Shop3",
-        "description": "This is a Shop3",
+        "description": "This is Shop3",
         "time_zone": "Tokyo"
       },
       "meta": {
