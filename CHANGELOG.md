@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.2.5] - 2026-05-08
+
+### Changed
+- Dropped articles before renameable domain nouns in UI strings ("Tap shop below", "Swipe to change item tag status.", "Add a new item tag and start changing item tag status.") and seed-data fixtures so the cross-platform rename pipeline produces grammatical output for any target word — mirrors [iOS PR #77](https://github.com/nativeapptemplate/NativeAppTemplate-iOS/pull/77)
+
 ## [3.2.4] - 2026-05-04
 
 ### Fixed
