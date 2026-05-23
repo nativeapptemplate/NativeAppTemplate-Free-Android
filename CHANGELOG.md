@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.2.6] - 2026-05-24
+
+### Fixed
+- Clearing an item tag's description on edit was silently ignored — the Retrofit JSON config keeps `encodeDefaults = false`, so `ItemTagBodyDetail.description = ""` (equal to its declared default) was dropped from the request body and the server's partial update left the old description in place. Removed the default so the empty string is always sent
+
 ## [3.2.5] - 2026-05-08
 
 ### Changed
