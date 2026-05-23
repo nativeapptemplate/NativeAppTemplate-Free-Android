@@ -102,6 +102,7 @@ The full versions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.
 - User Invitation to Organizations
 - Role-Based Permissions and Access Control
 - Organization Switching UI
+- Push Notifications via FCM
 
 ## Getting Started
 
