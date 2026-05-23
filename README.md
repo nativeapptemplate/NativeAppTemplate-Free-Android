@@ -1,6 +1,6 @@
 # NativeAppTemplate-Free-Android
 
-NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and [background tag reading](https://developer.android.com/develop/connectivity/nfc/nfc).  
+NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and a full CRUD example.  
 This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).  
 
 The iOS version is available here: [NativeAppTemplate-Free-iOS](https://github.com/nativeapptemplate/NativeAppTemplate-Free-iOS).  
@@ -45,52 +45,7 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 
 ## NFC Tag Operations
 
-<details>
-<summary><strong>How NFC tag writing and background reading works</strong></summary>
-
-### Overview  
-
-![Screenshot showing Overview before](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/overview_before.png "Screenshot showing Overview before")
-
-![Screenshot showing Overview after](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/overview_after.png "Screenshot showing Overview after")
-
-The app replaces traditional paper tags with NFC tags to efficiently manage walk-in customer waitlists. It writes application-specific information onto your NFC cards (referred to as :red_circle: **Server Tag** and :large_blue_circle: **Customer Tag**).
-
-**For Customers:**  
-When a customer scans a :large_blue_circle: **Customer Tag**, they can view the :green_circle: **Number Tags Webpage** (a public webpage) on their mobile browser. This page displays completed Number Tags.
-
-**For Staff:**  
-By scanning a :red_circle: **Server Tag** paired with the :large_blue_circle: **Customer Tag**, staff can complete a Number Tag. Completed Number Tags automatically appear on the :green_circle: **Number Tags Webpage** for customer reference.
-
-### How It Works  
-
-![Screenshot showing Write Application Info to Tag screen, Scan Tag screen, and Shop Detail screen](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/screenshots_nfc.png "Screenshot showing Write Application Info to Tag screen, Scan Tag screen, and Shop Detail screen")
-
-1. Write application info to pair **Number Tags** (Server Tag and Customer Tag) or a **Customer QR code**:  
-   - Go to: **Shops > [Shop] > Shop Settings > Manage Number Tags > [Number Tag]**.  
-2. Scan a **Server Tag** in the **Scan** tab.  
-3. View the updated **Number Tags** status in the **Shop Detail** screen or on the **Number Tags Webpage** (see Background Tag Reading GIF below).  
-
-### Recommended NFC Tags  
-For best performance, use **NTAG215 (540 bytes)** tags.  
-Example: [50pcs NFC Cards Ntag215](https://www.amazon.com/dp/B087FRYY8S) (Amazon USA).  
-
----
-
-### Background Tag Reading  
-
-![Gif showing Background Tag Reading](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/nfc.gif "Showing Background Tag Reading")  
-
-1. Scan a Server Tag.  
-2. View the updated Number Tags status in the **Shop Detail** screen or on the **Number Tags Webpage**.  
-
-The **Number Tags Webpage** updates in real-time using Rails [Turbo](https://turbo.hotwired.dev).  
-This functionality is part of the open-source [nativeapptemplateapi](https://github.com/nativeapptemplate/nativeapptemplateapi) backend.  
-
-> **Note:**  
-> The GIF above shows [MyTurnTag Creator for iOS](https://apps.apple.com/app/myturntag-creator/id1516198303) in action, which may behave slightly differently from **NativeAppTemplate-Free-Android**.
-
-</details>
+NFC tag writing and background tag reading were part of v1 and have been removed from the current version. The full NFC implementation remains available in the [`v1-with-nfc`](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/tree/v1-with-nfc) branch.
 
 ## Not Included in the Free Version
 
@@ -137,7 +92,6 @@ Cleartext HTTP to private IPs is already permitted in debug via `app/src/debug/r
 ## Blog
 
 - [Key Differences in MVVM Architecture: iOS vs. Android](https://medium.com/@dadachix/key-differences-in-mvvm-architecture-ios-vs-android-e239d30b2ea7)
-- [Cross-Platform Background NFC Tag Reading](https://medium.com/@dadachix/cross-platform-background-nfc-tag-reading-8a704f0cb6e9)
 
 ## Contributing
 
