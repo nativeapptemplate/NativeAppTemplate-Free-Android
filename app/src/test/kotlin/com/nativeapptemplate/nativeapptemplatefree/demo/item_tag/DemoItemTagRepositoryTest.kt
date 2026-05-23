@@ -71,6 +71,7 @@ class DemoItemTagRepositoryTest {
         ItemTagBody(
           itemTagBodyDetail = ItemTagBodyDetail(
             name = itemTagData.getName(),
+            description = "",
           ),
         ),
       ).first(),
@@ -86,6 +87,7 @@ class DemoItemTagRepositoryTest {
         itemTagBody = ItemTagBody(
           itemTagBodyDetail = ItemTagBodyDetail(
             name = itemTagData.getName(),
+            description = "",
           ),
         ),
       ).first(),
