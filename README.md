@@ -5,6 +5,8 @@ This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https:
 
 The iOS version is available here: [NativeAppTemplate-Free-iOS](https://github.com/nativeapptemplate/NativeAppTemplate-Free-iOS).  
 
+Want this template adapted to your own domain? [nativeapptemplate-agent](https://github.com/nativeapptemplate/nativeapptemplate-agent) is a Claude Code agent that turns a one-sentence spec (e.g. *"a walk-in queue for a barbershop"*) into a coherent three-platform app — this Jetpack Compose Android app, a matching [Rails 8.1 API](https://github.com/nativeapptemplate/nativeapptemplateapi), and a [SwiftUI iOS app](https://github.com/nativeapptemplate/NativeAppTemplate-Free-iOS) — renamed and adapted for you, with validation built in.
+
 ## Overview
 
 NativeAppTemplate-Free-Android is configured to connect to `api.nativeapptemplate.com`.  
