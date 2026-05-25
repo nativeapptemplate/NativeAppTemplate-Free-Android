@@ -163,7 +163,7 @@ private fun ItemTagListContentView(
           onAddItemTagClick(viewModel.shopId)
         },
       ) {
-        Icon(Icons.Filled.Add, stringResource(id = R.string.add_shop))
+        Icon(Icons.Filled.Add, stringResource(id = R.string.label_add_item_tag))
       }
     },
     modifier = Modifier.fillMaxSize(),
