@@ -9,8 +9,9 @@ Want this template adapted to your own domain? [nativeapptemplate-agent](https:/
 
 ## Overview
 
-NativeAppTemplate-Free-Android is configured to connect to `api.nativeapptemplate.com`.  
-The Rails 8.1 API backend that powers `api.nativeapptemplate.com` is open source (MIT):
+NativeAppTemplate-Free-Android connects to a Rails 8.1 API backend that **you run yourself**. The backend is open source (MIT) — run it locally on your Wi-Fi or deploy your own, then point the app at it (see [Running with the NativeAppTemplate-API on localhost](#running-with-the-nativeapptemplate-api-on-localhost)).
+
+> **Note:** There is no shared hosted API. The app still ships with a built-in default of `https://api.nativeapptemplate.com`, but that endpoint has been shut down — you must run your own API server and point the app at it.
 
 - [nativeapptemplateapi](https://github.com/nativeapptemplate/nativeapptemplateapi) &middot; [API Docs](https://nativeapptemplate.com/api-docs/index.html)
 
@@ -77,7 +78,7 @@ To run this app successfully, ensure you have:
 
 ## Running with the NativeAppTemplate-API on localhost
 
-By default the debug build hits the hosted API (`https://api.nativeapptemplate.com`). To point it at a Rails server running on your Wi-Fi, add the following to `~/.gradle/gradle.properties` (here `~` is your user home directory — `/Users/<you>` on macOS, `/home/<you>` on Linux, `C:\Users\<you>` on Windows; create the file if it doesn't exist):
+The debug build's built-in default is `https://api.nativeapptemplate.com`, which has been shut down, so point it at a Rails server running on your Wi-Fi. Add the following to `~/.gradle/gradle.properties` (here `~` is your user home directory — `/Users/<you>` on macOS, `/home/<you>` on Linux, `C:\Users\<you>` on Windows; create the file if it doesn't exist):
 
 ```
 # Use your current Wi-Fi IP (macOS: `ipconfig getifaddr en0`), or 10.0.2.2 for emulator → host.
@@ -87,9 +88,9 @@ NATIVEAPPTEMPLATE_API_PORT=3000
 NATIVEAPPTEMPLATE_API_SCHEME=http
 ```
 
-Then `./gradlew assembleDebug` — or Build → Rebuild Project from Android Studio. The debug `buildConfigField` entries in `app/build.gradle.kts` read these via `project.findProperty(...)`, so the same config works from both the terminal and the IDE. Remove the three properties to fall back to the hosted default. For a one-off override: `./gradlew -PNATIVEAPPTEMPLATE_API_DOMAIN=192.168.1.21 -PNATIVEAPPTEMPLATE_API_PORT=3000 -PNATIVEAPPTEMPLATE_API_SCHEME=http assembleDebug`.
+Then `./gradlew assembleDebug` — or Build → Rebuild Project from Android Studio. The debug `buildConfigField` entries in `app/build.gradle.kts` read these via `project.findProperty(...)`, so the same config works from both the terminal and the IDE. (The three properties override the built-in default, which is no longer served.) For a one-off override: `./gradlew -PNATIVEAPPTEMPLATE_API_DOMAIN=192.168.1.21 -PNATIVEAPPTEMPLATE_API_PORT=3000 -PNATIVEAPPTEMPLATE_API_SCHEME=http assembleDebug`.
 
-Cleartext HTTP to private IPs is already permitted in debug via `app/src/debug/res/xml/network_security_config.xml`; the release config (in `app/src/main/`) keeps `api.nativeapptemplate.com` HTTPS-only.
+Cleartext HTTP to private IPs is already permitted in debug via `app/src/debug/res/xml/network_security_config.xml`; the release config (in `app/src/main/`) keeps `api.nativeapptemplate.com` HTTPS-only — change this host to your own production API domain.
 
 ## Blog
 

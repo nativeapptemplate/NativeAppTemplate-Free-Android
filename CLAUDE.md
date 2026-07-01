@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-NativeAppTemplate-Free-Android is a native Android app (100% Kotlin, 100% Jetpack Compose) for managing walk-in customer waitlists. It connects to a Rails backend API at `api.nativeapptemplate.com`. Inspired by [nowinandroid](https://github.com/android/nowinandroid).
+NativeAppTemplate-Free-Android is a native Android app (100% Kotlin, 100% Jetpack Compose) for managing walk-in customer waitlists. It connects to a self-hosted, open-source Rails backend API (the former hosted `api.nativeapptemplate.com` has been shut down; run your own). Inspired by [nowinandroid](https://github.com/android/nowinandroid).
 
 ## Build & Run Commands
 
@@ -76,4 +76,4 @@ cp scripts/pre-push .git/hooks/pre-push
 
 ## Connecting to Local API
 
-The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATIVEAPPTEMPLATE_API_DOMAIN`, `NATIVEAPPTEMPLATE_API_PORT`, and `NATIVEAPPTEMPLATE_API_SCHEME` via `project.findProperty(...)` (not `System.getenv` — Android Studio launched from Finder/Dock does not inherit shell env). Set them in `~/.gradle/gradle.properties` (user-global, per-developer); the same config then works from both the terminal and the IDE. Falls back to `https://api.nativeapptemplate.com` when unset. One-off override: `./gradlew -PNATIVEAPPTEMPLATE_API_DOMAIN=... assembleDebug`.
+The debug `buildConfigField` entries in `app/build.gradle.kts` read `NATIVEAPPTEMPLATE_API_DOMAIN`, `NATIVEAPPTEMPLATE_API_PORT`, and `NATIVEAPPTEMPLATE_API_SCHEME` via `project.findProperty(...)` (not `System.getenv` — Android Studio launched from Finder/Dock does not inherit shell env). Set them in `~/.gradle/gradle.properties` (user-global, per-developer); the same config then works from both the terminal and the IDE. Falls back to `https://api.nativeapptemplate.com` when unset — that hosted endpoint has been shut down, so set your own values. One-off override: `./gradlew -PNATIVEAPPTEMPLATE_API_DOMAIN=... assembleDebug`.
