@@ -1,19 +1,28 @@
 name: Run tests
 on:
+  workflow_dispatch:
+  # Runs on main so setup-gradle writes the Gradle cache; PR runs only read it.
+  push:
+    branches:
+      - main
   pull_request:
+
+concurrency:
+  group: run-tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Check lint (spotless)
         run: |
@@ -23,6 +32,5 @@ jobs:
       - name: Android Lint
         run: ./gradlew :app:lintDebug
 
-      # The test takes a long time to run, so I've commented it out.
-      # - name: Unit Tests
-      #   run: ./gradlew test --stacktrace
+      - name: Unit Tests
+        run: ./gradlew test --stacktrace
