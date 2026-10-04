@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-  compileSdk = 36
+  compileSdk = 37
 
   defaultConfig {
     applicationId = "com.nativeapptemplate.nativeapptemplatefree"
@@ -90,7 +90,7 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.core.splashscreen)
   implementation(libs.androidx.datastore.core)
-  implementation(libs.androidx.hilt.navigation.compose)
+  implementation(libs.androidx.hilt.lifecycle.viewModelCompose)
   implementation(libs.androidx.lifecycle.runtimeCompose)
   implementation(libs.androidx.lifecycle.viewModelCompose)
   implementation(libs.androidx.navigation.compose)
