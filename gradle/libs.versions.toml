@@ -20,15 +20,14 @@ kotlin = "2.4.20"
 kotlinxCoroutines = "1.11.0"
 kotlinxSerializationJson = "1.11.0"
 ksp = "2.3.12"
-okHttp = "4.12.0"
-protobuf = "4.29.2"
-tinkAndroid = "1.16.0"
+okHttp = "5.5.0"
+protobuf = "4.36.2"
+tinkAndroid = "1.23.0"
 protobufPlugin = "0.10.0"
-retrofit = "2.11.0"
-retrofitKotlinxSerializationJson = "1.0.0"
-robolectric = "4.16"
-sandwich = "2.1.1"
-sandwichRetrofitSerialization = "2.1.1"
+retrofit = "3.0.0"
+robolectric = "4.17"
+sandwich = "2.4.0"
+sandwichRetrofitSerialization = "2.4.0"
 spotless = "8.10.3"
 
 [libraries]
@@ -66,7 +65,7 @@ okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-intercepto
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 sandwich = { module = "com.github.skydoves:sandwich", version.ref = "sandwich" }
 tink-android = { module = "com.google.crypto.tink:tink-android", version.ref = "tinkAndroid" }
