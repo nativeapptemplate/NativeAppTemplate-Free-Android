@@ -26,7 +26,7 @@ import javax.inject.Inject
 class LoginRepositoryImpl @Inject constructor(
   private val api: LoginApi,
   private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
-  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : LoginRepository {
 
   override fun login(

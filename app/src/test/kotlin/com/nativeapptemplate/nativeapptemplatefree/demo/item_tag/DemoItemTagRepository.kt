@@ -22,7 +22,7 @@ import kotlinx.serialization.json.decodeFromStream
 import javax.inject.Inject
 
 class DemoItemTagRepository @Inject constructor(
-  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
   private val networkJson: Json,
   private val assets: DemoAssetManager = DemoAssetManagerImpl,
 ) : ItemTagRepository {

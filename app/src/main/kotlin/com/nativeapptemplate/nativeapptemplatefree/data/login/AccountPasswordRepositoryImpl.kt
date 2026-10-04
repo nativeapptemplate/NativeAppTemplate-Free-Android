@@ -14,7 +14,7 @@ import javax.inject.Inject
 class AccountPasswordRepositoryImpl @Inject constructor(
   private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: AccountPasswordApi,
-  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : AccountPasswordRepository {
   override fun updateAccountPassword(
     updatePasswordBody: UpdatePasswordBody,

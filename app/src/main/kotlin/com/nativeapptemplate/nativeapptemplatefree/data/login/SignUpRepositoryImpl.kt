@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class SignUpRepositoryImpl @Inject constructor(
   private val api: SignUpApi,
-  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : SignUpRepository {
   override fun signUp(
     signUp: SignUp,

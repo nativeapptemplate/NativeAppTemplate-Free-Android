@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ShopRepositoryImpl @Inject constructor(
   private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: ShopApi,
-  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ShopRepository {
 
   override fun getShops() = flow {
