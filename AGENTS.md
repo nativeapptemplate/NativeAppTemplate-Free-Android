@@ -20,9 +20,6 @@ NativeAppTemplate-Free-Android is a native Android app (100% Kotlin, 100% Jetpac
 
 # Run a single test method
 ./gradlew testDebugUnitTest --tests "com.nativeapptemplate.nativeapptemplatefree.ui.shops.ShopListViewModelTest.stateIsInitiallyLoading"
-
-# Dependency analysis
-./gradlew buildHealth
 ```
 
 ## Modules
@@ -66,6 +63,19 @@ All errors should use the `CodedError` interface. Error codes use the `NATIVEAPP
 - Test doubles: `Test*Repository` classes (in `testing/repository/`) implement repository interfaces for ViewModel testing.
 - Demo data: `demo/` package contains `DemoAssetManager` and `Demo*Repository` classes that load JSON fixtures from `app/src/test/assets/`.
 - JVM toolchain: Java 17.
+
+### Testing Policy
+
+- **Every bug fix starts with a test that reproduces it. No exceptions.** The fix commit must include that reproducing test.
+- **Record where each expected value comes from, in the code.** Cite the relevant part of the spec, show a hand calculation, or name a known oracle. Never take the value the implementation happens to produce and paste it in as the expectation.
+
+  ```kotlin
+  // floor(10000 * 31 / 71) = 4366   ← state the derivation like this
+  ```
+
+- **See the test fail at least once before calling it done.** For every new test, especially guards and configuration checks, deliberately break the code under test and confirm the test goes red. A test that cannot fail verifies nothing.
+- **Passing tests alone do not mean done.** Launch the app and exercise the change for real.
+- Put the implementation and its tests in the same commit. "I'll write the tests later" never happens.
 
 ## Pre-push Hook
 
