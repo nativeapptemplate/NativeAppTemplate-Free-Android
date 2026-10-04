@@ -4,6 +4,7 @@ import androidx.datastore.core.CorruptionException
 import com.google.crypto.tink.Aead
 import com.google.crypto.tink.KeyTemplates
 import com.google.crypto.tink.KeysetHandle
+import com.google.crypto.tink.RegistryConfiguration
 import com.google.crypto.tink.aead.AeadConfig
 import com.nativeapptemplate.nativeapptemplatefree.userPreferences
 import kotlinx.coroutines.test.runTest
@@ -20,7 +21,7 @@ class UserPreferencesSerializerTest {
   fun setUp() {
     AeadConfig.register()
     val keysetHandle = KeysetHandle.generateNew(KeyTemplates.get("AES256_GCM"))
-    aead = keysetHandle.getPrimitive(Aead::class.java)
+    aead = keysetHandle.getPrimitive(RegistryConfiguration.get(), Aead::class.java)
     userPreferencesSerializer = UserPreferencesSerializer(aead)
   }
 
