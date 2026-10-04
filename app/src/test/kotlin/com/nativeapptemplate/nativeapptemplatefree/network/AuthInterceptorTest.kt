@@ -6,9 +6,7 @@ import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataSto
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import okhttp3.Call
-import okhttp3.Connection
-import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
@@ -16,7 +14,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import java.util.concurrent.TimeUnit
 
 class AuthInterceptorTest {
   private val testScope = TestScope(UnconfinedTestDispatcher())
@@ -45,11 +42,7 @@ class AuthInterceptorTest {
       expiry = "12345",
     )
     val interceptor = AuthInterceptor(dataSource)
-    val chain = RecordingChain(Request.Builder().url("https://example.com/").build())
-
-    interceptor.intercept(chain)
-
-    val sent = chain.proceededRequest!!
+    val sent = interceptor.sentRequest(Request.Builder().url("https://example.com/").build())
     assertEquals("test-token", sent.header("access-token"))
     assertEquals("Bearer", sent.header("token-type"))
     assertEquals("test-client", sent.header("client"))
@@ -66,11 +59,7 @@ class AuthInterceptorTest {
       expiry = "12345",
     )
     val interceptor = AuthInterceptor(dataSource)
-    val chain = RecordingChain(Request.Builder().url("https://example.com/").build())
-
-    interceptor.intercept(chain)
-
-    val sent = chain.proceededRequest!!
+    val sent = interceptor.sentRequest(Request.Builder().url("https://example.com/").build())
     assertEquals("android", sent.header("source"))
     assertEquals("application/vnd.api+json; charset=utf-8", sent.header("Accept"))
     assertEquals("application/json", sent.header("Content-Type"))
@@ -82,11 +71,7 @@ class AuthInterceptorTest {
       InMemoryDataStore(UserPreferences.getDefaultInstance()),
     )
     val interceptor = AuthInterceptor(dataSource)
-    val chain = RecordingChain(Request.Builder().url("https://example.com/").build())
-
-    interceptor.intercept(chain)
-
-    val sent = chain.proceededRequest!!
+    val sent = interceptor.sentRequest(Request.Builder().url("https://example.com/").build())
     assertNull(sent.header("access-token"))
     assertNull(sent.header("token-type"))
     assertNull(sent.header("client"))
@@ -102,36 +87,33 @@ class AuthInterceptorTest {
     )
     val interceptor = AuthInterceptor(dataSource)
     val originalUrl = "https://example.com/path?query=value"
-    val chain = RecordingChain(Request.Builder().url(originalUrl).build())
+    val sent = interceptor.sentRequest(Request.Builder().url(originalUrl).build())
 
-    interceptor.intercept(chain)
-
-    assertEquals(originalUrl, chain.proceededRequest!!.url.toString())
+    assertEquals(originalUrl, sent.url.toString())
   }
 }
 
-private class RecordingChain(private val request: Request) : Interceptor.Chain {
-  var proceededRequest: Request? = null
-
-  override fun request(): Request = request
-
-  override fun proceed(request: Request): Response {
-    proceededRequest = request
-    return Response.Builder()
-      .request(request)
-      .protocol(Protocol.HTTP_1_1)
-      .code(200)
-      .message("OK")
-      .body("".toResponseBody(null))
-      .build()
-  }
-
-  override fun connection(): Connection? = null
-  override fun call(): Call = error("not used")
-  override fun connectTimeoutMillis(): Int = 0
-  override fun withConnectTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain = error("not used")
-  override fun readTimeoutMillis(): Int = 0
-  override fun withReadTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain = error("not used")
-  override fun writeTimeoutMillis(): Int = 0
-  override fun withWriteTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain = error("not used")
+/**
+ * Runs [request] through a real [OkHttpClient] with this interceptor, then short-circuits
+ * with a canned response so no network I/O happens. Returns the request as it left the interceptor.
+ */
+private fun AuthInterceptor.sentRequest(request: Request): Request {
+  var sent: Request? = null
+  OkHttpClient.Builder()
+    .addInterceptor(this)
+    .addInterceptor { chain ->
+      sent = chain.request()
+      Response.Builder()
+        .request(chain.request())
+        .protocol(Protocol.HTTP_1_1)
+        .code(200)
+        .message("OK")
+        .body("".toResponseBody(null))
+        .build()
+    }
+    .build()
+    .newCall(request)
+    .execute()
+    .close()
+  return sent!!
 }

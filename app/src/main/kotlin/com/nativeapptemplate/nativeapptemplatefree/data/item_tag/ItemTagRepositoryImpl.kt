@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ItemTagRepositoryImpl @Inject constructor(
   private val mtcPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: ItemTagApi,
-  @Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+  @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ItemTagRepository {
 
   override fun getItemTags(
