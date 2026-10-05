@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
@@ -33,6 +34,9 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class ShopSettingsViewModelTest {
+  @get:Rule
+  val composeTestRule = createComposeRule()
+
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
@@ -71,6 +75,34 @@ class ShopSettingsViewModelTest {
     val shopFromRepository = shopRepository.getShop(testInputShop.datum!!.id!!).first()
 
     assertEquals(shopFromRepository, uiStateValue.shop)
+  }
+
+  @Test
+  fun deletedShop_restartsTheAppOnce_evenWhenTheScreenRecomposes() {
+    var restartCount = 0
+    composeTestRule.setContent {
+      ShopSettingsView(
+        viewModel = viewModel,
+        onShowBasicSettingsClick = {},
+        onShowItemTagListClick = {},
+        onShowSnackbar = { _, _, _ -> true },
+        onBackClick = {},
+        restartApp = { restartCount++ },
+      )
+    }
+    shopRepository.sendShop(testInputShop)
+    composeTestRule.runOnIdle {
+      viewModel.reload()
+      viewModel.deleteShop(testInputShop.datum!!.id!!)
+    }
+
+    // New shop data recomposes the screen while isShopDeleted is still true.
+    composeTestRule.runOnIdle {
+      shopRepository.sendShop(Shop(datum = testInputShopsData.copy(attributes = testInputShopsData.attributes!!.copy(name = "Renamed"))))
+    }
+    composeTestRule.waitForIdle()
+
+    assertEquals(1, restartCount)
   }
 }
 
