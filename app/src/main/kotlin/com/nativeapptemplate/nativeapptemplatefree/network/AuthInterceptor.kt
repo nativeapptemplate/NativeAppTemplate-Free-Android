@@ -30,7 +30,8 @@ class AuthInterceptor @Inject constructor(
       try {
         val requestBuilder = chain.request().newBuilder()
         requestHelper().getHeaders().forEach { (key, value) ->
-          requestBuilder.addHeader(key, value)
+          // header() replaces, so a header already on the request is never duplicated.
+          requestBuilder.header(key, value)
         }
         chain.proceed(requestBuilder.build())
       } catch (ce: CancellationException) {
