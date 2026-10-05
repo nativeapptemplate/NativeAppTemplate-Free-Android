@@ -1,5 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -42,6 +44,38 @@ class SignInEmailAndPasswordViewModelTest {
   @Test
   fun stateIsInitiallyNotLoading() = runTest {
     assertFalse(viewModel.uiState.value.isLoading)
+  }
+
+  @Test
+  fun login_whenPermissionsFailToLoad_stopsLoadingAndShowsTheError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    loginRepository.sendLoggedInShopkeeper(testInputLoggedInShopkeeper)
+    val error = ApiException.UnprocessableError(rawMessage = "Bad Gateway", httpStatusCode = 502)
+    loginRepository.failPermissions(error)
+
+    viewModel.login()
+
+    assertFalse(viewModel.uiState.value.isLoading)
+    // The user-facing message must be the coded description (AGENTS.md: CodedError system).
+    assertEquals(error.codedDescription, viewModel.uiState.value.message)
+    // A server error is not a rejected session; permissions are fetched again on the next resume.
+    assertEquals(0, loginRepository.logoutCallCount)
+  }
+
+  @Test
+  fun login_whenPermissionsAreRejected_logsOut() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    loginRepository.sendLoggedInShopkeeper(testInputLoggedInShopkeeper)
+    loginRepository.failPermissions(ApiException.UnprocessableError(rawMessage = "Unauthorized", httpStatusCode = 401))
+
+    viewModel.login()
+
+    assertFalse(viewModel.uiState.value.isLoading)
+    assertEquals(1, loginRepository.logoutCallCount)
   }
 
   @Test
