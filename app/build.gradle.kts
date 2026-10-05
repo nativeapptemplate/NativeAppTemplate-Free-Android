@@ -26,17 +26,13 @@ android {
     debug {
       extra["alwaysUpdateBuildId"] = false
       isDebuggable = true
-      buildConfigField("String", "DOMAIN", "\"${(project.findProperty("NATIVEAPPTEMPLATE_API_DOMAIN") as String?)?.trim() ?: "api.nativeapptemplate.com"}\"")
-      buildConfigField("String", "PORT", "\"${(project.findProperty("NATIVEAPPTEMPLATE_API_PORT") as String?)?.trim() ?: ""}\"")
-      buildConfigField("String", "SCHEME", "\"${(project.findProperty("NATIVEAPPTEMPLATE_API_SCHEME") as String?)?.trim() ?: "https"}\"")
+      apiBuildConfigFields()
     }
 
     release {
       isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      buildConfigField("String", "DOMAIN", "\"api.nativeapptemplate.com\"")
-      buildConfigField("String", "PORT", "\"\"")
-      buildConfigField("String", "SCHEME", "\"https\"")
+      apiBuildConfigFields()
     }
   }
 
@@ -120,4 +116,17 @@ dependencies {
   testImplementation(libs.kotlin.test)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.robolectric)
+}
+
+/**
+ * The API endpoint, from ~/.gradle/gradle.properties (or -P), for every build type.
+ * NATIVEAPPTEMPLATE_API_CERT_PINS: optional comma-separated "sha256/..." pins for the API domain.
+ */
+fun com.android.build.api.dsl.ApplicationBuildType.apiBuildConfigFields() {
+  fun property(name: String): String? = (project.findProperty(name) as String?)?.trim()?.takeIf { it.isNotEmpty() }
+
+  buildConfigField("String", "DOMAIN", "\"${property("NATIVEAPPTEMPLATE_API_DOMAIN") ?: "api.nativeapptemplate.com"}\"")
+  buildConfigField("String", "PORT", "\"${property("NATIVEAPPTEMPLATE_API_PORT") ?: ""}\"")
+  buildConfigField("String", "SCHEME", "\"${property("NATIVEAPPTEMPLATE_API_SCHEME") ?: "https"}\"")
+  buildConfigField("String", "CERT_PINS", "\"${property("NATIVEAPPTEMPLATE_API_CERT_PINS") ?: ""}\"")
 }

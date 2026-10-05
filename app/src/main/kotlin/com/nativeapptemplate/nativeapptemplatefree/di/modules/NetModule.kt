@@ -60,16 +60,11 @@ class NetModule {
       .callTimeout(30, TimeUnit.SECONDS)
       .readTimeout(30, TimeUnit.SECONDS)
       .writeTimeout(30, TimeUnit.SECONDS)
+      .apply {
+        certificatePinnerFor(BuildConfig.DOMAIN, apiCertificatePins())?.let { certificatePinner(it) }
+      }
       .addNetworkInterceptor(authInterceptor)
       .addInterceptor(loggingInterceptor)
-      .certificatePinner(
-        CertificatePinner.Builder()
-          // Leaf: api.nativeapptemplate.com
-          .add("api.nativeapptemplate.com", "sha256/7Thx4p19FEZF2WeuXyjc8kr2t1FtT2zA5wWSWoIhh8A=")
-          // Intermediate: Google Trust Services WE1
-          .add("api.nativeapptemplate.com", "sha256/kIdp6NNEd8wsugYyyIYFsi1ylMCED3hZbSR8ZFsa/A4=")
-          .build(),
-      )
       .build()
 
   private val json = Json {
@@ -120,4 +115,25 @@ class NetModule {
       )
       .build()
   }
+}
+
+/** Certificate pins for [domain] from a comma-separated "sha256/..." list; null when there are none. */
+internal fun certificatePinnerFor(domain: String, pins: String): CertificatePinner? {
+  val hashes = pins.split(',').map { it.trim() }.filter { it.isNotEmpty() }
+  if (hashes.isEmpty()) return null
+
+  return CertificatePinner.Builder()
+    .apply { hashes.forEach { add(domain, it) } }
+    .build()
+}
+
+private const val HOSTED_API_DOMAIN = "api.nativeapptemplate.com"
+
+// Leaf and intermediate (Google Trust Services WE1) of the former hosted API.
+private const val HOSTED_API_CERT_PINS =
+  "sha256/7Thx4p19FEZF2WeuXyjc8kr2t1FtT2zA5wWSWoIhh8A=,sha256/kIdp6NNEd8wsugYyyIYFsi1ylMCED3hZbSR8ZFsa/A4="
+
+/** NATIVEAPPTEMPLATE_API_CERT_PINS, or the hosted API's pins when building for that domain. */
+private fun apiCertificatePins(): String = BuildConfig.CERT_PINS.ifEmpty {
+  if (BuildConfig.DOMAIN == HOSTED_API_DOMAIN) HOSTED_API_CERT_PINS else ""
 }
