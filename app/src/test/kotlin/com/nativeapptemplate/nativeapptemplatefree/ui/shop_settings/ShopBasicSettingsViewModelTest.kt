@@ -1,5 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
+import androidx.compose.ui.test.junit4.StateRestorationTester
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
@@ -33,6 +35,9 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class ShopBasicSettingsViewModelTest {
+  @get:Rule
+  val composeTestRule = createComposeRule()
+
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
@@ -182,6 +187,23 @@ class ShopBasicSettingsViewModelTest {
     viewModel.updateDescription("x".repeat(1_001))
 
     assertEquals(previous, viewModel.uiState.value.description)
+  }
+
+  @Test
+  fun recreation_keepsTheUsersUnsavedEdits() {
+    shopRepository.sendShop(testInputShop)
+    val restorationTester = StateRestorationTester(composeTestRule)
+    restorationTester.setContent {
+      ShopBasicSettingsView(viewModel = viewModel, onShowSnackbar = { _, _, _ -> true }, onBackClick = {})
+    }
+    composeTestRule.waitForIdle()
+    composeTestRule.runOnIdle { viewModel.updateName("Edited, not saved yet") }
+
+    // Rotation: the composition is recreated while the ViewModel (and its state) is retained.
+    restorationTester.emulateSavedInstanceStateRestore()
+    composeTestRule.waitForIdle()
+
+    assertEquals("Edited, not saved yet", viewModel.uiState.value.name)
   }
 }
 
