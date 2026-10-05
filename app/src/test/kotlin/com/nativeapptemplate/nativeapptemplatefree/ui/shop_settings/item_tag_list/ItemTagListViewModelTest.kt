@@ -1,5 +1,10 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_list
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
@@ -35,6 +40,9 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class ItemTagListViewModelTest {
+  @get:Rule
+  val composeTestRule = createComposeRule()
+
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
@@ -178,6 +186,32 @@ class ItemTagListViewModelTest {
     assertEquals(2, uiStateValue.itemTags.size)
     assertEquals(1, uiStateValue.currentPage)
   }
+
+  @Test
+  fun scrollingToTheEnd_keepsLoadingPagesBeyondThePageTwo() {
+    // 4 pages x 10 tags, so each scroll to the end must request the next page.
+    itemTagRepository.itemTagsForPage = { page -> pagedItemTags(page = page ?: 1, totalPages = 4, perPage = 10) }
+    shopRepository.sendShop(testInputShop)
+    composeTestRule.setContent {
+      val uiState by viewModel.uiState.collectAsState()
+      ItemTagListView(
+        viewModel = viewModel,
+        uiState = uiState,
+        onItemClick = {},
+        onAddItemTagClick = {},
+        onBackClick = {},
+      )
+    }
+    composeTestRule.runOnIdle { viewModel.reload() }
+
+    val list = composeTestRule.onNode(hasScrollToIndexAction())
+    list.performScrollToIndex(9) // last tag of page 1
+    composeTestRule.waitForIdle()
+    list.performScrollToIndex(19) // last tag of page 2
+    composeTestRule.waitForIdle()
+
+    assertEquals(listOf<Int?>(1, 2, 3), itemTagRepository.requestedPages)
+  }
 }
 
 private const val SHOP_TYPE = "shop"
@@ -273,4 +307,23 @@ private val testInputItemTagsPage1 = ItemTags(
 private val testInputItemTagsPage2 = ItemTags(
   datum = listOf(testInputItemTagsData[2]),
   meta = Meta(currentPage = 2, totalPages = 2, totalCount = 3, limit = 2),
+)
+
+private fun pagedItemTags(page: Int, totalPages: Int, perPage: Int): ItemTags = ItemTags(
+  datum = (1..perPage).map { n ->
+    val number = (page - 1) * perPage + n
+    Data(
+      id = "item-tag-$number",
+      type = ITEM_TAG_TYPE,
+      attributes = Attributes(
+        shopId = SHOP_ID,
+        name = "A%03d".format(number),
+        description = "",
+        position = number,
+        state = ITEM_TAG_STATE,
+        createdAt = ITEM_TAG_CREATED_AT,
+      ),
+    )
+  },
+  meta = Meta(currentPage = page, totalPages = totalPages, totalCount = totalPages * perPage, limit = perPage),
 )
