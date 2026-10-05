@@ -24,4 +24,11 @@ class DateUtilityTest {
     val dateString = "2025-06-15T14:30:00Z"
     assertEquals("2025/06/15 23:30", dateString.cardDateTimeString(ZoneId.of("Asia/Tokyo")))
   }
+
+  @Test
+  fun string_cardDateTimeString_unparseableValue_isShownAsIsInsteadOfCrashing() {
+    // Rails' default to_s format, without the ISO-8601 "T" and offset that ZonedDateTime.parse requires.
+    val dateString = "2025-06-15 14:30:00 UTC"
+    assertEquals(dateString, dateString.cardDateTimeString(ZoneId.of("UTC")))
+  }
 }
