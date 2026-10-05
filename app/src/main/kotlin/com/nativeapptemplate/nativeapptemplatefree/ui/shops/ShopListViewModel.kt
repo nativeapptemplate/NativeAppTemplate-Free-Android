@@ -46,7 +46,7 @@ class ShopListViewModel @Inject constructor(
 
   fun reload() = fetchData()
 
-  fun isLoggedIn(): StateFlow<Boolean> = loginRepository
+  val isLoggedIn: StateFlow<Boolean> = loginRepository
     .isLoggedIn()
     .stateIn(
       scope = viewModelScope,
@@ -54,7 +54,7 @@ class ShopListViewModel @Inject constructor(
       started = SharingStarted.WhileSubscribed(5_000),
     )
 
-  fun isEmpty(): StateFlow<Boolean> = uiState.map { it.shops.datum.isEmpty() }
+  val isEmpty: StateFlow<Boolean> = uiState.map { it.shops.datum.isEmpty() }
     .stateIn(
       scope = viewModelScope,
       initialValue = false,

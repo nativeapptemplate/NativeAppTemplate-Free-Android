@@ -1,5 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.test.junit4.createComposeRule
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shops
@@ -12,11 +14,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class ShopListViewModelTest {
+  @get:Rule
+  val composeTestRule = createComposeRule()
+
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
@@ -65,6 +74,28 @@ class ShopListViewModelTest {
 
     // Leaked collectors re-emit stale snapshots on every DataStore write.
     org.junit.Assert.assertEquals(afterFirstReload, loginRepository.liveSubscriberCount)
+  }
+
+  @Test
+  fun recomposing_doesNotStartNewCollectionsOfTheLoginFlows() {
+    shopRepository.sendShops(testInputShops)
+    loginRepository.sendIsLoggedIn(true)
+    // The outer screen reads isLoggedIn during composition.
+    composeTestRule.setContent {
+      ShopListView(viewModel = viewModel, onItemClick = {}, onAddShopClick = {}, onShowSnackbar = { _, _, _ -> true })
+    }
+    composeTestRule.runOnIdle { viewModel.reload() }
+    composeTestRule.waitForIdle()
+    val afterFirstLoad = loginRepository.liveSubscriberCount
+
+    // Each reload changes uiState and recomposes the screen.
+    composeTestRule.runOnIdle { viewModel.reload() }
+    composeTestRule.waitForIdle()
+    composeTestRule.runOnIdle { viewModel.reload() }
+    composeTestRule.waitForIdle()
+
+    // A Flow-returning function called in composition starts a new stateIn on every recomposition.
+    assertEquals(afterFirstLoad, loginRepository.liveSubscriberCount)
   }
 }
 

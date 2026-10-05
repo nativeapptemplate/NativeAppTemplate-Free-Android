@@ -76,7 +76,7 @@ class ItemTagListViewModelTest {
 
     viewModel.reload()
 
-    assertTrue(viewModel.isEmpty().first())
+    assertTrue(viewModel.isEmpty.first())
   }
 
   @Test

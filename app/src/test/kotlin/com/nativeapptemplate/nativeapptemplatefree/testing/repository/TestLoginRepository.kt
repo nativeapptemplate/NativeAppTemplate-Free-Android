@@ -155,7 +155,9 @@ class TestLoginRepository : LoginRepository {
 
   /** Collectors currently subscribed to this repository's never-completing flows. */
   val liveSubscriberCount: Int
-    get() = _userData.subscriptionCount.value + _didShowTapShopBelowTip.subscriptionCount.value
+    get() = _userData.subscriptionCount.value +
+      _didShowTapShopBelowTip.subscriptionCount.value +
+      isLoggedInReturnFlow.subscriptionCount.value
 
   /**
    * A test-only API.

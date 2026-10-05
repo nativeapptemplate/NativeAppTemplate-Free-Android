@@ -137,7 +137,7 @@ private fun ItemTagListContentView(
   onAddItemTagClick: (String) -> Unit,
   onBackClick: () -> Unit,
 ) {
-  val isEmpty: Boolean by viewModel.isEmpty().collectAsStateWithLifecycle()
+  val isEmpty: Boolean by viewModel.isEmpty.collectAsStateWithLifecycle()
   val itemTags = uiState.itemTags.toMutableList()
   val listState = rememberLazyListState()
 
