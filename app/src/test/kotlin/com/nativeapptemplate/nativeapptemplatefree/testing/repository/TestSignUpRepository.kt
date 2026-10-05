@@ -16,7 +16,14 @@ class TestSignUpRepository : SignUpRepository {
   private val loggedInShopkeeperFlow: MutableSharedFlow<LoggedInShopkeeper> =
     MutableSharedFlow(replay = 1, onBufferOverflow = DROP_OLDEST)
 
-  override fun signUp(signUp: SignUp): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
+  /** The last request passed to [signUp]. */
+  var lastSignUp: SignUp? = null
+    private set
+
+  override fun signUp(signUp: SignUp): Flow<LoggedInShopkeeper> {
+    lastSignUp = signUp
+    return loggedInShopkeeperFlow
+  }
 
   override fun updateAccount(
     signUpForUpdate: SignUpForUpdate,

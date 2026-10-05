@@ -85,6 +85,24 @@ class PasswordEditViewModelTest {
 
     assertTrue(viewModel.hasInvalidDataPassword())
   }
+
+  @Test
+  fun updatePassword_sendsThePasswordsExactlyAsTyped() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    // A current password that really has surrounding spaces must still be accepted by the server.
+    val currentPassword = " $testInputCurrentPassword "
+    val newPassword = "$testInputNewPassword "
+    viewModel.updateCurrentPassword(currentPassword)
+    viewModel.updatePassword(newPassword)
+    viewModel.updatePasswordConfirmation(newPassword)
+
+    viewModel.updatePassword()
+
+    val detail = accountPasswordRepository.lastUpdatePasswordBody!!.updatePasswordBodyDetail
+    assertEquals(currentPassword, detail.currentPassword)
+    assertEquals(newPassword, detail.password)
+    assertEquals(newPassword, detail.passwordConfirmation)
+  }
 }
 
 private const val testInputCurrentPassword = "password"

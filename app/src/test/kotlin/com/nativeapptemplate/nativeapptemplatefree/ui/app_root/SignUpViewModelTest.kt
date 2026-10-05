@@ -111,6 +111,24 @@ class SignUpViewModelTest {
 
     assertTrue(viewModel.hasInvalidDataPassword())
   }
+
+  @Test
+  fun createShopkeeper_sendsThePasswordExactlyAsTyped() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    // Sign-in sends the password untrimmed, so a trimmed sign-up password could never sign in.
+    val passwordWithTrailingSpace = "$testInputPassword "
+    viewModel.updateName(testInputLoggedInShopkeeper.getName()!!)
+    viewModel.updateEmail(" ${testInputLoggedInShopkeeper.getEmail()!!} ")
+    viewModel.updatePassword(passwordWithTrailingSpace)
+    viewModel.updateTimeZone(testInputLoggedInShopkeeper.getTimeZone()!!)
+    signUpRepository.sendLoggedInShopkeeper(testInputLoggedInShopkeeper)
+
+    viewModel.createShopkeeper()
+
+    assertEquals(passwordWithTrailingSpace, signUpRepository.lastSignUp!!.password)
+    // Emails are still normalized.
+    assertEquals(testInputLoggedInShopkeeper.getEmail()!!, signUpRepository.lastSignUp!!.email)
+  }
 }
 
 private const val LOGGED_IN_SHOPKEEPER_TYPE = "shopkeeper_sign_in"

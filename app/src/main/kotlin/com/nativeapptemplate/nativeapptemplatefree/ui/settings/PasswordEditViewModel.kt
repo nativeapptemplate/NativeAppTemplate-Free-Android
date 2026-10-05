@@ -44,9 +44,10 @@ class PasswordEditViewModel @Inject constructor(
 
     viewModelScope.launch {
       val updatePasswordBodyDetail = UpdatePasswordBodyDetail(
-        currentPassword = uiState.value.currentPassword.trim(),
-        password = uiState.value.password.trim(),
-        passwordConfirmation = uiState.value.passwordConfirmation.trim(),
+        // Never trim passwords: sign-in sends them as typed.
+        currentPassword = uiState.value.currentPassword,
+        password = uiState.value.password,
+        passwordConfirmation = uiState.value.passwordConfirmation,
       )
       val updatePasswordBody = UpdatePasswordBody(updatePasswordBodyDetail)
 
