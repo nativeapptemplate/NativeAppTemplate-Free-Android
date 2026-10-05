@@ -28,7 +28,6 @@ data class ItemTagCreateUiState(
   val isCreated: Boolean = false,
 
   val isLoading: Boolean = false,
-  val success: Boolean = true,
   val message: String = "",
 )
 
@@ -41,12 +40,6 @@ class ItemTagCreateViewModel @Inject constructor(
 
   private val _uiState = MutableStateFlow(ItemTagCreateUiState())
   val uiState: StateFlow<ItemTagCreateUiState> = _uiState.asStateFlow()
-
-  fun reload() {
-    _uiState.update {
-      ItemTagCreateUiState()
-    }
-  }
 
   fun createItemTag() {
     _uiState.update {

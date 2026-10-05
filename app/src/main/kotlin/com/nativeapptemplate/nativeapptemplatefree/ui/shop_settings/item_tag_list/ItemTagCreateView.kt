@@ -33,12 +33,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
@@ -50,10 +47,6 @@ fun ItemTagCreateView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-  LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-    viewModel.reload()
-  }
 
   SnackbarMessageEffect(
     message = uiState.message,
@@ -92,10 +85,8 @@ private fun ContentView(
 ) {
   if (uiState.isLoading) {
     ItemTagCreateLoadingView(onBackClick)
-  } else if (uiState.success) {
-    ItemTagCreateContentView(viewModel, uiState, onBackClick)
   } else {
-    ItemTagCreateErrorView(viewModel, onBackClick)
+    ItemTagCreateContentView(viewModel, uiState, onBackClick)
   }
 }
 
@@ -208,33 +199,6 @@ private fun TopAppBar(
     },
     modifier = Modifier.fillMaxWidth(),
   )
-}
-
-@Composable
-private fun ItemTagCreateErrorView(
-  viewModel: ItemTagCreateViewModel,
-  onBackClick: () -> Unit,
-) {
-  Scaffold(
-    topBar = {
-      TopAppBar(
-        onBackClick = onBackClick,
-      )
-    },
-    modifier = Modifier.fillMaxSize(),
-  ) { padding ->
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()
-        .padding(padding),
-      contentAlignment = Alignment.Center,
-    ) {
-      ErrorView(
-        onClick = { viewModel.reload() },
-      )
-    }
-  }
 }
 
 @Composable
