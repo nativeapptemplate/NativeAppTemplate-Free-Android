@@ -10,6 +10,7 @@ import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
 
 class TestSignUpRepository : SignUpRepository {
   private val loggedInShopkeeperFlow: MutableSharedFlow<LoggedInShopkeeper> =
@@ -21,7 +22,14 @@ class TestSignUpRepository : SignUpRepository {
     signUpForUpdate: SignUpForUpdate,
   ): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
 
-  override fun deleteAccount(): Flow<Boolean> = MutableStateFlow(true)
+  private var deleteAccountError: Throwable? = null
+
+  override fun deleteAccount(): Flow<Boolean> = deleteAccountError?.let { error -> flow { throw error } } ?: MutableStateFlow(true)
+
+  /** Makes every later [deleteAccount] call fail with [error]. */
+  fun failDeleteAccount(error: Throwable) {
+    deleteAccountError = error
+  }
 
   override fun sendResetPasswordInstruction(
     sendResetPassword: SendResetPassword,

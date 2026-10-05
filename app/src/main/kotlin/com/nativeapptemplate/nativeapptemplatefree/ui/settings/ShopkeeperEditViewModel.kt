@@ -163,13 +163,14 @@ class ShopkeeperEditViewModel @Inject constructor(
 
       booleanFlow
         .catch { exception ->
+          // The account still exists on the server, so keep the session and let the user retry.
           val message = exception.codedDescription
           _uiState.update {
             it.copy(
               message = message,
+              isLoading = false,
             )
           }
-          loginRepository.clearUserPreferences()
         }
         .collect {
           _uiState.update {

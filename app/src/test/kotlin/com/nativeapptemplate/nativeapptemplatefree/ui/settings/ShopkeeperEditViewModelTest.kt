@@ -1,5 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -173,6 +175,29 @@ class ShopkeeperEditViewModelTest {
 
     val uiStateValue = viewModel.uiState.value
     assertTrue(uiStateValue.isDeleted)
+  }
+
+  @Test
+  fun deleteShopkeeper_whenTheRequestFails_keepsTheUserSignedInAndStopsLoading() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(
+      emptyUserData.copy(
+        name = testInputLoggedInShopkeeper.getName()!!,
+        email = testInputLoggedInShopkeeper.getEmail()!!,
+        timeZone = testInputLoggedInShopkeeper.getTimeZone()!!,
+      ),
+    )
+    viewModel.reload()
+    val error = ApiException.UnprocessableError(rawMessage = "Unable to resolve host")
+    signUpRepository.failDeleteAccount(error)
+
+    viewModel.deleteShopkeeper()
+
+    // The account still exists on the server, so the session must survive.
+    assertEquals(0, loginRepository.clearUserPreferencesCallCount)
+    assertFalse(viewModel.uiState.value.isLoading)
+    assertFalse(viewModel.uiState.value.isDeleted)
+    assertEquals(error.codedDescription, viewModel.uiState.value.message)
   }
 
   @Test
