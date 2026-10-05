@@ -19,6 +19,7 @@ package com.nativeapptemplate.nativeapptemplatefree.di.modules
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.datastore.UserPreferencesSerializer
@@ -47,6 +48,9 @@ object DataStoreModule {
   ): DataStore<UserPreferences> =
     DataStoreFactory.create(
       serializer = userPreferencesSerializer,
+      // An unreadable file (e.g. the Keystore key was invalidated) would otherwise fail every read,
+      // crashing on each launch until the user clears app data. Start over signed out instead.
+      corruptionHandler = ReplaceFileCorruptionHandler { UserPreferences.getDefaultInstance() },
       scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
       migrations = emptyList(),
     ) {
