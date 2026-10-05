@@ -64,8 +64,12 @@ class PasswordEditViewModel @Inject constructor(
           }
         }
         .collect {
+          // Clear the form: resubmitting would send the old current password, which now fails.
           _uiState.update {
             it.copy(
+              currentPassword = "",
+              password = "",
+              passwordConfirmation = "",
               isUpdated = true,
               isLoading = false,
             )
@@ -84,9 +88,14 @@ class PasswordEditViewModel @Inject constructor(
     }
 
     if (hasInvalidDataPassword()) return true
+    if (hasPasswordConfirmationMismatch()) return true
 
     return false
   }
+
+  /** True once a confirmation is entered that does not match the new password. */
+  fun hasPasswordConfirmationMismatch(): Boolean =
+    uiState.value.passwordConfirmation.isNotEmpty() && uiState.value.passwordConfirmation != uiState.value.password
 
   fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true

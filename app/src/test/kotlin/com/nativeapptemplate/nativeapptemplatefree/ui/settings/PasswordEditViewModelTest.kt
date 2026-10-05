@@ -103,6 +103,34 @@ class PasswordEditViewModelTest {
     assertEquals(newPassword, detail.password)
     assertEquals(newPassword, detail.passwordConfirmation)
   }
+
+  @Test
+  fun mismatchedConfirmation_isInvalid() = runTest {
+    viewModel.updateCurrentPassword(testInputCurrentPassword)
+    viewModel.updatePassword(testInputNewPassword)
+    viewModel.updatePasswordConfirmation("${testInputNewPassword}x")
+
+    assertTrue(viewModel.hasPasswordConfirmationMismatch())
+    assertTrue(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun updatePassword_onSuccess_clearsTheFormSoItCannotBeResubmitted() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateCurrentPassword(testInputCurrentPassword)
+    viewModel.updatePassword(testInputNewPassword)
+    viewModel.updatePasswordConfirmation(testInputNewPassword)
+
+    viewModel.updatePassword()
+
+    // Resubmitting would send the old current password, which the server now rejects.
+    val uiState = viewModel.uiState.value
+    assertTrue(uiState.isUpdated)
+    assertEquals("", uiState.currentPassword)
+    assertEquals("", uiState.password)
+    assertEquals("", uiState.passwordConfirmation)
+    assertTrue(viewModel.hasInvalidData())
+  }
 }
 
 private const val testInputCurrentPassword = "password"

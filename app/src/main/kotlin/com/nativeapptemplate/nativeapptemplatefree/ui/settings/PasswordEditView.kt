@@ -239,10 +239,13 @@ fun PasswordEditContentView(
         value = uiState.passwordConfirmation,
         onValueChange = { viewModel.updatePasswordConfirmation(it) },
         supportingText = {
+          val isMismatch = viewModel.hasPasswordConfirmationMismatch()
           Text(
-            text = stringResource(id = R.string.confirm_new_password_is_required),
+            text = stringResource(
+              id = if (isMismatch) R.string.passwords_do_not_match else R.string.confirm_new_password_is_required,
+            ),
             style = MaterialTheme.typography.bodyLarge,
-            color = if (uiState.passwordConfirmation.isBlank()) Color.Red else Color.Transparent,
+            color = if (uiState.passwordConfirmation.isBlank() || isMismatch) Color.Red else Color.Transparent,
           )
         },
         visualTransformation = if (passwordConfirmationVisible) VisualTransformation.None else PasswordVisualTransformation(),
