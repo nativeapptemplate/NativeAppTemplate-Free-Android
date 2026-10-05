@@ -66,6 +66,9 @@ class ShopkeeperEditViewModel @Inject constructor(
     loadJob?.cancel()
     loadJob = viewModelScope.launch {
       val userDataFlow = loginRepository.userData
+      // userData re-emits on every DataStore write (MainActivity writes one on every recreation),
+      // so fill the form only from the first value of this load to keep unsaved edits.
+      var hasFilledForm = false
 
       userDataFlow
         .catch { exception ->
@@ -82,13 +85,14 @@ class ShopkeeperEditViewModel @Inject constructor(
             _uiState.update {
               it.copy(
                 userData = userData,
-                name = userData.name,
-                email = userData.email,
-                timeZone = userData.timeZone,
+                name = if (hasFilledForm) it.name else userData.name,
+                email = if (hasFilledForm) it.email else userData.email,
+                timeZone = if (hasFilledForm) it.timeZone else userData.timeZone,
                 success = true,
                 isLoading = false,
               )
             }
+            hasFilledForm = true
           }
         }
     }

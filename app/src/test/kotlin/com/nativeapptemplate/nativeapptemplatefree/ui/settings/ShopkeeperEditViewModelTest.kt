@@ -272,6 +272,19 @@ class ShopkeeperEditViewModelTest {
     // Leaked collectors re-emit stale snapshots on every DataStore write.
     org.junit.Assert.assertEquals(afterFirstReload, loginRepository.liveSubscriberCount)
   }
+
+  @Test
+  fun anotherPreferenceWrite_keepsTheUsersUnsavedEdits() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData.copy(name = "John"))
+    viewModel.reload()
+    viewModel.updateName("Edited, not saved yet")
+
+    // Any DataStore write re-emits userData (e.g. dismissing the "tap shop below" tip).
+    loginRepository.sendUserData(emptyUserData.copy(name = "John", didShowTapShopBelowTip = true))
+
+    assertEquals("Edited, not saved yet", viewModel.uiState.value.name)
+  }
 }
 
 private const val LOGGED_IN_SHOPKEEPER_TYPE = "shopkeeper_sign_in"
