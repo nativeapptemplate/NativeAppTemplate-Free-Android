@@ -1,6 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes

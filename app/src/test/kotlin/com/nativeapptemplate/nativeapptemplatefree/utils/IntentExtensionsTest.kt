@@ -1,8 +1,8 @@
 package com.nativeapptemplate.nativeapptemplatefree.utils
 
+import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.content.pm.ResolveInfo
+import android.content.IntentFilter
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import org.junit.Assert.assertEquals
@@ -29,13 +29,15 @@ class IntentExtensionsTest {
   }
 
   private fun installAppFor(uri: Uri) {
-    shadowOf(application.packageManager).addResolveInfoForIntent(
-      Intent(Intent.ACTION_VIEW, uri),
-      ResolveInfo().apply {
-        activityInfo = ActivityInfo().apply {
-          packageName = "com.example.viewer"
-          name = "Viewer"
-        }
+    val viewer = ComponentName("com.example.viewer", "com.example.viewer.Viewer")
+    val packageManager = shadowOf(application.packageManager)
+    packageManager.addActivityIfNotPresent(viewer)
+    packageManager.addIntentFilterForActivity(
+      viewer,
+      IntentFilter(Intent.ACTION_VIEW).apply {
+        addCategory(Intent.CATEGORY_DEFAULT)
+        addDataScheme(uri.scheme)
+        addDataAuthority(uri.host, null)
       },
     )
   }
