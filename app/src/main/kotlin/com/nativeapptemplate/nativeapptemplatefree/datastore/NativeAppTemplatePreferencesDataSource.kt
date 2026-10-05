@@ -9,6 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.copy
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
+import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -57,6 +58,10 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
       )
     }
 
+  /**
+   * The session fields (ids, token, client, uid, expiry) must be present; LoginRepositoryImpl
+   * rejects a sign-in response without them before it reaches here.
+   */
   suspend fun setShopkeeper(loggedInShopkeeper: LoggedInShopkeeper) {
     try {
       userPreferences.updateData {
@@ -65,10 +70,10 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
           this.accountId = loggedInShopkeeper.getAccountId()!!
           this.personalAccountId = loggedInShopkeeper.getPersonalAccountId()!!
           this.accountOwnerId = loggedInShopkeeper.getAccountOwnerId()!!
-          this.accountName = loggedInShopkeeper.getAccountName()!!
-          this.email = loggedInShopkeeper.getEmail()!!
-          this.name = loggedInShopkeeper.getName()!!
-          this.timeZone = loggedInShopkeeper.getTimeZone()!!
+          this.accountName = loggedInShopkeeper.getAccountName().orEmpty()
+          this.email = loggedInShopkeeper.getEmail().orEmpty()
+          this.name = loggedInShopkeeper.getName().orEmpty()
+          this.timeZone = loggedInShopkeeper.getTimeZone() ?: TimeZones.DEFAULT_TIME_ZONE
           this.token = loggedInShopkeeper.getToken()!!
           this.client = loggedInShopkeeper.getClient()!!
           this.uid = loggedInShopkeeper.getUID()!!
@@ -86,10 +91,13 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
     try {
       userPreferences.updateData {
         it.copy {
-          this.email = loggedInShopkeeper.getEmail()!!
-          this.name = loggedInShopkeeper.getName()!!
-          this.timeZone = loggedInShopkeeper.getTimeZone()!!
-          this.uid = loggedInShopkeeper.getUID()!!
+          // Keep the stored value for anything the update response omits. Read the raw attributes:
+          // the Data getters substitute defaults ("" or the default time zone) for missing values.
+          val attributes = loggedInShopkeeper.datum?.attributes
+          attributes?.email?.takeIf { it.isNotEmpty() }?.let { this.email = it }
+          attributes?.name?.takeIf { it.isNotEmpty() }?.let { this.name = it }
+          attributes?.timeZone?.takeIf { it.isNotEmpty() }?.let { this.timeZone = it }
+          attributes?.uid?.takeIf { it.isNotEmpty() }?.let { this.uid = it }
         }
       }
     } catch (ioException: IOException) {
@@ -102,13 +110,14 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
     try {
       userPreferences.updateData {
         it.copy {
-          val androidAppVersion = permissions.getAndroidAppVersion()!!
-          this.androidAppVersion = androidAppVersion
-          this.shouldUpdateApp = BuildConfig.VERSION_CODE < androidAppVersion
-
-          this.shouldUpdatePrivacy = permissions.getShouldUpdatePrivacy()!!
-          this.shouldUpdateTerms = permissions.getShouldUpdateTerms()!!
-          this.shopLimitCount = permissions.getShopLimitCount()!!
+          // Keep the stored value for anything the response omits (e.g. no "meta").
+          permissions.getAndroidAppVersion()?.let { androidAppVersion ->
+            this.androidAppVersion = androidAppVersion
+            this.shouldUpdateApp = BuildConfig.VERSION_CODE < androidAppVersion
+          }
+          permissions.getShouldUpdatePrivacy()?.let { this.shouldUpdatePrivacy = it }
+          permissions.getShouldUpdateTerms()?.let { this.shouldUpdateTerms = it }
+          permissions.getShopLimitCount()?.let { this.shopLimitCount = it }
         }
       }
     } catch (ioException: IOException) {
