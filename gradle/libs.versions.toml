@@ -27,7 +27,6 @@ protobufPlugin = "0.10.0"
 retrofit = "3.0.0"
 robolectric = "4.17"
 sandwich = "2.4.0"
-sandwichRetrofitSerialization = "2.4.0"
 spotless = "8.10.3"
 
 [libraries]
@@ -72,7 +71,6 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 sandwich = { module = "com.github.skydoves:sandwich", version.ref = "sandwich" }
 tink-android = { module = "com.google.crypto.tink:tink-android", version.ref = "tinkAndroid" }
 sandwich-retrofit = { module = "com.github.skydoves:sandwich-retrofit", version.ref = "sandwich" }
-sandwich-retrofit-serialization = { module = "com.github.skydoves:sandwich-retrofit-serialization", version.ref = "sandwichRetrofitSerialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

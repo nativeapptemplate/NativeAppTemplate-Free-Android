@@ -9,6 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
+import com.nativeapptemplate.nativeapptemplatefree.network.throwApiError
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
@@ -49,7 +50,7 @@ class LoginRepositoryImpl @Inject constructor(
       emit(true)
     }.suspendOnFailure {
       clearUserPreferences()
-      throw ApiException.UnprocessableError(rawMessage = message())
+      throwApiError(response, message())
     }
   }.flowOn(ioDispatcher)
 

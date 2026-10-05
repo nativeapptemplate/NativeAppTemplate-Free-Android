@@ -14,16 +14,22 @@ import com.skydoves.sandwich.ApiResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import retrofit2.Response
 import kotlin.test.assertFailsWith
 
 class LoginRepositoryImplTest {
 
-  private fun repository(loginResponse: LoggedInShopkeeper) = LoginRepositoryImpl(
+  private fun repository(
+    loginResponse: LoggedInShopkeeper = sessionWith(),
+    logoutResponse: ApiResponse<Status> = ApiResponse.Success(Status()),
+  ) = LoginRepositoryImpl(
     api = object : LoginApi {
       override suspend fun login(data: Login): ApiResponse<LoggedInShopkeeper> = ApiResponse.Success(loginResponse)
-      override suspend fun logout(): ApiResponse<Status> = error("not used")
+      override suspend fun logout(): ApiResponse<Status> = logoutResponse
       override suspend fun getPermissions(accountId: String): ApiResponse<Permissions> = error("not used")
       override suspend fun updateConfirmedPrivacyVersion(accountId: String): ApiResponse<Status> = error("not used")
       override suspend fun updateConfirmedTermsVersion(accountId: String): ApiResponse<Status> = error("not used")
@@ -55,6 +61,19 @@ class LoginRepositoryImplTest {
     assertFailsWith<ApiException.UnprocessableError> {
       repository(sessionWith(accountId = null)).login(Login(email = "john@example.com", password = "password")).first()
     }
+  }
+
+  @Test
+  fun logout_whenTheServerRejectsIt_reportsTheServerMessage() = runTest {
+    val response = ApiResponse.Failure.Error(
+      Response.error<Status>(404, """{"success":false,"errors":["User was not found or was not logged in."]}""".toResponseBody("application/json".toMediaType())),
+    )
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      repository(logoutResponse = response).logout().first()
+    }
+
+    assertEquals("User was not found or was not logged in.", exception.rawMessage)
   }
 }
 

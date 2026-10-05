@@ -119,4 +119,28 @@ class ApiResponseExtensionsTest {
     assertNull(exception.httpStatusCode)
     assertFalse(exception.isUnauthorized)
   }
+
+  @Test
+  fun emitApiResponse_deviseErrorBody_showsTheServerMessage() = runTest {
+    val response = httpError(401, """{"success":false,"errors":["Invalid login credentials. Please try again."]}""")
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      flow { emitApiResponse(response) }.first()
+    }
+
+    // Not Sandwich's message(), which is the Retrofit Response's toString(): "Response{protocol=...}".
+    assertEquals("Invalid login credentials. Please try again.", exception.rawMessage)
+  }
+
+  @Test
+  fun emitApiResponse_nonJsonErrorBody_showsTheHttpStatus() = runTest {
+    // e.g. an HTML error page from a proxy.
+    val response = httpError(502, "<html><body>Bad Gateway</body></html>")
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      flow { emitApiResponse(response) }.first()
+    }
+
+    assertEquals("HTTP 502", exception.rawMessage)
+  }
 }
