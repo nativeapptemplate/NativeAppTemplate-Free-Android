@@ -2,20 +2,16 @@ package com.nativeapptemplate.nativeapptemplatefree.navigation
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.NativeAppTemplateAppState
+import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.AuthRoutingEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptPrivacyView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.acceptTermsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.forgotPasswordView
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToAcceptPrivacy
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToAcceptTerms
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToForgotPassword
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToNeedAppUpdates
-import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToOnboarding
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToResendConfirmationInstructions
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToSignInEmailAndPassword
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.navigateToSignUp
@@ -48,7 +44,6 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.s
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopCreate
-import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopBaseView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopCreateView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopListView
@@ -67,31 +62,8 @@ fun NativeAppTemplateNavHost(
   modifier: Modifier = Modifier,
 ) {
   val navController = appState.navController
-  val isLoggedIn by appState.isLoggedIn.collectAsStateWithLifecycle()
-  val shouldUpdateApp by appState.shouldUpdateApp.collectAsStateWithLifecycle()
-  val shouldUpdatePrivacy by appState.shouldUpdatePrivacy.collectAsStateWithLifecycle()
-  val shouldUpdateTerms by appState.shouldUpdateTerms.collectAsStateWithLifecycle()
-
-  LaunchedEffect(
-    isLoggedIn,
-    shouldUpdateApp,
-    shouldUpdatePrivacy,
-    shouldUpdateTerms,
-  ) {
-    if (isLoggedIn) {
-      if (shouldUpdateApp) {
-        navController.navigateToNeedAppUpdates()
-      } else if (shouldUpdatePrivacy) {
-        navController.navigateToAcceptPrivacy()
-      } else if (shouldUpdateTerms) {
-        navController.navigateToAcceptTerms()
-      } else {
-        navController.navigateToShopList()
-      }
-    } else {
-      navController.navigateToOnboarding()
-    }
-  }
+  val authDestination by appState.authDestination.collectAsStateWithLifecycle()
+  AuthRoutingEffect(navController = navController, destination = authDestination)
 
   NavHost(
     navController = navController,

@@ -112,7 +112,10 @@ dependencies {
   ksp(libs.hilt.compiler)
 
   debugImplementation(libs.androidx.compose.ui.tooling)
+  debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+  testImplementation(platform(libs.androidx.compose.bom))
+  testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.navigation.testing)
   testImplementation(libs.hilt.android.testing)
   testImplementation(libs.kotlin.test)

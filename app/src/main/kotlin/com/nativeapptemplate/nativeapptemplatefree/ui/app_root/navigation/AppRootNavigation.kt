@@ -120,7 +120,7 @@ fun NavGraphBuilder.resendConfirmationInstructionsView(
   }
 }
 
-fun NavController.navigateToNeedAppUpdates() = navigate(NeedAppUpdatesRoute)
+fun NavController.navigateToNeedAppUpdates(navOptions: NavOptions? = null) = navigate(route = NeedAppUpdatesRoute, navOptions)
 
 fun NavGraphBuilder.needAppUpdatesView() {
   composable<NeedAppUpdatesRoute> {
@@ -128,7 +128,7 @@ fun NavGraphBuilder.needAppUpdatesView() {
   }
 }
 
-fun NavController.navigateToAcceptPrivacy() = navigate(AcceptPrivacyRoute)
+fun NavController.navigateToAcceptPrivacy(navOptions: NavOptions? = null) = navigate(route = AcceptPrivacyRoute, navOptions)
 
 fun NavGraphBuilder.acceptPrivacyView(
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
@@ -140,7 +140,7 @@ fun NavGraphBuilder.acceptPrivacyView(
   }
 }
 
-fun NavController.navigateToAcceptTerms() = navigate(AcceptTermsRoute)
+fun NavController.navigateToAcceptTerms(navOptions: NavOptions? = null) = navigate(route = AcceptTermsRoute, navOptions)
 
 fun NavGraphBuilder.acceptTermsView(
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
