@@ -11,6 +11,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,6 +43,9 @@ class ShopkeeperEditViewModel @Inject constructor(
   private val signUpRepository: SignUpRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopkeeperEditUiState())
+
+  /** The current load; cancelled before the next one so collectors of never-ending flows do not pile up. */
+  private var loadJob: Job? = null
   val uiState: StateFlow<ShopkeeperEditUiState> = _uiState.asStateFlow()
 
   fun reload() {
@@ -59,7 +63,8 @@ class ShopkeeperEditViewModel @Inject constructor(
       )
     }
 
-    viewModelScope.launch {
+    loadJob?.cancel()
+    loadJob = viewModelScope.launch {
       val userDataFlow = loginRepository.userData
 
       userDataFlow

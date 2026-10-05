@@ -7,6 +7,7 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shops
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,6 +39,9 @@ class ShopListViewModel @Inject constructor(
   private val shopRepository: ShopRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopListUiState())
+
+  /** The current load; cancelled before the next one so collectors of never-ending flows do not pile up. */
+  private var loadJob: Job? = null
   val uiState: StateFlow<ShopListUiState> = _uiState.asStateFlow()
 
   fun reload() = fetchData()
@@ -65,7 +69,8 @@ class ShopListViewModel @Inject constructor(
       )
     }
 
-    viewModelScope.launch {
+    loadJob?.cancel()
+    loadJob = viewModelScope.launch {
       val shopsFlow: Flow<Shops> = shopRepository.getShops()
       val didShowTapShopBelowTipFlow = loginRepository.didShowTapShopBelowTip()
 

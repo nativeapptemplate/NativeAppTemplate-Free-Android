@@ -149,7 +149,13 @@ class TestLoginRepository : LoginRepository {
 
   override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(false)
 
-  override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
+  private val _didShowTapShopBelowTip = MutableStateFlow(true)
+
+  override fun didShowTapShopBelowTip(): Flow<Boolean> = _didShowTapShopBelowTip
+
+  /** Collectors currently subscribed to this repository's never-completing flows. */
+  val liveSubscriberCount: Int
+    get() = _userData.subscriptionCount.value + _didShowTapShopBelowTip.subscriptionCount.value
 
   /**
    * A test-only API.

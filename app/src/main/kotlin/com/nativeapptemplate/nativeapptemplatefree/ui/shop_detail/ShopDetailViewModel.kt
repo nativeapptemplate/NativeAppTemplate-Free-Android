@@ -12,6 +12,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTags
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.ShopDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +42,9 @@ class ShopDetailViewModel @Inject constructor(
 ) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ShopDetailRoute>().id
   private val _uiState = MutableStateFlow(ShopDetailUiState())
+
+  /** The current load; cancelled before the next one so collectors of never-ending flows do not pile up. */
+  private var loadJob: Job? = null
   val uiState: StateFlow<ShopDetailUiState> = _uiState.asStateFlow()
 
   fun reload() {
@@ -55,7 +59,8 @@ class ShopDetailViewModel @Inject constructor(
       )
     }
 
-    viewModelScope.launch {
+    loadJob?.cancel()
+    loadJob = viewModelScope.launch {
       val shopFlow: Flow<Shop> = shopRepository.getShop(shopId)
       val itemTagsFlow: Flow<ItemTags> = itemTagRepository.getItemTags(shopId)
 

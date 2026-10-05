@@ -259,6 +259,19 @@ class ShopkeeperEditViewModelTest {
 
     assertTrue(viewModel.hasInvalidData())
   }
+
+  @Test
+  fun reload_replacesThePreviousCollectionInsteadOfAddingOne() = runTest {
+    viewModel.reload()
+    val afterFirstReload = loginRepository.liveSubscriberCount
+    org.junit.Assert.assertTrue("the test must observe the live login flows", afterFirstReload > 0)
+
+    viewModel.reload()
+    viewModel.reload()
+
+    // Leaked collectors re-emit stale snapshots on every DataStore write.
+    org.junit.Assert.assertEquals(afterFirstReload, loginRepository.liveSubscriberCount)
+  }
 }
 
 private const val LOGGED_IN_SHOPKEEPER_TYPE = "shopkeeper_sign_in"
