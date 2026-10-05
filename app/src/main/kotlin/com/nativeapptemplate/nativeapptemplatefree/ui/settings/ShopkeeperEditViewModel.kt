@@ -222,6 +222,5 @@ class ShopkeeperEditViewModel @Inject constructor(
 
   fun snackbarMessageShown() {
     _uiState.update { it.copy(message = "") }
-    _uiState.update { it.copy(success = false) }
   }
 }
