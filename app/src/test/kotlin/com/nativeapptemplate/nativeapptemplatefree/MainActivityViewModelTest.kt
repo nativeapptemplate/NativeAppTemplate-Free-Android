@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree
 
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
@@ -14,7 +15,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+// Robolectric so android.util.Log works in the failure paths.
+@RunWith(RobolectricTestRunner::class)
 class MainActivityViewModelTest {
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
@@ -65,5 +70,36 @@ class MainActivityViewModelTest {
     viewModel.updateDidShowTapShopBelowTip(true)
 
     assertTrue(loginRepository.userData.first().didShowTapShopBelowTip)
+  }
+
+  @Test
+  fun updatePermissions_whenOffline_keepsTheUserSignedIn() = runTest {
+    loginRepository.sendIsLoggedIn(true)
+    // What throwApiError produces when the request never reaches the server.
+    loginRepository.failPermissions(ApiException.UnprocessableError(rawMessage = "Unable to resolve host"))
+
+    viewModel.updatePermissions()
+
+    assertEquals(0, loginRepository.logoutCallCount)
+  }
+
+  @Test
+  fun updatePermissions_whenServerFails_keepsTheUserSignedIn() = runTest {
+    loginRepository.sendIsLoggedIn(true)
+    loginRepository.failPermissions(ApiException.UnprocessableError(rawMessage = "Bad Gateway", httpStatusCode = 502))
+
+    viewModel.updatePermissions()
+
+    assertEquals(0, loginRepository.logoutCallCount)
+  }
+
+  @Test
+  fun updatePermissions_whenSessionIsRejected_logsOut() = runTest {
+    loginRepository.sendIsLoggedIn(true)
+    loginRepository.failPermissions(ApiException.UnprocessableError(rawMessage = "Unauthorized", httpStatusCode = 401))
+
+    viewModel.updatePermissions()
+
+    assertEquals(1, loginRepository.logoutCallCount)
   }
 }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 
 val emptyUserData = UserData()
 
@@ -32,9 +33,18 @@ class TestLoginRepository : LoginRepository {
 
   override fun login(login: Login): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
 
-  override fun logout(): Flow<Boolean> = MutableStateFlow(true)
+  /** How many times [logout] was collected. */
+  var logoutCallCount = 0
+    private set
 
-  override fun getPermissions(): Flow<Permissions> = permissionsFlow
+  override fun logout(): Flow<Boolean> = flow {
+    logoutCallCount++
+    emit(true)
+  }
+
+  private var permissionsError: Throwable? = null
+
+  override fun getPermissions(): Flow<Permissions> = permissionsError?.let { error -> flow { throw error } } ?: permissionsFlow
 
   override fun updateConfirmedPrivacyVersion(): Flow<Boolean> = MutableStateFlow(true)
 
@@ -117,7 +127,12 @@ class TestLoginRepository : LoginRepository {
   override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
   }
 
+  /** How many times [clearUserPreferences] was called. */
+  var clearUserPreferencesCallCount = 0
+    private set
+
   override suspend fun clearUserPreferences() {
+    clearUserPreferencesCallCount++
   }
 
   override fun isLoggedIn(): Flow<Boolean> = isLoggedInReturnFlow
@@ -149,5 +164,14 @@ class TestLoginRepository : LoginRepository {
 
   fun sendPermissions(permissions: Permissions) {
     permissionsFlow.tryEmit(permissions)
+  }
+
+  /** Makes every later [getPermissions] call fail with [error]. */
+  fun failPermissions(error: Throwable) {
+    permissionsError = error
+  }
+
+  fun sendIsLoggedIn(isLoggedIn: Boolean) {
+    isLoggedInReturnFlow.tryEmit(isLoggedIn)
   }
 }

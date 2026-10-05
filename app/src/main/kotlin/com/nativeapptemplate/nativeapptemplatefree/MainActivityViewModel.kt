@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Loading
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,6 +45,10 @@ class MainActivityViewModel @Inject constructor(
         loginRepository.getPermissions()
           .catch { exception ->
             Log.e("MainActivityViewModel", "Failed to update permissions", exception)
+
+            // Only a rejected session means the user is signed out. Being offline or a server error
+            // must not wipe the session; the cached permissions stay in use until the next resume.
+            if ((exception as? ApiException)?.isUnauthorized != true) return@catch
 
             loginRepository.logout()
               .catch { logoutException ->

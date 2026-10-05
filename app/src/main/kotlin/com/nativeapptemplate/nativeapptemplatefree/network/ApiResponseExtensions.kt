@@ -5,6 +5,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.NativeAppTemplateApiErr
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
+import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.flow.FlowCollector
@@ -53,12 +54,16 @@ inline fun <reified T : Any> throwApiError(
     null
   }
 
+  // Null when the request never got an HTTP response (e.g. no network).
+  val httpStatusCode = (response as? ApiResponse.Failure.Error)?.statusCode?.code
+
   if (nativeAppTemplateApiError != null) {
     throw ApiException.ApiError(
       code = nativeAppTemplateApiError.code,
       apiMessage = nativeAppTemplateApiError.message,
+      httpStatusCode = httpStatusCode,
     )
   } else {
-    throw ApiException.UnprocessableError(rawMessage = errorMessage)
+    throw ApiException.UnprocessableError(rawMessage = errorMessage, httpStatusCode = httpStatusCode)
   }
 }

@@ -5,9 +5,14 @@ import com.skydoves.sandwich.ApiResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import retrofit2.Response
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 
@@ -71,5 +76,47 @@ class ApiResponseExtensionsTest {
       flow { emitApiResponse<String, Boolean>(response) { true } }.first()
     }
     assertIs<ApiException.UnprocessableError>(exception)
+  }
+
+  private fun httpError(status: Int, body: String): ApiResponse<String> = ApiResponse.Failure.Error(
+    Response.error<String>(status, body.toResponseBody("application/json".toMediaType())),
+  )
+
+  @Test
+  fun throwApiError_httpErrorWithUnknownBody_keepsStatusCode() {
+    // devise_token_auth answers an invalid session with 401 and {"errors": [...]}, not {code, error_message}.
+    val response = httpError(401, """{"errors":["You need to sign in or sign up before continuing."]}""")
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      throwApiError(response, "unauthorized")
+    }
+
+    assertEquals(401, exception.httpStatusCode)
+    assertTrue(exception.isUnauthorized)
+  }
+
+  @Test
+  fun throwApiError_httpErrorWithApiErrorBody_keepsStatusCode() {
+    val response = httpError(422, """{"code":422,"error_message":"Name can't be blank"}""")
+
+    val exception = assertFailsWith<ApiException.ApiError> {
+      throwApiError(response, "unprocessable")
+    }
+
+    assertEquals(422, exception.httpStatusCode)
+    assertEquals("Name can't be blank", exception.apiMessage)
+    assertFalse(exception.isUnauthorized)
+  }
+
+  @Test
+  fun throwApiError_noResponse_hasNoStatusCode() {
+    val response: ApiResponse<String> = ApiResponse.Failure.Exception(java.io.IOException("Unable to resolve host"))
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      throwApiError(response, "Unable to resolve host")
+    }
+
+    assertNull(exception.httpStatusCode)
+    assertFalse(exception.isUnauthorized)
   }
 }
