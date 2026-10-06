@@ -16,7 +16,16 @@ class TestItemTagRepository : ItemTagRepository {
   private val itemTagFlow: MutableSharedFlow<ItemTag> =
     MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
-  override fun getItemTags(shopId: String, page: Int?): Flow<ItemTags> = flow { emit(currentItemTags) }
+  /** Pages requested through [getItemTags], in order. */
+  val requestedPages = mutableListOf<Int?>()
+
+  /** When set, [getItemTags] serves each page from this instead of [sendItemTags]. */
+  var itemTagsForPage: ((Int?) -> ItemTags)? = null
+
+  override fun getItemTags(shopId: String, page: Int?): Flow<ItemTags> = flow {
+    requestedPages += page
+    emit(itemTagsForPage?.invoke(page) ?: currentItemTags)
+  }
 
   override fun getItemTag(id: String): Flow<ItemTag> = itemTagFlow
 

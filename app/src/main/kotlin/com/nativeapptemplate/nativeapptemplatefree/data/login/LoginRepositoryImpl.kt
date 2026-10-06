@@ -9,6 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
 import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
+import com.nativeapptemplate.nativeapptemplatefree.network.throwApiError
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -34,7 +36,8 @@ class LoginRepositoryImpl @Inject constructor(
   ) = flow {
     val response = api.login(login)
     emitApiResponse(response)
-  }.flowOn(ioDispatcher)
+  }.map { it.requireCompleteSession() }
+    .flowOn(ioDispatcher)
 
   override val userData: Flow<UserData> =
     natPreferencesDataSource.userData
@@ -47,7 +50,7 @@ class LoginRepositoryImpl @Inject constructor(
       emit(true)
     }.suspendOnFailure {
       clearUserPreferences()
-      throw ApiException.UnprocessableError(rawMessage = message())
+      throwApiError(response, message())
     }
   }.flowOn(ioDispatcher)
 
@@ -127,4 +130,27 @@ class LoginRepositoryImpl @Inject constructor(
   override fun isShopDeleted(): Flow<Boolean> = natPreferencesDataSource.isShopDeleted()
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = natPreferencesDataSource.didShowTapShopBelowTip()
+}
+
+/**
+ * Fails inside the flow, where the caller's `.catch` reports it, when the sign-in response lacks
+ * a value the session depends on (auth headers, account id in request paths, ownership checks).
+ */
+private fun LoggedInShopkeeper.requireCompleteSession(): LoggedInShopkeeper {
+  val missing = listOf(
+    "id" to getId(),
+    "account_id" to getAccountId(),
+    "personal_account_id" to getPersonalAccountId(),
+    "account_owner_id" to getAccountOwnerId(),
+    "token" to getToken(),
+    "client" to getClient(),
+    "uid" to getUID(),
+    "expiry" to getExpiry(),
+  ).filter { (_, value) -> value.isNullOrEmpty() }
+    .map { (name, _) -> name }
+
+  if (missing.isNotEmpty()) {
+    throw ApiException.UnprocessableError(rawMessage = "Incomplete sign-in response: missing ${missing.joinToString()}")
+  }
+  return this
 }

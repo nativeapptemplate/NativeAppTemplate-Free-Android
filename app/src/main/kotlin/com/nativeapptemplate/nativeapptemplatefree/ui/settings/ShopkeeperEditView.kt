@@ -49,13 +49,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadOnceEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
@@ -69,9 +68,7 @@ fun ShopkeeperEditView(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val shopkeeperUpdatedMessage = stringResource(R.string.message_shopkeeper_updated)
 
-  LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-    viewModel.reload()
-  }
+  LoadOnceEffect(viewModel::reload)
 
   SnackbarMessageEffect(
     message = uiState.message,
@@ -221,7 +218,7 @@ fun ShopkeeperEditContentView(
           // The `menuAnchor` modifier must be passed to the text field for correctness.
           modifier = Modifier.menuAnchor(PrimaryEditable, true),
           readOnly = true,
-          value = TimeZones.map[uiState.timeZone]!!,
+          value = TimeZones.displayName(uiState.timeZone),
           onValueChange = {},
           label = { Text(stringResource(R.string.time_zone)) },
           trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = timeZoneDropdownMenuExpanded) },

@@ -57,7 +57,7 @@ internal fun ShopListView(
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
 ) {
   val uiState: ShopListUiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val isLoggedIn: Boolean by viewModel.isLoggedIn().collectAsStateWithLifecycle()
+  val isLoggedIn: Boolean by viewModel.isLoggedIn.collectAsStateWithLifecycle()
 
   LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
     if (isLoggedIn) {
@@ -126,7 +126,7 @@ private fun ShopListContentView(
   onAddShopClick: () -> Unit,
 ) {
   val leftInShopSlots = uiState.shops.getLimitCount() - uiState.shops.getCreatedShopsCount()
-  val isEmpty: Boolean by viewModel.isEmpty().collectAsStateWithLifecycle()
+  val isEmpty: Boolean by viewModel.isEmpty.collectAsStateWithLifecycle()
 
   Scaffold(
     topBar = { TopAppBar() },

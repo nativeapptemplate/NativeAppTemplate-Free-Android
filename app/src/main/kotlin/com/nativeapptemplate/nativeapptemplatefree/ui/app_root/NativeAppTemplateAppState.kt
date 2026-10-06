@@ -15,6 +15,8 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SETTINGS_TAB
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SHOPS_TAB
+import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.AuthDestination
+import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.navigation.authDestination
 import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.navigateToSettings
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
@@ -75,6 +77,23 @@ class NativeAppTemplateAppState(
     scope = coroutineScope,
     started = SharingStarted.WhileSubscribed(5_000),
     initialValue = false,
+  )
+
+  /**
+   * Where the app should route to. Null until the signed-in state has loaded, so the app does not
+   * route to onboarding on the initial `false` values before DataStore emits.
+   */
+  internal val authDestination: StateFlow<AuthDestination?> = combine(
+    loginRepository.isLoggedIn(),
+    loginRepository.shouldUpdateApp(),
+    loginRepository.shouldUpdatePrivacy(),
+    loginRepository.shouldUpdateTerms(),
+  ) { isLoggedIn, shouldUpdateApp, shouldUpdatePrivacy, shouldUpdateTerms ->
+    authDestination(isLoggedIn, shouldUpdateApp, shouldUpdatePrivacy, shouldUpdateTerms)
+  }.stateIn(
+    scope = coroutineScope,
+    started = SharingStarted.WhileSubscribed(5_000),
+    initialValue = null,
   )
 
   val isLoggedIn = loginRepository.isLoggedIn()

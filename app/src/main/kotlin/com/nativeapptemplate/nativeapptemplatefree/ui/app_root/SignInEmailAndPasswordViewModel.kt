@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -68,6 +69,17 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
           permissionsFlow
             .catch { exception ->
               Log.e("SignInEmailAndPasswordViewModel", "Failed to update permissions", exception)
+              _uiState.update {
+                it.copy(
+                  message = exception.codedDescription,
+                  isLoading = false,
+                )
+              }
+
+              // Only a rejected session signs the user out; otherwise MainActivityViewModel
+              // fetches the permissions again on the next resume.
+              if ((exception as? ApiException)?.isUnauthorized != true) return@catch
+
               val booleanFlow = loginRepository.logout()
               booleanFlow
                 .catch { logoutException ->

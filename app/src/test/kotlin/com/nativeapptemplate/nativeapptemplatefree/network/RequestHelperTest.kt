@@ -3,6 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.network
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -15,7 +16,7 @@ class RequestHelperTest {
 
     assertEquals("android", headers["source"])
     assertEquals("application/vnd.api+json; charset=utf-8", headers["Accept"])
-    assertEquals("application/json", headers["Content-Type"])
+    assertNull(headers["Content-Type"])
   }
 
   @Test
@@ -59,7 +60,7 @@ class RequestHelperTest {
 
     assertEquals("android", headers["source"])
     assertEquals("application/vnd.api+json; charset=utf-8", headers["Accept"])
-    assertEquals("application/json", headers["Content-Type"])
+    assertNull(headers["Content-Type"])
   }
 
   @Test

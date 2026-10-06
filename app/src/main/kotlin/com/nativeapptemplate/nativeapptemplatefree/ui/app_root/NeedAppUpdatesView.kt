@@ -1,7 +1,5 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
+import com.nativeapptemplate.nativeapptemplatefree.utils.openUri
 
 @Composable
 fun NeedAppUpdatesView() {
@@ -73,11 +72,7 @@ fun NeedAppUpdatesView() {
 
         TextButton(
           onClick = {
-            try {
-              context.startActivity(Intent(Intent.ACTION_VIEW, Utility.marketUri()))
-            } catch (e: ActivityNotFoundException) {
-              context.startActivity(Intent(Intent.ACTION_VIEW, Utility.googlePlayStoreUri()))
-            }
+            context.openUri(Utility.marketUri(), Utility.googlePlayStoreUri())
           },
         ) {
           Text(

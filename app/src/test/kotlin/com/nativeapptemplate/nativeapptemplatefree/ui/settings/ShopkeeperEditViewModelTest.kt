@@ -1,5 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -176,6 +178,45 @@ class ShopkeeperEditViewModelTest {
   }
 
   @Test
+  fun deleteShopkeeper_whenTheRequestFails_keepsTheUserSignedInAndStopsLoading() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(
+      emptyUserData.copy(
+        name = testInputLoggedInShopkeeper.getName()!!,
+        email = testInputLoggedInShopkeeper.getEmail()!!,
+        timeZone = testInputLoggedInShopkeeper.getTimeZone()!!,
+      ),
+    )
+    viewModel.reload()
+    val error = ApiException.UnprocessableError(rawMessage = "Unable to resolve host")
+    signUpRepository.failDeleteAccount(error)
+
+    viewModel.deleteShopkeeper()
+
+    // The account still exists on the server, so the session must survive.
+    assertEquals(0, loginRepository.clearUserPreferencesCallCount)
+    assertFalse(viewModel.uiState.value.isLoading)
+    assertFalse(viewModel.uiState.value.isDeleted)
+    assertEquals(error.codedDescription, viewModel.uiState.value.message)
+  }
+
+  @Test
+  fun snackbarMessageShown_keepsTheLoadedForm() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData)
+    viewModel.reload()
+    viewModel.updateName("Edited name")
+
+    // e.g. the user dismisses the snackbar of a failed update.
+    viewModel.snackbarMessageShown()
+
+    // success == false would swap the form for ShopkeeperEditErrorView and drop the user's edits.
+    assertTrue(viewModel.uiState.value.success)
+    assertEquals("Edited name", viewModel.uiState.value.name)
+    assertEquals("", viewModel.uiState.value.message)
+  }
+
+  @Test
   fun blankName_isInvalid() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 
@@ -217,6 +258,32 @@ class ShopkeeperEditViewModelTest {
     viewModel.reload()
 
     assertTrue(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun reload_replacesThePreviousCollectionInsteadOfAddingOne() = runTest {
+    viewModel.reload()
+    val afterFirstReload = loginRepository.liveSubscriberCount
+    org.junit.Assert.assertTrue("the test must observe the live login flows", afterFirstReload > 0)
+
+    viewModel.reload()
+    viewModel.reload()
+
+    // Leaked collectors re-emit stale snapshots on every DataStore write.
+    org.junit.Assert.assertEquals(afterFirstReload, loginRepository.liveSubscriberCount)
+  }
+
+  @Test
+  fun anotherPreferenceWrite_keepsTheUsersUnsavedEdits() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData.copy(name = "John"))
+    viewModel.reload()
+    viewModel.updateName("Edited, not saved yet")
+
+    // Any DataStore write re-emits userData (e.g. dismissing the "tap shop below" tip).
+    loginRepository.sendUserData(emptyUserData.copy(name = "John", didShowTapShopBelowTip = true))
+
+    assertEquals("Edited, not saved yet", viewModel.uiState.value.name)
   }
 }
 

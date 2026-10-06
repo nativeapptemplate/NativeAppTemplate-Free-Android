@@ -11,6 +11,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,6 +43,9 @@ class ShopkeeperEditViewModel @Inject constructor(
   private val signUpRepository: SignUpRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopkeeperEditUiState())
+
+  /** The current load; cancelled before the next one so collectors of never-ending flows do not pile up. */
+  private var loadJob: Job? = null
   val uiState: StateFlow<ShopkeeperEditUiState> = _uiState.asStateFlow()
 
   fun reload() {
@@ -59,8 +63,12 @@ class ShopkeeperEditViewModel @Inject constructor(
       )
     }
 
-    viewModelScope.launch {
+    loadJob?.cancel()
+    loadJob = viewModelScope.launch {
       val userDataFlow = loginRepository.userData
+      // userData re-emits on every DataStore write (MainActivity writes one on every recreation),
+      // so fill the form only from the first value of this load to keep unsaved edits.
+      var hasFilledForm = false
 
       userDataFlow
         .catch { exception ->
@@ -77,13 +85,14 @@ class ShopkeeperEditViewModel @Inject constructor(
             _uiState.update {
               it.copy(
                 userData = userData,
-                name = userData.name,
-                email = userData.email,
-                timeZone = userData.timeZone,
+                name = if (hasFilledForm) it.name else userData.name,
+                email = if (hasFilledForm) it.email else userData.email,
+                timeZone = if (hasFilledForm) it.timeZone else userData.timeZone,
                 success = true,
                 isLoading = false,
               )
             }
+            hasFilledForm = true
           }
         }
     }
@@ -163,13 +172,14 @@ class ShopkeeperEditViewModel @Inject constructor(
 
       booleanFlow
         .catch { exception ->
+          // The account still exists on the server, so keep the session and let the user retry.
           val message = exception.codedDescription
           _uiState.update {
             it.copy(
               message = message,
+              isLoading = false,
             )
           }
-          loginRepository.clearUserPreferences()
         }
         .collect {
           _uiState.update {
@@ -221,6 +231,5 @@ class ShopkeeperEditViewModel @Inject constructor(
 
   fun snackbarMessageShown() {
     _uiState.update { it.copy(message = "") }
-    _uiState.update { it.copy(success = false) }
   }
 }

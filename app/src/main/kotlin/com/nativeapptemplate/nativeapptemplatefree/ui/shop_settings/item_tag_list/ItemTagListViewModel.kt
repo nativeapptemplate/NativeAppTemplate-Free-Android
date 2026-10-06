@@ -60,7 +60,7 @@ class ItemTagListViewModel @Inject constructor(
     fetchData(page = 1, isReload = true)
   }
 
-  fun isEmpty(): StateFlow<Boolean> = uiState.map { it.itemTags.isEmpty() }
+  val isEmpty: StateFlow<Boolean> = uiState.map { it.itemTags.isEmpty() }
     .stateIn(
       scope = viewModelScope,
       initialValue = false,

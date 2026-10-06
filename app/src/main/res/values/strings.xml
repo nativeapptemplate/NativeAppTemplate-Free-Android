@@ -109,6 +109,8 @@
   <string name="mark_as_completed">Mark as completed</string>
   <string name="mark_as_idled">Mark as idled</string>
 
+  <string name="passwords_do_not_match">Passwords do not match.</string>
+  <string name="message_no_app_to_open_link">No app can open this link.</string>
   <string name="message_item_tag_created">Item tag created successfully.</string>
   <string name="message_item_tag_updated">Item tag updated successfully.</string>
   <string name="message_item_tag_deleted">Item tag deleted successfully.</string>

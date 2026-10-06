@@ -1,5 +1,8 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
+import androidx.compose.ui.test.junit4.StateRestorationTester
+import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
@@ -33,6 +36,9 @@ import org.robolectric.RobolectricTestRunner
  */
 @RunWith(RobolectricTestRunner::class)
 class ShopBasicSettingsViewModelTest {
+  @get:Rule
+  val composeTestRule = createComposeRule()
+
   @get:Rule
   val dispatcherRule = MainDispatcherRule()
 
@@ -182,6 +188,38 @@ class ShopBasicSettingsViewModelTest {
     viewModel.updateDescription("x".repeat(1_001))
 
     assertEquals(previous, viewModel.uiState.value.description)
+  }
+
+  @Test
+  fun recreation_keepsTheUsersUnsavedEdits() {
+    shopRepository.sendShop(testInputShop)
+    val restorationTester = StateRestorationTester(composeTestRule)
+    restorationTester.setContent {
+      ShopBasicSettingsView(viewModel = viewModel, onShowSnackbar = { _, _, _ -> true }, onBackClick = {})
+    }
+    composeTestRule.waitForIdle()
+    composeTestRule.runOnIdle { viewModel.updateName("Edited, not saved yet") }
+
+    // Rotation: the composition is recreated while the ViewModel (and its state) is retained.
+    restorationTester.emulateSavedInstanceStateRestore()
+    composeTestRule.waitForIdle()
+
+    assertEquals("Edited, not saved yet", viewModel.uiState.value.name)
+  }
+
+  @Test
+  fun timeZoneMissingFromTheClientList_isShownInsteadOfCrashing() {
+    // e.g. a zone the server added later, or an IANA id: not a key of TimeZones.map.
+    val unknownTimeZone = "Asia/Tokyo"
+    shopRepository.sendShop(
+      Shop(datum = testInputShopsData.copy(attributes = testInputShopsData.attributes!!.copy(timeZone = unknownTimeZone))),
+    )
+
+    composeTestRule.setContent {
+      ShopBasicSettingsView(viewModel = viewModel, onShowSnackbar = { _, _, _ -> true }, onBackClick = {})
+    }
+
+    composeTestRule.onNodeWithText(unknownTimeZone).assertExists()
   }
 }
 

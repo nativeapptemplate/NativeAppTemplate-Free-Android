@@ -37,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -136,15 +137,20 @@ private fun ItemTagListContentView(
   onAddItemTagClick: (String) -> Unit,
   onBackClick: () -> Unit,
 ) {
-  val isEmpty: Boolean by viewModel.isEmpty().collectAsStateWithLifecycle()
+  val isEmpty: Boolean by viewModel.isEmpty.collectAsStateWithLifecycle()
   val itemTags = uiState.itemTags.toMutableList()
   val listState = rememberLazyListState()
 
   val prefetchDistance = 3
+  // derivedStateOf only tracks State reads, so read the latest list state through State objects;
+  // capturing uiState/itemTags directly would freeze them at their first-composition values.
+  val latestUiState by rememberUpdatedState(uiState)
   val shouldLoadMore by remember {
     derivedStateOf {
       val lastVisibleIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-      lastVisibleIndex >= itemTags.size - prefetchDistance && uiState.hasMorePages && !uiState.isLoadingMore
+      lastVisibleIndex >= latestUiState.itemTags.size - prefetchDistance &&
+        latestUiState.hasMorePages &&
+        !latestUiState.isLoadingMore
     }
   }
   LaunchedEffect(shouldLoadMore) {

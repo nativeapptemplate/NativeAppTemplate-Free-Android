@@ -76,6 +76,22 @@ class ItemTagEditViewModelTest {
   }
 
   @Test
+  fun snackbarMessageShown_keepsTheLoadedForm() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+    viewModel.updateName("Edited name")
+
+    // e.g. the user dismisses the snackbar of a failed update.
+    viewModel.snackbarMessageShown()
+
+    // success == false would swap the form for ItemTagEditErrorView and drop the user's edits.
+    assertTrue(viewModel.uiState.value.success)
+    assertEquals("Edited name", viewModel.uiState.value.name)
+    assertEquals("", viewModel.uiState.value.message)
+  }
+
+  @Test
   fun stateIsUpdated_whenUpdatingItemTag_becomesTrue() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
 

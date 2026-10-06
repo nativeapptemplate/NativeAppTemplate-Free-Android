@@ -5,6 +5,8 @@ import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataSto
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
+import com.nativeapptemplate.nativeapptemplatefree.model.Meta
+import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -35,6 +37,46 @@ class NativeAppTemplatePreferencesDataSourceTest {
     subject.setShopkeeper(testInputLoggedInShopkeeper)
 
     assertTrue(subject.isLoggedIn().first())
+  }
+
+  @Test
+  fun setPermissions_withoutMeta_keepsThePreviousValues() = testScope.runTest {
+    subject.setPermissions(Permissions(meta = Meta(androidAppVersion = 1, shouldUpdatePrivacy = true, shouldUpdateTerms = true, shopLimitCount = 99)))
+
+    // The server omitted "meta".
+    subject.setPermissions(Permissions(meta = null))
+
+    assertTrue(subject.shouldUpdatePrivacy().first())
+    assertTrue(subject.shouldUpdateTerms().first())
+  }
+
+  @Test
+  fun setShopkeeperForUpdate_withMissingFields_keepsThePreviousValues() = testScope.runTest {
+    subject.setShopkeeper(testInputLoggedInShopkeeper)
+
+    // An update response that only echoes the changed name.
+    subject.setShopkeeperForUpdate(
+      LoggedInShopkeeper(datum = Data(id = LOGGED_IN_SHOPKEEPER_ID, attributes = Attributes(name = "Jane Smith"))),
+    )
+
+    val userData = subject.userData.first()
+    assertEquals("Jane Smith", userData.name)
+    assertEquals(LOGGED_IN_SHOPKEEPER_EMAIL, userData.email)
+    assertEquals(LOGGED_IN_SHOPKEEPER_TIME_ZONE, userData.timeZone)
+    // uid is sent as an auth header; losing it would break every later request.
+    assertEquals(LOGGED_IN_SHOPKEEPER_UID, userData.uid)
+  }
+
+  @Test
+  fun setShopkeeper_withoutTheOptionalAccountName_storesAnEmptyName() = testScope.runTest {
+    // Only the session fields are required (LoginRepositoryImpl checks them); the rest may be absent.
+    val attributes = testInputLoggedInShopkeeperData.attributes!!.copy(accountName = null)
+
+    subject.setShopkeeper(LoggedInShopkeeper(datum = testInputLoggedInShopkeeperData.copy(attributes = attributes)))
+
+    val userData = subject.userData.first()
+    assertTrue(userData.isLoggedIn)
+    assertEquals("", userData.accountName)
   }
 }
 

@@ -6,9 +6,11 @@ import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataSto
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
@@ -62,7 +64,24 @@ class AuthInterceptorTest {
     val sent = interceptor.sentRequest(Request.Builder().url("https://example.com/").build())
     assertEquals("android", sent.header("source"))
     assertEquals("application/vnd.api+json; charset=utf-8", sent.header("Accept"))
-    assertEquals("application/json", sent.header("Content-Type"))
+    // A GET has no body, so no Content-Type (OkHttp sets it from the body when there is one).
+    assertNull(sent.header("Content-Type"))
+  }
+
+  @Test
+  fun intercept_requestWithABody_keepsASingleContentType() = testScope.runTest {
+    val interceptor = AuthInterceptor(dataSourceWith(token = "t", client = "c", uid = "u", expiry = "1"))
+    // As a network interceptor, AuthInterceptor runs after OkHttp's BridgeInterceptor has already set
+    // Content-Type from the body.
+    val request = Request.Builder()
+      .url("https://example.com/")
+      .post("{}".toRequestBody("application/json; charset=utf-8".toMediaType()))
+      .header("Content-Type", "application/json; charset=utf-8")
+      .build()
+
+    val sent = interceptor.sentRequest(request)
+
+    assertEquals(listOf("application/json; charset=utf-8"), sent.headers("Content-Type"))
   }
 
   @Test

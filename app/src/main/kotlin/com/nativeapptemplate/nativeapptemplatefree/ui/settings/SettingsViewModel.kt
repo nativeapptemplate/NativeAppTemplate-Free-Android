@@ -7,6 +7,7 @@ import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescriptio
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +28,9 @@ class SettingsViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(SettingsUiState())
+
+  /** The current load; cancelled before the next one so collectors of never-ending flows do not pile up. */
+  private var loadJob: Job? = null
   val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
   fun reload() {
@@ -41,7 +45,8 @@ class SettingsViewModel @Inject constructor(
       )
     }
 
-    viewModelScope.launch {
+    loadJob?.cancel()
+    loadJob = viewModelScope.launch {
       val userDataFlow = loginRepository.userData
 
       userDataFlow

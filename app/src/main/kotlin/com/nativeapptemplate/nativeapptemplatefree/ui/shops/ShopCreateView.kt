@@ -198,7 +198,7 @@ fun ShopCreateContentView(
           // The `menuAnchor` modifier must be passed to the text field for correctness.
           modifier = Modifier.menuAnchor(PrimaryEditable, true),
           readOnly = true,
-          value = TimeZones.map[uiState.timeZone]!!,
+          value = TimeZones.displayName(uiState.timeZone),
           onValueChange = {},
           label = { Text(stringResource(R.string.time_zone)) },
           trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = timeZoneDropdownMenuExpanded) },

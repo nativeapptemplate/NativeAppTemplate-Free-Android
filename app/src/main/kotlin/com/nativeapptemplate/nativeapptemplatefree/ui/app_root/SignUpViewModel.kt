@@ -48,7 +48,8 @@ class SignUpViewModel @Inject constructor(
       val signUp = SignUp(
         name = uiState.value.name,
         email = uiState.value.email.trim(),
-        password = uiState.value.password.trim(),
+        // Never trim passwords: sign-in sends them as typed.
+        password = uiState.value.password,
         timeZone = uiState.value.timeZone,
         currentPlatform = "android",
       )

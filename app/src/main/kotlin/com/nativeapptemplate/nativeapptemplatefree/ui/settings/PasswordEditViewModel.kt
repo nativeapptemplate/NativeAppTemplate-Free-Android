@@ -44,9 +44,10 @@ class PasswordEditViewModel @Inject constructor(
 
     viewModelScope.launch {
       val updatePasswordBodyDetail = UpdatePasswordBodyDetail(
-        currentPassword = uiState.value.currentPassword.trim(),
-        password = uiState.value.password.trim(),
-        passwordConfirmation = uiState.value.passwordConfirmation.trim(),
+        // Never trim passwords: sign-in sends them as typed.
+        currentPassword = uiState.value.currentPassword,
+        password = uiState.value.password,
+        passwordConfirmation = uiState.value.passwordConfirmation,
       )
       val updatePasswordBody = UpdatePasswordBody(updatePasswordBodyDetail)
 
@@ -63,8 +64,12 @@ class PasswordEditViewModel @Inject constructor(
           }
         }
         .collect {
+          // Clear the form: resubmitting would send the old current password, which now fails.
           _uiState.update {
             it.copy(
+              currentPassword = "",
+              password = "",
+              passwordConfirmation = "",
               isUpdated = true,
               isLoading = false,
             )
@@ -83,9 +88,14 @@ class PasswordEditViewModel @Inject constructor(
     }
 
     if (hasInvalidDataPassword()) return true
+    if (hasPasswordConfirmationMismatch()) return true
 
     return false
   }
+
+  /** True once a confirmation is entered that does not match the new password. */
+  fun hasPasswordConfirmationMismatch(): Boolean =
+    uiState.value.passwordConfirmation.isNotEmpty() && uiState.value.passwordConfirmation != uiState.value.password
 
   fun hasInvalidDataPassword(): Boolean {
     if (uiState.value.password.isBlank()) return true

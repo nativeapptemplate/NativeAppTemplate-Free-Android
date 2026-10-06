@@ -1,6 +1,5 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
-import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
+import com.nativeapptemplate.nativeapptemplatefree.utils.openUri
 
 @Composable
 internal fun SignUpOrSignInView(
@@ -159,7 +159,7 @@ private fun TopAppBar(
     title = { Text("") },
     actions = {
       TextButton(
-        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NativeAppTemplateConstants.SUPPORT_WEBSITE_URL))) },
+        onClick = { context.openUri(Uri.parse(NativeAppTemplateConstants.SUPPORT_WEBSITE_URL)) },
       ) {
         Text(
           stringResource(R.string.support_website),

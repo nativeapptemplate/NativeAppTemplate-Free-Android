@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,6 +25,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +57,7 @@ internal fun ShopSettingsView(
 
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
+  restartApp: (Context) -> Unit = { it.restartApp() },
 ) {
   val uiState: ShopSettingsUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -68,9 +71,10 @@ internal fun ShopSettingsView(
     onMessageShown = viewModel::snackbarMessageShown,
   )
 
-  if (uiState.isShopDeleted) {
-    val context = LocalContext.current
-    context.restartApp()
+  // Restart as a side effect, once per change, not on every recomposition.
+  val context = LocalContext.current
+  LaunchedEffect(uiState.isShopDeleted) {
+    if (uiState.isShopDeleted) restartApp(context)
   }
 
   ShopSettingsView(

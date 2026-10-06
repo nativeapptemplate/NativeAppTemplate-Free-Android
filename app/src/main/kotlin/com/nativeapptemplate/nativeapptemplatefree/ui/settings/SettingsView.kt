@@ -1,7 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
 import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -54,6 +53,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
+import com.nativeapptemplate.nativeapptemplatefree.utils.openUri
 
 @Composable
 internal fun SettingsView(
@@ -280,7 +280,7 @@ private fun SettingsContentView(
             },
             modifier = Modifier
               .clickable {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NativeAppTemplateConstants.FAQS_URL)))
+                context.openUri(Uri.parse(NativeAppTemplateConstants.FAQS_URL))
               },
           )
           HorizontalDivider()
@@ -332,11 +332,7 @@ private fun SettingsContentView(
             },
             modifier = Modifier
               .clickable {
-                try {
-                  context.startActivity(Intent(Intent.ACTION_VIEW, Utility.marketUri()))
-                } catch (e: ActivityNotFoundException) {
-                  context.startActivity(Intent(Intent.ACTION_VIEW, Utility.googlePlayStoreUri()))
-                }
+                context.openUri(Utility.marketUri(), Utility.googlePlayStoreUri())
               },
           )
         }
@@ -381,12 +377,7 @@ private fun SettingsContentView(
             },
             modifier = Modifier
               .clickable {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(NativeAppTemplateConstants.SUPPORT_WEBSITE_URL),
-                  ),
-                )
+                context.openUri(Uri.parse(NativeAppTemplateConstants.SUPPORT_WEBSITE_URL))
               },
           )
           HorizontalDivider()
@@ -409,12 +400,7 @@ private fun SettingsContentView(
             },
             modifier = Modifier
               .clickable {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(NativeAppTemplateConstants.PRIVACY_POLICY_URL),
-                  ),
-                )
+                context.openUri(Uri.parse(NativeAppTemplateConstants.PRIVACY_POLICY_URL))
               },
           )
           HorizontalDivider()
@@ -437,12 +423,7 @@ private fun SettingsContentView(
             },
             modifier = Modifier
               .clickable {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(NativeAppTemplateConstants.TERMS_OF_USE_URL),
-                  ),
-                )
+                context.openUri(Uri.parse(NativeAppTemplateConstants.TERMS_OF_USE_URL))
               },
           )
         }

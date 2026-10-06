@@ -12,6 +12,12 @@ object TimeZones {
   const val DEFAULT_TIME_ZONE: String = "London"
 
   /**
+   * The label for [timeZone], or [timeZone] itself when it is not in [map]
+   * (e.g. a zone the server added after this app version was released).
+   */
+  fun displayName(timeZone: String): String = map[timeZone] ?: timeZone
+
+  /**
    * Time zones from Ruby on Rails
    */
   val map: LinkedHashMap<String, String> = linkedMapOf(

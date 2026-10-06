@@ -43,12 +43,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadOnceEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
@@ -61,9 +60,7 @@ fun ShopBasicSettingsView(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val shopUpdatedMessage = stringResource(id = R.string.message_shop_updated)
 
-  LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-    viewModel.reload()
-  }
+  LoadOnceEffect(viewModel::reload)
 
   SnackbarMessageEffect(
     message = uiState.message,
@@ -207,7 +204,7 @@ fun ShopBasicSettingsContentView(
           // The `menuAnchor` modifier must be passed to the text field for correctness.
           modifier = Modifier.menuAnchor(PrimaryEditable, true),
           readOnly = true,
-          value = TimeZones.map[uiState.timeZone]!!,
+          value = TimeZones.displayName(uiState.timeZone),
           onValueChange = {},
           label = { Text(stringResource(R.string.time_zone)) },
           trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = timeZoneDropdownMenuExpanded) },

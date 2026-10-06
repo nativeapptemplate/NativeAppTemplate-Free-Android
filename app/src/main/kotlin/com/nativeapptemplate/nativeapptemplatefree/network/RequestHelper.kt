@@ -16,7 +16,7 @@ data class RequestHelper @JvmOverloads constructor(
     headers[HEADER_CLIENT_NAME] = BuildConfig.APPLICATION_ID
     headers[HEADER_CLIENT_VERSION] = BuildConfig.VERSION_NAME
     headers[ACCEPT] = "application/vnd.api+json; charset=utf-8"
-    headers[CONTENT_TYPE] = "application/json"
+    // No Content-Type: OkHttp sets it from the request body, and GET/DELETE have none.
 
     if (apiAuthToken.isNotEmpty()) {
       headers[ACCESS_TOKEN] = apiAuthToken
@@ -30,7 +30,6 @@ data class RequestHelper @JvmOverloads constructor(
   }
 
   companion object {
-    private const val CONTENT_TYPE = "Content-Type"
     private const val ACCEPT = "Accept"
     private const val BEARER = "Bearer "
     private const val HEADER_CLIENT_NAME = "client-name"
