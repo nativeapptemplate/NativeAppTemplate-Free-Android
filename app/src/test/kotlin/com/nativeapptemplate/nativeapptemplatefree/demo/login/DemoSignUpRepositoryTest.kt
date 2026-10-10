@@ -34,6 +34,8 @@ class DemoSignUpRepositoryTest {
       email = "john@example.com",
       name = "John Smith",
       timeZone = "Tokyo",
+      // "locale": "ja" in logged_in_shopkeeper.json
+      locale = "ja",
       uid = "john@example.com",
     ),
   )
@@ -58,6 +60,7 @@ class DemoSignUpRepositoryTest {
           password = "password",
           timeZone = "Tokyo",
           currentPlatform = "android",
+          locale = "ja-JP",
         ),
       ).first(),
     )
@@ -72,6 +75,7 @@ class DemoSignUpRepositoryTest {
           name = "John Smith",
           email = "john@example.com",
           timeZone = "Tokyo",
+          locale = "ja",
         ),
       ).first(),
     )

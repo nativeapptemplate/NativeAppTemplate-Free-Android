@@ -65,6 +65,8 @@ data class Attributes(
   @SerialName("time_zone")
   val timeZone: String? = null,
 
+  val locale: String? = null,
+
   @SerialName("item_tags_count")
   val itemTagsCount: Int? = null,
 

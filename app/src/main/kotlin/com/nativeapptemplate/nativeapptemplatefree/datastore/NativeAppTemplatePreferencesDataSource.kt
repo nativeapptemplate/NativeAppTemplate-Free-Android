@@ -7,6 +7,7 @@ import com.nativeapptemplate.nativeapptemplatefree.DarkThemeConfigProto
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.copy
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
+import com.nativeapptemplate.nativeapptemplatefree.model.Locales
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
@@ -30,6 +31,8 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
         email = it.email,
         name = it.name,
         timeZone = it.timeZone,
+        // proto3 reads a missing string as "", so a session saved by an older app version gets the default.
+        locale = it.locale.ifEmpty { Locales.DEFAULT },
         token = it.token,
         client = it.client,
         uid = it.uid,
@@ -74,6 +77,8 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
           this.email = loggedInShopkeeper.getEmail().orEmpty()
           this.name = loggedInShopkeeper.getName().orEmpty()
           this.timeZone = loggedInShopkeeper.getTimeZone() ?: TimeZones.DEFAULT_TIME_ZONE
+          // Empty (read as Locales.DEFAULT) when the server does not send one.
+          this.locale = loggedInShopkeeper.getLocale().orEmpty()
           this.token = loggedInShopkeeper.getToken()!!
           this.client = loggedInShopkeeper.getClient()!!
           this.uid = loggedInShopkeeper.getUID()!!
@@ -97,6 +102,7 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
           attributes?.email?.takeIf { it.isNotEmpty() }?.let { this.email = it }
           attributes?.name?.takeIf { it.isNotEmpty() }?.let { this.name = it }
           attributes?.timeZone?.takeIf { it.isNotEmpty() }?.let { this.timeZone = it }
+          attributes?.locale?.takeIf { it.isNotEmpty() }?.let { this.locale = it }
           attributes?.uid?.takeIf { it.isNotEmpty() }?.let { this.uid = it }
         }
       }

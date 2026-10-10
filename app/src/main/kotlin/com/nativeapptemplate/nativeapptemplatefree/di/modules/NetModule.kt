@@ -8,6 +8,7 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpApi
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopApi
+import com.nativeapptemplate.nativeapptemplatefree.network.AcceptLanguageInterceptor
 import com.nativeapptemplate.nativeapptemplatefree.network.AuthInterceptor
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
@@ -54,6 +55,7 @@ class NetModule {
   fun provideOkHttp(
     loggingInterceptor: HttpLoggingInterceptor,
     authInterceptor: AuthInterceptor,
+    acceptLanguageInterceptor: AcceptLanguageInterceptor,
   ): OkHttpClient =
     OkHttpClient.Builder()
       .connectTimeout(30, TimeUnit.SECONDS)
@@ -64,16 +66,11 @@ class NetModule {
         certificatePinnerFor(BuildConfig.DOMAIN, apiCertificatePins())?.let { certificatePinner(it) }
       }
       .addNetworkInterceptor(authInterceptor)
+      .addInterceptor(acceptLanguageInterceptor)
       .addInterceptor(loggingInterceptor)
       .build()
 
-  private val json = Json {
-    prettyPrint = true
-    ignoreUnknownKeys = true
-    isLenient = true
-  }
-
-  private val converter = json.asConverterFactory("application/json".toMediaType())
+  private val converter = networkJson.asConverterFactory("application/json".toMediaType())
 
   @Singleton
   @Provides
@@ -115,6 +112,13 @@ class NetModule {
       )
       .build()
   }
+}
+
+/** The Json Retrofit encodes request bodies and decodes responses with (encodeDefaults stays false). */
+internal val networkJson = Json {
+  prettyPrint = true
+  ignoreUnknownKeys = true
+  isLenient = true
 }
 
 /** Certificate pins for [domain] from a comma-separated "sha256/..." list; null when there are none. */

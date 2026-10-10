@@ -65,6 +65,7 @@ class TestLoginRepository : LoginRepository {
           email = loggedInShopkeeper.getEmail()!!,
           name = loggedInShopkeeper.getName()!!,
           timeZone = loggedInShopkeeper.getTimeZone()!!,
+          locale = loggedInShopkeeper.getLocale() ?: current.locale,
           token = loggedInShopkeeper.getToken()!!,
           client = loggedInShopkeeper.getClient()!!,
           uid = loggedInShopkeeper.getUID()!!,
@@ -82,6 +83,7 @@ class TestLoginRepository : LoginRepository {
           email = loggedInShopkeeper.getEmail()!!,
           name = loggedInShopkeeper.getName()!!,
           timeZone = loggedInShopkeeper.getTimeZone()!!,
+          locale = loggedInShopkeeper.getLocale() ?: current.locale,
           uid = loggedInShopkeeper.getUID()!!,
         ),
       )

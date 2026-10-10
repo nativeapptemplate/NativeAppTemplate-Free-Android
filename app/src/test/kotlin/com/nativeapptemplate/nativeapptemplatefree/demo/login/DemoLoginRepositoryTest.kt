@@ -31,6 +31,8 @@ class DemoLoginRepositoryTest {
       email = "john@example.com",
       name = "John Smith",
       timeZone = "Tokyo",
+      // "locale": "ja" in logged_in_shopkeeper.json
+      locale = "ja",
       uid = "john@example.com",
     ),
   )

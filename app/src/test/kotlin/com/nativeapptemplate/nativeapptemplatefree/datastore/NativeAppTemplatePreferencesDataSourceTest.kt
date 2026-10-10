@@ -68,6 +68,61 @@ class NativeAppTemplatePreferencesDataSourceTest {
   }
 
   @Test
+  fun locale_inASessionSavedBeforeTheAppStoredOne_isEnglish() = testScope.runTest {
+    // Bytes as an app version without the locale field wrote them: a signed-in session, no field 50.
+    val savedByThePreviousVersion = UserPreferences.newBuilder()
+      .setIsLoggedIn(true)
+      .setToken(LOGGED_IN_SHOPKEEPER_TOKEN)
+      .setName(LOGGED_IN_SHOPKEEPER_NAME)
+      .build()
+      .toByteArray()
+    val dataSource = NativeAppTemplatePreferencesDataSource(
+      InMemoryDataStore(UserPreferences.parseFrom(savedByThePreviousVersion)),
+    )
+
+    val userData = dataSource.userData.first()
+
+    // Locales.DEFAULT, the server's fallback language.
+    assertEquals("en", userData.locale)
+    // The rest of the session still loads.
+    assertTrue(userData.isLoggedIn)
+    assertEquals(LOGGED_IN_SHOPKEEPER_TOKEN, userData.token)
+    assertEquals(LOGGED_IN_SHOPKEEPER_NAME, userData.name)
+  }
+
+  @Test
+  fun setShopkeeper_storesTheLocaleFromTheSignInResponse() = testScope.runTest {
+    val attributes = testInputLoggedInShopkeeperData.attributes!!.copy(locale = "ja")
+
+    subject.setShopkeeper(LoggedInShopkeeper(datum = testInputLoggedInShopkeeperData.copy(attributes = attributes)))
+
+    assertEquals("ja", subject.userData.first().locale)
+  }
+
+  @Test
+  fun setShopkeeperForUpdate_storesTheReturnedLocale() = testScope.runTest {
+    subject.setShopkeeper(testInputLoggedInShopkeeper)
+
+    subject.setShopkeeperForUpdate(
+      LoggedInShopkeeper(datum = Data(id = LOGGED_IN_SHOPKEEPER_ID, attributes = Attributes(locale = "ja"))),
+    )
+
+    assertEquals("ja", subject.userData.first().locale)
+  }
+
+  @Test
+  fun setShopkeeperForUpdate_withoutALocale_keepsTheStoredOne() = testScope.runTest {
+    val attributes = testInputLoggedInShopkeeperData.attributes!!.copy(locale = "ja")
+    subject.setShopkeeper(LoggedInShopkeeper(datum = testInputLoggedInShopkeeperData.copy(attributes = attributes)))
+
+    subject.setShopkeeperForUpdate(
+      LoggedInShopkeeper(datum = Data(id = LOGGED_IN_SHOPKEEPER_ID, attributes = Attributes(name = "Jane Smith"))),
+    )
+
+    assertEquals("ja", subject.userData.first().locale)
+  }
+
+  @Test
   fun setShopkeeper_withoutTheOptionalAccountName_storesAnEmptyName() = testScope.runTest {
     // Only the session fields are required (LoginRepositoryImpl checks them); the rest may be absent.
     val attributes = testInputLoggedInShopkeeperData.attributes!!.copy(accountName = null)

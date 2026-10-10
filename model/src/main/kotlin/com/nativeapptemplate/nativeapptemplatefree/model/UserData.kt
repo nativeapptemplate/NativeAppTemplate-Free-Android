@@ -28,6 +28,7 @@ data class UserData(
   val email: String = "",
   val name: String = "",
   val timeZone: String = "",
+  val locale: String = Locales.DEFAULT,
   val token: String = "",
   val client: String = "",
   val uid: String = "",

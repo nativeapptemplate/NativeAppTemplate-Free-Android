@@ -15,6 +15,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.util.Locale
 
 /**
  * These tests use Robolectric because the subject under test (the ViewModel) uses
@@ -128,6 +129,26 @@ class SignUpViewModelTest {
     assertEquals(passwordWithTrailingSpace, signUpRepository.lastSignUp!!.password)
     // Emails are still normalized.
     assertEquals(testInputLoggedInShopkeeper.getEmail()!!, signUpRepository.lastSignUp!!.email)
+  }
+
+  @Test
+  fun createShopkeeper_sendsTheDevicesLanguageTag() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    val originalLocale = Locale.getDefault()
+    try {
+      Locale.setDefault(Locale.JAPAN)
+      viewModel.updateName(testInputLoggedInShopkeeper.getName()!!)
+      viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+      viewModel.updatePassword(testInputPassword)
+      signUpRepository.sendLoggedInShopkeeper(testInputLoggedInShopkeeper)
+
+      viewModel.createShopkeeper()
+
+      // Locale.JAPAN is language "ja", country "JP": BCP 47 tag "ja-JP".
+      assertEquals("ja-JP", signUpRepository.lastSignUp!!.locale)
+    } finally {
+      Locale.setDefault(originalLocale)
+    }
   }
 }
 

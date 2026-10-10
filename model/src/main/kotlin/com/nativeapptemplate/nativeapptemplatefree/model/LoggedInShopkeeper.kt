@@ -32,6 +32,8 @@ data class LoggedInShopkeeper(
 
   fun getTimeZone(): String? = getData()?.getTimeZone()
 
+  fun getLocale(): String? = getData()?.getLocale()
+
   fun getToken(): String? = getData()?.getToken()
 
   fun getClient(): String? = getData()?.getClient()
