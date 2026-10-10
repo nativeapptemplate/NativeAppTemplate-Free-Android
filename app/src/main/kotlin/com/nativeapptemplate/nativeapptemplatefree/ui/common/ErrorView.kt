@@ -12,15 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 
 @Composable
 fun ErrorView(
-  titleText: String = "Something went wrong.",
-  bodyText: String = "Please try again.",
-  buttonTitle: String = "Reload",
+  titleText: String = stringResource(R.string.error_title),
+  bodyText: String = stringResource(R.string.error_body),
+  buttonTitle: String = stringResource(R.string.reload),
   onClick: () -> Unit,
 ) {
   Column(

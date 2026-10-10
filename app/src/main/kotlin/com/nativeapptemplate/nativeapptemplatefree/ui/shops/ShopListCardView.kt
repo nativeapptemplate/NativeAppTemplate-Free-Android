@@ -17,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 
 @Composable
@@ -47,8 +49,8 @@ fun ShopListCardView(
           modifier = Modifier
             .padding(top = 16.dp),
         ) {
-          CountRow(icon = Icons.Outlined.Flag, count = data.getCompletedItemTagsCount(), countLabel = "completed item tags")
-          CountRow(icon = Icons.Outlined.Rectangle, count = data.getItemTagsCount(), countLabel = "all item tags")
+          CountRow(icon = Icons.Outlined.Flag, count = data.getCompletedItemTagsCount(), countLabel = stringResource(R.string.completed_item_tags_count_label))
+          CountRow(icon = Icons.Outlined.Rectangle, count = data.getItemTagsCount(), countLabel = stringResource(R.string.all_item_tags_count_label))
         }
 
         Text(

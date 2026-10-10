@@ -63,6 +63,7 @@ fun ShopkeeperEditView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val dismissLabel = stringResource(R.string.dismiss)
   val shopkeeperUpdatedMessage = stringResource(R.string.message_shopkeeper_updated)
 
   LoadOnceEffect(viewModel::reload)
@@ -75,7 +76,7 @@ fun ShopkeeperEditView(
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {
-      onShowSnackbar(shopkeeperUpdatedMessage, "dismiss", SnackbarDuration.Short)
+      onShowSnackbar(shopkeeperUpdatedMessage, dismissLabel, SnackbarDuration.Short)
       viewModel.reload()
     }
   }
@@ -257,7 +258,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),
@@ -306,7 +307,7 @@ fun DeleteShopkeeperAlertDialog(
           onDismissRequest()
         },
       ) {
-        Text("Dismiss")
+        Text(stringResource(R.string.dismiss))
       }
     },
   )

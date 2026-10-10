@@ -46,6 +46,7 @@ fun ItemTagEditView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val dismissLabel = stringResource(R.string.dismiss)
   val itemTagUpdatedMessage = stringResource(id = R.string.message_item_tag_updated)
 
   LoadOnceEffect(viewModel::reload)
@@ -58,7 +59,7 @@ fun ItemTagEditView(
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {
-      onShowSnackbar(itemTagUpdatedMessage, "dismiss", SnackbarDuration.Short)
+      onShowSnackbar(itemTagUpdatedMessage, dismissLabel, SnackbarDuration.Short)
     }
   }
 
@@ -191,7 +192,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),

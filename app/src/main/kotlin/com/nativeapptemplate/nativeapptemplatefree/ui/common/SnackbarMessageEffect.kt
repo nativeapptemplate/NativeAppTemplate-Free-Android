@@ -3,6 +3,8 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.common
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.res.stringResource
+import com.nativeapptemplate.nativeapptemplatefree.R
 
 /**
  * Composable that displays a snackbar when [message] is non-blank,
@@ -14,9 +16,10 @@ fun SnackbarMessageEffect(
   onShowSnackbar: suspend (String, String?, SnackbarDuration) -> Boolean,
   onMessageShown: () -> Unit,
 ) {
+  val dismissLabel = stringResource(R.string.dismiss)
   LaunchedEffect(message) {
     if (message.isNotBlank()) {
-      onShowSnackbar(message, "dismiss", SnackbarDuration.Indefinite)
+      onShowSnackbar(message, dismissLabel, SnackbarDuration.Indefinite)
       onMessageShown()
     }
   }

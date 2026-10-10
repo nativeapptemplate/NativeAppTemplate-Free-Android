@@ -97,7 +97,7 @@ private fun TopAppBar(
         onClick = { onStartClick() },
       ) {
         Text(
-          "Start",
+          stringResource(R.string.start),
           color = Color.White,
           style = MaterialTheme.typography.displaySmall,
         )

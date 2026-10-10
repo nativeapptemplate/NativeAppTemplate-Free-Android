@@ -53,6 +53,7 @@ fun PasswordEditView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val dismissLabel = stringResource(R.string.dismiss)
   val passwordUpdatedMessage = stringResource(R.string.message_password_updated)
 
   SnackbarMessageEffect(
@@ -63,7 +64,7 @@ fun PasswordEditView(
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {
-      onShowSnackbar(passwordUpdatedMessage, "dismiss", SnackbarDuration.Short)
+      onShowSnackbar(passwordUpdatedMessage, dismissLabel, SnackbarDuration.Short)
     }
   }
 
@@ -159,7 +160,7 @@ fun PasswordEditContentView(
             Icons.Filled.VisibilityOff
           }
 
-          val description = if (currentPasswordVisible) "Hide password" else "Show password"
+          val description = if (currentPasswordVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
           IconButton(onClick = { currentPasswordVisible = !currentPasswordVisible }) {
             Icon(imageVector = image, description)
@@ -210,7 +211,7 @@ fun PasswordEditContentView(
             Icons.Filled.VisibilityOff
           }
 
-          val description = if (passwordVisible) "Hide password" else "Show password"
+          val description = if (passwordVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
           IconButton(onClick = { passwordVisible = !passwordVisible }) {
             Icon(imageVector = image, description)
@@ -248,7 +249,7 @@ fun PasswordEditContentView(
             Icons.Filled.VisibilityOff
           }
 
-          val description = if (passwordConfirmationVisible) "Hide password" else "Show password"
+          val description = if (passwordConfirmationVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
           IconButton(onClick = { passwordConfirmationVisible = !passwordConfirmationVisible }) {
             Icon(imageVector = image, description)
@@ -276,7 +277,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),

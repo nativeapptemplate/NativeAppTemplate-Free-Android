@@ -84,7 +84,7 @@ internal fun SignUpOrSignInView(
 
       val agreement = buildAnnotatedString {
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
-          append("By signing up or signing in, you agree to the ")
+          append(stringResource(R.string.agreement_prefix))
         }
 
         withLink(
@@ -97,7 +97,7 @@ internal fun SignUpOrSignInView(
         }
 
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
-          append(" and ")
+          append(stringResource(R.string.agreement_and))
         }
 
         withLink(
@@ -127,7 +127,7 @@ internal fun SignUpOrSignInView(
       )
 
       Text(
-        "or",
+        stringResource(R.string.or),
         style = MaterialTheme.typography.titleLarge,
       )
 
@@ -170,7 +170,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),

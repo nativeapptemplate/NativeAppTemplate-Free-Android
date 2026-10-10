@@ -55,6 +55,7 @@ fun ShopBasicSettingsView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val dismissLabel = stringResource(R.string.dismiss)
   val shopUpdatedMessage = stringResource(id = R.string.message_shop_updated)
 
   LoadOnceEffect(viewModel::reload)
@@ -67,7 +68,7 @@ fun ShopBasicSettingsView(
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {
-      onShowSnackbar(shopUpdatedMessage, "dismiss", SnackbarDuration.Short)
+      onShowSnackbar(shopUpdatedMessage, dismissLabel, SnackbarDuration.Short)
     }
   }
 
@@ -236,7 +237,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),
