@@ -475,7 +475,7 @@ private fun SettingsContentView(
             modifier = Modifier
               .padding(top = 48.dp),
           ) {
-            Text("Logged in as ${userData.name}")
+            Text(stringResource(R.string.logged_in_as, userData.name))
 
             MainButtonView(
               title = stringResource(R.string.button_sign_out),

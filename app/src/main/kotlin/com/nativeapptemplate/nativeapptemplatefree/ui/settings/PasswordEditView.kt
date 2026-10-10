@@ -3,21 +3,17 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -48,6 +44,7 @@ import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
 
 @Composable
 fun PasswordEditView(
@@ -56,6 +53,7 @@ fun PasswordEditView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val dismissLabel = stringResource(R.string.dismiss)
   val passwordUpdatedMessage = stringResource(R.string.message_password_updated)
 
   SnackbarMessageEffect(
@@ -66,7 +64,7 @@ fun PasswordEditView(
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {
-      onShowSnackbar(passwordUpdatedMessage, "dismiss", SnackbarDuration.Short)
+      onShowSnackbar(passwordUpdatedMessage, dismissLabel, SnackbarDuration.Short)
     }
   }
 
@@ -114,17 +112,11 @@ fun PasswordEditContentView(
       TopAppBar(onBackClick)
     },
     floatingActionButton = {
-      // FloatingActionButton doesn't support the enabled property
-      // https://stackoverflow.com/a/68853697/1160200
-      Button(
+      SubmitFab(
+        label = stringResource(R.string.button_label_update),
         onClick = { viewModel.updatePassword() },
-        modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape,
-
-      ) {
-        Icon(Icons.Filled.Done, contentDescription = null)
-      }
+      )
     },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
@@ -168,7 +160,7 @@ fun PasswordEditContentView(
             Icons.Filled.VisibilityOff
           }
 
-          val description = if (currentPasswordVisible) "Hide password" else "Show password"
+          val description = if (currentPasswordVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
           IconButton(onClick = { currentPasswordVisible = !currentPasswordVisible }) {
             Icon(imageVector = image, description)
@@ -219,7 +211,7 @@ fun PasswordEditContentView(
             Icons.Filled.VisibilityOff
           }
 
-          val description = if (passwordVisible) "Hide password" else "Show password"
+          val description = if (passwordVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
           IconButton(onClick = { passwordVisible = !passwordVisible }) {
             Icon(imageVector = image, description)
@@ -257,7 +249,7 @@ fun PasswordEditContentView(
             Icons.Filled.VisibilityOff
           }
 
-          val description = if (passwordConfirmationVisible) "Hide password" else "Show password"
+          val description = if (passwordConfirmationVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
           IconButton(onClick = { passwordConfirmationVisible = !passwordConfirmationVisible }) {
             Icon(imageVector = image, description)
@@ -285,7 +277,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),

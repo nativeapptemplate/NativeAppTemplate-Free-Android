@@ -105,7 +105,7 @@ fun AcceptPrivacyContentView(
     ) {
       val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-          append("Please accept updated")
+          append(stringResource(R.string.please_accept_updated))
           append(" ")
         }
 

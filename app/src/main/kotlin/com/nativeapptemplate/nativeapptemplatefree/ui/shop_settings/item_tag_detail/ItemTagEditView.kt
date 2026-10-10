@@ -3,18 +3,14 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_de
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,6 +37,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadOnceEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
 
 @Composable
 fun ItemTagEditView(
@@ -49,6 +46,7 @@ fun ItemTagEditView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val dismissLabel = stringResource(R.string.dismiss)
   val itemTagUpdatedMessage = stringResource(id = R.string.message_item_tag_updated)
 
   LoadOnceEffect(viewModel::reload)
@@ -61,7 +59,7 @@ fun ItemTagEditView(
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {
-      onShowSnackbar(itemTagUpdatedMessage, "dismiss", SnackbarDuration.Short)
+      onShowSnackbar(itemTagUpdatedMessage, dismissLabel, SnackbarDuration.Short)
     }
   }
 
@@ -107,17 +105,11 @@ fun ItemTagEditContentView(
       TopAppBar(onBackClick)
     },
     floatingActionButton = {
-      // FloatingActionButton doesn't support the enabled property
-      // https://stackoverflow.com/a/68853697/1160200
-      Button(
+      SubmitFab(
+        label = stringResource(R.string.button_label_update),
         onClick = { viewModel.updateItemTag() },
-        modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape,
-
-      ) {
-        Icon(Icons.Filled.Done, contentDescription = null)
-      }
+      )
     },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
@@ -200,7 +192,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),

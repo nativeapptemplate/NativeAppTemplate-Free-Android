@@ -55,6 +55,8 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
     val isMyAccountDeleted by appState.isMyAccountDeleted.collectAsStateWithLifecycle()
     val isShopDeleted by appState.isShopDeleted.collectAsStateWithLifecycle()
 
+    val dismissLabel = stringResource(R.string.dismiss)
+
     // If user is not connected to the internet show a snack bar to inform them.
     val notConnectedMessage = stringResource(R.string.not_connected)
     LaunchedEffect(isOffline) {
@@ -71,7 +73,7 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
       if (isEmailUpdated) {
         snackbarHostState.showSnackbar(
           message = reconfirmMessage,
-          actionLabel = "dismiss",
+          actionLabel = dismissLabel,
           duration = Indefinite,
         )
 
@@ -84,7 +86,7 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
       if (isMyAccountDeleted) {
         snackbarHostState.showSnackbar(
           message = myAccountDeletedMessage,
-          actionLabel = "dismiss",
+          actionLabel = dismissLabel,
           duration = Indefinite,
         )
 
@@ -97,7 +99,7 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
       if (isShopDeleted) {
         snackbarHostState.showSnackbar(
           message = shopDeletedMessage,
-          actionLabel = "dismiss",
+          actionLabel = dismissLabel,
           duration = Indefinite,
         )
 

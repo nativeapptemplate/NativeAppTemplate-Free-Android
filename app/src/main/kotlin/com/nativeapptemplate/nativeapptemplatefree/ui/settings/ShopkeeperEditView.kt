@@ -3,22 +3,18 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.AddAlert
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,6 +54,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadOnceEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
 
 @Composable
 fun ShopkeeperEditView(
@@ -66,6 +63,7 @@ fun ShopkeeperEditView(
   onBackClick: () -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val dismissLabel = stringResource(R.string.dismiss)
   val shopkeeperUpdatedMessage = stringResource(R.string.message_shopkeeper_updated)
 
   LoadOnceEffect(viewModel::reload)
@@ -78,7 +76,7 @@ fun ShopkeeperEditView(
 
   LaunchedEffect(uiState.isUpdated) {
     if (uiState.isUpdated) {
-      onShowSnackbar(shopkeeperUpdatedMessage, "dismiss", SnackbarDuration.Short)
+      onShowSnackbar(shopkeeperUpdatedMessage, dismissLabel, SnackbarDuration.Short)
       viewModel.reload()
     }
   }
@@ -140,17 +138,11 @@ fun ShopkeeperEditContentView(
       TopAppBar(onBackClick)
     },
     floatingActionButton = {
-      // FloatingActionButton doesn't support the enabled property
-      // https://stackoverflow.com/a/68853697/1160200
-      Button(
+      SubmitFab(
+        label = stringResource(R.string.button_label_update),
         onClick = { viewModel.updateShopkeeper() },
-        modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
-        shape = CircleShape,
-
-      ) {
-        Icon(Icons.Filled.Done, contentDescription = null)
-      }
+      )
     },
     modifier = Modifier.fillMaxSize(),
   ) { padding ->
@@ -266,7 +258,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),
@@ -315,7 +307,7 @@ fun DeleteShopkeeperAlertDialog(
           onDismissRequest()
         },
       ) {
-        Text("Dismiss")
+        Text(stringResource(R.string.dismiss))
       }
     },
   )

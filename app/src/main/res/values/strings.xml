@@ -158,4 +158,24 @@
   <!-- Profile -->
   <string name="message_shopkeeper_updated">Account updated successfully.</string>
   <string name="message_shopkeeper_deleted">Account deleted successfully.</string>
+  <!-- Common UI labels -->
+  <string name="back">Back</string>
+  <string name="edit">Edit</string>
+  <string name="dismiss">Dismiss</string>
+  <string name="show_password">Show password</string>
+  <string name="hide_password">Hide password</string>
+  <string name="start">Start</string>
+  <string name="or">or</string>
+  <string name="logged_in_as">Logged in as %1$s</string>
+  <string name="please_accept_updated">Please accept updated</string>
+  <string name="agreement_prefix">"By signing up or signing in, you agree to the "</string>
+  <string name="agreement_and">" and "</string>
+  <string name="left_in_shop_slots">left in shop slots.</string>
+  <string name="completed_item_tags_count_label">completed item tags</string>
+  <string name="all_item_tags_count_label">all item tags</string>
+  <string name="error_title">Something went wrong.</string>
+  <string name="error_body">Please try again.</string>
+  <string name="reload">Reload</string>
+  <string name="tag_idled">IDLED</string>
+  <string name="tag_completed">COMPLETED</string>
 </resources>

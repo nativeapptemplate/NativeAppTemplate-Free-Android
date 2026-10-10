@@ -171,7 +171,7 @@ private fun ShopDetailContentView(
                     viewModel.completeItemTag(itemTag.id!!)
                   },
                   backgroundColor = Color.Blue,
-                  text = "Complete",
+                  text = stringResource(R.string.complete),
                   modifier = Modifier
                     .fillMaxHeight()
                     .width(96.dp),
@@ -182,7 +182,7 @@ private fun ShopDetailContentView(
                     viewModel.idleItemTag(itemTag.id!!)
                   },
                   backgroundColor = Color.Red,
-                  text = "Idle",
+                  text = stringResource(R.string.idle),
                   modifier = Modifier
                     .fillMaxHeight()
                     .width(96.dp),
@@ -224,7 +224,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     actions = {
@@ -237,7 +237,7 @@ private fun TopAppBar(
       ) {
         Icon(
           Icons.Filled.Settings,
-          "Shop Settings",
+          stringResource(R.string.label_shop_settings),
           tint = MaterialTheme.colorScheme.onSurface,
         )
       }

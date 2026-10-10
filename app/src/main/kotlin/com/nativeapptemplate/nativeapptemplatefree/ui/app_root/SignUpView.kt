@@ -269,7 +269,7 @@ fun SignUpContentView(
             Icons.Filled.VisibilityOff
           }
 
-          val description = if (passwordVisible) "Hide password" else "Show password"
+          val description = if (passwordVisible) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
           IconButton(onClick = { passwordVisible = !passwordVisible }) {
             Icon(imageVector = image, description)
@@ -297,7 +297,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     modifier = Modifier.fillMaxWidth(),

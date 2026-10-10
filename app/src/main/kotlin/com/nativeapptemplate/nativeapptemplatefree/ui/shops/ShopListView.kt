@@ -200,7 +200,7 @@ private fun ShopListContentView(
                 style = MaterialTheme.typography.titleLarge,
               )
               Text(
-                "left in shop slots.",
+                stringResource(R.string.left_in_shop_slots),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.alignByBaseline(),
               )
@@ -345,7 +345,7 @@ private fun NoResultsView(
               style = MaterialTheme.typography.titleLarge,
             )
             Text(
-              "left in shop slots.",
+              stringResource(R.string.left_in_shop_slots),
               modifier = Modifier.alignByBaseline(),
             )
           }

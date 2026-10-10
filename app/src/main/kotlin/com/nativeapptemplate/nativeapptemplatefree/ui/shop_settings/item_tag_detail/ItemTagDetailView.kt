@@ -282,7 +282,7 @@ private fun TopAppBar(
       IconButton(onClick = {
         onBackClick()
       }) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
       }
     },
     actions = {
@@ -291,7 +291,7 @@ private fun TopAppBar(
           onClick = { onShowItemTagEditClick(viewModel.itemTagId) },
         ) {
           Text(
-            "Edit",
+            stringResource(R.string.edit),
             color = MaterialTheme.colorScheme.onSurface,
           )
         }
@@ -301,7 +301,7 @@ private fun TopAppBar(
         ) {
           Icon(
             Icons.Filled.Delete,
-            "Delete",
+            stringResource(R.string.delete),
             tint = MaterialTheme.colorScheme.onSurface,
           )
         }
