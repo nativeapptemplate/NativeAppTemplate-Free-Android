@@ -65,6 +65,8 @@ data class Data(
 
   fun getTimeZone(): String = attributes?.timeZone ?: TimeZones.DEFAULT_TIME_ZONE
 
+  fun getLocale(): String? = attributes?.locale
+
   fun getItemTagsCount(): Int = attributes?.itemTagsCount ?: 0
 
   fun getCompletedItemTagsCount(): Int = attributes?.completedItemTagsCount ?: 0

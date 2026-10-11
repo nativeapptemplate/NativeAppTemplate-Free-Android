@@ -261,6 +261,65 @@ class ShopkeeperEditViewModelTest {
   }
 
   @Test
+  fun reload_fillsTheLanguageFromTheStoredLocale() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData.copy(name = "John", email = "john@example.com", locale = "ja"))
+
+    viewModel.reload()
+
+    assertEquals("ja", viewModel.uiState.value.locale)
+  }
+
+  @Test
+  fun changingOnlyTheLanguage_enablesSave() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(
+      emptyUserData.copy(
+        name = testInputLoggedInShopkeeper.getName()!!,
+        email = testInputLoggedInShopkeeper.getEmail()!!,
+        timeZone = testInputLoggedInShopkeeper.getTimeZone()!!,
+        locale = "en",
+      ),
+    )
+    viewModel.reload()
+    assertTrue(viewModel.hasInvalidData())
+
+    viewModel.updateLocale("ja")
+
+    assertFalse(viewModel.hasInvalidData())
+  }
+
+  @Test
+  fun updateShopkeeper_sendsTheLocaleAndStoresTheReturnedOne() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(
+      emptyUserData.copy(
+        name = testInputLoggedInShopkeeper.getName()!!,
+        email = testInputLoggedInShopkeeper.getEmail()!!,
+        timeZone = testInputLoggedInShopkeeper.getTimeZone()!!,
+        locale = "en",
+      ),
+    )
+    signUpRepository.sendLoggedInShopkeeper(
+      LoggedInShopkeeper(
+        datum = testInputLoggedInShopkeeperData.copy(
+          attributes = testInputLoggedInShopkeeperData.attributes!!.copy(locale = "ja"),
+        ),
+      ),
+    )
+    viewModel.reload()
+    viewModel.updateLocale("ja")
+
+    viewModel.updateShopkeeper()
+
+    assertEquals("ja", signUpRepository.lastSignUpForUpdate!!.locale)
+    assertEquals("ja", loginRepository.userData.first().locale)
+    assertTrue(viewModel.uiState.value.isUpdated)
+    // Only the language changed, so this is not an email change (which signs out).
+    assertFalse(viewModel.uiState.value.isEmailUpdated)
+  }
+
+  @Test
   fun reload_replacesThePreviousCollectionInsteadOfAddingOne() = runTest {
     viewModel.reload()
     val afterFirstReload = loginRepository.liveSubscriberCount

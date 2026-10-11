@@ -48,6 +48,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.model.Locales
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadOnceEffect
@@ -121,6 +122,7 @@ fun ShopkeeperEditContentView(
 ) {
   val timeZoneValues = TimeZones.map.values.toList()
   var timeZoneDropdownMenuExpanded by remember { mutableStateOf(false) }
+  var languageDropdownMenuExpanded by remember { mutableStateOf(false) }
   var isShowingDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
   if (isShowingDeleteConfirmationDialog) {
@@ -233,6 +235,37 @@ fun ShopkeeperEditContentView(
         }
       }
 
+      ExposedDropdownMenuBox(
+        expanded = languageDropdownMenuExpanded,
+        onExpandedChange = { languageDropdownMenuExpanded = it },
+      ) {
+        TextField(
+          // The `menuAnchor` modifier must be passed to the text field for correctness.
+          modifier = Modifier.menuAnchor(PrimaryEditable, true),
+          readOnly = true,
+          value = languageDisplayName(uiState.locale),
+          onValueChange = {},
+          label = { Text(stringResource(R.string.language)) },
+          trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = languageDropdownMenuExpanded) },
+          colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+          expanded = languageDropdownMenuExpanded,
+          onDismissRequest = { languageDropdownMenuExpanded = false },
+        ) {
+          Locales.supported.forEach { locale ->
+            DropdownMenuItem(
+              text = { Text(languageDisplayName(locale)) },
+              onClick = {
+                viewModel.updateLocale(locale)
+                languageDropdownMenuExpanded = false
+              },
+              contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+            )
+          }
+        }
+      }
+
       MainButtonView(
         title = stringResource(R.string.delete_my_account),
         onClick = { isShowingDeleteConfirmationDialog = true },
@@ -241,6 +274,14 @@ fun ShopkeeperEditContentView(
       )
     }
   }
+}
+
+/** Each language is shown in its own name, so it can be found whatever the current language is. */
+@Composable
+private fun languageDisplayName(locale: String): String = when (locale) {
+  Locales.JAPANESE -> stringResource(R.string.language_japanese)
+  Locales.ENGLISH -> stringResource(R.string.language_english)
+  else -> locale
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

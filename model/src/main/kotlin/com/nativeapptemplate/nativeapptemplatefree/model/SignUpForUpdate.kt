@@ -14,4 +14,7 @@ data class SignUpForUpdate(
 
   @SerialName("time_zone")
   val timeZone: String,
+
+  // "en" or "ja" (Locales.supported). No default, so it is always in the payload.
+  val locale: String,
 ) : Parcelable

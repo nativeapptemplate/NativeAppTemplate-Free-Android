@@ -25,9 +25,16 @@ class TestSignUpRepository : SignUpRepository {
     return loggedInShopkeeperFlow
   }
 
+  /** The last request passed to [updateAccount]. */
+  var lastSignUpForUpdate: SignUpForUpdate? = null
+    private set
+
   override fun updateAccount(
     signUpForUpdate: SignUpForUpdate,
-  ): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
+  ): Flow<LoggedInShopkeeper> {
+    lastSignUpForUpdate = signUpForUpdate
+    return loggedInShopkeeperFlow
+  }
 
   private var deleteAccountError: Throwable? = null
 

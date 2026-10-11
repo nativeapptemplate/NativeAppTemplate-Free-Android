@@ -21,6 +21,10 @@
   <string name="delete">Delete</string>
   <string name="button_label_update">Update</string>
   <string name="time_zone">Time Zone</string>
+  <string name="language">Language</string>
+  <!-- Each language is shown in its own name, so these are never translated. -->
+  <string name="language_english" translatable="false">English</string>
+  <string name="language_japanese" translatable="false">日本語</string>
   <string name="not_connected">⚠️ You aren’t connected to the internet</string>
   <string name="instructions">Instructions</string>
   <string name="open">Open</string>

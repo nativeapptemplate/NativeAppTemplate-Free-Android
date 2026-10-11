@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- Every API request sends `Accept-Language` built from the device's preferred languages (e.g. `ja-JP, en-US;q=0.9`), so the API's English/Japanese responses before sign-in follow the device; a header already on the request is kept
+- Sign-up sends the device's language tag as `locale`, and the signed-in shopkeeper's `locale` (`en`/`ja`) from the sign-in/sign-up/profile-update responses is stored with the session. Sessions saved by earlier versions load with `en`
+- "Language" selector (English / 日本語) on the Edit Profile screen; saving sends `locale` to `PATCH /shopkeeper_auth`
+
 ### Changed
 - Move agent instructions from `CLAUDE.md` to `AGENTS.md` so Claude Code, Codex, and other agents share one file. `CLAUDE.md` now only imports it (`@AGENTS.md`)
 

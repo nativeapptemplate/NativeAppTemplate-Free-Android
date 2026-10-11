@@ -39,4 +39,7 @@ message UserPreferences {
   bool should_update_app = 39;
 
   bool did_show_tap_shop_below_tip = 48;
+
+  // "en" or "ja". Empty in data saved before this field existed; read as Locales.DEFAULT.
+  string locale = 50;
 }
