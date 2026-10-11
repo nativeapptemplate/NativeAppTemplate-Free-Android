@@ -22,21 +22,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withLink
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.FormatLink
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.linkedFormat
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.restartApp
 
 @Composable
@@ -103,25 +100,12 @@ fun AcceptTermsContentView(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
-      val annotatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-          append(stringResource(R.string.please_accept_updated))
-          append(" ")
-        }
-
-        withLink(
-          LinkAnnotation.Url(
-            NativeAppTemplateConstants.TERMS_OF_USE_URL,
-            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
-          ),
-        ) {
-          append(stringResource(R.string.terms_of_use))
-        }
-
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
-          append(".")
-        }
-      }
+      val annotatedString = linkedFormat(
+        format = stringResource(R.string.please_accept_updated),
+        links = listOf(FormatLink(stringResource(R.string.terms_of_use), NativeAppTemplateConstants.TERMS_OF_USE_URL)),
+        textStyle = SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant),
+        linkStyle = SpanStyle(color = MaterialTheme.colorScheme.primary),
+      )
 
       Text(
         annotatedString,

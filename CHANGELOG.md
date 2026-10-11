@@ -10,8 +10,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Every API request sends `Accept-Language` built from the device's preferred languages (e.g. `ja-JP, en-US;q=0.9`), so the API's English/Japanese responses before sign-in follow the device; a header already on the request is kept
 - Sign-up sends the device's language tag as `locale`, and the signed-in shopkeeper's `locale` (`en`/`ja`) from the sign-in/sign-up/profile-update responses is stored with the session. Sessions saved by earlier versions load with `en`
 - "Language" selector (English / 日本語) on the Edit Profile screen; saving sends `locale` to `PATCH /shopkeeper_auth`
+- Japanese UI (`values-ja/strings.xml`), ported from the paid edition so shared strings read the same. Terms follow the API's `ja.yml` (店舗, アイテムタグ, 未完了 / 完了). Server error messages, error codes and user-entered text are not translated by the app
+- `StringResourcesTranslationTest` fails when a translatable string or plural is missing from either language, its format arguments differ, or a Japanese string says ショップ / 店, shortens アイテムタグ, or mentions 組織 (the Free edition has no organizations); `JapaneseResourcesPackagedTest` checks the Japanese resources are packaged
 
 ### Changed
+- Text that was hardcoded in Kotlin now comes from strings.xml: the minimum password length hint (a plural) and the alert dialog's default "OK"
+- The agreement and "Please accept updated ..." sentences are single format strings with the links as arguments (`linkedFormat()`), so a translation can put the links where its grammar needs them
+- `app_name` is `translatable="false"`
+- `HardcodedUiStringsTest` scans each file as a whole, so it also catches a literal on the line after `Text(`, and `updateMessage("...")` / `?: "..."` fallbacks
 - Move agent instructions from `CLAUDE.md` to `AGENTS.md` so Claude Code, Codex, and other agents share one file. `CLAUDE.md` now only imports it (`@AGENTS.md`)
 
 ## [3.2.6] - 2026-05-24

@@ -91,3 +91,14 @@ The `buildConfigField` entries in `app/build.gradle.kts` (`apiBuildConfigFields(
 Certificate pinning: set `NATIVEAPPTEMPLATE_API_CERT_PINS` to a comma-separated list of `sha256/...` pins for your API domain (e.g. leaf + intermediate). When unset, requests are not pinned (except to the former hosted domain, which keeps its old pins).
 
 Language: `AcceptLanguageInterceptor` adds `Accept-Language` from the device's preferred locales to every request (the API answers in English or Japanese). Once signed in, the server uses the shopkeeper's saved `locale` instead: sign-up sends the device tag as `locale`, the sign-in/sign-up/profile-update responses return `locale` (`en`/`ja`) in `data.attributes`, it is stored in `UserPreferences.locale` (empty in data saved before the field existed, read as `Locales.DEFAULT` = `en`), and Edit Profile's Language selector sends it in `PATCH /shopkeeper_auth`.
+
+## Strings and Japanese
+
+The UI is in English (`values/strings.xml`) and Japanese (`values-ja/strings.xml`), chosen by the device language.
+
+- Every user-facing string goes in `values/strings.xml` **and** `values-ja/strings.xml` in the same commit. `StringResourcesTranslationTest` fails on a key or plural missing from either file, or on format arguments that differ (`%1$s` vs `%1$d`). `HardcodedUiStringsTest` fails on literals in `ui/` Compose code.
+- Use the terms of the API's `config/locales/ja.yml`: Shop = 店舗, Item Tag = アイテムタグ, idled / completed = 未完了 / 完了. Reuse the paid edition's Japanese for strings both editions share, so they read the same. Polite です/ます for sentences, no 。 on buttons and labels, full-width 「」（）：.
+- nativeapptemplate-agent renames 店舗 and アイテムタグ as plain substrings, so write them in full: never ショップ / 店 / お店, never タグ or アイテム alone. `StringResourcesTranslationTest` fails otherwise. The Free edition has no organizations, so no string may mention 組織. `app_name` is `translatable="false"` so the English rename covers the product name.
+- Don't build sentences from fragments: Japanese word order differs. Use one string with `%1$s` arguments; for links inside a sentence use `linkedFormat()` (`ui/common/LinkedFormat.kt`). Counts use `<plurals>` (Japanese needs only `other`).
+- Keep untranslated: product names, URLs, `NATIVEAPPTEMPLATE-XXXX` codes and `CodedError` descriptions, time zone names, logs, the API's error messages (the server localizes them), and what the user typed.
+- There is no `localeFilters`/`resourceConfigurations` in Gradle; adding one without `ja` would strip the Japanese (`JapaneseResourcesPackagedTest` would fail).

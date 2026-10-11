@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="app_name">Native App Template</string>
+  <string name="app_name" translatable="false">Native App Template</string>
   <string name="title_shops">Shops</string>
   <string name="title_settings">Settings</string>
 
@@ -171,9 +171,10 @@
   <string name="start">Start</string>
   <string name="or">or</string>
   <string name="logged_in_as">Logged in as %1$s</string>
-  <string name="please_accept_updated">Please accept updated</string>
-  <string name="agreement_prefix">"By signing up or signing in, you agree to the "</string>
-  <string name="agreement_and">" and "</string>
+  <!-- %1$s is the "Privacy Policy" or "Terms of Use" link. -->
+  <string name="please_accept_updated">Please accept updated %1$s.</string>
+  <!-- %1$s is the "Terms of Use" link and %2$s the "Privacy Policy" link. -->
+  <string name="agreement">By signing up or signing in, you agree to the %1$s and %2$s.</string>
   <string name="left_in_shop_slots">left in shop slots.</string>
   <string name="completed_item_tags_count_label">completed item tags</string>
   <string name="all_item_tags_count_label">all item tags</string>
@@ -182,4 +183,10 @@
   <string name="reload">Reload</string>
   <string name="tag_idled">IDLED</string>
   <string name="tag_completed">COMPLETED</string>
+
+  <!-- Misc -->
+  <plurals name="characters_minimum">
+    <item quantity="one">%1$d character minimum.</item>
+    <item quantity="other">%1$d characters minimum.</item>
+  </plurals>
 </resources>

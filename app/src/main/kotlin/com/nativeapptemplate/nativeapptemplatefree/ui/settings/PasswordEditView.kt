@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -182,7 +183,11 @@ fun PasswordEditContentView(
         supportingText = {
           Column {
             Text(
-              text = "${NativeAppTemplateConstants.MINIMUM_PASSWORD_LENGTH} characters minimum.",
+              text = pluralStringResource(
+                R.plurals.characters_minimum,
+                NativeAppTemplateConstants.MINIMUM_PASSWORD_LENGTH,
+                NativeAppTemplateConstants.MINIMUM_PASSWORD_LENGTH,
+              ),
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
