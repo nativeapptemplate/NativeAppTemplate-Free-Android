@@ -13,6 +13,11 @@ interface SignUpRepository {
     signUpForUpdate: SignUpForUpdate,
   ): Flow<LoggedInShopkeeper>
 
+  /** Changes only `shopkeepers.locale` ("en" or "ja"). */
+  fun updateLocale(
+    locale: String,
+  ): Flow<LoggedInShopkeeper>
+
   fun deleteAccount(): Flow<Boolean>
 
   fun sendResetPasswordInstruction(

@@ -20,7 +20,7 @@ data class SignUp(
   @SerialName("current_platform")
   val currentPlatform: String,
 
-  // The device's language tag (e.g. "ja-JP"); the server reduces it to a supported language.
+  // The app's language, "en" or "ja" (AppLanguage).
   // No default: with the Json config's encodeDefaults = false, a value equal to its default is
   // omitted from the payload.
   val locale: String,

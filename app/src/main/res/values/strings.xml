@@ -21,7 +21,9 @@
   <string name="delete">Delete</string>
   <string name="button_label_update">Update</string>
   <string name="time_zone">Time Zone</string>
-  <string name="language">Language</string>
+  <string name="app_language">App Language</string>
+  <string name="change_app_language_in_settings">Change in Settings</string>
+  <string name="app_language_emails_too">Emails are sent in this language too.</string>
   <!-- Each language is shown in its own name, so these are never translated. -->
   <string name="language_english" translatable="false">English</string>
   <string name="language_japanese" translatable="false">日本語</string>

@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
-import com.nativeapptemplate.nativeapptemplatefree.model.Locales
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
@@ -28,7 +28,6 @@ data class ShopkeeperEditUiState(
   val name: String = "",
   val email: String = "",
   val timeZone: String = TimeZones.DEFAULT_TIME_ZONE,
-  val locale: String = Locales.DEFAULT,
 
   val isUpdated: Boolean = false,
   val isEmailUpdated: Boolean = false,
@@ -43,6 +42,7 @@ data class ShopkeeperEditUiState(
 class ShopkeeperEditViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
   private val signUpRepository: SignUpRepository,
+  private val appLanguageProvider: AppLanguageProvider,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopkeeperEditUiState())
 
@@ -90,7 +90,6 @@ class ShopkeeperEditViewModel @Inject constructor(
                 name = if (hasFilledForm) it.name else userData.name,
                 email = if (hasFilledForm) it.email else userData.email,
                 timeZone = if (hasFilledForm) it.timeZone else userData.timeZone,
-                locale = if (hasFilledForm) it.locale else userData.locale,
                 success = true,
                 isLoading = false,
               )
@@ -117,7 +116,8 @@ class ShopkeeperEditViewModel @Inject constructor(
         name = uiState.value.name,
         email = uiState.value.email.trim(),
         timeZone = uiState.value.timeZone,
-        locale = uiState.value.locale,
+        // The app language, as AppLanguageSyncer sends it, so saving never reverts the language.
+        locale = appLanguageProvider.currentCode(),
       )
 
       val loggedInShopkeeperFlow = signUpRepository.updateAccount(signUpForUpdate)
@@ -206,8 +206,7 @@ class ShopkeeperEditViewModel @Inject constructor(
 
     return userData.name == uiState.value.name &&
       userData.email == uiState.value.email &&
-      userData.timeZone == uiState.value.timeZone &&
-      userData.locale == uiState.value.locale
+      userData.timeZone == uiState.value.timeZone
   }
 
   fun hasInvalidDataEmail(): Boolean {
@@ -231,12 +230,6 @@ class ShopkeeperEditViewModel @Inject constructor(
   fun updateTimeZone(newTimeZone: String) {
     _uiState.update {
       it.copy(timeZone = newTimeZone)
-    }
-  }
-
-  fun updateLocale(newLocale: String) {
-    _uiState.update {
-      it.copy(locale = newLocale)
     }
   }
 

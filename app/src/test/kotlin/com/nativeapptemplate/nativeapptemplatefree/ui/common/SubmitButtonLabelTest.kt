@@ -14,6 +14,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAccountPasswordRepository
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
@@ -83,7 +84,7 @@ class SubmitButtonLabelTest {
   @Test
   fun shopkeeperEdit() {
     val loginRepository = TestLoginRepository().apply { sendUserData(emptyUserData.copy(name = "John", email = "john@example.com")) }
-    val viewModel = ShopkeeperEditViewModel(loginRepository, TestSignUpRepository())
+    val viewModel = ShopkeeperEditViewModel(loginRepository, TestSignUpRepository(), TestAppLanguageProvider())
     assertSubmitButtonLabeled(R.string.button_label_update) {
       ShopkeeperEditView(viewModel = viewModel, onShowSnackbar = onShowSnackbar, onBackClick = {})
     }
@@ -99,7 +100,7 @@ class SubmitButtonLabelTest {
 
   @Test
   fun signUp() {
-    val viewModel = SignUpViewModel(TestSignUpRepository())
+    val viewModel = SignUpViewModel(TestSignUpRepository(), TestAppLanguageProvider())
     assertSubmitButtonLabeled(R.string.sign_up) {
       SignUpView(viewModel = viewModel, onShowSnackbar = onShowSnackbar, onBackClick = {})
     }

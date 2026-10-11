@@ -3,6 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.collect
@@ -27,6 +28,7 @@ class SignUpViewModelTest {
   val dispatcherRule = MainDispatcherRule()
 
   private val signUpRepository = TestSignUpRepository()
+  private val appLanguageProvider = TestAppLanguageProvider("en")
 
   private lateinit var viewModel: SignUpViewModel
 
@@ -34,6 +36,7 @@ class SignUpViewModelTest {
   fun setUp() {
     viewModel = SignUpViewModel(
       signUpRepository = signUpRepository,
+      appLanguageProvider = appLanguageProvider,
     )
   }
 
@@ -132,11 +135,14 @@ class SignUpViewModelTest {
   }
 
   @Test
-  fun createShopkeeper_sendsTheDevicesLanguageTag() = runTest {
+  fun createShopkeeper_sendsTheAppLanguageCode() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
     val originalLocale = Locale.getDefault()
     try {
-      Locale.setDefault(Locale.JAPAN)
+      // The app is shown in Japanese (e.g. a per-app language) on an English device: the app's
+      // language, not the device's tag, is sent.
+      Locale.setDefault(Locale.US)
+      appLanguageProvider.code = "ja"
       viewModel.updateName(testInputLoggedInShopkeeper.getName()!!)
       viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
       viewModel.updatePassword(testInputPassword)
@@ -144,8 +150,7 @@ class SignUpViewModelTest {
 
       viewModel.createShopkeeper()
 
-      // Locale.JAPAN is language "ja", country "JP": BCP 47 tag "ja-JP".
-      assertEquals("ja-JP", signUpRepository.lastSignUp!!.locale)
+      assertEquals("ja", signUpRepository.lastSignUp!!.locale)
     } finally {
       Locale.setDefault(originalLocale)
     }

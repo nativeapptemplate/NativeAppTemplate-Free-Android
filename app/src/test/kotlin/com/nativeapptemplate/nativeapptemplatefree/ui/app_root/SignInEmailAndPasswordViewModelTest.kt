@@ -2,12 +2,15 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Meta
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -31,6 +34,8 @@ class SignInEmailAndPasswordViewModelTest {
   val dispatcherRule = MainDispatcherRule()
 
   private val loginRepository = TestLoginRepository()
+  private val signUpRepository = TestSignUpRepository()
+  private val appLanguageProvider = TestAppLanguageProvider("en")
 
   private lateinit var viewModel: SignInEmailAndPasswordViewModel
 
@@ -38,12 +43,60 @@ class SignInEmailAndPasswordViewModelTest {
   fun setUp() {
     viewModel = SignInEmailAndPasswordViewModel(
       loginRepository = loginRepository,
+      appLanguageSyncer = AppLanguageSyncer(loginRepository, signUpRepository, appLanguageProvider),
     )
   }
 
   @Test
   fun stateIsInitiallyNotLoading() = runTest {
     assertFalse(viewModel.uiState.value.isLoading)
+  }
+
+  @Test
+  fun login_whenTheAppLanguageDiffersFromTheStoredLocale_updatesTheLocale() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    // The sign-in response carries the shopkeeper's saved locale; the app is in Japanese.
+    loginRepository.sendLoggedInShopkeeper(
+      testInputLoggedInShopkeeper.copy(
+        datum = testInputLoggedInShopkeeper.datum!!.copy(
+          attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(locale = "en"),
+        ),
+      ),
+    )
+    appLanguageProvider.code = "ja"
+    signUpRepository.sendLoggedInShopkeeper(
+      testInputLoggedInShopkeeper.copy(
+        datum = testInputLoggedInShopkeeper.datum!!.copy(
+          attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(locale = "ja"),
+        ),
+      ),
+    )
+
+    viewModel.login()
+
+    assertEquals(listOf("ja"), signUpRepository.updatedLocales)
+    assertEquals("ja", loginRepository.userData.first().locale)
+  }
+
+  @Test
+  fun login_whenTheAppLanguageMatchesTheStoredLocale_sendsNothing() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    loginRepository.sendLoggedInShopkeeper(
+      testInputLoggedInShopkeeper.copy(
+        datum = testInputLoggedInShopkeeper.datum!!.copy(
+          attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(locale = "en"),
+        ),
+      ),
+    )
+    appLanguageProvider.code = "en"
+
+    viewModel.login()
+
+    assertEquals(emptyList<String>(), signUpRepository.updatedLocales)
   }
 
   @Test

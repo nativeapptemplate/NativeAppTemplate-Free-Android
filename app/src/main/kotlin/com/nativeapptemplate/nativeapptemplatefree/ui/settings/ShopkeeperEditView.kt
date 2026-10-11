@@ -1,8 +1,14 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.provider.Settings
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -56,6 +63,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
+import com.nativeapptemplate.nativeapptemplatefree.utils.AppLanguage
 
 @Composable
 fun ShopkeeperEditView(
@@ -122,7 +130,6 @@ fun ShopkeeperEditContentView(
 ) {
   val timeZoneValues = TimeZones.map.values.toList()
   var timeZoneDropdownMenuExpanded by remember { mutableStateOf(false) }
-  var languageDropdownMenuExpanded by remember { mutableStateOf(false) }
   var isShowingDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
   if (isShowingDeleteConfirmationDialog) {
@@ -235,36 +242,7 @@ fun ShopkeeperEditContentView(
         }
       }
 
-      ExposedDropdownMenuBox(
-        expanded = languageDropdownMenuExpanded,
-        onExpandedChange = { languageDropdownMenuExpanded = it },
-      ) {
-        TextField(
-          // The `menuAnchor` modifier must be passed to the text field for correctness.
-          modifier = Modifier.menuAnchor(PrimaryEditable, true),
-          readOnly = true,
-          value = languageDisplayName(uiState.locale),
-          onValueChange = {},
-          label = { Text(stringResource(R.string.language)) },
-          trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = languageDropdownMenuExpanded) },
-          colors = ExposedDropdownMenuDefaults.textFieldColors(),
-        )
-        ExposedDropdownMenu(
-          expanded = languageDropdownMenuExpanded,
-          onDismissRequest = { languageDropdownMenuExpanded = false },
-        ) {
-          Locales.supported.forEach { locale ->
-            DropdownMenuItem(
-              text = { Text(languageDisplayName(locale)) },
-              onClick = {
-                viewModel.updateLocale(locale)
-                languageDropdownMenuExpanded = false
-              },
-              contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-            )
-          }
-        }
-      }
+      AppLanguageSection()
 
       MainButtonView(
         title = stringResource(R.string.delete_my_account),
@@ -272,6 +250,61 @@ fun ShopkeeperEditContentView(
         modifier = Modifier
           .padding(horizontal = 12.dp, vertical = 24.dp),
       )
+    }
+  }
+}
+
+/**
+ * The app's language, read-only: it is changed in the system settings (per-app language on
+ * Android 13+, the device language before), and AppLanguageSyncer makes the server follow it.
+ */
+@Composable
+private fun AppLanguageSection() {
+  val context = LocalContext.current
+  // Changing the language recreates the Activity, so this is read again on return from Settings.
+  val appLanguage = AppLanguage.currentCode(context)
+
+  Column(
+    verticalArrangement = Arrangement.spacedBy(4.dp),
+    modifier = Modifier.fillMaxWidth(),
+  ) {
+    Text(
+      text = stringResource(R.string.app_language),
+      style = MaterialTheme.typography.titleMedium,
+    )
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      modifier = Modifier.fillMaxWidth(),
+    ) {
+      Text(
+        text = languageDisplayName(appLanguage),
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = Modifier.weight(1f),
+      )
+      TextButton(
+        onClick = { openAppLanguageSettings(context) },
+      ) {
+        Text(stringResource(R.string.change_app_language_in_settings))
+      }
+    }
+    Text(
+      text = stringResource(R.string.app_language_emails_too),
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+  }
+}
+
+private fun openAppLanguageSettings(context: Context) {
+  try {
+    context.startActivity(AppLanguage.settingsIntent(context.packageName))
+  } catch (exception: ActivityNotFoundException) {
+    // A device whose Settings app lacks the per-app screen: the device language still applies.
+    Log.w("ShopkeeperEditView", "No app language settings screen", exception)
+    try {
+      context.startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+    } catch (fallbackException: ActivityNotFoundException) {
+      Log.w("ShopkeeperEditView", "No language settings screen", fallbackException)
     }
   }
 }

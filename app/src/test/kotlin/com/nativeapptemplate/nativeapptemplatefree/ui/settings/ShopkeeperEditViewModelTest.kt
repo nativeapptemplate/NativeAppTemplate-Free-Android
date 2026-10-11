@@ -5,6 +5,7 @@ import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescriptio
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
@@ -32,6 +33,7 @@ class ShopkeeperEditViewModelTest {
 
   private val loginRepository = TestLoginRepository()
   private val signUpRepository = TestSignUpRepository()
+  private val appLanguageProvider = TestAppLanguageProvider("en")
 
   private lateinit var viewModel: ShopkeeperEditViewModel
 
@@ -40,6 +42,7 @@ class ShopkeeperEditViewModelTest {
     viewModel = ShopkeeperEditViewModel(
       loginRepository = loginRepository,
       signUpRepository = signUpRepository,
+      appLanguageProvider = appLanguageProvider,
     )
   }
 
@@ -261,17 +264,8 @@ class ShopkeeperEditViewModelTest {
   }
 
   @Test
-  fun reload_fillsTheLanguageFromTheStoredLocale() = runTest {
-    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
-    loginRepository.sendUserData(emptyUserData.copy(name = "John", email = "john@example.com", locale = "ja"))
-
-    viewModel.reload()
-
-    assertEquals("ja", viewModel.uiState.value.locale)
-  }
-
-  @Test
-  fun changingOnlyTheLanguage_enablesSave() = runTest {
+  fun aDifferentAppLanguageAlone_doesNotEnableSave() = runTest {
+    // The language is no longer edited here; the app language is synced on launch instead.
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
     loginRepository.sendUserData(
       emptyUserData.copy(
@@ -281,16 +275,15 @@ class ShopkeeperEditViewModelTest {
         locale = "en",
       ),
     )
+    appLanguageProvider.code = "ja"
+
     viewModel.reload()
+
     assertTrue(viewModel.hasInvalidData())
-
-    viewModel.updateLocale("ja")
-
-    assertFalse(viewModel.hasInvalidData())
   }
 
   @Test
-  fun updateShopkeeper_sendsTheLocaleAndStoresTheReturnedOne() = runTest {
+  fun updateShopkeeper_sendsTheAppLanguageCodeAsTheLocale() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
     loginRepository.sendUserData(
       emptyUserData.copy(
@@ -300,6 +293,8 @@ class ShopkeeperEditViewModelTest {
         locale = "en",
       ),
     )
+    // The app is in Japanese; the stored locale has not been synced yet.
+    appLanguageProvider.code = "ja"
     signUpRepository.sendLoggedInShopkeeper(
       LoggedInShopkeeper(
         datum = testInputLoggedInShopkeeperData.copy(
@@ -308,14 +303,14 @@ class ShopkeeperEditViewModelTest {
       ),
     )
     viewModel.reload()
-    viewModel.updateLocale("ja")
+    viewModel.updateName("New Name")
 
     viewModel.updateShopkeeper()
 
+    // Same value the launch sync sends, so saving never reverts the language to the stored one.
     assertEquals("ja", signUpRepository.lastSignUpForUpdate!!.locale)
     assertEquals("ja", loginRepository.userData.first().locale)
     assertTrue(viewModel.uiState.value.isUpdated)
-    // Only the language changed, so this is not an email change (which signs out).
     assertFalse(viewModel.uiState.value.isEmailUpdated)
   }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Loading
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
+  private val appLanguageSyncer: AppLanguageSyncer,
 ) : ViewModel() {
 
   val uiState: StateFlow<MainActivityUiState> = loginRepository.userData.map {
@@ -34,6 +36,13 @@ class MainActivityViewModel @Inject constructor(
   fun updateDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
     viewModelScope.launch {
       loginRepository.setDidShowTapShopBelowTip(didShowTapShopBelowTip)
+    }
+  }
+
+  /** Sends the app language as the shopkeeper's locale if it changed (e.g. in the system settings). */
+  fun syncAppLanguage() {
+    viewModelScope.launch {
+      appLanguageSyncer.sync()
     }
   }
 

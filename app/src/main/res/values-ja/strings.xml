@@ -28,7 +28,9 @@
   <string name="delete">削除</string>
   <string name="button_label_update">更新</string>
   <string name="time_zone">タイムゾーン</string>
-  <string name="language">言語</string>
+  <string name="app_language">アプリの言語</string>
+  <string name="change_app_language_in_settings">端末の設定で変更</string>
+  <string name="app_language_emails_too">メールもこの言語で届きます。</string>
   <string name="not_connected">⚠️ インターネットに接続されていません</string>
   <string name="instructions">手順</string>
   <string name="open">開く</string>

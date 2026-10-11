@@ -59,6 +59,10 @@ class StringResourcesTranslationTest {
 
   @Test
   fun japanese_usesTheSharedGlossary() {
+    // The paid edition's wording for the app-language section of Edit Profile.
+    assertEquals("アプリの言語", japanese.getValue("app_language").text)
+    assertEquals("端末の設定で変更", japanese.getValue("change_app_language_in_settings").text)
+    assertEquals("メールもこの言語で届きます。", japanese.getValue("app_language_emails_too").text)
     // The template API's config/locales/ja.yml: activerecord.models.shop = 店舗, item_tag = アイテムタグ.
     assertEquals("店舗", japanese.getValue("title_shops").text)
     assertEquals("店舗名", japanese.getValue("shop_name").text)
