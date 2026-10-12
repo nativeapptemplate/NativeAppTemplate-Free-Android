@@ -33,7 +33,7 @@ MVVM layered architecture following [Android Modern App Architecture](https://de
 
 - **UI Layer** (`ui/`): Jetpack Compose screens + Hilt-injected ViewModels. Each feature has its own `navigation/` subpackage defining routes and `NavGraphBuilder` extensions.
 - **Data Layer** (`data/`): Repository interfaces + `*Impl` classes backed by Retrofit API interfaces. Each domain (shop, item_tag, login) has its own `*Api.kt`, `*Repository.kt`, and `*RepositoryImpl.kt`.
-- **Network Layer** (`network/`): `AuthInterceptor` for token injection, `RequestHelper` for request construction.
+- **Network Layer** (`network/`): `AuthInterceptor` for token injection (only for the API host, `BuildConfig.DOMAIN`: as a network interceptor it also runs on redirects, and a cross-host hop must not carry the session), `RequestHelper` for request construction.
 - **DI** (`di/modules/`): Hilt modules — `NetModule` (Retrofit/OkHttp), `DataModule` (repository bindings), `DataStoreModule`, `DispatchersModule`, `CoroutineScopesModule`.
 - **DataStore** (`datastore/`): Proto DataStore for user preferences. Proto definitions live in `app/src/main/proto/`.
 - **Navigation**: `NativeAppTemplateNavHost.kt` is the top-level nav graph. Two bottom-nav sections: Shops, Settings. Each section uses nested navigation graphs via `*BaseRoute`.
