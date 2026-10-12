@@ -2,13 +2,13 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +20,9 @@ data class AcceptPrivacyUiState(
 
   val isLoading: Boolean = false,
   val message: String = "",
-)
+) : ErrorShowingUiState<AcceptPrivacyUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class AcceptPrivacyViewModel @Inject constructor(
@@ -41,15 +43,7 @@ class AcceptPrivacyViewModel @Inject constructor(
       val booleanFlow = loginRepository.updateConfirmedPrivacyVersion()
 
       booleanFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect {
           _uiState.update {
             it.copy(

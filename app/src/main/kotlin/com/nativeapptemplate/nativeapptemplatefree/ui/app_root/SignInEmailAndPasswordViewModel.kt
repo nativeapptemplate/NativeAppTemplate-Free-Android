@@ -11,6 +11,8 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -30,7 +32,9 @@ data class SignInEmailAndPasswordUiState(
 
   val isLoading: Boolean = false,
   val message: String = "",
-)
+) : ErrorShowingUiState<SignInEmailAndPasswordUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class SignInEmailAndPasswordViewModel @Inject constructor(
@@ -52,15 +56,7 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
       val loggedInShopkeeperFlow: Flow<LoggedInShopkeeper> = loginRepository.login(login)
 
       loggedInShopkeeperFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect { loggedInShopkeeper ->
           _uiState.update { it.copy(loggedInShopkeeper = loggedInShopkeeper) }
           loginRepository.clearUserPreferences()

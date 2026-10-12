@@ -10,6 +10,8 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -36,7 +38,9 @@ data class ShopkeeperEditUiState(
   val isLoading: Boolean = true,
   val success: Boolean = false,
   val message: String = "",
-)
+) : ErrorShowingUiState<ShopkeeperEditUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class ShopkeeperEditViewModel @Inject constructor(
@@ -73,15 +77,7 @@ class ShopkeeperEditViewModel @Inject constructor(
       var hasFilledForm = false
 
       userDataFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect { userData ->
           if (!uiState.value.isUpdated && !uiState.value.isEmailUpdated && !uiState.value.isDeleted) {
             _uiState.update {
@@ -123,15 +119,7 @@ class ShopkeeperEditViewModel @Inject constructor(
       val loggedInShopkeeperFlow = signUpRepository.updateAccount(signUpForUpdate)
 
       loggedInShopkeeperFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect { loggedInShopkeeper ->
           loginRepository.setShopkeeperForUpdate(loggedInShopkeeper)
 
