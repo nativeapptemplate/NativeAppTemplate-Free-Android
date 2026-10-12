@@ -61,7 +61,7 @@ All errors should use the `CodedError` interface. Error codes use the `NATIVEAPP
 - Tests use JUnit 4 with `kotlinx.coroutines.test` and Robolectric.
 - `MainDispatcherRule` (in `testing/util/`) replaces the main dispatcher for coroutine tests.
 - Test doubles: `Test*Repository` classes (in `testing/repository/`) implement repository interfaces for ViewModel testing.
-- Demo data: `demo/` package contains `DemoAssetManager` and `Demo*Repository` classes that load JSON fixtures from `app/src/test/assets/`.
+- Demo data: `demo/` package contains `DemoAssetManager` and `Demo*Repository` classes that load JSON fixtures from `app/src/test/resources/demo/`. Never put them in an app source set's `assets/`, which would ship them in the APK.
 - JVM toolchain: Java 17.
 
 ### Testing Policy
@@ -79,7 +79,7 @@ All errors should use the `CodedError` interface. Error codes use the `NATIVEAPP
 
 ## Pre-push Hook
 
-A `scripts/pre-push` script runs Spotless, lint, and tests before each push. Install it with:
+A `scripts/pre-push` script runs Spotless, lint, the release R8 shrink (`:app:minifyReleaseWithR8`), and tests before each push. CI runs the same steps. Install it with:
 ```bash
 cp scripts/pre-push .git/hooks/pre-push
 ```

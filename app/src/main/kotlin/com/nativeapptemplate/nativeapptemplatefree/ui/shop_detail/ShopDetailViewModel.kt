@@ -31,9 +31,6 @@ data class ShopDetailUiState(
   val itemTags: ItemTags = ItemTags(),
 )
 
-/**
- * ViewModel for library view
- */
 @HiltViewModel
 class ShopDetailViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,

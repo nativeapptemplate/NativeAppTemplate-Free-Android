@@ -40,9 +40,6 @@ data class ItemTagListUiState(
   val hasMorePages: Boolean get() = currentPage < totalPages
 }
 
-/**
- * ViewModel for library view
- */
 @HiltViewModel
 class ItemTagListViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,

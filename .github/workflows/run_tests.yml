@@ -32,5 +32,9 @@ jobs:
       - name: Android Lint
         run: ./gradlew :app:lintDebug
 
+      # Release builds run R8 (isMinifyEnabled); catch missing-class errors before a release.
+      - name: Release R8 shrink
+        run: ./gradlew :app:minifyReleaseWithR8
+
       - name: Unit Tests
         run: ./gradlew test --stacktrace
