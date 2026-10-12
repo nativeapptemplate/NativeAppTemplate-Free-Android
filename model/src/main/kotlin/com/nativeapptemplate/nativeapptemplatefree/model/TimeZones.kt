@@ -1,6 +1,8 @@
 package com.nativeapptemplate.nativeapptemplatefree.model
 
 import android.icu.util.TimeZone
+import java.util.Locale
+import kotlin.math.abs
 
 /**
  * TimeZone utilities
@@ -177,11 +179,13 @@ object TimeZones {
   /**
    * Get default time zone
    */
-  fun currentTimeZoneKey(): String {
+  fun currentTimeZoneKey(timeZone: TimeZone = TimeZone.getDefault()): String {
     var result = DEFAULT_TIME_ZONE
-    val timeZone = TimeZone.getDefault()
 
-    val timeZoneGmt = timeZone.getDisplayName(false, TimeZone.LONG_GMT)
+    // Built here rather than with getDisplayName: that one is localized ("UTC+01:00" in French)
+    // and gives a bare "GMT" at offset zero, which every entry contains. Standard offset, as the
+    // map labels zones by it.
+    val timeZoneGmt = standardOffsetLabel(timeZone)
     val timeZoneLocation = timeZone.id
 
     val timeZoneLocationDetail = timeZoneLocation.split("/").last().replace("_", " ")
@@ -198,6 +202,14 @@ object TimeZones {
     result = keyFromValue(filteredTimeZoneValues.first())
 
     return result
+  }
+
+  /** "(GMT+09:00)", the prefix of the map's values for [timeZone]'s standard offset. */
+  private fun standardOffsetLabel(timeZone: TimeZone): String {
+    val offsetMinutes = timeZone.rawOffset / 60_000
+    val sign = if (offsetMinutes < 0) "-" else "+"
+    val absoluteMinutes = abs(offsetMinutes)
+    return String.format(Locale.ROOT, "(GMT%s%02d:%02d)", sign, absoluteMinutes / 60, absoluteMinutes % 60)
   }
 
   fun keyFromValue(timeZoneValue: String): String {

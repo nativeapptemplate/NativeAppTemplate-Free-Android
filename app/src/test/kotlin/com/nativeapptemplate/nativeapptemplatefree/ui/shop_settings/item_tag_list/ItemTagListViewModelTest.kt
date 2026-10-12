@@ -3,8 +3,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_li
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.hasScrollToKeyAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToKey
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
@@ -150,6 +153,31 @@ class ItemTagListViewModelTest {
     assertFalse(uiStateValue.hasMorePages)
   }
 
+  // A tag added at the front of the list between page loads pushes tag 2 from page 1 onto page 2,
+  // so page 2 returns [tag 2, tag 3]. The list keeps one tag 2, where page 1 put it:
+  // [1, 2] + [2, 3] without the repeated 2 = [1, 2, 3].
+  @Test
+  fun loadMore_whenTheListShiftedBetweenPages_keepsEachTagOnceInOrder() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTagsPage1)
+    viewModel.reload()
+
+    itemTagRepository.sendItemTags(
+      ItemTags(
+        datum = listOf(testInputItemTagsData[1], testInputItemTagsData[2]),
+        meta = Meta(currentPage = 2, totalPages = 2, totalCount = 4, limit = 2),
+      ),
+    )
+    viewModel.loadMore()
+
+    assertEquals(
+      listOf(ITEM_TAG_1_ID, ITEM_TAG_2_ID, ITEM_TAG_3_ID),
+      viewModel.uiState.value.itemTags.map { it.id },
+    )
+  }
+
   @Test
   fun loadMore_doesNotFire_whenNoMorePages() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
@@ -211,6 +239,29 @@ class ItemTagListViewModelTest {
     composeTestRule.waitForIdle()
 
     assertEquals(listOf<Int?>(1, 2, 3), itemTagRepository.requestedPages)
+  }
+
+  // Each tag's row is keyed by the tag's id, so Compose keeps a row's state (e.g. a revealed swipe
+  // action) with its tag when the list changes. pagedItemTags names tag n "item-tag-n" with name "A00n".
+  @Test
+  fun tagRows_areKeyedByTheTagId() {
+    itemTagRepository.itemTagsForPage = { page -> pagedItemTags(page = page ?: 1, totalPages = 1, perPage = 10) }
+    shopRepository.sendShop(testInputShop)
+    composeTestRule.setContent {
+      val uiState by viewModel.uiState.collectAsState()
+      ItemTagListView(
+        viewModel = viewModel,
+        uiState = uiState,
+        onItemClick = {},
+        onAddItemTagClick = {},
+        onBackClick = {},
+      )
+    }
+    composeTestRule.runOnIdle { viewModel.reload() }
+
+    composeTestRule.onNode(hasScrollToKeyAction()).performScrollToKey("item-tag-7")
+
+    composeTestRule.onNodeWithText("A007").assertExists()
   }
 }
 

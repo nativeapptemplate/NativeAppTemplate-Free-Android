@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.datastore
 
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataStore
+import com.nativeapptemplate.nativeapptemplatefree.di.modules.networkJson
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -48,6 +49,26 @@ class NativeAppTemplatePreferencesDataSourceTest {
 
     assertTrue(subject.shouldUpdatePrivacy().first())
     assertTrue(subject.shouldUpdateTerms().first())
+  }
+
+  // A "meta" that omits some of its fields. A missing shop limit must not be read as 0 ("no shops
+  // allowed"), and a missing android_app_version must not reset the stored version (and with it
+  // shouldUpdateApp). setPermissions keeps the stored value for anything the response omits.
+  @Test
+  fun setPermissions_withMetaMissingSomeFields_keepsThePreviousValues() = testScope.runTest {
+    subject.setPermissions(Permissions(meta = Meta(androidAppVersion = 1, shouldUpdatePrivacy = false, shouldUpdateTerms = false, shopLimitCount = 99)))
+
+    subject.setPermissions(
+      networkJson.decodeFromString<Permissions>("""{"data": [], "meta": {"should_update_privacy": true}}"""),
+    )
+
+    // Expected: 99 and 1, the values the first setPermissions above stored, since the second
+    // response omits these keys.
+    val userData = subject.userData.first()
+    assertEquals(99, userData.shopLimitCount)
+    assertEquals(1, userData.androidAppVersion)
+    // The one key the response did send is stored.
+    assertTrue(subject.shouldUpdatePrivacy().first())
   }
 
   @Test
