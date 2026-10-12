@@ -7,6 +7,10 @@ on:
       - main
   pull_request:
 
+# The job only reads the repository; keep the token read-only whatever the repository default is.
+permissions:
+  contents: read
+
 concurrency:
   group: run-tests-${{ github.ref }}
   cancel-in-progress: true
