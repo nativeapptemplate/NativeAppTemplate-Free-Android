@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+The languages the app is translated into (values/ is English, values-ja/ Japanese), so Android 13+
+lists the app under Settings > Apps > Language. Keep in step with Locales.supported.
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+  <locale android:name="en" />
+  <locale android:name="ja" />
+</locale-config>

@@ -105,6 +105,8 @@ class MainActivity : ComponentActivity() {
   override fun onResume() {
     super.onResume()
     viewModel.updatePermissions()
+    // Launch and every return to the foreground, e.g. after changing the app language in Settings.
+    viewModel.syncAppLanguage()
   }
 }
 

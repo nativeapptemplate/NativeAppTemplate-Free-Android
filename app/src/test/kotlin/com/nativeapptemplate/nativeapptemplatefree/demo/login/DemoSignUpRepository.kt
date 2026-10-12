@@ -37,6 +37,8 @@ class DemoSignUpRepository @Inject constructor(
 
   override fun updateAccount(signUpForUpdate: SignUpForUpdate): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
 
+  override fun updateLocale(locale: String): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
+
   override fun deleteAccount(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun sendResetPasswordInstruction(sendResetPassword: SendResetPassword): Flow<Boolean> = MutableStateFlow(true)

@@ -26,18 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withLink
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.FormatLink
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.linkedFormat
 import com.nativeapptemplate.nativeapptemplatefree.utils.openUri
 
 @Composable
@@ -82,37 +79,15 @@ internal fun SignUpOrSignInView(
           .padding(vertical = 24.dp),
       )
 
-      val agreement = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
-          append(stringResource(R.string.agreement_prefix))
-        }
-
-        withLink(
-          LinkAnnotation.Url(
-            NativeAppTemplateConstants.TERMS_OF_USE_URL,
-            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
-          ),
-        ) {
-          append(stringResource(R.string.terms_of_use))
-        }
-
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
-          append(stringResource(R.string.agreement_and))
-        }
-
-        withLink(
-          LinkAnnotation.Url(
-            NativeAppTemplateConstants.PRIVACY_POLICY_URL,
-            TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.primary)),
-          ),
-        ) {
-          append(stringResource(R.string.privacy_policy))
-        }
-
-        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
-          append(".")
-        }
-      }
+      val agreement = linkedFormat(
+        format = stringResource(R.string.agreement),
+        links = listOf(
+          FormatLink(stringResource(R.string.terms_of_use), NativeAppTemplateConstants.TERMS_OF_USE_URL),
+          FormatLink(stringResource(R.string.privacy_policy), NativeAppTemplateConstants.PRIVACY_POLICY_URL),
+        ),
+        textStyle = SpanStyle(color = MaterialTheme.colorScheme.onSurface),
+        linkStyle = SpanStyle(color = MaterialTheme.colorScheme.primary),
+      )
 
       Text(
         agreement,

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 import javax.inject.Inject
 
 data class SignUpUiState(
@@ -33,6 +33,7 @@ data class SignUpUiState(
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
   private val signUpRepository: SignUpRepository,
+  private val appLanguageProvider: AppLanguageProvider,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(SignUpUiState())
   val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
@@ -53,7 +54,7 @@ class SignUpViewModel @Inject constructor(
         password = uiState.value.password,
         timeZone = uiState.value.timeZone,
         currentPlatform = "android",
-        locale = Locale.getDefault().toLanguageTag(),
+        locale = appLanguageProvider.currentCode(),
       )
 
       val loggedInShopkeeperFlow = signUpRepository.signUp(signUp)

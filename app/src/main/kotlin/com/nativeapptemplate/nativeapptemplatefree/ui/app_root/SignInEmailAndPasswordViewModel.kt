@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
@@ -34,6 +35,7 @@ data class SignInEmailAndPasswordUiState(
 @HiltViewModel
 class SignInEmailAndPasswordViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
+  private val appLanguageSyncer: AppLanguageSyncer,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(SignInEmailAndPasswordUiState())
   val uiState: StateFlow<SignInEmailAndPasswordUiState> = _uiState.asStateFlow()
@@ -63,6 +65,8 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
           _uiState.update { it.copy(loggedInShopkeeper = loggedInShopkeeper) }
           loginRepository.clearUserPreferences()
           loginRepository.setShopkeeper(loggedInShopkeeper)
+          // The account may have been created, or last used, in another language.
+          viewModelScope.launch { appLanguageSyncer.sync() }
 
           val permissionsFlow: Flow<Permissions> = loginRepository.getPermissions()
 

@@ -3,6 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.SendConfirmation
 import com.nativeapptemplate.nativeapptemplatefree.model.SendResetPassword
+import com.nativeapptemplate.nativeapptemplatefree.model.ShopkeeperLocaleUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.Status
@@ -19,6 +20,12 @@ interface SignUpApi {
   @PATCH("shopkeeper_auth")
   suspend fun updateAccount(
     @Body data: SignUpForUpdate,
+  ): ApiResponse<LoggedInShopkeeper>
+
+  // The server accepts locale alone and answers 200 with the shopkeeper.
+  @PATCH("shopkeeper_auth")
+  suspend fun updateLocale(
+    @Body data: ShopkeeperLocaleUpdate,
   ): ApiResponse<LoggedInShopkeeper>
 
   @DELETE("shopkeeper_auth")

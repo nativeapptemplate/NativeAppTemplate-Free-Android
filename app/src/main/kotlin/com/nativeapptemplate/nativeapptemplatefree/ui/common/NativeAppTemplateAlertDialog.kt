@@ -59,7 +59,7 @@ fun NativeAppTemplateAlertDialog(
           },
         ) {
           Text(
-            confirmButtonTitle ?: "OK",
+            confirmButtonTitle ?: stringResource(R.string.button_label_ok),
             color = confirmButtonTitleColor ?: Color.Red,
           )
         }

@@ -36,6 +36,21 @@ class TestSignUpRepository : SignUpRepository {
     return loggedInShopkeeperFlow
   }
 
+  /** Every locale passed to [updateLocale], in order. */
+  val updatedLocales = mutableListOf<String>()
+
+  private var updateLocaleError: Throwable? = null
+
+  override fun updateLocale(locale: String): Flow<LoggedInShopkeeper> {
+    updatedLocales += locale
+    return updateLocaleError?.let { error -> flow { throw error } } ?: loggedInShopkeeperFlow
+  }
+
+  /** Makes every later [updateLocale] call fail with [error]. */
+  fun failUpdateLocale(error: Throwable) {
+    updateLocaleError = error
+  }
+
   private var deleteAccountError: Throwable? = null
 
   override fun deleteAccount(): Flow<Boolean> = deleteAccountError?.let { error -> flow { throw error } } ?: MutableStateFlow(true)

@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.di.modules
 
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
+import com.nativeapptemplate.nativeapptemplatefree.model.ShopkeeperLocaleUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import kotlinx.serialization.json.JsonPrimitive
@@ -12,20 +13,32 @@ import org.junit.Test
 /** Request bodies and responses as Retrofit encodes/decodes them ([networkJson], encodeDefaults = false). */
 class NetworkJsonLocaleTest {
   @Test
-  fun signUp_sendsTheDeviceLanguageTag() {
+  fun signUp_sendsTheAppLanguage() {
     val body = SignUp(
       name = "John Smith",
       email = "john@example.com",
       timeZone = "Tokyo",
       password = "password",
       currentPlatform = "android",
-      locale = "ja-JP",
+      locale = "ja",
     )
 
     val json = networkJson.parseToJsonElement(networkJson.encodeToString(SignUp.serializer(), body)).jsonObject
 
-    // POST /shopkeeper_auth takes the device's tag; the server reduces it to "ja".
-    assertEquals(JsonPrimitive("ja-JP"), json["locale"])
+    // POST /shopkeeper_auth takes the app language (AppLanguage.currentCode), "en" or "ja".
+    assertEquals(JsonPrimitive("ja"), json["locale"])
+  }
+
+  @Test
+  fun shopkeeperLocaleUpdate_sendsOnlyTheLocaleEvenWhenItIsTheDefaultLanguage() {
+    // AppLanguageSyncer's PATCH /shopkeeper_auth body. "en" is the server's default, so a property
+    // default would drop it and the server would keep the old locale.
+    val json = networkJson.parseToJsonElement(
+      networkJson.encodeToString(ShopkeeperLocaleUpdate.serializer(), ShopkeeperLocaleUpdate(locale = "en")),
+    ).jsonObject
+
+    assertEquals(setOf("locale"), json.keys)
+    assertEquals(JsonPrimitive("en"), json["locale"])
   }
 
   @Test

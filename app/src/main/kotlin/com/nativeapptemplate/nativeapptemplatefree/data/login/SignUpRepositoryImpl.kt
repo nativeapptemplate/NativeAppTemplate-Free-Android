@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 
 import com.nativeapptemplate.nativeapptemplatefree.model.SendConfirmation
 import com.nativeapptemplate.nativeapptemplatefree.model.SendResetPassword
+import com.nativeapptemplate.nativeapptemplatefree.model.ShopkeeperLocaleUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.Status
@@ -28,6 +29,13 @@ class SignUpRepositoryImpl @Inject constructor(
     signUpForUpdate: SignUpForUpdate,
   ) = flow {
     val response = api.updateAccount(signUpForUpdate)
+    emitApiResponse(response)
+  }.flowOn(ioDispatcher)
+
+  override fun updateLocale(
+    locale: String,
+  ) = flow {
+    val response = api.updateLocale(ShopkeeperLocaleUpdate(locale = locale))
     emitApiResponse(response)
   }.flowOn(ioDispatcher)
 

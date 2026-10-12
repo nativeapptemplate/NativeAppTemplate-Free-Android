@@ -5,6 +5,8 @@ import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagReposito
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepositoryImpl
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordRepositoryImpl
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageProvider
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageProviderImpl
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepositoryImpl
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
@@ -24,6 +26,9 @@ import dagger.hilt.components.SingletonComponent
 abstract class DataModule {
   @Binds
   internal abstract fun bindSignUpRepository(signUpRepositoryImpl: SignUpRepositoryImpl): SignUpRepository
+
+  @Binds
+  internal abstract fun bindAppLanguageProvider(appLanguageProviderImpl: AppLanguageProviderImpl): AppLanguageProvider
 
   @Binds
   internal abstract fun bindLoginRepository(loginRepositoryImpl: LoginRepositoryImpl): LoginRepository

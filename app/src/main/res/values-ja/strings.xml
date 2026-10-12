@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Japanese. Keep every translatable key of values/strings.xml here (StringResourcesTranslationTest
+  fails otherwise), and use the terms of the template API's config/locales/ja.yml:
+  Shop = 店舗, Item Tag = アイテムタグ, idled / completed = 未完了 / 完了.
+  nativeapptemplate-agent renames 店舗 and アイテムタグ as plain substrings, so always write them in
+  full: never ショップ / 店 / お店, and never shorten アイテムタグ to タグ or アイテム.
+-->
+<resources>
+  <string name="title_shops">店舗</string>
+  <string name="title_settings">設定</string>
+
+  <!-- Sign up screen -->
+  <string name="sign_in">サインイン</string>
+  <string name="sign_up">新規登録</string>
+  <string name="signed_up_but_unconfirmed">確認用リンクを記載したメールを送信しました。アカウントを有効にするには、メールのリンクを開いてください。</string>
+  <string name="email">メールアドレス</string>
+  <string name="password">パスワード</string>
+
+  <!-- Email and password screen -->
+  <string name="label_password">パスワード</string>
+  <string name="sign_up_for_an_account">アカウントを新規登録</string>
+  <string name="sign_in_to_your_account">アカウントにサインイン</string>
+
+  <!-- Generic -->
+  <string name="label_loading">読み込み中…</string>
+  <string name="label_description">説明</string>
+  <string name="delete">削除</string>
+  <string name="button_label_update">更新</string>
+  <string name="time_zone">タイムゾーン</string>
+  <string name="app_language">アプリの言語</string>
+  <string name="change_app_language_in_settings">端末の設定で変更</string>
+  <string name="app_language_emails_too">メールもこの言語で届きます。</string>
+  <string name="not_connected">⚠️ インターネットに接続されていません</string>
+  <string name="instructions">手順</string>
+  <string name="open">開く</string>
+  <string name="are_you_sure">よろしいですか？</string>
+  <string name="full_name">名前</string>
+  <string name="full_name_is_required">名前を入力してください。</string>
+  <string name="email_is_required">メールアドレスを入力してください。</string>
+  <string name="email_is_invalid">メールアドレスの形式が正しくありません。</string>
+  <string name="password_is_required">パスワードを入力してください。</string>
+  <string name="password_is_invalid">パスワードが正しくありません。</string>
+  <string name="role">権限</string>
+  <string name="unauthorized">この操作を行う権限がありません。</string>
+  <string name="cancel">キャンセル</string>
+  <string name="button_label_ok">OK</string>
+  <!-- The button on the Accept Terms / Accept Privacy screens. -->
+  <string name="accept">同意する</string>
+
+  <!-- Welcome screen -->
+  <string name="button_sign_in">サインイン</string>
+
+  <!-- Login screen -->
+  <string name="button_sign_out">サインアウト</string>
+  <string name="forgot_password">パスワードをお忘れですか？</string>
+
+  <!-- Forgot Password screen -->
+  <string name="sent_reset_password_instruction">パスワード再設定の案内を記載したメールを送信しました。</string>
+  <string name="button_send_me_reset_password_instructions">パスワード再設定の案内を送信する</string>
+
+  <!-- Resend Confirmation Instructions screen -->
+  <string name="button_send_me_confirmation_instructions">確認メールを再送信</string>
+  <string name="didnt_receive_confirmation_instructions">確認メールが届きませんか？</string>
+  <string name="sent_confirmation_instruction">メールアドレスの確認方法を記載したメールを送信しました。</string>
+
+  <!-- Need App Updates screen -->
+  <string name="update_app">アプリをアップデート</string>
+  <string name="install_new_version_app">アプリの新しいバージョンをインストールしてください。</string>
+
+  <!-- Accept Privacy screen -->
+  <string name="confirmed_privacy_version_updated">プライバシーポリシーに同意しました。</string>
+  <string name="privacy_policy_updated">プライバシーポリシーが更新されました</string>
+
+  <!-- Accept Terms screen -->
+  <string name="confirmed_terms_version_updated">利用規約に同意しました。</string>
+  <string name="terms_of_use_updated">利用規約が更新されました</string>
+
+  <!-- On-boarding -->
+  <string name="welcome_to_app">%1$sへようこそ</string>
+
+  <!-- Shops Screen -->
+  <string name="add_shop">店舗を追加</string>
+  <string name="shops">店舗</string>
+  <string name="shop_name">店舗名</string>
+  <string name="shop_name_is_required">店舗名を入力してください。</string>
+  <string name="shop_name_is_invalid">店舗名が正しくありません。</string>
+  <string name="shop_description_is_invalid">店舗の説明が正しくありません。</string>
+  <string name="shop_name_help">名前は1〜%1$d文字で入力してください。</string>
+  <string name="shop_description_help">説明は0〜%1$d文字で入力してください。</string>
+  <string name="add_shop_description">新しい店舗を追加します。</string>
+  <string name="tap_shop_below">下の店舗をタップしてください</string>
+
+  <!-- Shop Detail Screen -->
+  <string name="message_shop_created">店舗を追加しました。</string>
+  <string name="message_shop_deleted">店舗を削除しました。</string>
+  <string name="message_shop_updated">店舗を更新しました。</string>
+  <string name="shop_detail_instruction">スワイプしてアイテムタグの状態を変更します。</string>
+  <string name="complete">完了にする</string>
+  <string name="idle">未完了に戻す</string>
+
+  <!-- Shop Settings Screen -->
+  <string name="title_delete_shop">店舗を削除</string>
+  <string name="label_shop_settings">店舗の設定</string>
+  <string name="label_shop_settings_basic_settings">基本設定</string>
+  <string name="label_shop_settings_manage_item_tags">アイテムタグの管理</string>
+
+  <!-- Item Tag -->
+  <string name="name_label">名前</string>
+  <string name="description_label">説明</string>
+  <string name="completed_at_label">完了日時</string>
+  <string name="item_tag_name_placeholder">牛乳を買う</string>
+  <string name="label_add_item_tag">アイテムタグを追加</string>
+  <string name="add_item_tag_description">新しいアイテムタグを追加して、アイテムタグの状態を変更してみましょう。</string>
+  <string name="item_tag_name_is_invalid">アイテムタグの名前が正しくありません。</string>
+  <string name="item_tag_description_is_invalid">アイテムタグの説明が正しくありません。</string>
+  <string name="item_tag_name_help">名前は1〜%1$d文字で入力してください。</string>
+  <string name="item_tag_description_help">説明は0〜%1$d文字で入力してください。</string>
+  <string name="mark_as_completed">完了にする</string>
+  <string name="mark_as_idled">未完了に戻す</string>
+
+  <string name="passwords_do_not_match">パスワードが一致しません。</string>
+  <string name="message_no_app_to_open_link">このリンクを開けるアプリがありません。</string>
+  <string name="message_item_tag_created">アイテムタグを作成しました。</string>
+  <string name="message_item_tag_updated">アイテムタグを更新しました。</string>
+  <string name="message_item_tag_deleted">アイテムタグを削除しました。</string>
+
+  <!-- Item Tag Detail Screen -->
+  <string name="label_edit_item_tag">アイテムタグを編集</string>
+  <string name="title_delete_item_tag">アイテムタグを削除</string>
+
+  <!-- Settings Screen -->
+  <string name="mode">モード</string>
+  <string name="label_dark_mode">ダークモード</string>
+  <string name="label_light">ライト</string>
+  <string name="label_dark">ダーク</string>
+  <string name="label_system_default">システムのデフォルト</string>
+  <string name="dark_mode_preference">ダークモードの設定</string>
+  <string name="my_account">マイアカウント</string>
+  <string name="profile">プロフィール</string>
+  <string name="support">サポート</string>
+  <string name="about">このアプリについて</string>
+  <string name="app_section">アプリ</string>
+  <string name="version">バージョン</string>
+  <string name="website">Webサイト</string>
+  <string name="support_website">サポートWebサイト</string>
+  <string name="faqs">よくある質問</string>
+  <string name="rate_app">アプリを評価・レビュー</string>
+  <string name="contact">お問い合わせ</string>
+  <string name="email_app_is_not_found">メールアプリが見つかりません。</string>
+  <string name="privacy_policy">プライバシーポリシー</string>
+  <string name="terms_of_use">利用規約</string>
+  <string name="edit_profile">プロフィールを編集</string>
+  <string name="delete_my_account">アカウントを削除</string>
+  <string name="update_password">パスワードを変更</string>
+  <string name="current_password">現在のパスワード</string>
+  <string name="new_password">新しいパスワード</string>
+  <string name="confirm_new_password">新しいパスワード（確認）</string>
+  <string name="current_password_is_required">現在のパスワードを入力してください。</string>
+  <string name="new_password_is_required">新しいパスワードを入力してください。</string>
+  <string name="confirm_new_password_is_required">新しいパスワード（確認）を入力してください。</string>
+  <string name="we_need_your_current_password">変更を確定するには、現在のパスワードを入力してください。</string>
+  <string name="reconfirm_description">新しいメールアドレスに確認用リンクを記載したメールを送信しました。メールのリンクを開くと、新しいメールアドレスに更新されます。確認が終わるまで、メールアドレスは更新されません。</string>
+
+  <!-- Update password -->
+  <string name="message_password_updated">パスワードを更新しました。</string>
+
+  <!-- Profile -->
+  <string name="message_shopkeeper_updated">アカウントを更新しました。</string>
+  <string name="message_shopkeeper_deleted">アカウントを削除しました。</string>
+
+  <!-- Common UI labels -->
+  <string name="back">戻る</string>
+  <string name="edit">編集</string>
+  <string name="dismiss">閉じる</string>
+  <string name="show_password">パスワードを表示</string>
+  <string name="hide_password">パスワードを隠す</string>
+  <string name="start">はじめる</string>
+  <string name="or">または</string>
+  <string name="logged_in_as">%1$sでサインイン中</string>
+  <string name="please_accept_updated">更新された「%1$s」に同意してください。</string>
+  <string name="agreement">新規登録またはサインインすると、「%1$s」と「%2$s」に同意したものとみなされます。</string>
+  <!-- These follow a number: "3 件の店舗". -->
+  <string name="left_in_shop_slots">件の店舗枠が残っています。</string>
+  <string name="completed_item_tags_count_label">件のアイテムタグが完了</string>
+  <string name="all_item_tags_count_label">件のアイテムタグ（合計）</string>
+  <string name="error_title">問題が発生しました。</string>
+  <string name="error_body">もう一度お試しください。</string>
+  <string name="reload">再読み込み</string>
+  <string name="tag_idled">未完了</string>
+  <string name="tag_completed">完了</string>
+
+  <!-- Misc -->
+  <plurals name="characters_minimum">
+    <item quantity="other">%1$d文字以上で入力してください。</item>
+  </plurals>
+</resources>
