@@ -142,11 +142,13 @@ fun ShopCreateContentView(
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Text(
-              text = stringResource(R.string.shop_name_is_invalid),
-              style = MaterialTheme.typography.bodyLarge,
-              color = if (viewModel.hasInvalidDataName()) Color.Red else Color.Transparent,
-            )
+            if (viewModel.hasInvalidDataName()) {
+              Text(
+                text = stringResource(R.string.shop_name_is_invalid),
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Red,
+              )
+            }
           }
         },
         modifier = Modifier
@@ -168,11 +170,13 @@ fun ShopCreateContentView(
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Text(
-              text = stringResource(R.string.shop_description_is_invalid),
-              style = MaterialTheme.typography.bodyLarge,
-              color = if (viewModel.hasInvalidDataDescription()) Color.Red else Color.Transparent,
-            )
+            if (viewModel.hasInvalidDataDescription()) {
+              Text(
+                text = stringResource(R.string.shop_description_is_invalid),
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Red,
+              )
+            }
           }
         },
         minLines = 4,
