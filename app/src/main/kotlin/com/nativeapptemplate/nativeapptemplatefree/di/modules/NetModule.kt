@@ -109,7 +109,9 @@ class NetModule {
 /**
  * Logs requests and responses at [level] with the session headers (access-token, client, expiry,
  * uid) redacted: the API returns them on sign-in and AuthInterceptor sends them, and anyone reading
- * logcat of a debug build could otherwise take over the session.
+ * logcat of a debug build could otherwise take over the session. `Authorization` is redacted too:
+ * devise_token_auth returns the same session in it, as `Bearer <Base64 of the headers' JSON>`. So is
+ * `Set-Cookie`, which carries the Rails session cookie the app never uses.
  */
 internal fun sessionRedactingLoggingInterceptor(
   level: HttpLoggingInterceptor.Level,
@@ -117,6 +119,8 @@ internal fun sessionRedactingLoggingInterceptor(
 ): HttpLoggingInterceptor = HttpLoggingInterceptor(logger).apply {
   this.level = level
   RequestHelper.SESSION_HEADERS.forEach(::redactHeader)
+  redactHeader("Authorization")
+  redactHeader("Set-Cookie")
 }
 
 /** The Json Retrofit encodes request bodies and decodes responses with (encodeDefaults stays false). */
