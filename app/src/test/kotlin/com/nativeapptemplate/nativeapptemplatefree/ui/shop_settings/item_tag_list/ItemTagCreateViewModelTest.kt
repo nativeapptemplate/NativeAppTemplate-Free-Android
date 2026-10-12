@@ -3,12 +3,15 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_li
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagCreateRoute
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -144,6 +147,21 @@ class ItemTagCreateViewModelTest {
     viewModel.updateDescription("D".repeat(NativeAppTemplateConstants.MAXIMUM_ITEM_TAG_DESCRIPTION_LENGTH + 1))
 
     assertEquals("", viewModel.uiState.value.description)
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the screen stays open.
+  @Test
+  fun createItemTag_whenTheApiRejectsIt_showsTheErrorAndStaysOpen() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateName("Buy milk")
+    itemTagRepository.fail(ItemTagRepository::createItemTag, testApiError)
+
+    viewModel.createItemTag()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.isCreated)
   }
 }
 

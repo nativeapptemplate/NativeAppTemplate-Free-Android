@@ -3,11 +3,14 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_de
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagEditRoute
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -168,6 +171,24 @@ class ItemTagEditViewModelTest {
     viewModel.updateName("Buy milk 🥛 + bread")
 
     assertFalse(viewModel.hasInvalidDataName())
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the screen stays open. The typed name stays so the user can fix it.
+  @Test
+  fun updateItemTag_whenTheApiRejectsIt_showsTheErrorAndKeepsTheEdit() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    itemTagRepository.sendItemTag(testInputItemTag)
+    viewModel.reload()
+    viewModel.updateName("A099")
+    itemTagRepository.fail(ItemTagRepository::updateItemTag, testApiError)
+
+    viewModel.updateItemTag()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.isUpdated)
+    assertEquals("A099", uiStateValue.name)
   }
 }
 

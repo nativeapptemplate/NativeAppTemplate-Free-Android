@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
@@ -12,6 +13,8 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginR
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.ShopDetailRoute
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -125,6 +128,58 @@ class ShopDetailViewModelTest {
 
     val uiStateValue = viewModel.uiState.value
     assertEquals(uiStateValue.message, newMessage)
+  }
+
+  // A failed load shows the coded error and stops the spinner.
+  @Test
+  fun reload_whenTheItemTagsCannotBeLoaded_showsTheError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData)
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.fail(ItemTagRepository::getItemTags, testApiError)
+
+    viewModel.reload()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.success)
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the loaded tags stay.
+  @Test
+  fun completeItemTag_whenTheApiRejectsIt_showsTheErrorAndKeepsTheList() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData)
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTags)
+    viewModel.reload()
+    itemTagRepository.fail(ItemTagRepository::completeItemTag, testApiError)
+
+    viewModel.completeItemTag(testInputItemTags.datum.first().id!!)
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertEquals(testInputItemTags, uiStateValue.itemTags)
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the loaded tags stay.
+  @Test
+  fun idleItemTag_whenTheApiRejectsIt_showsTheErrorAndKeepsTheList() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData)
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTags)
+    viewModel.reload()
+    itemTagRepository.fail(ItemTagRepository::idleItemTag, testApiError)
+
+    viewModel.idleItemTag(testInputItemTags.datum.first().id!!)
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertEquals(testInputItemTags, uiStateValue.itemTags)
   }
 }
 
