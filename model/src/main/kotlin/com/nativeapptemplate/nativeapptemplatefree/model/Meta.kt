@@ -7,6 +7,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Parcelize
+// The shop limit and android_app_version are null when the response omits them, so
+// setPermissions keeps the stored value instead of storing 0.
 data class Meta(
   @SerialName("limit_count")
   var limitCount: Int = 0,
@@ -15,7 +17,7 @@ data class Meta(
   var createdShopsCount: Int = 0,
 
   @SerialName("android_app_version")
-  var androidAppVersion: Int = 0,
+  var androidAppVersion: Int? = null,
 
   @SerialName("should_update_privacy")
   val shouldUpdatePrivacy: Boolean? = null,
@@ -24,7 +26,7 @@ data class Meta(
   var shouldUpdateTerms: Boolean? = null,
 
   @SerialName("shop_limit_count")
-  var shopLimitCount: Int = 0,
+  var shopLimitCount: Int? = null,
 
   var count: Int = 0,
 
