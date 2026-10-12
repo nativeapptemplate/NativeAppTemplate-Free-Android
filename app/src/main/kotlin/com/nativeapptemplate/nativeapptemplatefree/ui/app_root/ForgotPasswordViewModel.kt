@@ -3,15 +3,15 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SendResetPassword
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +23,9 @@ data class ForgotPasswordUiState(
 
   val isLoading: Boolean = false,
   val message: String = "",
-)
+) : ErrorShowingUiState<ForgotPasswordUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
@@ -49,15 +51,7 @@ class ForgotPasswordViewModel @Inject constructor(
       val booleanFlow = signUpRepository.sendResetPasswordInstruction(sendResetPassword)
 
       booleanFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect {
           _uiState.update {
             it.copy(

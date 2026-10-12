@@ -16,7 +16,6 @@
 
 package com.nativeapptemplate.nativeapptemplatefree.demo
 
-import android.content.Context
 import java.io.InputStream
 
 /**
@@ -24,7 +23,7 @@ import java.io.InputStream
  * are not packaged into the app.
  */
 internal object DemoAssetManagerImpl : DemoAssetManager {
-  override fun open(context: Context, fileName: String): InputStream =
+  override fun open(fileName: String): InputStream =
     requireNotNull(javaClass.classLoader?.getResourceAsStream("demo/$fileName")) {
       "Missing test resource demo/$fileName"
     }

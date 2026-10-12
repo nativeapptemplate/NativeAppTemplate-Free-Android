@@ -1,7 +1,5 @@
 package com.nativeapptemplate.nativeapptemplatefree.demo.item_tag
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManager
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManagerImpl
@@ -53,8 +51,7 @@ class DemoItemTagRepository @Inject constructor(
   @OptIn(ExperimentalSerializationApi::class)
   private suspend inline fun <reified T> getDataFromJsonFile(fileName: String): T =
     withContext(ioDispatcher) {
-      val context = ApplicationProvider.getApplicationContext<Context>()
-      assets.open(context, fileName).use { inputStream ->
+      assets.open(fileName).use { inputStream ->
         networkJson.decodeFromStream(inputStream)
       }
     }

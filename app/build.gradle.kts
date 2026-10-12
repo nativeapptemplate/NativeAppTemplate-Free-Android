@@ -97,7 +97,6 @@ dependencies {
   implementation(libs.androidx.profileinstaller)
   implementation(libs.androidx.tracing.ktx)
   implementation(libs.hilt.android)
-  implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.coroutines.guava)
   implementation(libs.kotlinx.serialization.json)
   implementation(libs.okhttp)

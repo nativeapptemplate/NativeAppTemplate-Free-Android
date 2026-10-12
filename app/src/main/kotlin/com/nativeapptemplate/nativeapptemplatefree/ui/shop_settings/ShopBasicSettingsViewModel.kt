@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopUpdateBody
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopUpdateBodyDetail
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopBasicSettingsRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,7 +37,9 @@ data class ShopBasicSettingsUiState(
   val message: String = "",
 
   val isUpdated: Boolean = false,
-)
+) : ErrorShowingUiState<ShopBasicSettingsUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class ShopBasicSettingsViewModel @Inject constructor(
@@ -70,15 +72,7 @@ class ShopBasicSettingsViewModel @Inject constructor(
       val shopFlow: Flow<Shop> = shopRepository.getShop(shopId)
 
       shopFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect { shop ->
           _uiState.update {
             it.copy(
@@ -113,15 +107,7 @@ class ShopBasicSettingsViewModel @Inject constructor(
       val shopFlow: Flow<Shop> = shopRepository.updateShop(shopId, shopUpdateBody)
 
       shopFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect { shop ->
           _uiState.update {
             it.copy(

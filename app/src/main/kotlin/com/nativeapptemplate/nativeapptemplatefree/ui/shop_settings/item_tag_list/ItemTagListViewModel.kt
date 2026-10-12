@@ -9,6 +9,8 @@ import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagReposito
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagListRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -36,7 +38,9 @@ data class ItemTagListUiState(
   val currentPage: Int = 1,
   val totalPages: Int = 1,
   val isLoadingMore: Boolean = false,
-) {
+) : ErrorShowingUiState<ItemTagListUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+
   val hasMorePages: Boolean get() = currentPage < totalPages
 }
 
@@ -138,15 +142,7 @@ class ItemTagListViewModel @Inject constructor(
       val booleanFlow: Flow<Boolean> = itemTagRepository.deleteItemTag(itemTagId)
 
       booleanFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect {
           _uiState.update {
             it.copy(

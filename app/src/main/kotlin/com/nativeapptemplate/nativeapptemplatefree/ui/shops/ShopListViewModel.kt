@@ -2,10 +2,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shops
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -28,7 +28,9 @@ data class ShopListUiState(
   val isLoading: Boolean = true,
   val success: Boolean = false,
   val message: String = "",
-)
+) : ErrorShowingUiState<ShopListUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class ShopListViewModel @Inject constructor(
@@ -85,15 +87,7 @@ class ShopListViewModel @Inject constructor(
             isLoading = false,
           )
         }
-      }.catch { exception ->
-        val message = exception.codedDescription
-        _uiState.update {
-          it.copy(
-            message = message,
-            isLoading = false,
-          )
-        }
-      }.collect {
+      }.catchShowingError(_uiState).collect {
       }
     }
   }

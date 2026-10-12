@@ -66,155 +66,105 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
    * rejects a sign-in response without them before it reaches here.
    */
   suspend fun setShopkeeper(loggedInShopkeeper: LoggedInShopkeeper) {
-    try {
-      userPreferences.updateData {
-        it.copy {
-          this.id = loggedInShopkeeper.getId()!!
-          this.accountId = loggedInShopkeeper.getAccountId()!!
-          this.personalAccountId = loggedInShopkeeper.getPersonalAccountId()!!
-          this.accountOwnerId = loggedInShopkeeper.getAccountOwnerId()!!
-          this.accountName = loggedInShopkeeper.getAccountName().orEmpty()
-          this.email = loggedInShopkeeper.getEmail().orEmpty()
-          this.name = loggedInShopkeeper.getName().orEmpty()
-          this.timeZone = loggedInShopkeeper.getTimeZone() ?: TimeZones.DEFAULT_TIME_ZONE
-          // Empty (read as Locales.DEFAULT) when the server does not send one.
-          this.locale = loggedInShopkeeper.getLocale().orEmpty()
-          this.token = loggedInShopkeeper.getToken()!!
-          this.client = loggedInShopkeeper.getClient()!!
-          this.uid = loggedInShopkeeper.getUID()!!
-          this.expiry = loggedInShopkeeper.getExpiry()!!
-          this.isLoggedIn = true
-        }
+    updatePreferences {
+      it.copy {
+        this.id = loggedInShopkeeper.getId()!!
+        this.accountId = loggedInShopkeeper.getAccountId()!!
+        this.personalAccountId = loggedInShopkeeper.getPersonalAccountId()!!
+        this.accountOwnerId = loggedInShopkeeper.getAccountOwnerId()!!
+        this.accountName = loggedInShopkeeper.getAccountName().orEmpty()
+        this.email = loggedInShopkeeper.getEmail().orEmpty()
+        this.name = loggedInShopkeeper.getName().orEmpty()
+        this.timeZone = loggedInShopkeeper.getTimeZone() ?: TimeZones.DEFAULT_TIME_ZONE
+        // Empty (read as Locales.DEFAULT) when the server does not send one.
+        this.locale = loggedInShopkeeper.getLocale().orEmpty()
+        this.token = loggedInShopkeeper.getToken()!!
+        this.client = loggedInShopkeeper.getClient()!!
+        this.uid = loggedInShopkeeper.getUID()!!
+        this.expiry = loggedInShopkeeper.getExpiry()!!
+        this.isLoggedIn = true
       }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
     }
   }
 
   suspend fun setShopkeeperForUpdate(loggedInShopkeeper: LoggedInShopkeeper) {
-    try {
-      userPreferences.updateData {
-        it.copy {
-          // Keep the stored value for anything the update response omits. Read the raw attributes:
-          // the Data getters substitute defaults ("" or the default time zone) for missing values.
-          val attributes = loggedInShopkeeper.datum?.attributes
-          attributes?.email?.takeIf { it.isNotEmpty() }?.let { this.email = it }
-          attributes?.name?.takeIf { it.isNotEmpty() }?.let { this.name = it }
-          attributes?.timeZone?.takeIf { it.isNotEmpty() }?.let { this.timeZone = it }
-          attributes?.locale?.takeIf { it.isNotEmpty() }?.let { this.locale = it }
-          attributes?.uid?.takeIf { it.isNotEmpty() }?.let { this.uid = it }
-        }
+    updatePreferences {
+      it.copy {
+        // Keep the stored value for anything the update response omits. Read the raw attributes:
+        // the Data getters substitute defaults ("" or the default time zone) for missing values.
+        val attributes = loggedInShopkeeper.datum?.attributes
+        attributes?.email?.takeIf { it.isNotEmpty() }?.let { this.email = it }
+        attributes?.name?.takeIf { it.isNotEmpty() }?.let { this.name = it }
+        attributes?.timeZone?.takeIf { it.isNotEmpty() }?.let { this.timeZone = it }
+        attributes?.locale?.takeIf { it.isNotEmpty() }?.let { this.locale = it }
+        attributes?.uid?.takeIf { it.isNotEmpty() }?.let { this.uid = it }
       }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
     }
   }
 
   suspend fun setPermissions(permissions: Permissions) {
-    try {
-      userPreferences.updateData {
-        it.copy {
-          // Keep the stored value for anything the response omits (e.g. no "meta").
-          permissions.getAndroidAppVersion()?.let { androidAppVersion ->
-            this.androidAppVersion = androidAppVersion
-            this.shouldUpdateApp = BuildConfig.VERSION_CODE < androidAppVersion
-          }
-          permissions.getShouldUpdatePrivacy()?.let { this.shouldUpdatePrivacy = it }
-          permissions.getShouldUpdateTerms()?.let { this.shouldUpdateTerms = it }
-          permissions.getShopLimitCount()?.let { this.shopLimitCount = it }
+    updatePreferences {
+      it.copy {
+        // Keep the stored value for anything the response omits (e.g. no "meta").
+        permissions.getAndroidAppVersion()?.let { androidAppVersion ->
+          this.androidAppVersion = androidAppVersion
+          this.shouldUpdateApp = BuildConfig.VERSION_CODE < androidAppVersion
         }
+        permissions.getShouldUpdatePrivacy()?.let { this.shouldUpdatePrivacy = it }
+        permissions.getShouldUpdateTerms()?.let { this.shouldUpdateTerms = it }
+        permissions.getShopLimitCount()?.let { this.shopLimitCount = it }
       }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
     }
   }
 
   suspend fun setAccountId(accountId: String) {
-    try {
-      userPreferences.updateData {
-        it.copy {
-          this.accountId = accountId
-        }
+    updatePreferences {
+      it.copy {
+        this.accountId = accountId
       }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
     }
   }
 
   suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) {
-    try {
-      userPreferences.updateData {
-        it.copy {
-          this.darkThemeConfig = when (darkThemeConfig) {
-            DarkThemeConfig.FOLLOW_SYSTEM ->
-              DarkThemeConfigProto.DARK_THEME_CONFIG_FOLLOW_SYSTEM
-            DarkThemeConfig.LIGHT -> DarkThemeConfigProto.DARK_THEME_CONFIG_LIGHT
-            DarkThemeConfig.DARK -> DarkThemeConfigProto.DARK_THEME_CONFIG_DARK
-          }
+    updatePreferences {
+      it.copy {
+        this.darkThemeConfig = when (darkThemeConfig) {
+          DarkThemeConfig.FOLLOW_SYSTEM ->
+            DarkThemeConfigProto.DARK_THEME_CONFIG_FOLLOW_SYSTEM
+          DarkThemeConfig.LIGHT -> DarkThemeConfigProto.DARK_THEME_CONFIG_LIGHT
+          DarkThemeConfig.DARK -> DarkThemeConfigProto.DARK_THEME_CONFIG_DARK
         }
       }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
     }
   }
 
   suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
-    try {
-      userPreferences.updateData {
-        it.copy { this.didShowTapShopBelowTip = didShowTapShopBelowTip }
-      }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
+    updatePreferences {
+      it.copy { this.didShowTapShopBelowTip = didShowTapShopBelowTip }
     }
   }
 
   suspend fun setIsEmailUpdated(isEmailUpdated: Boolean) {
-    try {
-      userPreferences.updateData {
-        it.copy { this.isEmailUpdated = isEmailUpdated }
-      }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
+    updatePreferences {
+      it.copy { this.isEmailUpdated = isEmailUpdated }
     }
   }
 
   suspend fun setIsMyAccountDeleted(isMyAccountDeleted: Boolean) {
-    try {
-      userPreferences.updateData {
-        it.copy { this.isMyAccountDeleted = isMyAccountDeleted }
-      }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
+    updatePreferences {
+      it.copy { this.isMyAccountDeleted = isMyAccountDeleted }
     }
   }
 
   suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
-    try {
-      userPreferences.updateData {
-        it.copy { this.isShopDeleted = isShopDeleted }
-      }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to update user preferences", ioException)
-      throw ioException
+    updatePreferences {
+      it.copy { this.isShopDeleted = isShopDeleted }
     }
   }
 
   suspend fun clearUserPreferences() {
-    try {
-      userPreferences.updateData {
-        it.toBuilder().clear().build()
-      }
-    } catch (ioException: IOException) {
-      Log.e("NativeAppTemplatePreferences", "Failed to clear user preferences", ioException)
-      throw ioException
+    updatePreferences("Failed to clear user preferences") {
+      it.toBuilder().clear().build()
     }
   }
 
@@ -257,4 +207,17 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
     .map { data ->
       data.didShowTapShopBelowTip
     }
+
+  /** Writes the preferences; a failed write is logged and rethrown. */
+  private suspend fun updatePreferences(
+    failureMessage: String = "Failed to update user preferences",
+    transform: suspend (UserPreferences) -> UserPreferences,
+  ) {
+    try {
+      userPreferences.updateData(transform)
+    } catch (ioException: IOException) {
+      Log.e("NativeAppTemplatePreferences", failureMessage, ioException)
+      throw ioException
+    }
+  }
 }

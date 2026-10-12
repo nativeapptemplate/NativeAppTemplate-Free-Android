@@ -7,6 +7,8 @@ import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -28,7 +30,9 @@ data class ItemTagDetailUiState(
   val isToggling: Boolean = false,
   val success: Boolean = false,
   val message: String = "",
-)
+) : ErrorShowingUiState<ItemTagDetailUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class ItemTagDetailViewModel @Inject constructor(
@@ -61,15 +65,7 @@ class ItemTagDetailViewModel @Inject constructor(
       val itemTagFlow: Flow<ItemTag> = itemTagRepository.getItemTag(itemTagId)
 
       itemTagFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect { itemTag ->
           _uiState.update {
             it.copy(
@@ -94,15 +90,7 @@ class ItemTagDetailViewModel @Inject constructor(
       val booleanFlow: Flow<Boolean> = itemTagRepository.deleteItemTag(itemTagId)
 
       booleanFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect {
           _uiState.update {
             it.copy(

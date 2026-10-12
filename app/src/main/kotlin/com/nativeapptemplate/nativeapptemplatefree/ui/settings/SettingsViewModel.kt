@@ -6,6 +6,8 @@ import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +23,9 @@ data class SettingsUiState(
   val isLoading: Boolean = true,
   val success: Boolean = false,
   val message: String = "",
-)
+) : ErrorShowingUiState<SettingsUiState> {
+  override fun showingError(message: String) = copy(message = message, isLoading = false)
+}
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -50,15 +54,7 @@ class SettingsViewModel @Inject constructor(
       val userDataFlow = loginRepository.userData
 
       userDataFlow
-        .catch { exception ->
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        .catchShowingError(_uiState)
         .collect { userData ->
           _uiState.update {
             it.copy(
