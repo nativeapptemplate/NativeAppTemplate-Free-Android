@@ -6,11 +6,14 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopBasicSettingsRoute
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -220,6 +223,39 @@ class ShopBasicSettingsViewModelTest {
     }
 
     composeTestRule.onNodeWithText(unknownTimeZone).assertExists()
+  }
+
+  // A failed load shows the coded error and stops the spinner.
+  @Test
+  fun reload_whenTheShopCannotBeLoaded_showsTheError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.fail(ShopRepository::getShop, testApiError)
+
+    viewModel.reload()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.success)
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the screen stays open. The typed name stays so the user can fix it.
+  @Test
+  fun updateShop_whenTheApiRejectsIt_showsTheErrorAndKeepsTheEdit() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    viewModel.reload()
+    viewModel.updateName("Renamed shop")
+    shopRepository.fail(ShopRepository::updateShop, testApiError)
+
+    viewModel.updateShop()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.isUpdated)
+    assertEquals("Renamed shop", uiStateValue.name)
   }
 }
 

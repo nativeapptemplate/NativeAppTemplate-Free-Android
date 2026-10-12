@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToKey
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
@@ -19,6 +20,8 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagListRoute
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -262,6 +265,42 @@ class ItemTagListViewModelTest {
     composeTestRule.onNode(hasScrollToKeyAction()).performScrollToKey("item-tag-7")
 
     composeTestRule.onNodeWithText("A007").assertExists()
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the list stays.
+  @Test
+  fun deleteItemTag_whenTheApiRejectsIt_showsTheErrorAndKeepsTheList() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTags)
+    viewModel.reload()
+    itemTagRepository.fail(ItemTagRepository::deleteItemTag, testApiError)
+
+    viewModel.deleteItemTag(testInputItemTags.datum.first().id!!)
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertEquals(testInputItemTags.datum.map { it.id }, uiStateValue.itemTags.map { it.id })
+  }
+
+  // A failed next page shows the coded error, keeps page 1 (2 tags), and leaves page 2 to load on the next scroll.
+  @Test
+  fun loadMore_whenTheNextPageFails_keepsPageOneAndCanTryAgain() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTagsPage1)
+    viewModel.reload()
+    itemTagRepository.fail(ItemTagRepository::getItemTags, testApiError)
+
+    viewModel.loadMore()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.isLoadingMore)
+    assertEquals(testInputItemTagsPage1.datum.map { it.id }, uiStateValue.itemTags.map { it.id })
+    assertTrue(uiStateValue.hasMorePages)
   }
 }
 

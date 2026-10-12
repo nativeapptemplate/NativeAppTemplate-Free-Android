@@ -3,12 +3,15 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopSettingsRoute
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -103,6 +106,37 @@ class ShopSettingsViewModelTest {
     composeTestRule.waitForIdle()
 
     assertEquals(1, restartCount)
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the screen stays open.
+  @Test
+  fun deleteShop_whenTheApiRejectsIt_showsTheErrorAndStaysOpen() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    viewModel.reload()
+    shopRepository.fail(ShopRepository::deleteShop, testApiError)
+
+    viewModel.deleteShop(testInputShop.datum!!.id!!)
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.isShopDeleted)
+  }
+
+  // A failed load shows the coded error and stops the spinner.
+  @Test
+  fun reload_whenTheShopCannotBeLoaded_showsTheError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+
+    shopRepository.fail(ShopRepository::getShop, testApiError)
+
+    viewModel.reload()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.success)
   }
 }
 

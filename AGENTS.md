@@ -61,6 +61,8 @@ All errors should use the `CodedError` interface. Error codes use the `NATIVEAPP
 - Tests use JUnit 4 with `kotlinx.coroutines.test` and Robolectric.
 - `MainDispatcherRule` (in `testing/util/`) replaces the main dispatcher for coroutine tests.
 - Test doubles: `Test*Repository` classes (in `testing/repository/`) implement repository interfaces for ViewModel testing.
+- A test double can fail a chosen call: `shopRepository.fail(ShopRepository::createShop, testApiError)` (`testing/repository/CallFailures.kt`); collecting that call's flow then throws, as the real repositories do. `TEST_API_ERROR_MESSAGE` is what a screen must show for `testApiError`.
+- `:model` has its own JVM unit tests (`model/src/test/`).
 - Demo data: `demo/` package contains `DemoAssetManager` and `Demo*Repository` classes that load JSON fixtures from `app/src/test/resources/demo/`. Never put them in an app source set's `assets/`, which would ship them in the APK.
 - JVM toolchain: Java 17.
 

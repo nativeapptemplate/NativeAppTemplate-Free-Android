@@ -5,7 +5,11 @@ import com.nativeapptemplate.nativeapptemplatefree.model.UpdatePasswordBody
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class TestAccountPasswordRepository : AccountPasswordRepository {
+class TestAccountPasswordRepository :
+  AccountPasswordRepository,
+  FailableRepository {
+  override val failures = CallFailures()
+
   /** The last request passed to [updateAccountPassword]. */
   var lastUpdatePasswordBody: UpdatePasswordBody? = null
     private set
@@ -14,6 +18,6 @@ class TestAccountPasswordRepository : AccountPasswordRepository {
     updatePasswordBody: UpdatePasswordBody,
   ): Flow<Boolean> {
     lastUpdatePasswordBody = updatePasswordBody
-    return MutableStateFlow(true)
+    return failures.orFail(AccountPasswordRepository::updateAccountPassword, MutableStateFlow(true))
   }
 }

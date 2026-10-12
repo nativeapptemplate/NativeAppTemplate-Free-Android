@@ -1,11 +1,14 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -130,6 +133,22 @@ class ShopCreateViewModelTest {
     viewModel.updateDescription("x".repeat(1_001))
 
     assertEquals("", viewModel.uiState.value.description)
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the screen stays open.
+  @Test
+  fun createShop_whenTheApiRejectsIt_showsTheErrorAndStaysOpen() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateName(testInputShop.getName())
+    viewModel.updateTimeZone(testInputShop.getTimeZone())
+    shopRepository.fail(ShopRepository::createShop, testApiError)
+
+    viewModel.createShop()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.isCreated)
   }
 }
 

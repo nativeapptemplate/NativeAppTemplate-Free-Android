@@ -1,7 +1,10 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
+import com.nativeapptemplate.nativeapptemplatefree.data.login.AccountPasswordRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAccountPasswordRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -130,6 +133,24 @@ class PasswordEditViewModelTest {
     assertEquals("", uiState.password)
     assertEquals("", uiState.passwordConfirmation)
     assertTrue(viewModel.hasInvalidData())
+  }
+
+  // The API rejects it: the coded error is shown, the spinner stops, and the screen stays open. The form keeps what was typed.
+  @Test
+  fun updatePassword_whenTheApiRejectsIt_showsTheErrorAndKeepsTheForm() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateCurrentPassword("current-password")
+    viewModel.updatePassword("new-password")
+    viewModel.updatePasswordConfirmation("new-password")
+    accountPasswordRepository.fail(AccountPasswordRepository::updateAccountPassword, testApiError)
+
+    viewModel.updatePassword()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.isUpdated)
+    assertEquals("current-password", uiStateValue.currentPassword)
   }
 }
 
