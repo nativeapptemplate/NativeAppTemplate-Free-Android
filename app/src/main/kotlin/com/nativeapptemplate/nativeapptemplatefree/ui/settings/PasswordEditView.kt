@@ -145,11 +145,13 @@ fun PasswordEditContentView(
               text = stringResource(id = R.string.we_need_your_current_password),
               style = MaterialTheme.typography.bodyLarge,
             )
-            Text(
-              text = stringResource(id = R.string.current_password_is_required),
-              style = MaterialTheme.typography.bodyLarge,
-              color = if (uiState.currentPassword.isBlank()) Color.Red else Color.Transparent,
-            )
+            if (uiState.currentPassword.isBlank()) {
+              Text(
+                text = stringResource(id = R.string.current_password_is_required),
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Red,
+              )
+            }
           }
         },
         visualTransformation = if (currentPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -237,13 +239,15 @@ fun PasswordEditContentView(
         onValueChange = { viewModel.updatePasswordConfirmation(it) },
         supportingText = {
           val isMismatch = viewModel.hasPasswordConfirmationMismatch()
-          Text(
-            text = stringResource(
-              id = if (isMismatch) R.string.passwords_do_not_match else R.string.confirm_new_password_is_required,
-            ),
-            style = MaterialTheme.typography.bodyLarge,
-            color = if (uiState.passwordConfirmation.isBlank() || isMismatch) Color.Red else Color.Transparent,
-          )
+          if (uiState.passwordConfirmation.isBlank() || isMismatch) {
+            Text(
+              text = stringResource(
+                id = if (isMismatch) R.string.passwords_do_not_match else R.string.confirm_new_password_is_required,
+              ),
+              style = MaterialTheme.typography.bodyLarge,
+              color = Color.Red,
+            )
+          }
         },
         visualTransformation = if (passwordConfirmationVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

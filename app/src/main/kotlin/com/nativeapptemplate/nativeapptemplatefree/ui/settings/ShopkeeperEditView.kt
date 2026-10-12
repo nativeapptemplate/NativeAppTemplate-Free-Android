@@ -172,11 +172,13 @@ fun ShopkeeperEditContentView(
         value = uiState.name,
         onValueChange = { viewModel.updateName(it) },
         supportingText = {
-          Text(
-            text = stringResource(id = R.string.full_name_is_required),
-            style = MaterialTheme.typography.bodyLarge,
-            color = if (uiState.name.isBlank()) Color.Red else Color.Transparent,
-          )
+          if (uiState.name.isBlank()) {
+            Text(
+              text = stringResource(id = R.string.full_name_is_required),
+              style = MaterialTheme.typography.bodyLarge,
+              color = Color.Red,
+            )
+          }
         },
         modifier = Modifier
           .fillMaxWidth(),
