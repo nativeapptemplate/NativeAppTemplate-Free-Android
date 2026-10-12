@@ -180,7 +180,7 @@ fun SignInEmailAndPasswordContentView(
         supportingText = {
           if (uiState.password.isBlank()) {
             Text(
-              text = stringResource(id = R.string.new_password_is_required),
+              text = stringResource(id = R.string.password_is_required),
               style = MaterialTheme.typography.bodyLarge,
               color = Color.Red,
             )
