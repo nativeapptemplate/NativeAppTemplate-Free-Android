@@ -123,7 +123,6 @@ dependencies {
 
 /**
  * The API endpoint, from ~/.gradle/gradle.properties (or -P), for every build type.
- * NATIVEAPPTEMPLATE_API_CERT_PINS: optional comma-separated "sha256/..." pins for the API domain.
  */
 fun com.android.build.api.dsl.ApplicationBuildType.apiBuildConfigFields() {
   fun property(name: String): String? = (project.findProperty(name) as String?)?.trim()?.takeIf { it.isNotEmpty() }
@@ -131,5 +130,4 @@ fun com.android.build.api.dsl.ApplicationBuildType.apiBuildConfigFields() {
   buildConfigField("String", "DOMAIN", "\"${property("NATIVEAPPTEMPLATE_API_DOMAIN") ?: "api.nativeapptemplate.com"}\"")
   buildConfigField("String", "PORT", "\"${property("NATIVEAPPTEMPLATE_API_PORT") ?: ""}\"")
   buildConfigField("String", "SCHEME", "\"${property("NATIVEAPPTEMPLATE_API_SCHEME") ?: "https"}\"")
-  buildConfigField("String", "CERT_PINS", "\"${property("NATIVEAPPTEMPLATE_API_CERT_PINS") ?: ""}\"")
 }
