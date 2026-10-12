@@ -42,5 +42,8 @@ data class RequestHelper @JvmOverloads constructor(
     private const val CLIENT = "client"
     private const val EXPIRY = "expiry"
     private const val UID = "uid"
+
+    /** The session headers sent with each API request and returned by sign-in; never logged. */
+    val SESSION_HEADERS: List<String> = listOf(ACCESS_TOKEN, CLIENT, EXPIRY, UID)
   }
 }

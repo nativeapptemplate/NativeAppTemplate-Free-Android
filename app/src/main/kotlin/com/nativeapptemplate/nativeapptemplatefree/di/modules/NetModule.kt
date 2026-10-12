@@ -10,6 +10,7 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpApi
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopApi
 import com.nativeapptemplate.nativeapptemplatefree.network.AcceptLanguageInterceptor
 import com.nativeapptemplate.nativeapptemplatefree.network.AuthInterceptor
+import com.nativeapptemplate.nativeapptemplatefree.network.RequestHelper
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -37,14 +38,9 @@ class NetModule {
    */
   @Singleton
   @Provides
-  fun provideLoggingInterceptor(): HttpLoggingInterceptor =
-    HttpLoggingInterceptor().apply {
-      level = if (BuildConfig.DEBUG) {
-        HttpLoggingInterceptor.Level.HEADERS
-      } else {
-        HttpLoggingInterceptor.Level.NONE
-      }
-    }
+  fun provideLoggingInterceptor(): HttpLoggingInterceptor = sessionRedactingLoggingInterceptor(
+    level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE,
+  )
 
   /**
    * Provide OkHttp
@@ -108,6 +104,19 @@ class NetModule {
       )
       .build()
   }
+}
+
+/**
+ * Logs requests and responses at [level] with the session headers (access-token, client, expiry,
+ * uid) redacted: the API returns them on sign-in and AuthInterceptor sends them, and anyone reading
+ * logcat of a debug build could otherwise take over the session.
+ */
+internal fun sessionRedactingLoggingInterceptor(
+  level: HttpLoggingInterceptor.Level,
+  logger: HttpLoggingInterceptor.Logger = HttpLoggingInterceptor.Logger.DEFAULT,
+): HttpLoggingInterceptor = HttpLoggingInterceptor(logger).apply {
+  this.level = level
+  RequestHelper.SESSION_HEADERS.forEach(::redactHeader)
 }
 
 /** The Json Retrofit encodes request bodies and decodes responses with (encodeDefaults stays false). */
