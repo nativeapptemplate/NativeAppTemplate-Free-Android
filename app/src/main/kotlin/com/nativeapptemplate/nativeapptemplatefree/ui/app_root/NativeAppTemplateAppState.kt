@@ -34,7 +34,6 @@ fun rememberNativeAppTemplateAppState(
   coroutineScope: CoroutineScope = rememberCoroutineScope(),
   navController: NavHostController = rememberNavController(),
 ): NativeAppTemplateAppState {
-//  NavigationTrackingSideEffect(navController)
   return remember(
     loginRepository,
     navController,

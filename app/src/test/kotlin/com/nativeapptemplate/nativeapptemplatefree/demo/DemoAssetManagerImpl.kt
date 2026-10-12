@@ -19,6 +19,13 @@ package com.nativeapptemplate.nativeapptemplatefree.demo
 import android.content.Context
 import java.io.InputStream
 
+/**
+ * Reads the mock API responses from the test resources (`app/src/test/resources/demo/`), so they
+ * are not packaged into the app.
+ */
 internal object DemoAssetManagerImpl : DemoAssetManager {
-  override fun open(context: Context, fileName: String): InputStream = context.assets.open(fileName)
+  override fun open(context: Context, fileName: String): InputStream =
+    requireNotNull(javaClass.classLoader?.getResourceAsStream("demo/$fileName")) {
+      "Missing test resource demo/$fileName"
+    }
 }

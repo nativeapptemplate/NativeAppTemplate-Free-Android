@@ -30,9 +30,6 @@ data class ShopListUiState(
   val message: String = "",
 )
 
-/**
- * ViewModel for library view
- */
 @HiltViewModel
 class ShopListViewModel @Inject constructor(
   private val loginRepository: LoginRepository,

@@ -2,7 +2,6 @@ plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.ksp)
 }
 
 android {
@@ -34,8 +33,5 @@ android {
 
 dependencies {
   implementation(libs.kotlin.stdlib.jdk8)
-  implementation(libs.kotlinx.coroutines.guava)
   implementation(libs.kotlinx.serialization.json)
-  implementation(libs.sandwich)
-  implementation(libs.sandwich.retrofit)
 }
