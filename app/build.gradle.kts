@@ -64,6 +64,10 @@ android {
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
+      // NoMockDataInReleaseTest reads the source sets' assets, so adding one must rerun the tests.
+      all { test ->
+        test.inputs.files(fileTree("src") { include("*/assets/**") }).withPropertyName("sourceSetAssets")
+      }
     }
   }
 
