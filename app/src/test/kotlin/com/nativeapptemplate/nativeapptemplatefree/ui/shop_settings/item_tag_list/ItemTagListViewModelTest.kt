@@ -3,8 +3,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_li
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.hasScrollToKeyAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToKey
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
@@ -236,6 +239,29 @@ class ItemTagListViewModelTest {
     composeTestRule.waitForIdle()
 
     assertEquals(listOf<Int?>(1, 2, 3), itemTagRepository.requestedPages)
+  }
+
+  // Each tag's row is keyed by the tag's id, so Compose keeps a row's state (e.g. a revealed swipe
+  // action) with its tag when the list changes. pagedItemTags names tag n "item-tag-n" with name "A00n".
+  @Test
+  fun tagRows_areKeyedByTheTagId() {
+    itemTagRepository.itemTagsForPage = { page -> pagedItemTags(page = page ?: 1, totalPages = 1, perPage = 10) }
+    shopRepository.sendShop(testInputShop)
+    composeTestRule.setContent {
+      val uiState by viewModel.uiState.collectAsState()
+      ItemTagListView(
+        viewModel = viewModel,
+        uiState = uiState,
+        onItemClick = {},
+        onAddItemTagClick = {},
+        onBackClick = {},
+      )
+    }
+    composeTestRule.runOnIdle { viewModel.reload() }
+
+    composeTestRule.onNode(hasScrollToKeyAction()).performScrollToKey("item-tag-7")
+
+    composeTestRule.onNodeWithText("A007").assertExists()
   }
 }
 

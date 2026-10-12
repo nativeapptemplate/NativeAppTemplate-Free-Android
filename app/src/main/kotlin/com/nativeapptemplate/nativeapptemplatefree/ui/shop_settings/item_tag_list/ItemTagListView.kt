@@ -209,6 +209,9 @@ private fun ItemTagListContentView(
           }
           itemsIndexed(
             items = itemTags,
+            // ItemTagListViewModel lists each id once, so the id is a unique key. The API always
+            // sends an id; the index is only a fallback.
+            key = { index, itemTag -> itemTag.id ?: index },
           ) { index, itemTag ->
             SwipeableItemWithActions(
               isRevealed = itemTag.isOptionsRevealed,
