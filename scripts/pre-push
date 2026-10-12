@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Git pre-push hook – runs local CI checks before pushing
+# Git pre-push hook – runs local CI checks (spotless, lint, release R8 shrink, tests) before pushing
 
 set -e
 
@@ -18,6 +18,9 @@ echo "--- Spotless check ---"
 
 echo "--- Lint ---"
 ./gradlew lintDebug --stacktrace || exit 1
+
+echo "--- Release R8 shrink ---"
+./gradlew :app:minifyReleaseWithR8 --stacktrace || exit 1
 
 echo "--- Tests ---"
 ./gradlew test --stacktrace || exit 1
