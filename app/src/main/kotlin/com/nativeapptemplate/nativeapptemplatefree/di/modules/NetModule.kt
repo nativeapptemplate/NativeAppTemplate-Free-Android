@@ -116,7 +116,6 @@ class NetModule {
 
 /** The Json Retrofit encodes request bodies and decodes responses with (encodeDefaults stays false). */
 internal val networkJson = Json {
-  prettyPrint = true
   ignoreUnknownKeys = true
   isLenient = true
 }
