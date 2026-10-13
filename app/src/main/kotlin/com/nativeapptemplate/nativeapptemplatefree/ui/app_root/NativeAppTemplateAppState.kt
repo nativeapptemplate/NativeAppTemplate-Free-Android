@@ -21,6 +21,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.naviga
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 import com.nativeapptemplate.nativeapptemplatefree.utils.NetworkMonitor
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -60,24 +61,6 @@ class NativeAppTemplateAppState(
     @Composable get() = navController
       .currentBackStackEntryAsState().value?.destination
 
-  val shouldShowBottomBar: StateFlow<Boolean> = combine(
-    loginRepository.isLoggedIn(),
-    loginRepository.shouldUpdateApp(),
-    loginRepository.shouldUpdatePrivacy(),
-    loginRepository.shouldUpdateTerms(),
-  ) {
-      theIsLoggedIn,
-      theShouldUpdateApp,
-      theShouldUpdatePrivacy,
-      theShouldUpdateTerms,
-    ->
-    theIsLoggedIn && !theShouldUpdateApp && !theShouldUpdatePrivacy && !theShouldUpdateTerms
-  }.stateIn(
-    scope = coroutineScope,
-    started = SharingStarted.WhileSubscribed(5_000),
-    initialValue = false,
-  )
-
   /**
    * Where the app should route to. Null until the signed-in state has loaded, so the app does not
    * route to onboarding on the initial `false` values before DataStore emits.
@@ -95,62 +78,22 @@ class NativeAppTemplateAppState(
     initialValue = null,
   )
 
-  val isLoggedIn = loginRepository.isLoggedIn()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
+  /** The tabs show only on the signed-in screens, not while a required update is pending. */
+  val shouldShowBottomBar = authDestination.map { it == AuthDestination.SHOPS }.asState()
 
-  val shouldUpdateApp = loginRepository.shouldUpdateApp()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
+  val isEmailUpdated = loginRepository.isEmailUpdated().asState()
 
-  val shouldUpdatePrivacy = loginRepository.shouldUpdatePrivacy()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
+  val isMyAccountDeleted = loginRepository.isMyAccountDeleted().asState()
 
-  val shouldUpdateTerms = loginRepository.shouldUpdateTerms()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
+  val isShopDeleted = loginRepository.isShopDeleted().asState()
 
-  val isEmailUpdated = loginRepository.isEmailUpdated()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
+  val isOffline = networkMonitor.isOnline.map(Boolean::not).asState()
 
-  val isMyAccountDeleted = loginRepository.isMyAccountDeleted()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
-
-  val isShopDeleted = loginRepository.isShopDeleted()
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
-
-  val isOffline = networkMonitor.isOnline
-    .map(Boolean::not)
-    .stateIn(
-      scope = coroutineScope,
-      started = SharingStarted.WhileSubscribed(5_000),
-      initialValue = false,
-    )
+  private fun Flow<Boolean>.asState(): StateFlow<Boolean> = stateIn(
+    scope = coroutineScope,
+    started = SharingStarted.WhileSubscribed(5_000),
+    initialValue = false,
+  )
 
   /**
    * Map of top level destinations to be used in the TopBar, BottomBar and NavRail. The key is the
