@@ -46,13 +46,13 @@
   <string name="forgot_password">Forgot your password?</string>
 
   <!-- Forgot Password screen -->
-  <string name="sent_reset_password_instruction">An email has been sent the email containing instructions for resetting your password."</string>
+  <string name="sent_reset_password_instruction">An email with instructions for resetting your password has been sent.</string>
   <string name="button_send_me_reset_password_instructions">Send me reset password instructions</string>
 
   <!-- Resend Confirmation Instructions screen -->
   <string name="button_send_me_confirmation_instructions">Resend confirmation instructions</string>
   <string name="didnt_receive_confirmation_instructions">Didn\'t receive confirmation instructions?</string>
-  <string name="sent_confirmation_instruction">An email has been sent the email containing instructions for confirming your email address.</string>
+  <string name="sent_confirmation_instruction">An email with instructions for confirming your email address has been sent.</string>
 
   <!-- Need App Updates screen -->
   <string name="update_app">Update App</string>
