@@ -2,11 +2,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.common
 
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAccountPasswordRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.testSessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.SignInEmailAndPasswordView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.SignInEmailAndPasswordViewModel
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.SignUpView
@@ -36,7 +36,7 @@ class PasswordRequiredMessagesTest {
   fun signIn_withNoPassword_asksForThePassword() {
     val viewModel = SignInEmailAndPasswordViewModel(
       loginRepository = loginRepository,
-      appLanguageSyncer = AppLanguageSyncer(loginRepository, signUpRepository, appLanguageProvider),
+      sessionLifecycle = testSessionLifecycle(loginRepository, signUpRepository, appLanguageProvider),
     )
     composeTestRule.setContent {
       SignInEmailAndPasswordView(

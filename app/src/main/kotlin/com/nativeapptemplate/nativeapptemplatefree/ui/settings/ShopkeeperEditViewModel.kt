@@ -3,9 +3,10 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
+import com.nativeapptemplate.nativeapptemplatefree.common.coroutines.runCatchingCancellable
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.login.SessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignOutNotice
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,6 +48,7 @@ class ShopkeeperEditViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
   private val signUpRepository: SignUpRepository,
   private val appLanguageProvider: AppLanguageProvider,
+  private val sessionLifecycle: SessionLifecycle,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopkeeperEditUiState())
 
@@ -131,12 +132,9 @@ class ShopkeeperEditViewModel @Inject constructor(
               )
             }
 
-            // logout clears the session (storing the notice) even when the request fails.
-            loginRepository.logout(SignOutNotice.EMAIL_UPDATED)
-              .catch { exception ->
-                Log.e("ShopkeeperEditViewModel", "Logout error", exception)
-              }
-              .collect { }
+            // signOut clears the session (storing the notice) even when the request fails.
+            runCatchingCancellable { sessionLifecycle.signOut(SignOutNotice.EMAIL_UPDATED) }
+              .onFailure { Log.e("ShopkeeperEditViewModel", "Logout error", it) }
           } else {
             _uiState.update {
               it.copy(
@@ -161,16 +159,8 @@ class ShopkeeperEditViewModel @Inject constructor(
       val booleanFlow: Flow<Boolean> = signUpRepository.deleteAccount()
 
       booleanFlow
-        .catch { exception ->
-          // The account still exists on the server, so keep the session and let the user retry.
-          val message = exception.codedDescription
-          _uiState.update {
-            it.copy(
-              message = message,
-              isLoading = false,
-            )
-          }
-        }
+        // The account still exists on the server, so keep the session and let the user retry.
+        .catchShowingError(_uiState)
         .collect {
           _uiState.update {
             it.copy(

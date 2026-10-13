@@ -9,6 +9,7 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLan
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.testSessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
@@ -45,6 +46,7 @@ class ShopkeeperEditViewModelTest {
       loginRepository = loginRepository,
       signUpRepository = signUpRepository,
       appLanguageProvider = appLanguageProvider,
+      sessionLifecycle = testSessionLifecycle(loginRepository, signUpRepository, appLanguageProvider),
     )
   }
 
@@ -188,6 +190,37 @@ class ShopkeeperEditViewModelTest {
 
     viewModel.updateShopkeeper()
 
+    assertTrue(loginRepository.userData.first().isEmailUpdated)
+  }
+
+  // The screen can also close before the session is cleared, e.g. the user leaves Edit Profile
+  // while the sign-out request is in flight. The email did change, so the sign-out must still finish.
+  @Test
+  fun updateShopkeeper_withANewEmail_whenTheScreenClosesDuringTheSignOutRequest_stillSignsOut() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(
+      emptyUserData.copy(
+        name = testInputLoggedInShopkeeper.getName()!!,
+        email = testInputLoggedInShopkeeper.getEmail()!!,
+        timeZone = testInputLoggedInShopkeeper.getTimeZone()!!,
+      ),
+    )
+    signUpRepository.sendLoggedInShopkeeper(
+      LoggedInShopkeeper(
+        datum = Data(
+          id = LOGGED_IN_SHOPKEEPER_ID,
+          type = LOGGED_IN_SHOPKEEPER_TYPE,
+          attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(email = testInputNewEmail),
+        ),
+      ),
+    )
+    viewModel.reload()
+    viewModel.updateEmail(testInputNewEmail)
+    loginRepository.onLogoutRequest = { leaveTheScreen() }
+
+    viewModel.updateShopkeeper()
+
+    // TestLoginRepository.logout stores the notice in the same step that clears the session.
     assertTrue(loginRepository.userData.first().isEmailUpdated)
   }
 

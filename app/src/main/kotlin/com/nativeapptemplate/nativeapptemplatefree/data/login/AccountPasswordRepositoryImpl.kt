@@ -4,11 +4,8 @@ import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePr
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
-import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
+import com.nativeapptemplate.nativeapptemplatefree.network.apiAction
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class AccountPasswordRepositoryImpl @Inject constructor(
@@ -18,11 +15,10 @@ class AccountPasswordRepositoryImpl @Inject constructor(
 ) : AccountPasswordRepository {
   override fun updateAccountPassword(
     updatePasswordBody: UpdatePasswordBody,
-  ) = flow {
-    val response = api.updateAccountPassword(
-      natPreferencesDataSource.userData.first().accountId,
+  ) = apiAction(ioDispatcher) {
+    api.updateAccountPassword(
+      natPreferencesDataSource.currentAccountId(),
       updatePasswordBody,
     )
-    emitApiResponse<Status, Boolean>(response) { true }
-  }.flowOn(ioDispatcher)
+  }
 }

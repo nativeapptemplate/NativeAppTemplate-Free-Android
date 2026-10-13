@@ -7,7 +7,11 @@ import com.skydoves.sandwich.message
 import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -48,6 +52,21 @@ suspend inline fun <reified T : Any, R> FlowCollector<R>.emitApiResponse(
     throwApiError(response, message())
   }
 }
+
+/**
+ * A cold flow that sends [call] on [dispatcher] each time it is collected and emits the response's
+ * data, or throws the API error (see [emitApiResponse]).
+ */
+inline fun <reified T : Any> apiRequest(
+  dispatcher: CoroutineDispatcher,
+  crossinline call: suspend () -> ApiResponse<T>,
+): Flow<T> = flow { emitApiResponse(call()) }.flowOn(dispatcher)
+
+/** [apiRequest] for a call whose response body the app does not use: emits true on success. */
+inline fun <reified T : Any> apiAction(
+  dispatcher: CoroutineDispatcher,
+  crossinline call: suspend () -> ApiResponse<T>,
+): Flow<Boolean> = flow { emitApiResponse(call()) { _: T -> true } }.flowOn(dispatcher)
 
 /**
  * Extracts error details from a failed [ApiResponse] and throws an appropriate exception.

@@ -5,13 +5,11 @@ import com.nativeapptemplate.nativeapptemplatefree.model.SendResetPassword
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopkeeperLocaleUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUp
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
-import com.nativeapptemplate.nativeapptemplatefree.model.Status
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
-import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
+import com.nativeapptemplate.nativeapptemplatefree.network.apiAction
+import com.nativeapptemplate.nativeapptemplatefree.network.apiRequest
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class SignUpRepositoryImpl @Inject constructor(
@@ -20,41 +18,35 @@ class SignUpRepositoryImpl @Inject constructor(
 ) : SignUpRepository {
   override fun signUp(
     signUp: SignUp,
-  ) = flow {
-    val response = api.signUp(signUp)
-    emitApiResponse(response)
-  }.flowOn(ioDispatcher)
+  ) = apiRequest(ioDispatcher) {
+    api.signUp(signUp)
+  }
 
   override fun updateAccount(
     signUpForUpdate: SignUpForUpdate,
-  ) = flow {
-    val response = api.updateAccount(signUpForUpdate)
-    emitApiResponse(response)
-  }.flowOn(ioDispatcher)
+  ) = apiRequest(ioDispatcher) {
+    api.updateAccount(signUpForUpdate)
+  }
 
   override fun updateLocale(
     locale: String,
-  ) = flow {
-    val response = api.updateLocale(ShopkeeperLocaleUpdate(locale = locale))
-    emitApiResponse(response)
-  }.flowOn(ioDispatcher)
+  ) = apiRequest(ioDispatcher) {
+    api.updateLocale(ShopkeeperLocaleUpdate(locale = locale))
+  }
 
-  override fun deleteAccount() = flow {
-    val response = api.deleteAccount()
-    emitApiResponse<Status, Boolean>(response) { true }
-  }.flowOn(ioDispatcher)
+  override fun deleteAccount() = apiAction(ioDispatcher) {
+    api.deleteAccount()
+  }
 
   override fun sendResetPasswordInstruction(
     sendResetPassword: SendResetPassword,
-  ) = flow {
-    val response = api.sendResetPasswordInstruction(sendResetPassword)
-    emitApiResponse<Status, Boolean>(response) { true }
-  }.flowOn(ioDispatcher)
+  ) = apiAction(ioDispatcher) {
+    api.sendResetPasswordInstruction(sendResetPassword)
+  }
 
   override fun sendConfirmationInstruction(
     sendConfirmation: SendConfirmation,
-  ) = flow {
-    val response = api.sendConfirmationInstruction(sendConfirmation)
-    emitApiResponse<Status, Boolean>(response) { true }
-  }.flowOn(ioDispatcher)
+  ) = apiAction(ioDispatcher) {
+    api.sendConfirmationInstruction(sendConfirmation)
+  }
 }

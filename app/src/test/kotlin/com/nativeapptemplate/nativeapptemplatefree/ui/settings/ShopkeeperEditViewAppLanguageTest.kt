@@ -12,6 +12,7 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLan
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.testSessionLifecycle
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -34,7 +35,7 @@ class ShopkeeperEditViewAppLanguageTest {
     val loginRepository = TestLoginRepository().apply {
       sendUserData(emptyUserData.copy(isLoggedIn = true, name = "John", email = "john@example.com", locale = "en"))
     }
-    val viewModel = ShopkeeperEditViewModel(loginRepository, TestSignUpRepository(), TestAppLanguageProvider("ja"))
+    val viewModel = ShopkeeperEditViewModel(loginRepository, TestSignUpRepository(), TestAppLanguageProvider("ja"), testSessionLifecycle(loginRepository))
     composeTestRule.setContent {
       ShopkeeperEditView(viewModel = viewModel, onShowSnackbar = { _, _, _ -> true }, onBackClick = {})
     }

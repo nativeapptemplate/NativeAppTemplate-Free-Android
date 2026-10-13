@@ -13,6 +13,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -182,6 +183,9 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
         .build()
     }
   }
+
+  /** The account the signed-in shopkeeper is working in, which most API paths start with. */
+  suspend fun currentAccountId(): String = userData.first().accountId
 
   fun isLoggedIn(): Flow<Boolean> = userPreferences.data
     .map { data ->

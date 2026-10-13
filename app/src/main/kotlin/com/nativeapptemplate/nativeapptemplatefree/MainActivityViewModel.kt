@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Loading
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.coroutines.runCatchingCancellable
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.login.SessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -23,6 +23,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
   private val appLanguageSyncer: AppLanguageSyncer,
+  private val sessionLifecycle: SessionLifecycle,
 ) : ViewModel() {
 
   val uiState: StateFlow<MainActivityUiState> = loginRepository.userData.map {
@@ -48,27 +49,10 @@ class MainActivityViewModel @Inject constructor(
 
   fun updatePermissions() {
     viewModelScope.launch {
-      val isLoggedIn = loginRepository.isLoggedIn().first()
+      if (!loginRepository.isLoggedIn().first()) return@launch
 
-      if (isLoggedIn) {
-        loginRepository.getPermissions()
-          .catch { exception ->
-            Log.e("MainActivityViewModel", "Failed to update permissions", exception)
-
-            // Only a rejected session means the user is signed out. Being offline or a server error
-            // must not wipe the session; the cached permissions stay in use until the next resume.
-            if ((exception as? ApiException)?.isUnauthorized != true) return@catch
-
-            loginRepository.logout()
-              .catch { logoutException ->
-                Log.e("MainActivityViewModel", "Logout error", logoutException)
-              }
-              .collect { }
-          }
-          .collect { permissions ->
-            loginRepository.setPermissions(permissions)
-          }
-      }
+      runCatchingCancellable { sessionLifecycle.refreshPermissions() }
+        .onFailure { Log.e("MainActivityViewModel", "Failed to update permissions", it) }
     }
   }
 }

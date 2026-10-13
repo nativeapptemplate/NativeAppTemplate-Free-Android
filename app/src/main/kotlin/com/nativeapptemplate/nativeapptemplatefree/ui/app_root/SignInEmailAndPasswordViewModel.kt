@@ -4,22 +4,20 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
-import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.login.SessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
-import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorShowingUiState
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.catchShowingError
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.showError
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,7 +37,7 @@ data class SignInEmailAndPasswordUiState(
 @HiltViewModel
 class SignInEmailAndPasswordViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
-  private val appLanguageSyncer: AppLanguageSyncer,
+  private val sessionLifecycle: SessionLifecycle,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(SignInEmailAndPasswordUiState())
   val uiState: StateFlow<SignInEmailAndPasswordUiState> = _uiState.asStateFlow()
@@ -59,39 +57,16 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
         .catchShowingError(_uiState)
         .collect { loggedInShopkeeper ->
           _uiState.update { it.copy(loggedInShopkeeper = loggedInShopkeeper) }
-          loginRepository.clearSession()
-          loginRepository.setShopkeeper(loggedInShopkeeper)
-          // The account may have been created, or last used, in another language.
-          viewModelScope.launch { appLanguageSyncer.sync() }
-
-          val permissionsFlow: Flow<Permissions> = loginRepository.getPermissions()
-
-          permissionsFlow
-            .catch { exception ->
-              Log.e("SignInEmailAndPasswordViewModel", "Failed to update permissions", exception)
-              _uiState.update {
-                it.copy(
-                  message = exception.codedDescription,
-                  isLoading = false,
-                )
-              }
-
-              // Only a rejected session signs the user out; otherwise MainActivityViewModel
-              // fetches the permissions again on the next resume.
-              if ((exception as? ApiException)?.isUnauthorized != true) return@catch
-
-              val booleanFlow = loginRepository.logout()
-              booleanFlow
-                .catch { logoutException ->
-                  Log.e("SignInEmailAndPasswordViewModel", "Logout error", logoutException)
-                }
-                .collect {
-                }
-            }
-            .collect { permissions ->
-              loginRepository.setPermissions(permissions)
-              _uiState.update { it.copy(isLoading = false) }
-            }
+          try {
+            sessionLifecycle.start(loggedInShopkeeper)
+            _uiState.update { it.copy(isLoading = false) }
+          } catch (cancellation: CancellationException) {
+            throw cancellation
+          } catch (exception: Exception) {
+            // MainActivityViewModel fetches the permissions again on the next resume.
+            Log.e("SignInEmailAndPasswordViewModel", "Failed to update permissions", exception)
+            _uiState.showError(exception)
+          }
         }
     }
   }

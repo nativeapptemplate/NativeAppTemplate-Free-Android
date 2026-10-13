@@ -12,7 +12,6 @@ data class Data(
   val attributes: Attributes? = null,
   val relationships: Relationships? = null,
   val meta: Meta? = null,
-  val isOptionsRevealed: Boolean = false,
 ) : Parcelable {
   fun getName(): String = attributes?.name ?: ""
 
@@ -21,16 +20,6 @@ data class Data(
   fun getEmail(): String = attributes?.email ?: ""
 
   fun getDescription(): String = attributes?.description ?: ""
-
-  fun updateRelationships(updatedRelations: List<Data>?): Data {
-    if (updatedRelations.isNullOrEmpty()) {
-      return this
-    }
-
-    val updatedRelationships = relationships
-
-    return this.copy(relationships = updatedRelationships)
-  }
 
   fun getItemTagState(): ItemTagState? {
     return ItemTagState.fromParam(getState())

@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Model for list response of Bookmark, Content, Progressions
+ * The item tags of a list response (one page).
  */
 @Serializable
 @Parcelize
@@ -15,8 +15,4 @@ data class ItemTags(
   val datum: List<Data> = emptyList(),
   val included: List<Data>? = null,
   val meta: Meta? = null,
-) : Parcelable {
-  fun getDatumWithRelationships(): List<Data> = datum.map {
-    it.updateRelationships(included)
-  }
-}
+) : Parcelable

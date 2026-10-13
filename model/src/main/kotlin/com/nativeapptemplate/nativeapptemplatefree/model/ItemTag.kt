@@ -13,13 +13,7 @@ data class ItemTag(
   val meta: Meta? = null,
   val included: List<Data>? = null,
 ) : Parcelable {
-  fun getData(): Data? {
-    if (included.isNullOrEmpty()) {
-      return datum
-    }
-
-    return datum?.updateRelationships(included)
-  }
+  fun getData(): Data? = datum
 
   fun getId(): String = getData()?.id ?: ""
 

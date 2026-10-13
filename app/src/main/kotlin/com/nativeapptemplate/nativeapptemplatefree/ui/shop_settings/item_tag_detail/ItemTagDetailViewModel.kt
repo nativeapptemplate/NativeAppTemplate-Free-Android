@@ -101,38 +101,15 @@ class ItemTagDetailViewModel @Inject constructor(
     }
   }
 
-  fun completeItemTag() {
+  fun completeItemTag() = toggle(itemTagRepository.completeItemTag(itemTagId))
+
+  fun idleItemTag() = toggle(itemTagRepository.idleItemTag(itemTagId))
+
+  /** Shows the item tag [itemTagFlow] returns after completing or idling it. */
+  private fun toggle(itemTagFlow: Flow<ItemTag>) {
     _uiState.update { it.copy(isToggling = true) }
 
     viewModelScope.launch {
-      val itemTagFlow: Flow<ItemTag> = itemTagRepository.completeItemTag(itemTagId)
-
-      itemTagFlow
-        .catch { exception ->
-          _uiState.update {
-            it.copy(
-              message = exception.codedDescription,
-              isToggling = false,
-            )
-          }
-        }
-        .collect { itemTag ->
-          _uiState.update {
-            it.copy(
-              itemTag = itemTag,
-              isToggling = false,
-            )
-          }
-        }
-    }
-  }
-
-  fun idleItemTag() {
-    _uiState.update { it.copy(isToggling = true) }
-
-    viewModelScope.launch {
-      val itemTagFlow: Flow<ItemTag> = itemTagRepository.idleItemTag(itemTagId)
-
       itemTagFlow
         .catch { exception ->
           _uiState.update {

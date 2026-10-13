@@ -16,8 +16,4 @@ data class Shops(
   fun getCreatedShopsCount(): Int = meta?.createdShopsCount ?: 0
 
   fun getLimitCount(): Int = meta?.limitCount ?: 0
-
-  fun getDatumWithRelationships(): List<Data> = datum.map {
-    it.updateRelationships(included)
-  }
 }

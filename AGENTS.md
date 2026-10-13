@@ -44,6 +44,7 @@ MVVM layered architecture following [Android Modern App Architecture](https://de
 - **Dependency injection**: Hilt with `@InstallIn(SingletonComponent::class)`. Repositories are bound via `@Binds` in `DataModule`.
 - **Navigation routes**: Defined as extension functions on `NavGraphBuilder` (e.g., `shopListView()`, `navigateToShopDetail()`). Routes use type-safe navigation.
 - **Proto DataStore**: User preferences are persisted via Protocol Buffers (lite).
+- **Session steps**: steps that remove the calling screen (sign-in bootstrap, permission refresh, sign-out after an email change) go through `SessionLifecycle` (`data/login/`), which runs them in the `@ApplicationScope` and waits for them, so the screen's `viewModelScope` being cancelled does not cut them short.
 - **Errors in ViewModels**: a failed load or save shows the error and stops the spinner through `ErrorShowingUiState` (`ui/common/ErrorShowingUiState.kt`): the screen's UI state implements `showingError(message)` once, and flows end with `.catchShowingError(_uiState)` (or `_uiState.showError(exception)` in a `try`/`catch`). Rethrow `CancellationException` before catching `Exception`.
 
 ## Error Handling (CodedError System)

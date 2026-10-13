@@ -138,12 +138,11 @@ private fun ItemTagListContentView(
   onBackClick: () -> Unit,
 ) {
   val isEmpty: Boolean by viewModel.isEmpty.collectAsStateWithLifecycle()
-  val itemTags = uiState.itemTags.toMutableList()
   val listState = rememberLazyListState()
 
   val prefetchDistance = 3
   // derivedStateOf only tracks State reads, so read the latest list state through State objects;
-  // capturing uiState/itemTags directly would freeze them at their first-composition values.
+  // capturing uiState directly would freeze them at their first-composition values.
   val latestUiState by rememberUpdatedState(uiState)
   val shouldLoadMore by remember {
     derivedStateOf {
@@ -208,19 +207,12 @@ private fun ItemTagListContentView(
             )
           }
           itemsIndexed(
-            items = itemTags,
+            items = uiState.itemTags,
             // ItemTagListViewModel lists each id once, so the id is a unique key. The API always
             // sends an id; the index is only a fallback.
             key = { index, itemTag -> itemTag.id ?: index },
-          ) { index, itemTag ->
+          ) { _, itemTag ->
             SwipeableItemWithActions(
-              isRevealed = itemTag.isOptionsRevealed,
-              onExpanded = {
-                itemTags[index] = itemTag.copy(isOptionsRevealed = true)
-              },
-              onCollapsed = {
-                itemTags[index] = itemTag.copy(isOptionsRevealed = false)
-              },
               actions = {
                 ActionIcon(
                   onClick = {

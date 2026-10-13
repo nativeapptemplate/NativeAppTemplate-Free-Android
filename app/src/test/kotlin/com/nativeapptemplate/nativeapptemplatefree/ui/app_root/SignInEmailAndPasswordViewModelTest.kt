@@ -1,7 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
+import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
-import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -10,7 +10,9 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.testSessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -42,7 +44,7 @@ class SignInEmailAndPasswordViewModelTest {
   fun setUp() {
     viewModel = SignInEmailAndPasswordViewModel(
       loginRepository = loginRepository,
-      appLanguageSyncer = AppLanguageSyncer(loginRepository, signUpRepository, appLanguageProvider),
+      sessionLifecycle = testSessionLifecycle(loginRepository, signUpRepository, appLanguageProvider),
     )
   }
 
@@ -196,6 +198,44 @@ class SignInEmailAndPasswordViewModelTest {
     val uiStateValue = viewModel.uiState.value
     assertEquals(uiStateValue.loggedInShopkeeper, testInputLoggedInShopkeeper)
     assertFalse(uiStateValue.isLoading)
+  }
+
+  // Storing the session routes away from the sign-in screen, which clears this view model and
+  // cancels its scope while the permissions request is still in flight. The permissions and the
+  // locale sync must still land, or the new session runs without permissions until the next resume.
+  @Test
+  fun login_whenTheScreenClosesMidBootstrap_stillStoresThePermissionsAndSyncsTheLocale() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    loginRepository.sendLoggedInShopkeeper(
+      testInputLoggedInShopkeeper.copy(
+        datum = testInputLoggedInShopkeeper.datum!!.copy(
+          attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(locale = "en"),
+        ),
+      ),
+    )
+    appLanguageProvider.code = "ja"
+    // Neither the permissions nor the locale request has a response yet when the screen closes.
+
+    viewModel.login()
+    assertTrue(loginRepository.userData.first().isLoggedIn)
+    // The route to the shop list clears this view model.
+    viewModel.viewModelScope.cancel()
+
+    loginRepository.sendPermissions(testInputPermissions)
+    signUpRepository.sendLoggedInShopkeeper(
+      testInputLoggedInShopkeeper.copy(
+        datum = testInputLoggedInShopkeeper.datum!!.copy(
+          attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(locale = "ja"),
+        ),
+      ),
+    )
+
+    val userData = loginRepository.userData.first()
+    // testInputPermissions' meta.shop_limit_count.
+    assertEquals(PERMISSION_SHOP_LIMIT_COUNT, userData.shopLimitCount)
+    assertEquals("ja", userData.locale)
   }
 
   @Test

@@ -177,7 +177,7 @@ private fun ShopListContentView(
           }
 
           items(
-            items = uiState.shops.getDatumWithRelationships(),
+            items = uiState.shops.datum,
             key = { it.id!! },
           ) { shop ->
             ShopListCardView(
