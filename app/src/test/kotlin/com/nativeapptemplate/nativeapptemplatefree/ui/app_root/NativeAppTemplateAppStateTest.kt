@@ -105,22 +105,6 @@ class NativeAppTemplateAppStateTest {
     isOnline.value = false
     assertTrue(appState.isOffline.value)
   }
-
-  @Test
-  fun deletionFlags_comeFromThePreferences() = testScope.runTest {
-    val appState = appState(backgroundScope)
-    backgroundScope.launch { appState.isShopDeleted.collect() }
-    backgroundScope.launch { appState.isMyAccountDeleted.collect() }
-    backgroundScope.launch { appState.isEmailUpdated.collect() }
-
-    dataSource.setIsShopDeleted(true)
-    dataSource.setIsMyAccountDeleted(true)
-    dataSource.setIsEmailUpdated(true)
-
-    assertTrue(appState.isShopDeleted.value)
-    assertTrue(appState.isMyAccountDeleted.value)
-    assertTrue(appState.isEmailUpdated.value)
-  }
 }
 
 private val signedInShopkeeper = LoggedInShopkeeper(

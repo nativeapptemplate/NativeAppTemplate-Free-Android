@@ -1,0 +1,43 @@
+package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+
+// Notices stored as flags in DataStore by the screen that caused them. Each is cleared as soon as it
+// is taken for display, not after the snackbar is dismissed: an Indefinite snackbar returns only
+// when dismissed, and the app can be closed while it is up, which would leave the flag set and show
+// the notice again at the next launch. Not keyed on the flag in a LaunchedEffect, so that clearing
+// the flag does not cancel the snackbar.
+
+/**
+ * Shows the notice once each time [flag] turns true while the app runs: for notices stored when the
+ * shopkeeper is signed out (email changed, account deleted), which the same process shows.
+ */
+internal suspend fun showStoredNotice(
+  flag: Flow<Boolean>,
+  clear: suspend () -> Unit,
+  show: suspend () -> Unit,
+) {
+  flag.filter { it }.collect {
+    clear()
+    show()
+  }
+}
+
+/**
+ * Shows the notice if [flag] is set when the app starts: for notices stored just before the app
+ * restarts itself (shop deleted). The process that stored the
+ * flag must not take it: its snackbar would be gone a moment later with the process, and the
+ * restarted app would find the flag cleared.
+ */
+internal suspend fun showNoticeStoredForLaunch(
+  flag: Flow<Boolean>,
+  clear: suspend () -> Unit,
+  show: suspend () -> Unit,
+) {
+  if (flag.first()) {
+    clear()
+    show()
+  }
+}
