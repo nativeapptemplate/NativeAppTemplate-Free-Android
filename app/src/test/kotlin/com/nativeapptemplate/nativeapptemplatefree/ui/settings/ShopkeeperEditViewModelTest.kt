@@ -1,7 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -200,7 +199,8 @@ class ShopkeeperEditViewModelTest {
     assertEquals(0, loginRepository.clearUserPreferencesCallCount)
     assertFalse(viewModel.uiState.value.isLoading)
     assertFalse(viewModel.uiState.value.isDeleted)
-    assertEquals(error.codedDescription, viewModel.uiState.value.message)
+    // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".
+    assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: Unable to resolve host", viewModel.uiState.value.message)
   }
 
   @Test

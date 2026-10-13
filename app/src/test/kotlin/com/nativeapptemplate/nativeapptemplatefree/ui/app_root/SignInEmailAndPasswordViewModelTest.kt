@@ -1,7 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
-import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -111,10 +110,49 @@ class SignInEmailAndPasswordViewModelTest {
     viewModel.login()
 
     assertFalse(viewModel.uiState.value.isLoading)
-    // The user-facing message must be the coded description (AGENTS.md: CodedError system).
-    assertEquals(error.codedDescription, viewModel.uiState.value.message)
+    // The user-facing message is the coded description (AGENTS.md: CodedError system):
+    // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".
+    assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: Bad Gateway", viewModel.uiState.value.message)
     // A server error is not a rejected session; permissions are fetched again on the next resume.
     assertEquals(0, loginRepository.logoutCallCount)
+  }
+
+  @Test
+  fun login_whenTheCredentialsAreRejected_showsTheServerMessageAndSavesNothing() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    // What throwApiError makes of devise_token_auth's 401 {"errors": ["Invalid login credentials. ..."]}.
+    loginRepository.failLogin(
+      ApiException.UnprocessableError(rawMessage = "Invalid login credentials. Please try again.", httpStatusCode = 401),
+    )
+
+    viewModel.login()
+
+    val uiStateValue = viewModel.uiState.value
+    assertFalse(uiStateValue.isLoading)
+    // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".
+    assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: Invalid login credentials. Please try again.", uiStateValue.message)
+    // The previous session (if any) is left alone, and a rejected sign-in is not a sign-out.
+    assertEquals(0, loginRepository.clearUserPreferencesCallCount)
+    assertEquals(0, loginRepository.logoutCallCount)
+  }
+
+  @Test
+  fun login_clearsThePreviousPreferencesBeforeSavingTheNewSession() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    loginRepository.sendLoggedInShopkeeper(testInputLoggedInShopkeeper)
+    loginRepository.sendPermissions(testInputPermissions)
+
+    viewModel.login()
+
+    assertEquals(1, loginRepository.clearUserPreferencesCallCount)
+    val userData = loginRepository.userData.first()
+    assertTrue(userData.isLoggedIn)
+    assertEquals(LOGGED_IN_SHOPKEEPER_ACCOUNT_ID, userData.accountId)
+    assertEquals(LOGGED_IN_SHOPKEEPER_TOKEN, userData.token)
   }
 
   @Test

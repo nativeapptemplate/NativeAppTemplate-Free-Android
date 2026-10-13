@@ -5,6 +5,8 @@ import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageSyncer
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
+import com.nativeapptemplate.nativeapptemplatefree.model.Meta
+import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
 import com.nativeapptemplate.nativeapptemplatefree.model.UserData
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
@@ -82,6 +84,37 @@ class MainActivityViewModelTest {
     viewModel.updateDidShowTapShopBelowTip(true)
 
     assertTrue(loginRepository.userData.first().didShowTapShopBelowTip)
+  }
+
+  @Test
+  fun updatePermissions_whenSignedIn_savesThePermissions() = runTest {
+    loginRepository.sendUserData(UserData())
+    loginRepository.sendIsLoggedIn(true)
+    loginRepository.sendPermissions(
+      Permissions(meta = Meta(androidAppVersion = 7, shouldUpdatePrivacy = true, shouldUpdateTerms = false, shopLimitCount = 10)),
+    )
+
+    viewModel.updatePermissions()
+
+    val userData = loginRepository.userData.first()
+    assertEquals(7, userData.androidAppVersion)
+    assertTrue(userData.shouldUpdatePrivacy)
+    assertEquals(10, userData.shopLimitCount)
+  }
+
+  @Test
+  fun updatePermissions_whenSignedOut_fetchesNothing() = runTest {
+    loginRepository.sendUserData(UserData())
+    loginRepository.sendIsLoggedIn(false)
+    loginRepository.sendPermissions(
+      Permissions(meta = Meta(androidAppVersion = 7, shouldUpdatePrivacy = true, shouldUpdateTerms = false, shopLimitCount = 10)),
+    )
+
+    viewModel.updatePermissions()
+
+    // UserData's defaults: nothing was saved.
+    assertEquals(-1, loginRepository.userData.first().androidAppVersion)
+    assertEquals(0, loginRepository.logoutCallCount)
   }
 
   @Test
