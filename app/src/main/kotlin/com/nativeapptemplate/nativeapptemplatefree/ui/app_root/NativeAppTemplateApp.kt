@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -40,6 +42,7 @@ import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.Native
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NativeAppTemplateNavigationBarItem
 import com.nativeapptemplate.nativeapptemplatefree.navigation.NativeAppTemplateNavHost
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 @OptIn(
@@ -51,9 +54,6 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
-    val isEmailUpdated by appState.isEmailUpdated.collectAsStateWithLifecycle()
-    val isMyAccountDeleted by appState.isMyAccountDeleted.collectAsStateWithLifecycle()
-    val isShopDeleted by appState.isShopDeleted.collectAsStateWithLifecycle()
 
     val dismissLabel = stringResource(R.string.dismiss)
 
@@ -68,42 +68,41 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
       }
     }
 
-    val reconfirmMessage = stringResource(R.string.reconfirm_description)
-    LaunchedEffect(isEmailUpdated) {
-      if (isEmailUpdated) {
+    // Notices stored in DataStore by the screen that caused them (see StoredNotice.kt).
+    val resources = LocalResources.current
+    LaunchedEffect(appState) {
+      val loginRepository = appState.loginRepository
+      fun showNotice(@StringRes messageId: Int): suspend () -> Unit = {
         snackbarHostState.showSnackbar(
-          message = reconfirmMessage,
+          message = resources.getString(messageId),
           actionLabel = dismissLabel,
           duration = Indefinite,
         )
-
-        appState.loginRepository.setIsEmailUpdated(false)
       }
-    }
 
-    val myAccountDeletedMessage = stringResource(R.string.message_shopkeeper_deleted)
-    LaunchedEffect(isMyAccountDeleted) {
-      if (isMyAccountDeleted) {
-        snackbarHostState.showSnackbar(
-          message = myAccountDeletedMessage,
-          actionLabel = dismissLabel,
-          duration = Indefinite,
+      // Stored when the shopkeeper is signed out; the app goes on in the same process.
+      launch {
+        showStoredNotice(
+          flag = loginRepository.isEmailUpdated(),
+          clear = { loginRepository.setIsEmailUpdated(false) },
+          show = showNotice(R.string.reconfirm_description),
         )
-
-        appState.loginRepository.setIsMyAccountDeleted(false)
       }
-    }
-
-    val shopDeletedMessage = stringResource(R.string.message_shop_deleted)
-    LaunchedEffect(isShopDeleted) {
-      if (isShopDeleted) {
-        snackbarHostState.showSnackbar(
-          message = shopDeletedMessage,
-          actionLabel = dismissLabel,
-          duration = Indefinite,
+      launch {
+        showStoredNotice(
+          flag = loginRepository.isMyAccountDeleted(),
+          clear = { loginRepository.setIsMyAccountDeleted(false) },
+          show = showNotice(R.string.message_shopkeeper_deleted),
         )
+      }
 
-        appState.loginRepository.setIsShopDeleted(false)
+      // Stored just before the app restarts itself; shown by the restarted app.
+      launch {
+        showNoticeStoredForLaunch(
+          flag = loginRepository.isShopDeleted(),
+          clear = { loginRepository.setIsShopDeleted(false) },
+          show = showNotice(R.string.message_shop_deleted),
+        )
       }
     }
 

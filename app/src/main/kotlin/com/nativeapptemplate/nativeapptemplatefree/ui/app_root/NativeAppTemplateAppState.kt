@@ -81,12 +81,6 @@ class NativeAppTemplateAppState(
   /** The tabs show only on the signed-in screens, not while a required update is pending. */
   val shouldShowBottomBar = authDestination.map { it == AuthDestination.SHOPS }.asState()
 
-  val isEmailUpdated = loginRepository.isEmailUpdated().asState()
-
-  val isMyAccountDeleted = loginRepository.isMyAccountDeleted().asState()
-
-  val isShopDeleted = loginRepository.isShopDeleted().asState()
-
   val isOffline = networkMonitor.isOnline.map(Boolean::not).asState()
 
   private fun Flow<Boolean>.asState(): StateFlow<Boolean> = stateIn(
