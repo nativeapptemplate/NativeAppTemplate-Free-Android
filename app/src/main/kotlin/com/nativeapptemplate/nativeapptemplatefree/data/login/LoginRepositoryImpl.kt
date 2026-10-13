@@ -8,14 +8,14 @@ import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
 import com.nativeapptemplate.nativeapptemplatefree.network.Dispatcher
 import com.nativeapptemplate.nativeapptemplatefree.network.NativeAppTemplateDispatchers
-import com.nativeapptemplate.nativeapptemplatefree.network.emitApiResponse
+import com.nativeapptemplate.nativeapptemplatefree.network.apiAction
+import com.nativeapptemplate.nativeapptemplatefree.network.apiRequest
 import com.nativeapptemplate.nativeapptemplatefree.network.throwApiError
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -33,10 +33,8 @@ class LoginRepositoryImpl @Inject constructor(
 
   override fun login(
     login: Login,
-  ) = flow {
-    val response = api.login(login)
-    emitApiResponse(response)
-  }.map { it.requireCompleteSession() }
+  ) = apiRequest(ioDispatcher) { api.login(login) }
+    .map { it.requireCompleteSession() }
     .flowOn(ioDispatcher)
 
   override val userData: Flow<UserData> =
@@ -54,26 +52,23 @@ class LoginRepositoryImpl @Inject constructor(
     }
   }.flowOn(ioDispatcher)
 
-  override fun getPermissions() = flow {
-    val response = api.getPermissions(
-      userData.first().accountId,
+  override fun getPermissions() = apiRequest(ioDispatcher) {
+    api.getPermissions(
+      natPreferencesDataSource.currentAccountId(),
     )
-    emitApiResponse(response)
-  }.flowOn(ioDispatcher)
+  }
 
-  override fun updateConfirmedPrivacyVersion() = flow {
-    val response = api.updateConfirmedPrivacyVersion(
-      natPreferencesDataSource.userData.first().accountId,
+  override fun updateConfirmedPrivacyVersion() = apiAction(ioDispatcher) {
+    api.updateConfirmedPrivacyVersion(
+      natPreferencesDataSource.currentAccountId(),
     )
-    emitApiResponse<Status, Boolean>(response) { true }
-  }.flowOn(ioDispatcher)
+  }
 
-  override fun updateConfirmedTermsVersion() = flow {
-    val response = api.updateConfirmedTermsVersion(
-      natPreferencesDataSource.userData.first().accountId,
+  override fun updateConfirmedTermsVersion() = apiAction(ioDispatcher) {
+    api.updateConfirmedTermsVersion(
+      natPreferencesDataSource.currentAccountId(),
     )
-    emitApiResponse<Status, Boolean>(response) { true }
-  }.flowOn(ioDispatcher)
+  }
 
   override suspend fun setAccountId(accountId: String) {
     natPreferencesDataSource.setAccountId(accountId)
