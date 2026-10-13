@@ -41,23 +41,8 @@ data class Attributes(
   @SerialName("account_name")
   val accountName: String? = null,
 
-  @SerialName("shopkeeper_id")
-  val shopkeeperId: String? = null,
-
   @SerialName("shop_id")
   val shopId: String? = null,
-
-  @SerialName("owner_id")
-  val ownerId: String? = null,
-
-  @SerialName("owner_name")
-  val ownerName: String? = null,
-
-  @SerialName("is_admin")
-  val isAdmin: Boolean? = null,
-
-  @SerialName("shops_count")
-  val shopsCount: Int? = null,
 
   @SerialName("shop_name")
   val shopName: String? = null,

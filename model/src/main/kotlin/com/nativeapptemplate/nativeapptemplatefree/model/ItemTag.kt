@@ -36,6 +36,4 @@ data class ItemTag(
   fun getShopName(): String = getData()?.getShopName() ?: ""
 
   fun getCompletedAt(): String? = getData()?.getCompletedAt()
-
-  fun getCreatedAt(): String? = getData()?.getCreatedAt()
 }
