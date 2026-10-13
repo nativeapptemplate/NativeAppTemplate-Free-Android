@@ -12,7 +12,6 @@ data class Data(
   val attributes: Attributes? = null,
   val relationships: Relationships? = null,
   val meta: Meta? = null,
-  val isOptionsRevealed: Boolean = false,
 ) : Parcelable {
   fun getName(): String = attributes?.name ?: ""
 

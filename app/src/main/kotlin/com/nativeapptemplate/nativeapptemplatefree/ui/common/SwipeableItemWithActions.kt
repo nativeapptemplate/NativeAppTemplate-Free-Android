@@ -27,13 +27,11 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 // https://github.com/philipplackner/ComposeSwipeToReveal
+/** A row that reveals [actions] when swiped left. The row itself remembers whether it is open. */
 @Composable
 fun SwipeableItemWithActions(
-  isRevealed: Boolean,
   actions: @Composable RowScope.() -> Unit,
   modifier: Modifier = Modifier,
-  onExpanded: () -> Unit = {},
-  onCollapsed: () -> Unit = {},
   content: @Composable () -> Unit,
 ) {
   var contextMenuWidth by remember {
@@ -44,12 +42,9 @@ fun SwipeableItemWithActions(
   }
   val scope = rememberCoroutineScope()
 
-  LaunchedEffect(key1 = isRevealed, contextMenuWidth) {
-    if (isRevealed) {
-      offset.animateTo(-contextMenuWidth)
-    } else {
-      offset.animateTo(0f)
-    }
+  // A new actions width (e.g. on the first layout) starts the row closed.
+  LaunchedEffect(contextMenuWidth) {
+    offset.animateTo(0f)
   }
 
   Box(
@@ -85,14 +80,12 @@ fun SwipeableItemWithActions(
                 offset.value <= -contextMenuWidth / 2f -> {
                   scope.launch {
                     offset.animateTo(-contextMenuWidth)
-                    onExpanded()
                   }
                 }
 
                 else -> {
                   scope.launch {
                     offset.animateTo(0f)
-                    onCollapsed()
                   }
                 }
               }

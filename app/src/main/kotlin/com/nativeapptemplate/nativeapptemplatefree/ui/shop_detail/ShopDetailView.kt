@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
@@ -137,8 +137,6 @@ private fun ShopDetailContentView(
         )
         .padding(padding),
     ) {
-      val itemTags = uiState.itemTags.datum.toMutableList()
-
       LazyColumn(
         Modifier.padding(24.dp),
       ) {
@@ -151,19 +149,12 @@ private fun ShopDetailContentView(
               .padding(start = 16.dp, bottom = 8.dp),
           )
         }
-        itemsIndexed(
-          items = itemTags,
-        ) { index, itemTag ->
+        items(
+          items = uiState.itemTags.datum,
+        ) { itemTag ->
           val itemTagState = itemTag.getItemTagState()
 
           SwipeableItemWithActions(
-            isRevealed = itemTag.isOptionsRevealed,
-            onExpanded = {
-              itemTags[index] = itemTag.copy(isOptionsRevealed = true)
-            },
-            onCollapsed = {
-              itemTags[index] = itemTag.copy(isOptionsRevealed = false)
-            },
             actions = {
               if (itemTagState == Idled) {
                 ActionText(
