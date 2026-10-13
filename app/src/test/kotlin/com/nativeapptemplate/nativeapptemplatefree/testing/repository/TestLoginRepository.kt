@@ -131,12 +131,12 @@ class TestLoginRepository : LoginRepository {
   override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
   }
 
-  /** How many times [clearUserPreferences] was called. */
-  var clearUserPreferencesCallCount = 0
+  /** How many times [clearSession] was called. */
+  var clearSessionCallCount = 0
     private set
 
-  override suspend fun clearUserPreferences() {
-    clearUserPreferencesCallCount++
+  override suspend fun clearSession() {
+    clearSessionCallCount++
   }
 
   override fun isLoggedIn(): Flow<Boolean> = isLoggedInReturnFlow

@@ -7,6 +7,7 @@ import com.nativeapptemplate.nativeapptemplatefree.di.modules.networkJson
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
+import com.nativeapptemplate.nativeapptemplatefree.model.Locales
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Meta
 import com.nativeapptemplate.nativeapptemplatefree.model.Permissions
@@ -202,27 +203,55 @@ class NativeAppTemplatePreferencesDataSourceTest {
     }
   }
 
-  // Signing out (LoginRepositoryImpl.logout) clears the whole UserPreferences: the session, and also
-  // the device-level settings stored next to it (dark mode, the shop tip). Current behavior.
   @Test
-  fun clearUserPreferences_resetsEverythingToTheDefaults() = testScope.runTest {
-    subject.setShopkeeper(testInputLoggedInShopkeeper)
+  fun clearSession_forgetsEverythingAboutTheShopkeeper() = testScope.runTest {
+    // Whoever signs in next on this device must see nothing of this shopkeeper.
+    subject.setShopkeeper(LoggedInShopkeeper(datum = testInputLoggedInShopkeeperData.copy(attributes = testInputLoggedInShopkeeperData.attributes!!.copy(locale = "ja"))))
     subject.setPermissions(Permissions(meta = Meta(androidAppVersion = BuildConfig.VERSION_CODE + 1, shouldUpdatePrivacy = true, shouldUpdateTerms = true, shopLimitCount = 99)))
-    subject.setDarkThemeConfig(DarkThemeConfig.DARK)
-    subject.setDidShowTapShopBelowTip(true)
+    subject.setIsEmailUpdated(true)
+    subject.setIsMyAccountDeleted(true)
     subject.setIsShopDeleted(true)
 
-    subject.clearUserPreferences()
+    subject.clearSession()
 
+    // Expected: the proto3 defaults ("" / 0 / false), as on a fresh install.
     val userData = subject.userData.first()
     assertFalse(userData.isLoggedIn)
-    assertEquals("", userData.token)
+    assertEquals("", userData.id)
     assertEquals("", userData.accountId)
+    assertEquals("", userData.personalAccountId)
+    assertEquals("", userData.accountOwnerId)
+    assertEquals("", userData.accountName)
+    assertEquals("", userData.email)
+    assertEquals("", userData.name)
+    assertEquals("", userData.timeZone)
+    // An empty stored locale reads as Locales.DEFAULT.
+    assertEquals(Locales.DEFAULT, userData.locale)
+    assertEquals("", userData.token)
+    assertEquals("", userData.client)
+    assertEquals("", userData.uid)
+    assertEquals("", userData.expiry)
+    assertEquals(0, userData.androidAppVersion)
+    assertEquals(0, userData.shopLimitCount)
+    assertFalse(userData.shouldUpdatePrivacy)
+    assertFalse(userData.shouldUpdateTerms)
     assertFalse(subject.shouldUpdateApp().first())
-    assertFalse(subject.shouldUpdatePrivacy().first())
-    assertEquals(DarkThemeConfig.FOLLOW_SYSTEM, userData.darkThemeConfig)
-    assertFalse(subject.didShowTapShopBelowTip().first())
+    assertFalse(userData.isEmailUpdated)
+    assertFalse(userData.isMyAccountDeleted)
     assertFalse(subject.isShopDeleted().first())
+  }
+
+  @Test
+  fun clearSession_keepsTheDeviceSettings() = testScope.runTest {
+    // Chosen on this device, not for the account: signing in or out must not reset them.
+    subject.setDarkThemeConfig(DarkThemeConfig.DARK)
+    subject.setDidShowTapShopBelowTip(true)
+    subject.setShopkeeper(testInputLoggedInShopkeeper)
+
+    subject.clearSession()
+
+    assertEquals(DarkThemeConfig.DARK, subject.userData.first().darkThemeConfig)
+    assertTrue(subject.didShowTapShopBelowTip().first())
   }
 
   @Test

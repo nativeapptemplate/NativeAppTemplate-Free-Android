@@ -79,7 +79,7 @@ class DemoLoginRepository @Inject constructor(
   override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
   }
 
-  override suspend fun clearUserPreferences() {
+  override suspend fun clearSession() {
   }
 
   override fun isLoggedIn(): Flow<Boolean> = MutableStateFlow(true)

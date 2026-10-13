@@ -196,7 +196,7 @@ class ShopkeeperEditViewModelTest {
     viewModel.deleteShopkeeper()
 
     // The account still exists on the server, so the session must survive.
-    assertEquals(0, loginRepository.clearUserPreferencesCallCount)
+    assertEquals(0, loginRepository.clearSessionCallCount)
     assertFalse(viewModel.uiState.value.isLoading)
     assertFalse(viewModel.uiState.value.isDeleted)
     // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".

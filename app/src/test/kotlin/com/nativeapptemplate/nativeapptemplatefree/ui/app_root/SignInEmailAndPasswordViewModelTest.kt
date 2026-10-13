@@ -134,7 +134,7 @@ class SignInEmailAndPasswordViewModelTest {
     // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".
     assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: Invalid login credentials. Please try again.", uiStateValue.message)
     // The previous session (if any) is left alone, and a rejected sign-in is not a sign-out.
-    assertEquals(0, loginRepository.clearUserPreferencesCallCount)
+    assertEquals(0, loginRepository.clearSessionCallCount)
     assertEquals(0, loginRepository.logoutCallCount)
   }
 
@@ -148,7 +148,7 @@ class SignInEmailAndPasswordViewModelTest {
 
     viewModel.login()
 
-    assertEquals(1, loginRepository.clearUserPreferencesCallCount)
+    assertEquals(1, loginRepository.clearSessionCallCount)
     val userData = loginRepository.userData.first()
     assertTrue(userData.isLoggedIn)
     assertEquals(LOGGED_IN_SHOPKEEPER_ACCOUNT_ID, userData.accountId)
