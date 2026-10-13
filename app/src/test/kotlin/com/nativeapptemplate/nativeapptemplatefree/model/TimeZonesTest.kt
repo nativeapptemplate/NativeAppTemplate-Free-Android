@@ -32,6 +32,22 @@ class TimeZonesTest {
     assertEquals("Edinburgh", TimeZones.currentTimeZoneKey(TimeZone.getTimeZone("Africa/Accra")))
   }
 
+  // The zone "GMT" (common on emulators) has the city part "GMT", which every entry contains, so
+  // matching it against the whole map picked "International Date Line West" (GMT-12:00). No
+  // "(GMT+00:00)" entry is named "GMT", so it is the first one at that offset: Edinburgh.
+  @Test
+  fun currentTimeZoneKey_forTheZoneNamedGmt_isTheFirstZoneAtGmt() {
+    assertEquals("Edinburgh", TimeZones.currentTimeZoneKey(TimeZone.getTimeZone("GMT")))
+  }
+
+  // Australia/West is GMT+08:00. Its city part "West" is in "International Date Line West"
+  // (GMT-12:00), but no "(GMT+08:00)" entry is named "West", so it is the first one at +08:00:
+  // Beijing.
+  @Test
+  fun currentTimeZoneKey_whenTheCityNamesAZoneAtAnotherOffset_isTheFirstZoneAtItsOffset() {
+    assertEquals("Beijing", TimeZones.currentTimeZoneKey(TimeZone.getTimeZone("Australia/West")))
+  }
+
   // A French device names the offset "UTC+01:00", which no entry contains; Paris is in the map.
   @Test
   fun currentTimeZoneKey_onAFrenchDevice_isStillTheCity() {

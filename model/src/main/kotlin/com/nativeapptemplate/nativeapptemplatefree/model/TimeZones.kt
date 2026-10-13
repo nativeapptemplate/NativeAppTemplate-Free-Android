@@ -194,7 +194,11 @@ object TimeZones {
 
     if (filteredTimeZoneValues.isEmpty()) return result
 
-    val resultTimeZoneValue = map.values.firstOrNull { timeZoneLocationDetail in it }
+    // Only among the zones at this offset, and by the whole city name: "GMT" is in every label and
+    // "Australia/West" would otherwise match "International Date Line West".
+    val resultTimeZoneValue = filteredTimeZoneValues.firstOrNull {
+      it.removePrefix(timeZoneGmt).trim() == timeZoneLocationDetail
+    }
     resultTimeZoneValue?.let {
       return keyFromValue(it)
     }

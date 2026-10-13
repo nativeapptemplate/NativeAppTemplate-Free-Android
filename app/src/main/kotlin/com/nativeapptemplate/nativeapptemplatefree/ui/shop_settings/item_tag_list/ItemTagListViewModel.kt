@@ -38,6 +38,12 @@ data class ItemTagListUiState(
   val currentPage: Int = 1,
   val totalPages: Int = 1,
   val isLoadingMore: Boolean = false,
+
+  /**
+   * The last page failed to load. The list's end is still on screen, so the view would ask for the
+   * page again at once, in a loop; it is asked for again only after a reload (pull to refresh).
+   */
+  val loadMoreFailed: Boolean = false,
 ) : ErrorShowingUiState<ItemTagListUiState> {
   override fun showingError(message: String) = copy(message = message, isLoading = false)
 
@@ -70,7 +76,7 @@ class ItemTagListViewModel @Inject constructor(
 
   fun loadMore() {
     val state = _uiState.value
-    if (state.isLoadingMore || !state.hasMorePages) return
+    if (state.isLoadingMore || state.loadMoreFailed || !state.hasMorePages) return
     fetchData(page = state.currentPage + 1, isReload = false)
   }
 
@@ -82,6 +88,7 @@ class ItemTagListViewModel @Inject constructor(
         it.copy(
           isLoading = true,
           success = false,
+          loadMoreFailed = false,
         )
       }
     } else {
@@ -124,6 +131,7 @@ class ItemTagListViewModel @Inject constructor(
             message = message,
             isLoading = false,
             isLoadingMore = false,
+            loadMoreFailed = !isReload,
           )
         }
       }.collect {

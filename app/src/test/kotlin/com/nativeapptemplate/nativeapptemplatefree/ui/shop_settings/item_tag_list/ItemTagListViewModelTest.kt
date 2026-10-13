@@ -284,7 +284,7 @@ class ItemTagListViewModelTest {
     assertEquals(testInputItemTags.datum.map { it.id }, uiStateValue.itemTags.map { it.id })
   }
 
-  // A failed next page shows the coded error, keeps page 1 (2 tags), and leaves page 2 to load on the next scroll.
+  // A failed next page shows the coded error, keeps page 1 (2 tags), and leaves page 2 to load after a reload.
   @Test
   fun loadMore_whenTheNextPageFails_keepsPageOneAndCanTryAgain() = runTest {
     backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
@@ -301,6 +301,31 @@ class ItemTagListViewModelTest {
     assertFalse(uiStateValue.isLoadingMore)
     assertEquals(testInputItemTagsPage1.datum.map { it.id }, uiStateValue.itemTags.map { it.id })
     assertTrue(uiStateValue.hasMorePages)
+  }
+
+  // ItemTagListView calls loadMore() whenever the end of the list is on screen and no page is
+  // loading. A failed page ends its loading with the end still on screen, so without a stop the view
+  // requested the page again at once, forever (offline: a request and a snackbar per loop).
+  @Test
+  fun loadMore_afterAFailedPage_doesNotRequestItAgainUntilReload() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(testInputItemTagsPage1)
+    viewModel.reload()
+
+    itemTagRepository.fail(ItemTagRepository::getItemTags, testApiError)
+    viewModel.loadMore()
+    assertEquals(TEST_API_ERROR_MESSAGE, viewModel.uiState.value.message)
+    assertFalse(viewModel.uiState.value.isLoadingMore)
+
+    // What the view does next: the end of the list is still visible and nothing is loading.
+    viewModel.loadMore()
+    // Page 1 by reload(), page 2 by the first loadMore(), nothing by the second.
+    assertEquals(listOf<Int?>(1, 2), itemTagRepository.requestedPages)
+
+    // Pull to refresh starts over, so loading more is allowed again.
+    viewModel.reload()
+    assertFalse(viewModel.uiState.value.loadMoreFailed)
   }
 }
 

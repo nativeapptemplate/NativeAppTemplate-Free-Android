@@ -33,7 +33,12 @@ class TestItemTagRepository :
     },
   ).also { requestedPages += page }
 
+  /** How many times [getItemTag] was called. */
+  var getItemTagCallCount = 0
+    private set
+
   override fun getItemTag(id: String): Flow<ItemTag> = failures.orFail(ItemTagRepository::getItemTag, itemTagFlow)
+    .also { getItemTagCallCount++ }
 
   override fun createItemTag(shopId: String, itemTagBody: ItemTagBody): Flow<ItemTag> = failures.orFail(ItemTagRepository::createItemTag, itemTagFlow)
 
