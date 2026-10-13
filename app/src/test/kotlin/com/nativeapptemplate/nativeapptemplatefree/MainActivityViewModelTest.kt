@@ -12,6 +12,7 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestAppLan
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.testSessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -44,6 +45,7 @@ class MainActivityViewModelTest {
     viewModel = MainActivityViewModel(
       loginRepository = loginRepository,
       appLanguageSyncer = AppLanguageSyncer(loginRepository, signUpRepository, appLanguageProvider),
+      sessionLifecycle = testSessionLifecycle(loginRepository, signUpRepository, appLanguageProvider),
     )
   }
 

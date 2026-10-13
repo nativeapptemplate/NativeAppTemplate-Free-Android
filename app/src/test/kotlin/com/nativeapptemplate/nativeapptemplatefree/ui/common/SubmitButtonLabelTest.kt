@@ -20,6 +20,7 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginR
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
+import com.nativeapptemplate.nativeapptemplatefree.testing.repository.testSessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.ForgotPasswordView
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.ForgotPasswordViewModel
 import com.nativeapptemplate.nativeapptemplatefree.ui.app_root.ResendConfirmationInstructionsView
@@ -84,7 +85,7 @@ class SubmitButtonLabelTest {
   @Test
   fun shopkeeperEdit() {
     val loginRepository = TestLoginRepository().apply { sendUserData(emptyUserData.copy(name = "John", email = "john@example.com")) }
-    val viewModel = ShopkeeperEditViewModel(loginRepository, TestSignUpRepository(), TestAppLanguageProvider())
+    val viewModel = ShopkeeperEditViewModel(loginRepository, TestSignUpRepository(), TestAppLanguageProvider(), testSessionLifecycle(loginRepository))
     assertSubmitButtonLabeled(R.string.button_label_update) {
       ShopkeeperEditView(viewModel = viewModel, onShowSnackbar = onShowSnackbar, onBackClick = {})
     }

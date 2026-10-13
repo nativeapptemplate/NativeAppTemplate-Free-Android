@@ -3,9 +3,11 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nativeapptemplate.nativeapptemplatefree.common.coroutines.runCatchingCancellable
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.login.SessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignOutNotice
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
@@ -48,6 +50,7 @@ class ShopkeeperEditViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
   private val signUpRepository: SignUpRepository,
   private val appLanguageProvider: AppLanguageProvider,
+  private val sessionLifecycle: SessionLifecycle,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopkeeperEditUiState())
 
@@ -131,12 +134,9 @@ class ShopkeeperEditViewModel @Inject constructor(
               )
             }
 
-            // logout clears the session (storing the notice) even when the request fails.
-            loginRepository.logout(SignOutNotice.EMAIL_UPDATED)
-              .catch { exception ->
-                Log.e("ShopkeeperEditViewModel", "Logout error", exception)
-              }
-              .collect { }
+            // signOut clears the session (storing the notice) even when the request fails.
+            runCatchingCancellable { sessionLifecycle.signOut(SignOutNotice.EMAIL_UPDATED) }
+              .onFailure { Log.e("ShopkeeperEditViewModel", "Logout error", it) }
           } else {
             _uiState.update {
               it.copy(

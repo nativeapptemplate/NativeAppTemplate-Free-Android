@@ -42,6 +42,7 @@ class TestLoginRepository : LoginRepository {
 
   override fun logout(notice: SignOutNotice?): Flow<Boolean> = flow {
     logoutCallCount++
+    onLogoutRequest()
     // LoginRepositoryImpl.logout clears the session whether or not the request succeeds.
     storeSignOutNotice(notice)
     onSessionCleared()
@@ -54,6 +55,12 @@ class TestLoginRepository : LoginRepository {
    * the sign-out is still running. A test can do that here.
    */
   var onSessionCleared: suspend () -> Unit = {}
+
+  /**
+   * Runs while [logout] waits on the server, before the session is cleared. A test can close the
+   * calling screen here, as the user can while the request is in flight.
+   */
+  var onLogoutRequest: suspend () -> Unit = {}
 
   private var permissionsError: Throwable? = null
 
