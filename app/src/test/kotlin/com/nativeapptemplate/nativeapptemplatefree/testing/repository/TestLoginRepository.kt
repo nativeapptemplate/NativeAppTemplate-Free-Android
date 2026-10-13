@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.testing.repository
 
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.login.SignOutNotice
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
@@ -39,10 +40,20 @@ class TestLoginRepository : LoginRepository {
   var logoutCallCount = 0
     private set
 
-  override fun logout(): Flow<Boolean> = flow {
+  override fun logout(notice: SignOutNotice?): Flow<Boolean> = flow {
     logoutCallCount++
+    // LoginRepositoryImpl.logout clears the session whether or not the request succeeds.
+    storeSignOutNotice(notice)
+    onSessionCleared()
     emit(true)
   }
+
+  /**
+   * Runs once [logout] or [clearSession] has cleared the session. In the app, a cleared session
+   * routes to onboarding, which removes the current screen and cancels its view model's scope while
+   * the sign-out is still running. A test can do that here.
+   */
+  var onSessionCleared: suspend () -> Unit = {}
 
   private var permissionsError: Throwable? = null
 
@@ -135,8 +146,20 @@ class TestLoginRepository : LoginRepository {
   var clearSessionCallCount = 0
     private set
 
-  override suspend fun clearSession() {
+  override suspend fun clearSession(notice: SignOutNotice?) {
     clearSessionCallCount++
+    storeSignOutNotice(notice)
+    onSessionCleared()
+  }
+
+  /** As the real session clear does: the notice is stored in the same write. */
+  private fun storeSignOutNotice(notice: SignOutNotice?) {
+    _userData.tryEmit(
+      currentUserData.copy(
+        isEmailUpdated = notice == SignOutNotice.EMAIL_UPDATED,
+        isMyAccountDeleted = notice == SignOutNotice.ACCOUNT_DELETED,
+      ),
+    )
   }
 
   override fun isLoggedIn(): Flow<Boolean> = isLoggedInReturnFlow

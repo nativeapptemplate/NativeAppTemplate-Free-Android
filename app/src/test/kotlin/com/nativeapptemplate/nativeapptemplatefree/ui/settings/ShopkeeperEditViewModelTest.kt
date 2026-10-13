@@ -1,5 +1,6 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.settings
 
+import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -9,11 +10,13 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginR
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.emptyUserData
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.yield
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -155,6 +158,57 @@ class ShopkeeperEditViewModelTest {
 
     val uiStateValue = viewModel.uiState.value
     assertTrue(uiStateValue.isEmailUpdated)
+  }
+
+  // Signing out routes to onboarding, which removes Edit Profile and cancels this view model's
+  // scope while the sign-out is still running. The "check your email" message shown on onboarding
+  // must not depend on this screen outliving that.
+  @Test
+  fun updateShopkeeper_withANewEmail_whenTheScreenClosesOnSignOut_stillReportsTheEmailChange() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(
+      emptyUserData.copy(
+        name = testInputLoggedInShopkeeper.getName()!!,
+        email = testInputLoggedInShopkeeper.getEmail()!!,
+        timeZone = testInputLoggedInShopkeeper.getTimeZone()!!,
+      ),
+    )
+    signUpRepository.sendLoggedInShopkeeper(
+      LoggedInShopkeeper(
+        datum = Data(
+          id = LOGGED_IN_SHOPKEEPER_ID,
+          type = LOGGED_IN_SHOPKEEPER_TYPE,
+          attributes = testInputLoggedInShopkeeper.datum!!.attributes!!.copy(email = testInputNewEmail),
+        ),
+      ),
+    )
+    viewModel.reload()
+    viewModel.updateEmail(testInputNewEmail)
+    loginRepository.onSessionCleared = { leaveTheScreen() }
+
+    viewModel.updateShopkeeper()
+
+    assertTrue(loginRepository.userData.first().isEmailUpdated)
+  }
+
+  // As with the email change: the "account deleted" message must survive the screen closing.
+  @Test
+  fun deleteShopkeeper_whenTheScreenClosesOnSignOut_stillReportsTheDeletion() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    loginRepository.sendUserData(emptyUserData)
+    viewModel.reload()
+    loginRepository.onSessionCleared = { leaveTheScreen() }
+
+    viewModel.deleteShopkeeper()
+
+    assertTrue(loginRepository.userData.first().isMyAccountDeleted)
+  }
+
+  /** What the route to onboarding does to this screen: its view model is cleared mid sign-out. */
+  private suspend fun leaveTheScreen() {
+    viewModel.viewModelScope.cancel()
+    // The sign-out's next suspension sees the cancellation.
+    yield()
   }
 
   @Test

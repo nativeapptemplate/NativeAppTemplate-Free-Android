@@ -42,14 +42,14 @@ class LoginRepositoryImpl @Inject constructor(
   override val userData: Flow<UserData> =
     natPreferencesDataSource.userData
 
-  override fun logout() = flow {
+  override fun logout(notice: SignOutNotice?) = flow {
     val response = api.logout()
 
     response.suspendOnSuccess {
-      clearSession()
+      clearSession(notice)
       emit(true)
     }.suspendOnFailure {
-      clearSession()
+      clearSession(notice)
       throwApiError(response, message())
     }
   }.flowOn(ioDispatcher)
@@ -111,8 +111,11 @@ class LoginRepositoryImpl @Inject constructor(
     natPreferencesDataSource.setIsShopDeleted(isShopDeleted)
   }
 
-  override suspend fun clearSession() {
-    natPreferencesDataSource.clearSession()
+  override suspend fun clearSession(notice: SignOutNotice?) {
+    natPreferencesDataSource.clearSession(
+      isEmailUpdated = notice == SignOutNotice.EMAIL_UPDATED,
+      isMyAccountDeleted = notice == SignOutNotice.ACCOUNT_DELETED,
+    )
   }
 
   override fun isLoggedIn(): Flow<Boolean> = natPreferencesDataSource.isLoggedIn()

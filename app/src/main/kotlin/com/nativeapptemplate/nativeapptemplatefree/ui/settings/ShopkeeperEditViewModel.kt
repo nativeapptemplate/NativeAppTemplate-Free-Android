@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.login.AppLanguageProvider
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.login.SignOutNotice
 import com.nativeapptemplate.nativeapptemplatefree.data.login.SignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.SignUpForUpdate
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
@@ -130,15 +131,12 @@ class ShopkeeperEditViewModel @Inject constructor(
               )
             }
 
-            val booleanFlow = loginRepository.logout()
-            booleanFlow
+            // logout clears the session (storing the notice) even when the request fails.
+            loginRepository.logout(SignOutNotice.EMAIL_UPDATED)
               .catch { exception ->
                 Log.e("ShopkeeperEditViewModel", "Logout error", exception)
-                loginRepository.setIsEmailUpdated(true)
               }
-              .collect {
-                loginRepository.setIsEmailUpdated(true)
-              }
+              .collect { }
           } else {
             _uiState.update {
               it.copy(
@@ -179,8 +177,8 @@ class ShopkeeperEditViewModel @Inject constructor(
               isDeleted = true,
             )
           }
-          loginRepository.clearSession()
-          loginRepository.setIsMyAccountDeleted(true)
+          // The server session went with the account; the notice is stored with the cleared session.
+          loginRepository.clearSession(SignOutNotice.ACCOUNT_DELETED)
         }
     }
   }
