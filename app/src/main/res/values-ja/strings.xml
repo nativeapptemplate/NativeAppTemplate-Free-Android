@@ -32,8 +32,6 @@
   <string name="change_app_language_in_settings">端末の設定で変更</string>
   <string name="app_language_emails_too">メールもこの言語で届きます。</string>
   <string name="not_connected">⚠️ インターネットに接続されていません</string>
-  <string name="instructions">手順</string>
-  <string name="open">開く</string>
   <string name="are_you_sure">よろしいですか？</string>
   <string name="full_name">名前</string>
   <string name="full_name_is_required">名前を入力してください。</string>
@@ -41,9 +39,6 @@
   <string name="email_is_invalid">メールアドレスの形式が正しくありません。</string>
   <string name="password_is_required">パスワードを入力してください。</string>
   <string name="password_is_invalid">パスワードが正しくありません。</string>
-  <string name="role">権限</string>
-  <string name="unauthorized">この操作を行う権限がありません。</string>
-  <string name="cancel">キャンセル</string>
   <string name="button_label_ok">OK</string>
   <!-- The button on the Accept Terms / Accept Privacy screens. -->
   <string name="accept">同意する</string>
@@ -83,7 +78,6 @@
   <string name="add_shop">店舗を追加</string>
   <string name="shops">店舗</string>
   <string name="shop_name">店舗名</string>
-  <string name="shop_name_is_required">店舗名を入力してください。</string>
   <string name="shop_name_is_invalid">店舗名が正しくありません。</string>
   <string name="shop_description_is_invalid">店舗の説明が正しくありません。</string>
   <string name="shop_name_help">名前は1〜%1$d文字で入力してください。</string>

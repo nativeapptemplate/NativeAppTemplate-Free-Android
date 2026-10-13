@@ -7,8 +7,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 data class Relationships(
-  val shopkeepers: Shopkeepers? = null,
-
   val shop: Shop? = null,
 
   val shops: Shops? = null,

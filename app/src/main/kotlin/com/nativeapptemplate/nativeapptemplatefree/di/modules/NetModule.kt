@@ -1,6 +1,5 @@
 package com.nativeapptemplate.nativeapptemplatefree.di.modules
 
-import androidx.tracing.trace
 import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagApi
@@ -17,7 +16,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -89,21 +87,6 @@ class NetModule {
 
   @Provides
   fun provideItemTagApi(retrofit: Retrofit): ItemTagApi = ItemTagApi.create(retrofit)
-
-  @Provides
-  @Singleton
-  fun okHttpCallFactory(): Call.Factory = trace("NativeAppTemplateOkHttpClient") {
-    OkHttpClient.Builder()
-      .addInterceptor(
-        HttpLoggingInterceptor()
-          .apply {
-            if (BuildConfig.DEBUG) {
-              setLevel(HttpLoggingInterceptor.Level.BODY)
-            }
-          },
-      )
-      .build()
-  }
 }
 
 /**

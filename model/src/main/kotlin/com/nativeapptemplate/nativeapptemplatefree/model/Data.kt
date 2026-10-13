@@ -14,8 +14,6 @@ data class Data(
   val meta: Meta? = null,
   val isOptionsRevealed: Boolean = false,
 ) : Parcelable {
-  fun getCreatedAt(): String = attributes?.createdAt ?: ""
-
   fun getName(): String = attributes?.name ?: ""
 
   fun getState(): String? = attributes?.state
