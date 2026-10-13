@@ -59,7 +59,7 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
         .catchShowingError(_uiState)
         .collect { loggedInShopkeeper ->
           _uiState.update { it.copy(loggedInShopkeeper = loggedInShopkeeper) }
-          loginRepository.clearUserPreferences()
+          loginRepository.clearSession()
           loginRepository.setShopkeeper(loggedInShopkeeper)
           // The account may have been created, or last used, in another language.
           viewModelScope.launch { appLanguageSyncer.sync() }

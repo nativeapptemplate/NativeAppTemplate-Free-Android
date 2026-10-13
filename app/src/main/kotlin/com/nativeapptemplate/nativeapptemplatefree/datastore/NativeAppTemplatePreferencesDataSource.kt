@@ -162,9 +162,19 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
     }
   }
 
-  suspend fun clearUserPreferences() {
-    updatePreferences("Failed to clear user preferences") {
-      it.toBuilder().clear().build()
+  /**
+   * Resets everything to its default except the device settings, which belong to whoever uses this
+   * device rather than to the signed-in shopkeeper: the dark theme and the "tap shop below" tip
+   * (an iOS TipKit tip, also per device). Everything else is the shopkeeper's (session, account,
+   * permissions and limits, locale) or a one-shot flag about their session, and must not reach
+   * whoever signs in next.
+   */
+  suspend fun clearSession() {
+    updatePreferences("Failed to clear the session") {
+      UserPreferences.newBuilder()
+        .setDarkThemeConfig(it.darkThemeConfig)
+        .setDidShowTapShopBelowTip(it.didShowTapShopBelowTip)
+        .build()
     }
   }
 

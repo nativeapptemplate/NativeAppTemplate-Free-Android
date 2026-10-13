@@ -46,10 +46,10 @@ class LoginRepositoryImpl @Inject constructor(
     val response = api.logout()
 
     response.suspendOnSuccess {
-      clearUserPreferences()
+      clearSession()
       emit(true)
     }.suspendOnFailure {
-      clearUserPreferences()
+      clearSession()
       throwApiError(response, message())
     }
   }.flowOn(ioDispatcher)
@@ -111,8 +111,8 @@ class LoginRepositoryImpl @Inject constructor(
     natPreferencesDataSource.setIsShopDeleted(isShopDeleted)
   }
 
-  override suspend fun clearUserPreferences() {
-    natPreferencesDataSource.clearUserPreferences()
+  override suspend fun clearSession() {
+    natPreferencesDataSource.clearSession()
   }
 
   override fun isLoggedIn(): Flow<Boolean> = natPreferencesDataSource.isLoggedIn()

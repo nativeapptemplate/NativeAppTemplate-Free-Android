@@ -77,7 +77,7 @@ class NativeAppTemplateAppStateTest {
     dataSource.setPermissions(Permissions(meta = Meta(androidAppVersion = BuildConfig.VERSION_CODE + 1)))
     assertEquals(AuthDestination.NEED_APP_UPDATES, appState.authDestination.value)
 
-    dataSource.clearUserPreferences()
+    dataSource.clearSession()
     assertEquals(AuthDestination.ONBOARDING, appState.authDestination.value)
   }
 

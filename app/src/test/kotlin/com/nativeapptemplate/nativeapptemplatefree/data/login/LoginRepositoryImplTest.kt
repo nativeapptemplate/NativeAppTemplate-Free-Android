@@ -5,6 +5,7 @@ import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataStore
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
+import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Login
@@ -23,6 +24,10 @@ import kotlin.test.assertFailsWith
 
 class LoginRepositoryImplTest {
 
+  private val preferences = NativeAppTemplatePreferencesDataSource(
+    InMemoryDataStore(UserPreferences.getDefaultInstance()),
+  )
+
   private fun repository(
     loginResponse: LoggedInShopkeeper = sessionWith(),
     logoutResponse: ApiResponse<Status> = ApiResponse.Success(Status()),
@@ -34,9 +39,7 @@ class LoginRepositoryImplTest {
       override suspend fun updateConfirmedPrivacyVersion(accountId: String): ApiResponse<Status> = error("not used")
       override suspend fun updateConfirmedTermsVersion(accountId: String): ApiResponse<Status> = error("not used")
     },
-    natPreferencesDataSource = NativeAppTemplatePreferencesDataSource(
-      InMemoryDataStore(UserPreferences.getDefaultInstance()),
-    ),
+    natPreferencesDataSource = preferences,
     ioDispatcher = UnconfinedTestDispatcher(),
   )
 
@@ -61,6 +64,18 @@ class LoginRepositoryImplTest {
     assertFailsWith<ApiException.UnprocessableError> {
       repository(sessionWith(accountId = null)).login(Login(email = "john@example.com", password = "password")).first()
     }
+  }
+
+  @Test
+  fun logout_keepsTheDarkTheme() = runTest {
+    // A device setting: the next shopkeeper on this device keeps the theme chosen here.
+    preferences.setDarkThemeConfig(DarkThemeConfig.DARK)
+    preferences.setShopkeeper(sessionWith())
+
+    repository().logout().first()
+
+    assertEquals(false, preferences.userData.first().isLoggedIn)
+    assertEquals(DarkThemeConfig.DARK, preferences.userData.first().darkThemeConfig)
   }
 
   @Test

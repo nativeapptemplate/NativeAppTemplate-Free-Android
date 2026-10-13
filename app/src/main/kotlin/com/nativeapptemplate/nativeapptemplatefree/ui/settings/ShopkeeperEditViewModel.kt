@@ -179,7 +179,7 @@ class ShopkeeperEditViewModel @Inject constructor(
               isDeleted = true,
             )
           }
-          loginRepository.clearUserPreferences()
+          loginRepository.clearSession()
           loginRepository.setIsMyAccountDeleted(true)
         }
     }

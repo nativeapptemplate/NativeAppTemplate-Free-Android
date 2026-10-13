@@ -38,7 +38,11 @@ interface LoginRepository {
 
   suspend fun setIsShopDeleted(isShopDeleted: Boolean)
 
-  suspend fun clearUserPreferences()
+  /**
+   * Forgets the signed-in shopkeeper (session, account, permissions, one-shot flags) and keeps the
+   * device settings (dark theme, tips already shown).
+   */
+  suspend fun clearSession()
 
   fun isLoggedIn(): Flow<Boolean>
 

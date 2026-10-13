@@ -56,6 +56,6 @@ class NativeAppTemplatePreferencesDataSourceWriteFailureTest {
 
   @Test
   fun clearing_whenTheWriteFails_isLoggedAndRethrown() = runTest {
-    assertLoggedAndRethrown("Failed to clear user preferences") { subject.clearUserPreferences() }
+    assertLoggedAndRethrown("Failed to clear the session") { subject.clearSession() }
   }
 }

@@ -254,7 +254,7 @@ class RepositoryRequestsTest {
     loginRepository.logout().first()
 
     assertEquals("DELETE /shopkeeper_auth/sign_out", received.single().let { "${it.method} ${it.pathAndQuery}" })
-    // clearUserPreferences resets UserPreferences to its defaults.
+    // clearSession forgets the session (and keeps only the device settings).
     val userData = dataSource.userData.first()
     assertFalse(userData.isLoggedIn)
     assertEquals("", userData.token)
@@ -378,7 +378,7 @@ class RepositoryRequestsTest {
 
   @Test
   fun aSignedOutRequest_carriesNoTokenAndNoAccountSegment() = runBlocking {
-    dataSource.clearUserPreferences()
+    dataSource.clearSession()
     respond(200, """{"data":[]}""")
 
     shopRepository.getShops().first()
