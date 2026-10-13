@@ -52,8 +52,6 @@ NFC tag writing and background tag reading were part of v1 and have been removed
 
 ## Not Included in the Free Version
 
-![Gif showing Switching organization](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/blob/main/docs/images/organization.gif "Showing Switching organization")  
-
 The full versions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team)) include additional advanced features:
 
 - URL Path-Based Multitenancy (prepends `/:account_id/` to URLs)
