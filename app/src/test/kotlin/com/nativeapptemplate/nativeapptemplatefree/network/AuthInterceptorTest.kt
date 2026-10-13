@@ -176,6 +176,20 @@ class AuthInterceptorTest {
   }
 
   @Test
+  fun intercept_apiHostConfiguredInAnotherCase_isStillTheApiHost() = testScope.runTest {
+    // Host names are case-insensitive (RFC 4343), and OkHttp lowercases the request's host, so a
+    // NATIVEAPPTEMPLATE_API_DOMAIN written with capitals must still match.
+    val interceptor = AuthInterceptor(
+      dataSourceWith(token = "test-token", client = "test-client", uid = "john@example.com", expiry = "12345"),
+      apiHost = "Example.COM",
+    )
+
+    val sent = interceptor.sentRequest(Request.Builder().url("https://example.com/").build())
+
+    assertEquals("test-token", sent.header("access-token"))
+  }
+
+  @Test
   fun intercept_preservesOriginalRequestUrl() = testScope.runTest {
     val dataSource = NativeAppTemplatePreferencesDataSource(
       InMemoryDataStore(UserPreferences.getDefaultInstance()),

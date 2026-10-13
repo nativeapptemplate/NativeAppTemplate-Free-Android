@@ -1,9 +1,11 @@
 package com.nativeapptemplate.nativeapptemplatefree.datastore
 
+import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataStore
 import com.nativeapptemplate.nativeapptemplatefree.di.modules.networkJson
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
+import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
 import com.nativeapptemplate.nativeapptemplatefree.model.Meta
@@ -153,6 +155,90 @@ class NativeAppTemplatePreferencesDataSourceTest {
     val userData = subject.userData.first()
     assertTrue(userData.isLoggedIn)
     assertEquals("", userData.accountName)
+  }
+
+  @Test
+  fun setShopkeeper_storesTheSessionFromTheSignInResponse() = testScope.runTest {
+    subject.setShopkeeper(testInputLoggedInShopkeeper)
+
+    val userData = subject.userData.first()
+    assertEquals(LOGGED_IN_SHOPKEEPER_ID, userData.id)
+    assertEquals(LOGGED_IN_SHOPKEEPER_ACCOUNT_ID, userData.accountId)
+    assertEquals(LOGGED_IN_SHOPKEEPER_TOKEN, userData.token)
+    assertEquals(LOGGED_IN_SHOPKEEPER_CLIENT, userData.client)
+    assertEquals(LOGGED_IN_SHOPKEEPER_UID, userData.uid)
+    assertEquals(LOGGED_IN_SHOPKEEPER_EXPIRY, userData.expiry)
+    assertEquals(LOGGED_IN_SHOPKEEPER_TIME_ZONE, userData.timeZone)
+  }
+
+  // shouldUpdateApp = this build's versionCode (BuildConfig.VERSION_CODE) is older than the
+  // android_app_version the server requires.
+  @Test
+  fun setPermissions_aNewerRequiredAppVersion_requiresAnAppUpdate() = testScope.runTest {
+    subject.setPermissions(Permissions(meta = Meta(androidAppVersion = BuildConfig.VERSION_CODE + 1)))
+
+    assertTrue(subject.shouldUpdateApp().first())
+    assertEquals(BuildConfig.VERSION_CODE + 1, subject.userData.first().androidAppVersion)
+  }
+
+  @Test
+  fun setPermissions_theCurrentAppVersion_requiresNoAppUpdate() = testScope.runTest {
+    subject.setPermissions(Permissions(meta = Meta(androidAppVersion = BuildConfig.VERSION_CODE + 1)))
+
+    // The required version is this build's own: no longer older.
+    subject.setPermissions(Permissions(meta = Meta(androidAppVersion = BuildConfig.VERSION_CODE)))
+
+    assertFalse(subject.shouldUpdateApp().first())
+  }
+
+  @Test
+  fun darkThemeConfig_isFollowSystemUntilSet_thenWhatWasSet() = testScope.runTest {
+    // DARK_THEME_CONFIG_UNSPECIFIED (proto3's default 0) reads as FOLLOW_SYSTEM.
+    assertEquals(DarkThemeConfig.FOLLOW_SYSTEM, subject.userData.first().darkThemeConfig)
+
+    DarkThemeConfig.entries.forEach { config ->
+      subject.setDarkThemeConfig(config)
+      assertEquals(config, subject.userData.first().darkThemeConfig)
+    }
+  }
+
+  // Signing out (LoginRepositoryImpl.logout) clears the whole UserPreferences: the session, and also
+  // the device-level settings stored next to it (dark mode, the shop tip). Current behavior.
+  @Test
+  fun clearUserPreferences_resetsEverythingToTheDefaults() = testScope.runTest {
+    subject.setShopkeeper(testInputLoggedInShopkeeper)
+    subject.setPermissions(Permissions(meta = Meta(androidAppVersion = BuildConfig.VERSION_CODE + 1, shouldUpdatePrivacy = true, shouldUpdateTerms = true, shopLimitCount = 99)))
+    subject.setDarkThemeConfig(DarkThemeConfig.DARK)
+    subject.setDidShowTapShopBelowTip(true)
+    subject.setIsShopDeleted(true)
+
+    subject.clearUserPreferences()
+
+    val userData = subject.userData.first()
+    assertFalse(userData.isLoggedIn)
+    assertEquals("", userData.token)
+    assertEquals("", userData.accountId)
+    assertFalse(subject.shouldUpdateApp().first())
+    assertFalse(subject.shouldUpdatePrivacy().first())
+    assertEquals(DarkThemeConfig.FOLLOW_SYSTEM, userData.darkThemeConfig)
+    assertFalse(subject.didShowTapShopBelowTip().first())
+    assertFalse(subject.isShopDeleted().first())
+  }
+
+  @Test
+  fun flags_readBackWhatWasSet() = testScope.runTest {
+    subject.setIsEmailUpdated(true)
+    subject.setIsMyAccountDeleted(true)
+    subject.setIsShopDeleted(true)
+    subject.setDidShowTapShopBelowTip(true)
+
+    assertTrue(subject.isEmailUpdated().first())
+    assertTrue(subject.isMyAccountDeleted().first())
+    assertTrue(subject.isShopDeleted().first())
+    assertTrue(subject.didShowTapShopBelowTip().first())
+
+    subject.setIsShopDeleted(false)
+    assertFalse(subject.isShopDeleted().first())
   }
 }
 

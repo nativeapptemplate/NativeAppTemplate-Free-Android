@@ -143,4 +143,59 @@ class ApiResponseExtensionsTest {
 
     assertEquals("HTTP 502", exception.rawMessage)
   }
+
+  @Test
+  fun emitApiResponse_deviseFullMessagesBody_showsTheFirstMessage() = runTest {
+    // devise_token_auth's registration errors: {"errors": {"<field>": [...], "full_messages": [...]}}.
+    val response = httpError(
+      422,
+      """{"status":"error","errors":{"email":["has already been taken"],"full_messages":["Email has already been taken","Password is too short"]}}""",
+    )
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      flow { emitApiResponse(response) }.first()
+    }
+
+    assertEquals("Email has already been taken", exception.rawMessage)
+    assertEquals(422, exception.httpStatusCode)
+  }
+
+  @Test
+  fun emitApiResponse_jsonBodyWithoutErrors_showsTheHttpStatus() = runTest {
+    // Valid JSON, but neither {code, error_message} nor devise's "errors".
+    val response = httpError(500, """{"status":500,"error":"Internal Server Error"}""")
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      flow { emitApiResponse(response) }.first()
+    }
+
+    assertEquals("HTTP 500", exception.rawMessage)
+  }
+
+  @Test
+  fun emitApiResponse_emptyErrorBody_showsTheHttpStatus() = runTest {
+    val response = httpError(503, "")
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      flow { emitApiResponse(response) }.first()
+    }
+
+    assertEquals("HTTP 503", exception.rawMessage)
+    assertEquals(503, exception.httpStatusCode)
+  }
+
+  @Test
+  fun throwApiError_apiErrorBody_takesTheCodeFromTheBodyAndTheStatusFromTheResponse() {
+    // The two can differ; ApiError.code (shown as "[Status: code]") is the body's.
+    val response = httpError(403, """{"code":1001,"error_message":"Shop limit reached"}""")
+
+    val exception = assertFailsWith<ApiException.ApiError> {
+      throwApiError(response, "forbidden")
+    }
+
+    assertEquals(1001, exception.code)
+    assertEquals(403, exception.httpStatusCode)
+    // ApiException.ApiError: "[NATIVEAPPTEMPLATE-2001] " + "$apiMessage [Status: $code]".
+    assertEquals("[NATIVEAPPTEMPLATE-2001] Shop limit reached [Status: 1001]", exception.formattedDescription)
+  }
 }

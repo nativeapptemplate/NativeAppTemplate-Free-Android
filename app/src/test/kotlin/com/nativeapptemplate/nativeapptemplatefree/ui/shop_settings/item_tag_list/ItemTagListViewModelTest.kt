@@ -97,13 +97,44 @@ class ItemTagListViewModelTest {
     assertTrue(uiStateValue.success)
     assertFalse(uiStateValue.isLoading)
 
-    val shopId = testInputShop.datum!!.id!!
+    // The fixtures the test repositories served.
+    assertEquals(testInputShop, uiStateValue.shop)
+    assertEquals(testInputItemTagsData, uiStateValue.itemTags)
+  }
 
-    val shopFromRepository = shopRepository.getShop(shopId).first()
-    val itemTagsFromRepository = itemTagRepository.getItemTags(shopId).first()
+  // Without "meta" the loaded page counts as the only one: currentPage = the requested page (1),
+  // totalPages = 1, so there is nothing more to load.
+  @Test
+  fun reload_withoutPaginationMeta_treatsThePageAsTheLast() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.sendItemTags(ItemTags(datum = testInputItemTagsData, meta = null))
 
-    assertEquals(shopFromRepository, uiStateValue.shop)
-    assertEquals(itemTagsFromRepository.getDatumWithRelationships(), uiStateValue.itemTags)
+    viewModel.reload()
+    viewModel.loadMore()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(1, uiStateValue.currentPage)
+    assertEquals(1, uiStateValue.totalPages)
+    assertFalse(uiStateValue.hasMorePages)
+    assertEquals(listOf<Int?>(1), itemTagRepository.requestedPages)
+  }
+
+  // A failed reload (page 1) is not a failed next page: it shows the error and leaves loading more allowed.
+  @Test
+  fun reload_whenItFails_showsTheErrorWithoutBlockingLoadMore() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    itemTagRepository.fail(ItemTagRepository::getItemTags, testApiError)
+
+    viewModel.reload()
+
+    val uiStateValue = viewModel.uiState.value
+    assertEquals(TEST_API_ERROR_MESSAGE, uiStateValue.message)
+    assertFalse(uiStateValue.isLoading)
+    assertFalse(uiStateValue.success)
+    assertFalse(uiStateValue.loadMoreFailed)
+    assertEquals(emptyList<Data>(), uiStateValue.itemTags)
   }
 
   @Test

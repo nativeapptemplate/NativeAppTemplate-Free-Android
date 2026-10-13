@@ -31,7 +31,9 @@ class TestLoginRepository : LoginRepository {
 
   override val userData: Flow<UserData> = _userData.filterNotNull()
 
-  override fun login(login: Login): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
+  private var loginError: Throwable? = null
+
+  override fun login(login: Login): Flow<LoggedInShopkeeper> = loginError?.let { error -> flow { throw error } } ?: loggedInShopkeeperFlow
 
   /** How many times [logout] was collected. */
   var logoutCallCount = 0
@@ -174,6 +176,11 @@ class TestLoginRepository : LoginRepository {
 
   fun sendPermissions(permissions: Permissions) {
     permissionsFlow.tryEmit(permissions)
+  }
+
+  /** Makes every later [login] call fail with [error]. */
+  fun failLogin(error: Throwable) {
+    loginError = error
   }
 
   /** Makes every later [getPermissions] call fail with [error]. */
