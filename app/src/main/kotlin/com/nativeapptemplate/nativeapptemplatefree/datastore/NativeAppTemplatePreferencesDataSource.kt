@@ -168,12 +168,17 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
    * (an iOS TipKit tip, also per device). Everything else is the shopkeeper's (session, account,
    * permissions and limits, locale) or a one-shot flag about their session, and must not reach
    * whoever signs in next.
+   *
+   * [isEmailUpdated] and [isMyAccountDeleted] are set in the same write: they tell the signed-out
+   * screen why the session ended, and the screen that ended it may be gone right after this write.
    */
-  suspend fun clearSession() {
+  suspend fun clearSession(isEmailUpdated: Boolean = false, isMyAccountDeleted: Boolean = false) {
     updatePreferences("Failed to clear the session") {
       UserPreferences.newBuilder()
         .setDarkThemeConfig(it.darkThemeConfig)
         .setDidShowTapShopBelowTip(it.didShowTapShopBelowTip)
+        .setIsEmailUpdated(isEmailUpdated)
+        .setIsMyAccountDeleted(isMyAccountDeleted)
         .build()
     }
   }

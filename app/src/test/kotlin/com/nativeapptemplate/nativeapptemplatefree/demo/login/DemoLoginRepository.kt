@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.demo.login
 
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
+import com.nativeapptemplate.nativeapptemplatefree.data.login.SignOutNotice
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManager
 import com.nativeapptemplate.nativeapptemplatefree.demo.DemoAssetManagerImpl
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
@@ -44,7 +45,7 @@ class DemoLoginRepository @Inject constructor(
 
   override fun login(login: Login): Flow<LoggedInShopkeeper> = loggedInShopkeeperFlow
 
-  override fun logout(): Flow<Boolean> = MutableStateFlow(true)
+  override fun logout(notice: SignOutNotice?): Flow<Boolean> = MutableStateFlow(true)
 
   override fun getPermissions(): Flow<Permissions> = permissionsFlow
 
@@ -79,7 +80,7 @@ class DemoLoginRepository @Inject constructor(
   override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
   }
 
-  override suspend fun clearSession() {
+  override suspend fun clearSession(notice: SignOutNotice?) {
   }
 
   override fun isLoggedIn(): Flow<Boolean> = MutableStateFlow(true)

@@ -12,7 +12,11 @@ interface LoginRepository {
     login: Login,
   ): Flow<LoggedInShopkeeper>
 
-  fun logout(): Flow<Boolean>
+  /**
+   * Signs out on the server, then [clearSession] with [notice], whether or not the request
+   * succeeded.
+   */
+  fun logout(notice: SignOutNotice? = null): Flow<Boolean>
 
   fun getPermissions(): Flow<Permissions>
 
@@ -41,8 +45,11 @@ interface LoginRepository {
   /**
    * Forgets the signed-in shopkeeper (session, account, permissions, one-shot flags) and keeps the
    * device settings (dark theme, tips already shown).
+   *
+   * [notice] is stored in the same write that clears the session, so the signed-out screen shows
+   * it even though the calling screen is gone by the time this returns.
    */
-  suspend fun clearSession()
+  suspend fun clearSession(notice: SignOutNotice? = null)
 
   fun isLoggedIn(): Flow<Boolean>
 
