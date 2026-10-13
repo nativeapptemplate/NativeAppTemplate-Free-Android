@@ -3,15 +3,13 @@ package com.nativeapptemplate.nativeapptemplatefree.model
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertSame
 import org.junit.Test
 
 /**
- * Characterizes `Data.updateRelationships` and the `getDatumWithRelationships()` / `getData()`
- * callers as they behave today: the resources in "included" are NOT merged into anything. Each
- * resource keeps the relationship references it was decoded with (`{"id", "type"}` only), so the
- * calls return values equal to the decoded `data`. These tests pin that down so a refactoring
- * (removing the no-op, or making it merge "included") is a deliberate, visible change.
+ * The app does not merge the resources in a response's "included" into anything: each resource
+ * keeps the relationship references it was decoded with (`{"id", "type"}` only), and the list and
+ * detail models hand out the decoded `data` as is. (A no-op `Data.updateRelationships` and its
+ * `getDatumWithRelationships()` callers used to suggest otherwise; they were removed.)
  */
 class DataRelationshipsTest {
   // NetModule's networkJson settings for decoding.
@@ -38,41 +36,14 @@ class DataRelationshipsTest {
   """
 
   @Test
-  fun updateRelationships_withIncludedResources_returnsAnEqualCopy() {
+  fun itemTags_decodedWithIncludedResources_keepOnlyTheRelationshipReference() {
     val itemTags = json.decodeFromString<ItemTags>(itemTagsResponse)
     val itemTag = itemTags.datum.single()
 
-    val updated = itemTag.updateRelationships(itemTags.included)
-
-    assertEquals(itemTag, updated)
     // The shop reference keeps only what "relationships" carried: the included name is not merged in.
-    assertEquals("shop-1", updated.relationships?.shop?.datum?.id)
-    assertNull(updated.relationships?.shop?.datum?.attributes)
-  }
-
-  @Test
-  fun updateRelationships_withoutIncludedResources_returnsTheSameInstance() {
-    val itemTag = json.decodeFromString<ItemTags>(itemTagsResponse).datum.single()
-
-    assertSame(itemTag, itemTag.updateRelationships(null))
-    assertSame(itemTag, itemTag.updateRelationships(emptyList()))
-  }
-
-  @Test
-  fun itemTags_getDatumWithRelationships_isTheDecodedData() {
-    val itemTags = json.decodeFromString<ItemTags>(itemTagsResponse)
-
-    assertEquals(itemTags.datum, itemTags.getDatumWithRelationships())
-  }
-
-  @Test
-  fun shops_getDatumWithRelationships_isTheDecodedData() {
-    val shops = Shops(
-      datum = listOf(Data(id = "shop-1", type = "shop", attributes = Attributes(name = "Fox Plaza"), relationships = Relationships(shops = Shops()))),
-      included = listOf(Data(id = "item-tag-1", type = "item_tag", attributes = Attributes(name = "A001"))),
-    )
-
-    assertEquals(shops.datum, shops.getDatumWithRelationships())
+    assertEquals("shop-1", itemTag.relationships?.shop?.datum?.id)
+    assertNull(itemTag.relationships?.shop?.datum?.attributes)
+    assertEquals("Fox Plaza", itemTags.included?.single()?.getName())
   }
 
   @Test

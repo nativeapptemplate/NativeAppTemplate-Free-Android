@@ -108,7 +108,7 @@ class ItemTagListViewModel @Inject constructor(
         shopFlow,
         itemTagsFlow,
       ) { shop, itemTags ->
-        val newItems = itemTags.getDatumWithRelationships()
+        val newItems = itemTags.datum
         // A tag can come back on the next page too when the list shifted between the loads (e.g. a
         // tag was added). Keep its first occurrence so each id is listed once, in the loaded order.
         val allItems = (if (isReload) newItems else _uiState.value.itemTags + newItems).distinctBy { it.id }

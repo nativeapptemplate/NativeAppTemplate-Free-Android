@@ -137,7 +137,7 @@ private fun ShopDetailContentView(
         )
         .padding(padding),
     ) {
-      val itemTags = uiState.itemTags.getDatumWithRelationships().toMutableList()
+      val itemTags = uiState.itemTags.datum.toMutableList()
 
       LazyColumn(
         Modifier.padding(24.dp),

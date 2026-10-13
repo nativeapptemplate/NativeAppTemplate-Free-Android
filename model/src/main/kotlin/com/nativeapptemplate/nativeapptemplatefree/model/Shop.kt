@@ -13,13 +13,8 @@ data class Shop(
   val meta: Meta? = null,
   val included: List<Data>? = null,
 ) : Parcelable {
-  fun getData(): Data? {
-    if (included.isNullOrEmpty()) {
-      return datum
-    }
+  fun getData(): Data? = datum
 
-    return datum?.updateRelationships(included)
-  }
   fun getName(): String = getData()?.getName() ?: ""
 
   fun getDescription(): String = getData()?.getDescription() ?: ""

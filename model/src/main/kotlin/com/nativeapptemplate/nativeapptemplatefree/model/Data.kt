@@ -22,16 +22,6 @@ data class Data(
 
   fun getDescription(): String = attributes?.description ?: ""
 
-  fun updateRelationships(updatedRelations: List<Data>?): Data {
-    if (updatedRelations.isNullOrEmpty()) {
-      return this
-    }
-
-    val updatedRelationships = relationships
-
-    return this.copy(relationships = updatedRelationships)
-  }
-
   fun getItemTagState(): ItemTagState? {
     return ItemTagState.fromParam(getState())
   }
