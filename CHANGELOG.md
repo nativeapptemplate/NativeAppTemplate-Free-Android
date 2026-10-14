@@ -22,6 +22,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `HardcodedUiStringsTest` scans each file as a whole, so it also catches a literal on the line after `Text(`, and `updateMessage("...")` / `?: "..."` fallbacks
 - Move agent instructions from `CLAUDE.md` to `AGENTS.md` so Claude Code, Codex, and other agents share one file. `CLAUDE.md` now only imports it (`@AGENTS.md`)
 
+### Fixed
+- Error messages are in the app language and say what the user can do, with the same wording as NativeAppTemplate-Free-iOS; the error codes are unchanged. A request that got no answer (no network, a timeout) or an error status without a message (e.g. a 502 page) shows `[NATIVEAPPTEMPLATE-2002]` "Something went wrong while communicating with the server. Please try again later." (サーバーとの通信中に問題が発生しました。しばらくしてからもう一度お試しください。) instead of the English system text (e.g. "Processing error: Unable to resolve host ..." or "Processing error: HTTP 502"). A response the app could not process (`2002`) and `1001` show "An unexpected error occurred." (予期しないエラーが発生しました。). The server's own messages are shown as is, without the developer suffix " [Status: 422]" (`2001`) or the "Processing error: " prefix (sign-in's "Invalid login credentials"). The details are logged with the code instead (`adb logcat -s ApiError`)
+
 ## [3.2.6] - 2026-05-24
 
 ### Fixed

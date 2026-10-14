@@ -277,7 +277,11 @@ class ShopkeeperEditViewModelTest {
       ),
     )
     viewModel.reload()
-    val error = ApiException.UnprocessableError(rawMessage = "Unable to resolve host")
+    // What throwApiError makes of a request without a response (no network).
+    val error = ApiException.UnprocessableError(
+      rawMessage = "Unable to resolve host",
+      userMessage = ApiException.UserMessage.CommunicationFailure,
+    )
     signUpRepository.failDeleteAccount(error)
 
     viewModel.deleteShopkeeper()
@@ -286,8 +290,11 @@ class ShopkeeperEditViewModelTest {
     assertEquals(0, loginRepository.clearSessionCallCount)
     assertFalse(viewModel.uiState.value.isLoading)
     assertFalse(viewModel.uiState.value.isDeleted)
-    // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".
-    assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: Unable to resolve host", viewModel.uiState.value.message)
+    // values/strings.xml error_communication_failed, after the code (AGENTS.md, Error Handling).
+    assertEquals(
+      "[NATIVEAPPTEMPLATE-2002] Something went wrong while communicating with the server. Please try again later.",
+      viewModel.uiState.value.message,
+    )
   }
 
   @Test

@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.network
 
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.logged
 import com.nativeapptemplate.nativeapptemplatefree.model.NativeAppTemplateApiError
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message
@@ -88,7 +89,7 @@ internal fun throwApiErrorFor(
   errorMessage: String,
 ): Nothing {
   val httpError = response as? ApiResponse.Failure.Error
-    ?: throw ApiException.UnprocessableError(rawMessage = errorMessage)
+    ?: throw noResponseError(response, errorMessage)
 
   val httpStatusCode = httpError.statusCode.code
   // The body can be read only once.
@@ -112,13 +113,34 @@ internal fun throwApiErrorFor(
       code = nativeAppTemplateApiError.code,
       apiMessage = nativeAppTemplateApiError.message,
       httpStatusCode = httpStatusCode,
-    )
+    ).logged()
   }
 
+  // devise_token_auth's message is the server's, already localized; without one, the user can only retry.
+  val deviseMessage = errorBody?.let(::deviseErrorMessage)
   throw ApiException.UnprocessableError(
-    rawMessage = errorBody?.let(::deviseErrorMessage) ?: "HTTP $httpStatusCode",
+    rawMessage = deviseMessage ?: "HTTP $httpStatusCode",
     httpStatusCode = httpStatusCode,
-  )
+    userMessage = deviseMessage?.let { ApiException.UserMessage.Server(it) }
+      ?: ApiException.UserMessage.CommunicationFailure,
+  ).logged()
+}
+
+/**
+ * No HTTP response. An [IOException] (no network, a timeout) is a communication failure; anything
+ * else (e.g. a body the converter could not decode) is a response the app could not process.
+ */
+private fun noResponseError(response: ApiResponse<*>, errorMessage: String): ApiException.UnprocessableError {
+  val cause = (response as? ApiResponse.Failure.Exception)?.throwable
+  return ApiException.UnprocessableError(
+    rawMessage = errorMessage,
+    cause = cause,
+    userMessage = if (cause is IOException) {
+      ApiException.UserMessage.CommunicationFailure
+    } else {
+      ApiException.UserMessage.Unexpected
+    },
+  ).logged()
 }
 
 /**

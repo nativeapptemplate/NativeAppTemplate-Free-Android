@@ -1,6 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.network
 
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.skydoves.sandwich.ApiResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -12,10 +13,14 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import retrofit2.Response
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 
+/** Robolectric for the string resources of the messages and for android.util.Log. */
+@RunWith(RobolectricTestRunner::class)
 class ApiResponseExtensionsTest {
 
   @Test
@@ -186,7 +191,7 @@ class ApiResponseExtensionsTest {
 
   @Test
   fun throwApiError_apiErrorBody_takesTheCodeFromTheBodyAndTheStatusFromTheResponse() {
-    // The two can differ; ApiError.code (shown as "[Status: code]") is the body's.
+    // The two can differ; ApiError.code (logged as "[Status: code]") is the body's.
     val response = httpError(403, """{"code":1001,"error_message":"Shop limit reached"}""")
 
     val exception = assertFailsWith<ApiException.ApiError> {
@@ -195,7 +200,74 @@ class ApiResponseExtensionsTest {
 
     assertEquals(1001, exception.code)
     assertEquals(403, exception.httpStatusCode)
-    // ApiException.ApiError: "[NATIVEAPPTEMPLATE-2001] " + "$apiMessage [Status: $code]".
-    assertEquals("[NATIVEAPPTEMPLATE-2001] Shop limit reached [Status: 1001]", exception.formattedDescription)
+    // ApiException.ApiError: the user sees "[NATIVEAPPTEMPLATE-2001] $apiMessage"; the status is in
+    // the message, for the log.
+    assertEquals("[NATIVEAPPTEMPLATE-2001] Shop limit reached", exception.formattedDescription)
+    assertEquals("Shop limit reached [Status: 1001]", exception.message)
+  }
+
+  // What the user sees (codedDescription). The generic messages are values/strings.xml's
+  // error_communication_failed and error_unexpected, the wording shared with iOS.
+
+  private val communicationFailed =
+    "[NATIVEAPPTEMPLATE-2002] Something went wrong while communicating with the server. Please try again later."
+
+  @Test
+  fun noResponse_showsTheCommunicationMessage() {
+    // No network or a timeout: Sandwich wraps OkHttp's IOException.
+    val response: ApiResponse<String> = ApiResponse.Failure.Exception(java.net.UnknownHostException("Unable to resolve host"))
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      throwApiError(response, "Unable to resolve host")
+    }
+
+    assertEquals(communicationFailed, exception.codedDescription)
+    // The detail stays in the exception's message, for the log.
+    assertEquals("Not processable error(Unable to resolve host).", exception.message)
+  }
+
+  @Test
+  fun errorStatusWithoutAMessage_showsTheCommunicationMessage() = runTest {
+    val response = httpError(502, "<html><body>Bad Gateway</body></html>")
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      flow { emitApiResponse(response) }.first()
+    }
+
+    assertEquals(communicationFailed, exception.codedDescription)
+  }
+
+  @Test
+  fun responseTheAppCannotProcess_showsTheUnexpectedErrorMessage() {
+    // Not an IOException: e.g. a success body the converter could not decode.
+    val response: ApiResponse<String> = ApiResponse.Failure.Exception(IllegalArgumentException("Unexpected JSON token"))
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      throwApiError(response, "Unexpected JSON token")
+    }
+
+    assertEquals("[NATIVEAPPTEMPLATE-2002] An unexpected error occurred.", exception.codedDescription)
+  }
+
+  @Test
+  fun deviseErrorBody_showsTheServerMessageAsIs() = runTest {
+    val response = httpError(401, """{"success":false,"errors":["Invalid login credentials. Please try again."]}""")
+
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
+      flow { emitApiResponse(response) }.first()
+    }
+
+    assertEquals("[NATIVEAPPTEMPLATE-2002] Invalid login credentials. Please try again.", exception.codedDescription)
+  }
+
+  @Test
+  fun apiErrorBody_showsTheServerMessageWithoutTheStatus() {
+    val response = httpError(500, """{"code":500,"error_message":"Something broke on our side."}""")
+
+    val exception = assertFailsWith<ApiException.ApiError> {
+      throwApiError(response, "server error")
+    }
+
+    assertEquals("[NATIVEAPPTEMPLATE-2001] Something broke on our side.", exception.codedDescription)
   }
 }

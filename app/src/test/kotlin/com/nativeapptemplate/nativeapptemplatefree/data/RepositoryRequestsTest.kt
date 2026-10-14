@@ -41,6 +41,8 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import retrofit2.Retrofit
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -55,6 +57,8 @@ import kotlin.test.assertFailsWith
  * `GET {account_id}/api/v1/shopkeeper/shops/{shop_id}/item_tags`); the account id is the one saved
  * at sign-in (UserPreferences.accountId).
  */
+// Robolectric for android.util.Log: API errors are logged where they are made.
+@RunWith(RobolectricTestRunner::class)
 class RepositoryRequestsTest {
   private class Received(val method: String, val pathAndQuery: String, val headers: Map<String, String?>, val body: String)
 
@@ -361,8 +365,9 @@ class RepositoryRequestsTest {
 
     assertEquals("Name has already been taken", exception.apiMessage)
     assertEquals(422, exception.httpStatusCode)
-    // ApiException.ApiError: "[NATIVEAPPTEMPLATE-2001] " + "$apiMessage [Status: $code]".
-    assertEquals("[NATIVEAPPTEMPLATE-2001] Name has already been taken [Status: 422]", exception.formattedDescription)
+    // ApiException.ApiError: the user sees "[NATIVEAPPTEMPLATE-2001] $apiMessage"; the status is
+    // only in the message, for the log.
+    assertEquals("[NATIVEAPPTEMPLATE-2001] Name has already been taken", exception.formattedDescription)
   }
 
   @Test

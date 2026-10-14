@@ -2,11 +2,14 @@ package com.nativeapptemplate.nativeapptemplatefree.common.errors
 
 sealed class AppError(
   override val errorCode: String,
-  override val errorDescription: String,
-) : Exception(errorDescription), CodedError {
+  message: String,
+) : Exception(message), CodedError {
 
+  /** The user sees the generic [ErrorMessages.unexpected]; [detail] is only in [message], for the log. */
   class Unexpected(detail: String? = null) : AppError(
     errorCode = "NATIVEAPPTEMPLATE-1001",
-    errorDescription = "Unexpected error" + if (detail != null) ": $detail" else "",
-  )
+    message = "Unexpected error" + if (detail != null) ": $detail" else "",
+  ) {
+    override val errorDescription: String get() = ErrorMessages.unexpected
+  }
 }
