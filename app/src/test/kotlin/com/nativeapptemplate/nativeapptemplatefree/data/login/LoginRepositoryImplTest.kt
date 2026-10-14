@@ -3,6 +3,7 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 import androidx.datastore.core.DataStore
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataStore
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
@@ -20,9 +21,13 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import retrofit2.Response
 import kotlin.test.assertFailsWith
 
+/** Robolectric for android.util.Log (errors are logged where they are made) and the string resources. */
+@RunWith(RobolectricTestRunner::class)
 class LoginRepositoryImplTest {
 
   /** Every value written to the store, in order: one entry per DataStore write. */
@@ -62,9 +67,13 @@ class LoginRepositoryImplTest {
   fun login_withoutAToken_failsTheFlowWithACodedError() = runTest {
     // Thrown inside the flow so the ViewModel's .catch shows it, instead of crashing when the
     // missing value is later dereferenced while saving the session.
-    assertFailsWith<ApiException.UnprocessableError> {
+    val exception = assertFailsWith<ApiException.UnprocessableError> {
       repository(sessionWith(token = null)).login(Login(email = "john@example.com", password = "password")).first()
     }
+    // A response missing what the app needs is an internal error: values/strings.xml error_unexpected.
+    // What is missing is a developer detail, in the message for the log.
+    assertEquals("[NATIVEAPPTEMPLATE-2002] An unexpected error occurred.", exception.codedDescription)
+    assertEquals("Not processable error(Incomplete sign-in response: missing token).", exception.message)
   }
 
   @Test

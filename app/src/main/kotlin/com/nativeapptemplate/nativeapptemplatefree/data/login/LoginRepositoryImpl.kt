@@ -2,6 +2,7 @@ package com.nativeapptemplate.nativeapptemplatefree.data.login
 
 import androidx.annotation.VisibleForTesting
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.ApiException
+import com.nativeapptemplate.nativeapptemplatefree.common.errors.logged
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.model.*
 import com.nativeapptemplate.nativeapptemplatefree.model.LoggedInShopkeeper
@@ -148,7 +149,7 @@ private fun LoggedInShopkeeper.requireCompleteSession(): LoggedInShopkeeper {
     .map { (name, _) -> name }
 
   if (missing.isNotEmpty()) {
-    throw ApiException.UnprocessableError(rawMessage = "Incomplete sign-in response: missing ${missing.joinToString()}")
+    throw ApiException.UnprocessableError(rawMessage = "Incomplete sign-in response: missing ${missing.joinToString()}").logged()
   }
   return this
 }

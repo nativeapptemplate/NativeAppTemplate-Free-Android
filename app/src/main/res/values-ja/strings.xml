@@ -188,4 +188,6 @@
   <plurals name="characters_minimum">
     <item quantity="other">%1$d文字以上で入力してください。</item>
   </plurals>
+  <string name="error_communication_failed">サーバーとの通信中に問題が発生しました。しばらくしてからもう一度お試しください。</string>
+  <string name="error_unexpected">予期しないエラーが発生しました。</string>
 </resources>

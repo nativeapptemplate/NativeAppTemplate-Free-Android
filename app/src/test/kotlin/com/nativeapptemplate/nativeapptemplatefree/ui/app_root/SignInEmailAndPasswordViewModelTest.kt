@@ -106,15 +106,23 @@ class SignInEmailAndPasswordViewModelTest {
     viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
     viewModel.updatePassword(testInputPassword)
     loginRepository.sendLoggedInShopkeeper(testInputLoggedInShopkeeper)
-    val error = ApiException.UnprocessableError(rawMessage = "Bad Gateway", httpStatusCode = 502)
+    // What throwApiError makes of a 502 without the API's error body.
+    val error = ApiException.UnprocessableError(
+      rawMessage = "HTTP 502",
+      httpStatusCode = 502,
+      userMessage = ApiException.UserMessage.CommunicationFailure,
+    )
     loginRepository.failPermissions(error)
 
     viewModel.login()
 
     assertFalse(viewModel.uiState.value.isLoading)
     // The user-facing message is the coded description (AGENTS.md: CodedError system):
-    // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".
-    assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: Bad Gateway", viewModel.uiState.value.message)
+    // values/strings.xml error_communication_failed, after the code (AGENTS.md, Error Handling).
+    assertEquals(
+      "[NATIVEAPPTEMPLATE-2002] Something went wrong while communicating with the server. Please try again later.",
+      viewModel.uiState.value.message,
+    )
     // A server error is not a rejected session; permissions are fetched again on the next resume.
     assertEquals(0, loginRepository.logoutCallCount)
   }
@@ -126,15 +134,19 @@ class SignInEmailAndPasswordViewModelTest {
     viewModel.updatePassword(testInputPassword)
     // What throwApiError makes of devise_token_auth's 401 {"errors": ["Invalid login credentials. ..."]}.
     loginRepository.failLogin(
-      ApiException.UnprocessableError(rawMessage = "Invalid login credentials. Please try again.", httpStatusCode = 401),
+      ApiException.UnprocessableError(
+        rawMessage = "Invalid login credentials. Please try again.",
+        httpStatusCode = 401,
+        userMessage = ApiException.UserMessage.Server("Invalid login credentials. Please try again."),
+      ),
     )
 
     viewModel.login()
 
     val uiStateValue = viewModel.uiState.value
     assertFalse(uiStateValue.isLoading)
-    // ApiException.UnprocessableError = "[NATIVEAPPTEMPLATE-2002] Processing error: $rawMessage".
-    assertEquals("[NATIVEAPPTEMPLATE-2002] Processing error: Invalid login credentials. Please try again.", uiStateValue.message)
+    // The server's message as is, after the code (AGENTS.md, Error Handling).
+    assertEquals("[NATIVEAPPTEMPLATE-2002] Invalid login credentials. Please try again.", uiStateValue.message)
     // The previous session (if any) is left alone, and a rejected sign-in is not a sign-out.
     assertEquals(0, loginRepository.clearSessionCallCount)
     assertEquals(0, loginRepository.logoutCallCount)

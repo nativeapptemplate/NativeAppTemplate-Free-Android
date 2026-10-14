@@ -185,4 +185,6 @@
     <item quantity="one">%1$d character minimum.</item>
     <item quantity="other">%1$d characters minimum.</item>
   </plurals>
+  <string name="error_communication_failed">Something went wrong while communicating with the server. Please try again later.</string>
+  <string name="error_unexpected">An unexpected error occurred.</string>
 </resources>

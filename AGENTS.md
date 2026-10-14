@@ -57,6 +57,8 @@ All errors should use the `CodedError` interface. Error codes use the `NATIVEAPP
 
 - New error types must implement `CodedError`
 - Use `codedDescription` (not `message` or `localizedMessage`) in all user-facing error messages — this prepends `[NATIVEAPPTEMPLATE-XXXX]` for `CodedError` types
+- `errorDescription` is what the user sees, in the app language: the server's message as is (`2001`, and `2002` with devise_token_auth's message), "Something went wrong while communicating with the server. Please try again later." (`error_communication_failed`) for no response or an error status without a message, and "An unexpected error occurred." (`error_unexpected`) for internal errors (a response the app could not process, `AppError.Unexpected`). Errors made without a Context get these strings from `ErrorMessages` (installed in `Application.onCreate`)
+- Developer details go to `Throwable.message` and the log, with the code, where the error is made: `ApiException.logged()` (`adb logcat -s ApiError`)
 
 ## Testing
 
@@ -102,5 +104,6 @@ The UI is in English (`values/strings.xml`) and Japanese (`values-ja/strings.xml
 - Use the terms of the API's `config/locales/ja.yml`: Shop = 店舗, Item Tag = アイテムタグ, idled / completed = 未完了 / 完了. Reuse the paid edition's Japanese for strings both editions share, so they read the same. Polite です/ます for sentences, no 。 on buttons and labels, full-width 「」（）：.
 - nativeapptemplate-agent renames 店舗 and アイテムタグ as plain substrings, so write them in full: never ショップ / 店 / お店, never タグ or アイテム alone. `StringResourcesTranslationTest` fails otherwise. The Free edition has no organizations, so no string may mention 組織. `app_name` is `translatable="false"` so the English rename covers the product name.
 - Don't build sentences from fragments: Japanese word order differs. Use one string with `%1$s` arguments; for links inside a sentence use `linkedFormat()` (`ui/common/LinkedFormat.kt`). Counts use `<plurals>` (Japanese needs only `other`).
-- Keep untranslated: product names, URLs, `NATIVEAPPTEMPLATE-XXXX` codes and `CodedError` descriptions, time zone names, logs, the API's error messages (the server localizes them), and what the user typed.
+- User-facing error text is localized (string resources, as on iOS); developer details (raw messages, HTTP statuses) go to the log, never on screen. See Error Handling.
+- Keep untranslated: product names, URLs, `NATIVEAPPTEMPLATE-XXXX` codes, time zone names, logs, the API's error messages (the server localizes them), and what the user typed.
 - There is no `localeFilters`/`resourceConfigurations` in Gradle; adding one without `ja` would strip the Japanese (`JapaneseResourcesPackagedTest` would fail).
