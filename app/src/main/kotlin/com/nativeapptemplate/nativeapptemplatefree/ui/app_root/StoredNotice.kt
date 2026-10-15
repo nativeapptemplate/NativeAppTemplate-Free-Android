@@ -1,8 +1,10 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 // Notices stored as flags in DataStore by the screen that caused them. Each is cleared as soon as it
 // is taken for display, not after the snackbar is dismissed: an Indefinite snackbar returns only
@@ -30,14 +32,27 @@ internal suspend fun showStoredNotice(
  * restarts itself (shop deleted). The process that stored the
  * flag must not take it: its snackbar would be gone a moment later with the process, and the
  * restarted app would find the flag cleared.
+ *
+ * These notices are about the session, so signing out ([isLoggedIn] turning false) closes one that
+ * is still up: cancelling [show] dismisses its snackbar, which otherwise stayed over the sign-in
+ * screen.
  */
 internal suspend fun showNoticeStoredForLaunch(
   flag: Flow<Boolean>,
   clear: suspend () -> Unit,
+  isLoggedIn: Flow<Boolean>,
   show: suspend () -> Unit,
 ) {
   if (flag.first()) {
     clear()
-    show()
+    coroutineScope {
+      val notice = launch { show() }
+      val signOut = launch {
+        isLoggedIn.first { !it }
+        notice.cancel()
+      }
+      notice.join()
+      signOut.cancel()
+    }
   }
 }
