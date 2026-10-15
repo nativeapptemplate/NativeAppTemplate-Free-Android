@@ -59,6 +59,8 @@ The full versions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.
 - Role-Based Permissions and Access Control
 - Organization Switching UI
 - Push Notifications via FCM
+- In-App Subscriptions with RevenueCat, off until you add your RevenueCat key
+- Error Monitoring with Sentry, off until you add your Sentry DSN
 
 ## Getting Started
 
