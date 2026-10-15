@@ -81,8 +81,8 @@ class TimeZonesTest {
     assertEquals("Greenland", TimeZones.currentTimeZoneKey(nuuk))
   }
 
-  // The API validates time_zone against ActiveSupport::TimeZone.all, so the app must offer exactly
-  // those zones, with the same labels, in the same order.
+  // The API's zones are ActiveSupport::TimeZone.all, so the app must offer exactly those zones,
+  // with the same labels, in the same order.
   @Test
   fun map_isTheRailsTimeZoneList() {
     assertEquals(railsTimeZones.toList(), TimeZones.map.toList())
