@@ -101,6 +101,7 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
         showNoticeStoredForLaunch(
           flag = loginRepository.isShopDeleted(),
           clear = { loginRepository.setIsShopDeleted(false) },
+          isLoggedIn = loginRepository.isLoggedIn(),
           show = showNotice(R.string.message_shop_deleted),
         )
       }

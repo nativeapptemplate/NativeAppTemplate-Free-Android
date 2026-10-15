@@ -14,10 +14,11 @@ import org.junit.Test
 class StoredNoticeTest {
   // Outlives the "launches" below, as DataStore's file outlives the app process.
   private val preferences = NativeAppTemplatePreferencesDataSource(
-    InMemoryDataStore(UserPreferences.getDefaultInstance()),
+    InMemoryDataStore(UserPreferences.getDefaultInstance().toBuilder().setIsLoggedIn(true).build()),
   )
 
   private var shopDeletedShownCount = 0
+  private var shopDeletedClosedCount = 0
   private var emailUpdatedShownCount = 0
 
   /** An Indefinite snackbar: showSnackbar returns only when the shopkeeper dismisses it. */
@@ -31,9 +32,14 @@ class StoredNoticeTest {
       showNoticeStoredForLaunch(
         flag = preferences.isShopDeleted(),
         clear = { preferences.setIsShopDeleted(false) },
+        isLoggedIn = preferences.isLoggedIn(),
       ) {
         shopDeletedShownCount++
-        snackbar(isDismissed)
+        try {
+          snackbar(isDismissed)
+        } finally {
+          shopDeletedClosedCount++
+        }
       }
     }
     launch {
@@ -89,6 +95,35 @@ class StoredNoticeTest {
     preferences.setIsEmailUpdated(true)
 
     assertEquals(2, emailUpdatedShownCount)
+    app.cancel()
+  }
+
+  // Bug (found in MyTurnTagCreator-Android on 2026-10-16): a success snackbar shown after the app
+  // restarted itself ("Organization switched successfully." there; "Shop deleted" here) stayed over
+  // the sign-in screen after Settings > Sign Out.
+  @Test
+  fun shopDeleted_whileItShows_isClosedBySigningOut() = runTest(UnconfinedTestDispatcher()) {
+    preferences.setIsShopDeleted(true)
+    val app = launchApp()
+    assertEquals(1, shopDeletedShownCount)
+    assertEquals(0, shopDeletedClosedCount)
+
+    // LoginRepositoryImpl.signOutLocally.
+    preferences.clearSession()
+
+    assertEquals(1, shopDeletedClosedCount)
+    app.cancel()
+  }
+
+  @Test
+  fun shopDeleted_whileSignedIn_staysUntilDismissed() = runTest(UnconfinedTestDispatcher()) {
+    preferences.setIsShopDeleted(true)
+    val app = launchApp()
+
+    // Any other write while signed in.
+    preferences.setIsEmailUpdated(false)
+
+    assertEquals(0, shopDeletedClosedCount)
     app.cancel()
   }
 }
