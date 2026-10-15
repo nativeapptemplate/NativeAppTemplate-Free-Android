@@ -44,6 +44,7 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 - Force App Version Update
 - Force Privacy Policy Version Update
 - Force Terms of Use Version Update
+- English and Japanese Localization (string resources)
 - And more!
 
 ## NFC Tag Operations
