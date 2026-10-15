@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 - Error messages are in the app language and say what the user can do, with the same wording as NativeAppTemplate-Free-iOS; the error codes are unchanged. A request that got no answer (no network, a timeout) or an error status without a message (e.g. a 502 page) shows `[NATIVEAPPTEMPLATE-2002]` "Something went wrong while communicating with the server. Please try again later." (サーバーとの通信中に問題が発生しました。しばらくしてからもう一度お試しください。) instead of the English system text (e.g. "Processing error: Unable to resolve host ..." or "Processing error: HTTP 502"). A response the app could not process (`2002`) and `1001` show "An unexpected error occurred." (予期しないエラーが発生しました。). The server's own messages are shown as is, without the developer suffix " [Status: 422]" (`2001`) or the "Processing error: " prefix (sign-in's "Invalid login credentials"). The details are logged with the code instead (`adb logcat -s ApiError`)
+- An error snackbar no longer stays after the screen recovers (e.g. the offline `[NATIVEAPPTEMPLATE-2002]` error still showing after the network is back and Reload succeeded). Every screen's load (Reload, pull to refresh, resume) and every sign-in attempt now clears the previous attempt's error when it starts, which closes its snackbar; an error of the new attempt still shows. Ported from MyTurnTagCreator-Android #139
 
 ## [3.2.6] - 2026-05-24
 

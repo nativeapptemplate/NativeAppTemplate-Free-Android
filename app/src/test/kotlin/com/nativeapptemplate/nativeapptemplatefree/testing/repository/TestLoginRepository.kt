@@ -208,8 +208,8 @@ class TestLoginRepository : LoginRepository {
     permissionsFlow.tryEmit(permissions)
   }
 
-  /** Makes every later [login] call fail with [error]. */
-  fun failLogin(error: Throwable) {
+  /** Makes every later [login] call fail with [error], or succeed again when null. */
+  fun failLogin(error: Throwable?) {
     loginError = error
   }
 

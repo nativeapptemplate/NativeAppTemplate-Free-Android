@@ -46,6 +46,8 @@ class SignInEmailAndPasswordViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         isLoading = true,
+        // A new attempt: the last one's error is stale (its snackbar closes).
+        message = "",
       )
     }
 
