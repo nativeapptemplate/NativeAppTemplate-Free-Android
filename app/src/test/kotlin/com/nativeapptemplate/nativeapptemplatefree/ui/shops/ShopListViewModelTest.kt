@@ -2,12 +2,15 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.Shops
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -61,6 +64,34 @@ class ShopListViewModelTest {
     val shopsFromRepository = shopRepository.getShops().first()
 
     assertEquals(shopsFromRepository, uiStateValue.shops)
+  }
+
+  // Bug: offline, the load failed; back online, Reload succeeded but the error snackbar stayed
+  // until dismissed. A new attempt clears the stale error (as in MyTurnTagCreator-Android #139).
+  @Test
+  fun reload_afterAFailedLoad_clearsTheStaleError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.fail(ShopRepository::getShops, testApiError)
+    viewModel.reload()
+    assertEquals(TEST_API_ERROR_MESSAGE, viewModel.uiState.value.message)
+
+    shopRepository.succeed(ShopRepository::getShops)
+    shopRepository.sendShops(testInputShops)
+    viewModel.reload()
+
+    assertTrue(viewModel.uiState.value.success)
+    assertEquals("", viewModel.uiState.value.message)
+  }
+
+  @Test
+  fun reload_whenItFailsAgain_showsTheNewError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.fail(ShopRepository::getShops, testApiError)
+    viewModel.reload()
+
+    viewModel.reload()
+
+    assertEquals(TEST_API_ERROR_MESSAGE, viewModel.uiState.value.message)
   }
 
   @Test

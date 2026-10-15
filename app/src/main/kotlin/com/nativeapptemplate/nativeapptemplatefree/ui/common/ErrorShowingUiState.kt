@@ -10,6 +10,11 @@ import kotlinx.coroutines.flow.update
  * A screen's UI state that shows a failed load or save: the error in the snackbar, and the
  * spinner stopped. Implementing it once per state keeps every failure path of the screen the same,
  * so none of them can forget to stop the spinner.
+ *
+ * A new attempt (a load, a reload from the error view, pull to refresh or resume, a sign-in) sets
+ * the message back to "" when it starts: the last attempt's error is stale, and clearing it closes
+ * its snackbar (`SnackbarMessageEffect` cancels the shown one). The new attempt's own error still
+ * shows.
  */
 interface ErrorShowingUiState<S : ErrorShowingUiState<S>> {
   /** This state showing [message], with loading stopped. */

@@ -64,6 +64,7 @@ class ShopkeeperEditViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         isLoading = true,
+        message = "",
         success = false,
         isUpdated = false,
         isEmailUpdated = false,

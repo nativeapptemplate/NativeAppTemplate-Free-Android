@@ -64,6 +64,7 @@ class ShopListViewModel @Inject constructor(
     _uiState.update {
       it.copy(
         isLoading = true,
+        message = "",
         success = false,
       )
     }

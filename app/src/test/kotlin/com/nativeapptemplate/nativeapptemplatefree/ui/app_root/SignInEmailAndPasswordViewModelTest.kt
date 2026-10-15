@@ -12,6 +12,8 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginR
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestSignUpRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.testSessionLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -125,6 +127,40 @@ class SignInEmailAndPasswordViewModelTest {
     )
     // A server error is not a rejected session; permissions are fetched again on the next resume.
     assertEquals(0, loginRepository.logoutCallCount)
+  }
+
+  // Bug: a new sign-in attempt kept the previous attempt's error, so its snackbar stayed on
+  // screen after the next sign-in succeeded (as in MyTurnTagCreator-Android #139).
+  @Test
+  fun login_afterAFailedAttempt_clearsTheStaleError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    loginRepository.failLogin(testApiError)
+    viewModel.login()
+    assertEquals(TEST_API_ERROR_MESSAGE, viewModel.uiState.value.message)
+
+    loginRepository.failLogin(null)
+    loginRepository.sendLoggedInShopkeeper(testInputLoggedInShopkeeper)
+    loginRepository.sendPermissions(testInputPermissions)
+    viewModel.login()
+
+    // The successful attempt shows no error, so the old one must be gone.
+    assertEquals("", viewModel.uiState.value.message)
+  }
+
+  @Test
+  fun login_whenAnotherAttemptFails_showsItsError() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    viewModel.updateEmail(testInputLoggedInShopkeeper.getEmail()!!)
+    viewModel.updatePassword(testInputPassword)
+    loginRepository.failLogin(testApiError)
+    viewModel.login()
+
+    viewModel.login()
+
+    // Cleared when the attempt starts, then set again by its own failure.
+    assertEquals(TEST_API_ERROR_MESSAGE, viewModel.uiState.value.message)
   }
 
   @Test

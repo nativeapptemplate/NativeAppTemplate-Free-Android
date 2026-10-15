@@ -25,6 +25,11 @@ class CallFailures {
     errors[call.name] = error
   }
 
+  /** Makes later [call]s succeed again, e.g. once the network is back. */
+  fun succeed(call: KFunction<*>) {
+    errors.remove(call.name)
+  }
+
   /** [success], or a flow that throws the error set for [call] by [fail]. */
   fun <T> orFail(call: KFunction<*>, success: Flow<T>): Flow<T> = errors[call.name]?.let { error -> flow { throw error } } ?: success
 }
@@ -35,4 +40,7 @@ interface FailableRepository {
 
   /** Makes every later [call] fail with [error]. */
   fun fail(call: KFunction<*>, error: Throwable) = failures.fail(call, error)
+
+  /** Makes later [call]s succeed again. */
+  fun succeed(call: KFunction<*>) = failures.succeed(call)
 }
