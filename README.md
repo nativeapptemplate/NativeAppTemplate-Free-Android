@@ -1,7 +1,8 @@
 # NativeAppTemplate-Free-Android
 
 NativeAppTemplate-Free-Android is a modern, comprehensive, and production-ready native Android app with user authentication and a full CRUD example.  
-This Android app is a free version of  [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team).  
+It is a complete, working app on its own, not a demo or a trimmed-down preview: build on it and ship it as is, under the MIT License.  
+The paid editions, [NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team), are for apps in which several people work in a shared organization; they add the features listed in [Paid Edition Extras](#paid-edition-extras).  
 
 The iOS version is available here: [NativeAppTemplate-Free-iOS](https://github.com/nativeapptemplate/NativeAppTemplate-Free-iOS).  
 
@@ -51,9 +52,9 @@ NativeAppTemplate-Free-Android uses modern Android development tools and practic
 
 NFC tag writing and background tag reading were part of v1 and have been removed from the current version. The full NFC implementation remains available in the [`v1-with-nfc`](https://github.com/nativeapptemplate/NativeAppTemplate-Free-Android/tree/v1-with-nfc) branch.
 
-## Not Included in the Free Version
+## Paid Edition Extras
 
-The full versions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team)) include additional advanced features:
+The free version is complete for apps used by individuals. The paid editions ([NativeAppTemplate-Android (Solo)](https://nativeapptemplate.com/products/android-solo) and [NativeAppTemplate-Android (Team)](https://nativeapptemplate.com/products/android-team)) add what apps for teams need:
 
 - URL Path-Based Multitenancy (prepends `/:account_id/` to URLs)
 - User Invitation to Organizations
