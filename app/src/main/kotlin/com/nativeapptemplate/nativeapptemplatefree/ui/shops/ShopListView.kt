@@ -48,6 +48,8 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.fabClearingContentPadding
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.fabListModifier
 
 @Composable
 internal fun ShopListView(
@@ -164,7 +166,8 @@ private fun ShopListContentView(
           .padding(padding),
       ) {
         LazyColumn(
-          Modifier.padding(24.dp),
+          modifier = fabListModifier,
+          contentPadding = fabClearingContentPadding,
         ) {
           item {
             if (!uiState.didShowTapShopBelowTip) {
