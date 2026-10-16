@@ -2,14 +2,17 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_li
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.hasScrollToIndexAction
 import androidx.compose.ui.test.hasScrollToKeyAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToKey
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -36,6 +39,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 /**
  * These tests use Robolectric because the subject under test (the ViewModel) uses
@@ -296,6 +300,35 @@ class ItemTagListViewModelTest {
     composeTestRule.onNode(hasScrollToKeyAction()).performScrollToKey("item-tag-7")
 
     composeTestRule.onNodeWithText("A007").assertExists()
+  }
+
+  // The last row (and the Delete button its swipe reveals) must be able to scroll above the "+"
+  // button; without bottom content padding the list ends behind the button and the row stays under it.
+  @Test
+  fun lastRow_scrollsAboveTheAddButton() {
+    // 20 tags on one page: longer than the screen, so the list scrolls.
+    itemTagRepository.itemTagsForPage = { page -> pagedItemTags(page = page ?: 1, totalPages = 1, perPage = 20) }
+    shopRepository.sendShop(testInputShop)
+    composeTestRule.setContent {
+      val uiState by viewModel.uiState.collectAsState()
+      ItemTagListView(
+        viewModel = viewModel,
+        uiState = uiState,
+        onItemClick = {},
+        onAddItemTagClick = {},
+        onBackClick = {},
+      )
+    }
+    composeTestRule.runOnIdle { viewModel.reload() }
+
+    // Scrolling to the last tag scrolls the list to its end. pagedItemTags names tag 20 "A020".
+    composeTestRule.onNode(hasScrollToKeyAction()).performScrollToKey("item-tag-20")
+    val context = RuntimeEnvironment.getApplication()
+    val lastRowBottom = composeTestRule.onNodeWithText("A020").getUnclippedBoundsInRoot().bottom
+    val addButtonTop = composeTestRule.onNodeWithContentDescription(context.getString(R.string.label_add_item_tag))
+      .getUnclippedBoundsInRoot().top
+
+    assertTrue("last row ends at $lastRowBottom, the add button starts at $addButtonTop", lastRowBottom <= addButtonTop)
   }
 
   // The API rejects it: the coded error is shown, the spinner stops, and the list stays.

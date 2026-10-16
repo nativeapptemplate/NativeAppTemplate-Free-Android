@@ -55,6 +55,8 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SwipeableItemWithActions
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.fabClearingContentPadding
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.fabListModifier
 
 @Composable
 internal fun ItemTagListView(
@@ -195,7 +197,8 @@ private fun ItemTagListContentView(
       ) {
         LazyColumn(
           state = listState,
-          modifier = Modifier.padding(24.dp),
+          modifier = fabListModifier,
+          contentPadding = fabClearingContentPadding,
         ) {
           item {
             Text(
