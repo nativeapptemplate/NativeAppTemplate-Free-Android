@@ -137,7 +137,7 @@ private const val SHOP_3_ID = "5712F2DF-DFC7-A3AA-66BC-191203654A1C"
 private const val SHOP_1_NAME = "8th & Townsend"
 private const val SHOP_2_NAME = "Kansas & 16th St"
 private const val SHOP_3_NAME = "Safeway San Francisco 1490"
-private const val SHOP_DESCRIPTION = "This is a shop."
+private const val SHOP_DESCRIPTION = "This is shop."
 private const val SHOP_TIME_ZONE = "Pacific Time (US & Canada)"
 
 private val testInputShopsData = listOf(

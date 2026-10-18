@@ -396,7 +396,7 @@ class ItemTagListViewModelTest {
 private const val SHOP_TYPE = "shop"
 private const val SHOP_ID = "5712F2DF-DFC7-A3AA-66BC-191203654A1A"
 private const val SHOP_NAME = "8th & Townsend"
-private const val SHOP_DESCRIPTION = "This is a shop."
+private const val SHOP_DESCRIPTION = "This is shop."
 private const val SHOP_TIME_ZONE = "Pacific Time (US & Canada)"
 
 private var testInputShopsData =
