@@ -43,7 +43,7 @@ class ModelJsonTest {
     assertEquals(7, shop.getCompletedItemTagsCount())
   }
 
-  // A shop without the optional attributes falls back to the defaults (iOS ShopAdapter: "" and 0).
+  // Shop without the optional attributes falls back to the defaults (iOS ShopAdapter: "" and 0).
   @Test
   fun shop_withoutOptionalAttributes_usesTheDefaults() {
     val shop = json.decodeFromString<Shop>("""{"data": {"id": "shop-1", "type": "shop", "attributes": {"name": "Fox Plaza"}}}""")

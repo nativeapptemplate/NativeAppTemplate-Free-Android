@@ -3,7 +3,7 @@
   Japanese. Keep every translatable key of values/strings.xml here (StringResourcesTranslationTest
   fails otherwise), and use the terms of the template API's config/locales/ja.yml:
   Shop = 店舗, Item Tag = アイテムタグ, idled / completed = 未完了 / 完了.
-  nativeapptemplate-agent renames 店舗 and アイテムタグ as plain substrings, so always write them in
+  The agent renames 店舗 and アイテムタグ as plain substrings, so always write them in
   full: never ショップ / 店 / お店, and never shorten アイテムタグ to タグ or アイテム.
 -->
 <resources>

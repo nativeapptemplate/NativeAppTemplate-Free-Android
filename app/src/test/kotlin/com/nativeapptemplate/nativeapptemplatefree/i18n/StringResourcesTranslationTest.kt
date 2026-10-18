@@ -44,6 +44,17 @@ class StringResourcesTranslationTest {
     assertTrue("Format arguments differ:\n" + mismatches.joinToString("\n"), mismatches.isEmpty())
   }
 
+  // The agent renames the domain words and the product name, so an article in front of one can't
+  // follow the new word's first sound.
+  @Test
+  fun english_hasNoArticleBeforeRenamedWords() {
+    val article = Regex("""\ban? (item tags?|shops?|shopkeepers?|NativeAppTemplate)\b""", RegexOption.IGNORE_CASE)
+    val texts = english.mapValues { it.value.text } +
+      englishPlurals.flatMap { (name, items) -> items.map { (quantity, text) -> "$name/$quantity" to text } }
+    val wrong = texts.filterValues { article.containsMatchIn(it) }.keys
+    assertTrue("Drop the article before the renamed word in: $wrong", wrong.isEmpty())
+  }
+
   @Test
   fun plurals_matchBetweenEnglishAndJapanese() {
     assertEquals(englishPlurals.keys, japanesePlurals.keys)
@@ -75,7 +86,7 @@ class StringResourcesTranslationTest {
 
   @Test
   fun japanese_shopIs店舗() {
-    // nativeapptemplate-agent renames 店舗 as a plain substring, so a shop must never be ショップ,
+    // The agent renames 店舗 as a plain substring, so shop must never be ショップ,
     // 店 or お店, or a generated app would keep this template's word.
     val katakana = japanese.filterValues { "ショップ" in it.text }.keys
     assertTrue("Use 店舗: $katakana", katakana.isEmpty())
@@ -85,7 +96,7 @@ class StringResourcesTranslationTest {
 
   @Test
   fun japanese_neverShortensアイテムタグ() {
-    // nativeapptemplate-agent renames アイテムタグ as a plain substring, so an item tag must always be
+    // The agent renames アイテムタグ as a plain substring, so item tag must always be
     // written in full; a bare タグ or アイテム would survive the rename.
     val shortened = japanese.filterValues { resource ->
       val rest = resource.text.replace("アイテムタグ", "")
