@@ -1,5 +1,8 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
+import androidx.annotation.StringRes
+import androidx.compose.material3.SnackbarDuration
+import com.nativeapptemplate.nativeapptemplatefree.R
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
@@ -55,4 +58,14 @@ internal suspend fun showNoticeStoredForLaunch(
       signOut.cancel()
     }
   }
+}
+
+/**
+ * How long a stored notice stays. A confirmation of something done (shop or account deleted) goes
+ * by itself: kept until dismissed, it covered the add button. The new address's confirmation mail
+ * asks the shopkeeper to act, so that one stays until dismissed.
+ */
+internal fun storedNoticeDuration(@StringRes messageId: Int): SnackbarDuration = when (messageId) {
+  R.string.reconfirm_description -> SnackbarDuration.Indefinite
+  else -> SnackbarDuration.Short
 }

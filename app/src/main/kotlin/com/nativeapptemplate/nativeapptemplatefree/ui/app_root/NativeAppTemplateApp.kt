@@ -76,7 +76,7 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
         snackbarHostState.showSnackbar(
           message = resources.getString(messageId),
           actionLabel = dismissLabel,
-          duration = Indefinite,
+          duration = storedNoticeDuration(messageId),
         )
       }
 

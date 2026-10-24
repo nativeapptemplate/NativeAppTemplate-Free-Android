@@ -1,5 +1,7 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.app_root
 
+import androidx.compose.material3.SnackbarDuration
+import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
 import com.nativeapptemplate.nativeapptemplatefree.datastoreTest.InMemoryDataStore
@@ -125,5 +127,14 @@ class StoredNoticeTest {
 
     assertEquals(0, shopDeletedClosedCount)
     app.cancel()
+  }
+
+  @Test
+  fun doneNotices_goByThemselves_andTheReconfirmationStays() {
+    // A notice of something done stayed until dismissed and covered the add button: it goes by
+    // itself. The new address's confirmation mail asks the shopkeeper to act, so it stays.
+    assertEquals(SnackbarDuration.Short, storedNoticeDuration(R.string.message_shop_deleted))
+    assertEquals(SnackbarDuration.Short, storedNoticeDuration(R.string.message_shopkeeper_deleted))
+    assertEquals(SnackbarDuration.Indefinite, storedNoticeDuration(R.string.reconfirm_description))
   }
 }
