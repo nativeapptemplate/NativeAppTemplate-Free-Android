@@ -10,14 +10,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class ShopRepositoryImpl @Inject constructor(
-  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
+  private val nativeAppTemplatePreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: ShopApi,
   @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ShopRepository {
 
   override fun getShops() = apiRequest(ioDispatcher) {
     api.getShops(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
     )
   }
 
@@ -25,7 +25,7 @@ class ShopRepositoryImpl @Inject constructor(
     id: String,
   ) = apiRequest(ioDispatcher) {
     api.getShop(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       id,
     )
   }
@@ -34,7 +34,7 @@ class ShopRepositoryImpl @Inject constructor(
     shopBody: ShopBody,
   ) = apiRequest(ioDispatcher) {
     api.createShop(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       shopBody,
     )
   }
@@ -44,7 +44,7 @@ class ShopRepositoryImpl @Inject constructor(
     shopUpdateBody: ShopUpdateBody,
   ) = apiRequest(ioDispatcher) {
     api.updateShop(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       id,
       shopUpdateBody,
     )
@@ -53,6 +53,6 @@ class ShopRepositoryImpl @Inject constructor(
   override fun deleteShop(
     id: String,
   ) = apiAction(ioDispatcher) {
-    api.deleteShop(natPreferencesDataSource.currentAccountId(), id)
+    api.deleteShop(nativeAppTemplatePreferencesDataSource.currentAccountId(), id)
   }
 }

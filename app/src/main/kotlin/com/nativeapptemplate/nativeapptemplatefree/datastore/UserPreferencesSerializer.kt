@@ -29,8 +29,7 @@ import javax.inject.Inject
 /**
  * An [androidx.datastore.core.Serializer] for the [UserPreferences] proto.
  *
- * Encrypts data at rest using Tink AEAD. On read, falls back to parsing
- * unencrypted proto for migration from the previous unencrypted format.
+ * Encrypts data at rest using Tink AEAD.
  */
 class UserPreferencesSerializer @Inject constructor(
   private val aead: Aead,
@@ -43,14 +42,15 @@ class UserPreferencesSerializer @Inject constructor(
     return try {
       val decrypted = aead.decrypt(bytes, null)
       UserPreferences.parseFrom(decrypted)
-    } catch (_: GeneralSecurityException) {
-      // Fallback: try parsing as unencrypted proto (migration from legacy format).
-      // The data will be re-encrypted on the next write.
-      try {
-        UserPreferences.parseFrom(bytes)
-      } catch (e: InvalidProtocolBufferException) {
-        throw CorruptionException("Cannot read proto.", e)
-      }
+    } catch (e: GeneralSecurityException) {
+      // Only what this app encrypted is a session. The file has never been written unencrypted, so
+      // bytes the key does not accept are corruption (DataStoreModule then starts over signed out),
+      // never a fallback to reading them as plain proto: that would let an unencrypted file put on
+      // the device, or ciphertext that happens to parse once the Keystore key is gone, stand in for
+      // the signed-in shopkeeper.
+      throw CorruptionException("Cannot decrypt proto.", e)
+    } catch (e: InvalidProtocolBufferException) {
+      throw CorruptionException("Cannot read proto.", e)
     }
   }
 

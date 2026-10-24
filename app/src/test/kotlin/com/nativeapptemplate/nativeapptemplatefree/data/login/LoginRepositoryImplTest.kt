@@ -52,7 +52,7 @@ class LoginRepositoryImplTest {
       override suspend fun updateConfirmedPrivacyVersion(accountId: String): ApiResponse<Status> = error("not used")
       override suspend fun updateConfirmedTermsVersion(accountId: String): ApiResponse<Status> = error("not used")
     },
-    natPreferencesDataSource = preferences,
+    nativeAppTemplatePreferencesDataSource = preferences,
     ioDispatcher = UnconfinedTestDispatcher(),
   )
 

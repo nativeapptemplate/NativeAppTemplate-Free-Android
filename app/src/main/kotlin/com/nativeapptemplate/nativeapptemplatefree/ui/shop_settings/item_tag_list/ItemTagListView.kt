@@ -166,6 +166,10 @@ private fun ItemTagListContentView(
     },
     floatingActionButton = {
       FloatingActionButton(
+        // Colors stated, not primaryContainer: a theme that gives primaryContainer the
+        // screen's color would hide the button. The same as SubmitFab (primary on onPrimary)
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         onClick = {
           onAddItemTagClick(viewModel.shopId)
         },

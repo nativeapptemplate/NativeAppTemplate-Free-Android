@@ -142,6 +142,7 @@
   <string name="terms_of_use">Terms of Use</string>
   <string name="edit_profile">Edit Profile</string>
   <string name="delete_my_account">Delete My Account</string>
+  <string name="delete_my_account_description">Your shops and item tags are deleted with your account. This cannot be undone.</string>
   <string name="update_password">Update Password</string>
   <string name="current_password">Current Password</string>
   <string name="new_password">New Password</string>

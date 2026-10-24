@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class ItemTagRepositoryImpl @Inject constructor(
-  private val mtcPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
+  private val nativeAppTemplatePreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: ItemTagApi,
   @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ItemTagRepository {
@@ -20,7 +20,7 @@ class ItemTagRepositoryImpl @Inject constructor(
     page: Int?,
   ) = apiRequest(ioDispatcher) {
     api.getItemTags(
-      mtcPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       shopId,
       page,
     )
@@ -30,7 +30,7 @@ class ItemTagRepositoryImpl @Inject constructor(
     id: String,
   ) = apiRequest(ioDispatcher) {
     api.getItemTag(
-      mtcPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       id,
     )
   }
@@ -40,7 +40,7 @@ class ItemTagRepositoryImpl @Inject constructor(
     itemTagBody: ItemTagBody,
   ) = apiRequest(ioDispatcher) {
     api.createItemTag(
-      mtcPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       shopId,
       itemTagBody,
     )
@@ -51,7 +51,7 @@ class ItemTagRepositoryImpl @Inject constructor(
     itemTagBody: ItemTagBody,
   ) = apiRequest(ioDispatcher) {
     api.updateItemTag(
-      mtcPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       id,
       itemTagBody,
     )
@@ -60,18 +60,18 @@ class ItemTagRepositoryImpl @Inject constructor(
   override fun deleteItemTag(
     id: String,
   ) = apiAction(ioDispatcher) {
-    api.deleteItemTag(mtcPreferencesDataSource.currentAccountId(), id)
+    api.deleteItemTag(nativeAppTemplatePreferencesDataSource.currentAccountId(), id)
   }
 
   override fun completeItemTag(
     id: String,
   ) = apiRequest(ioDispatcher) {
-    api.completeItemTag(mtcPreferencesDataSource.currentAccountId(), id)
+    api.completeItemTag(nativeAppTemplatePreferencesDataSource.currentAccountId(), id)
   }
 
   override fun idleItemTag(
     id: String,
   ) = apiRequest(ioDispatcher) {
-    api.idleItemTag(mtcPreferencesDataSource.currentAccountId(), id)
+    api.idleItemTag(nativeAppTemplatePreferencesDataSource.currentAccountId(), id)
   }
 }
