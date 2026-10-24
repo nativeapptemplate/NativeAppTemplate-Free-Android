@@ -69,6 +69,7 @@ All errors should use the `CodedError` interface. Error codes use the `NATIVEAPP
 - `:model` has its own JVM unit tests (`model/src/test/`).
 - Demo data: `demo/` package contains `DemoAssetManager` and `Demo*Repository` classes that load JSON fixtures from `app/src/test/resources/demo/`. Never put them in an app source set's `assets/`, which would ship them in the APK.
 - JVM toolchain: Java 17.
+- The tests above run on the JVM and need no device. When the change has to be checked in the running app and the emulator is slow, use a connected Android phone instead (USB debugging on; `adb devices` lists it, `./gradlew installDebug` installs the app); it counts the same as checking on the emulator
 
 ### Testing Policy
 
