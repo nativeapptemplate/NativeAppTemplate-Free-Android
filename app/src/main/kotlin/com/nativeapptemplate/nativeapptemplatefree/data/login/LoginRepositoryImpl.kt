@@ -28,7 +28,7 @@ import javax.inject.Inject
 @VisibleForTesting
 class LoginRepositoryImpl @Inject constructor(
   private val api: LoginApi,
-  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
+  private val nativeAppTemplatePreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : LoginRepository {
 
@@ -39,7 +39,7 @@ class LoginRepositoryImpl @Inject constructor(
     .flowOn(ioDispatcher)
 
   override val userData: Flow<UserData> =
-    natPreferencesDataSource.userData
+    nativeAppTemplatePreferencesDataSource.userData
 
   override fun logout(notice: SignOutNotice?) = flow {
     val response = api.logout()
@@ -55,80 +55,80 @@ class LoginRepositoryImpl @Inject constructor(
 
   override fun getPermissions() = apiRequest(ioDispatcher) {
     api.getPermissions(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
     )
   }
 
   override fun updateConfirmedPrivacyVersion() = apiAction(ioDispatcher) {
     api.updateConfirmedPrivacyVersion(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
     )
   }
 
   override fun updateConfirmedTermsVersion() = apiAction(ioDispatcher) {
     api.updateConfirmedTermsVersion(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
     )
   }
 
   override suspend fun setAccountId(accountId: String) {
-    natPreferencesDataSource.setAccountId(accountId)
+    nativeAppTemplatePreferencesDataSource.setAccountId(accountId)
   }
 
   override suspend fun setShopkeeper(loggedInShopkeeper: LoggedInShopkeeper) {
-    natPreferencesDataSource.setShopkeeper(loggedInShopkeeper)
+    nativeAppTemplatePreferencesDataSource.setShopkeeper(loggedInShopkeeper)
   }
 
   override suspend fun setShopkeeperForUpdate(loggedInShopkeeper: LoggedInShopkeeper) {
-    natPreferencesDataSource.setShopkeeperForUpdate(loggedInShopkeeper)
+    nativeAppTemplatePreferencesDataSource.setShopkeeperForUpdate(loggedInShopkeeper)
   }
 
   override suspend fun setPermissions(permissions: Permissions) {
-    natPreferencesDataSource.setPermissions(permissions)
+    nativeAppTemplatePreferencesDataSource.setPermissions(permissions)
   }
 
   override suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) {
-    natPreferencesDataSource.setDarkThemeConfig(darkThemeConfig)
+    nativeAppTemplatePreferencesDataSource.setDarkThemeConfig(darkThemeConfig)
   }
 
   override suspend fun setDidShowTapShopBelowTip(didShowTapShopBelowTip: Boolean) {
-    natPreferencesDataSource.setDidShowTapShopBelowTip(didShowTapShopBelowTip)
+    nativeAppTemplatePreferencesDataSource.setDidShowTapShopBelowTip(didShowTapShopBelowTip)
   }
 
   override suspend fun setIsEmailUpdated(isEmailUpdated: Boolean) {
-    natPreferencesDataSource.setIsEmailUpdated(isEmailUpdated)
+    nativeAppTemplatePreferencesDataSource.setIsEmailUpdated(isEmailUpdated)
   }
 
   override suspend fun setIsMyAccountDeleted(isMyAccountDeleted: Boolean) {
-    natPreferencesDataSource.setIsMyAccountDeleted(isMyAccountDeleted)
+    nativeAppTemplatePreferencesDataSource.setIsMyAccountDeleted(isMyAccountDeleted)
   }
 
   override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
-    natPreferencesDataSource.setIsShopDeleted(isShopDeleted)
+    nativeAppTemplatePreferencesDataSource.setIsShopDeleted(isShopDeleted)
   }
 
   override suspend fun clearSession(notice: SignOutNotice?) {
-    natPreferencesDataSource.clearSession(
+    nativeAppTemplatePreferencesDataSource.clearSession(
       isEmailUpdated = notice == SignOutNotice.EMAIL_UPDATED,
       isMyAccountDeleted = notice == SignOutNotice.ACCOUNT_DELETED,
     )
   }
 
-  override fun isLoggedIn(): Flow<Boolean> = natPreferencesDataSource.isLoggedIn()
+  override fun isLoggedIn(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.isLoggedIn()
 
-  override fun shouldUpdateApp(): Flow<Boolean> = natPreferencesDataSource.shouldUpdateApp()
+  override fun shouldUpdateApp(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.shouldUpdateApp()
 
-  override fun shouldUpdatePrivacy(): Flow<Boolean> = natPreferencesDataSource.shouldUpdatePrivacy()
+  override fun shouldUpdatePrivacy(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.shouldUpdatePrivacy()
 
-  override fun shouldUpdateTerms(): Flow<Boolean> = natPreferencesDataSource.shouldUpdateTerms()
+  override fun shouldUpdateTerms(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.shouldUpdateTerms()
 
-  override fun isEmailUpdated(): Flow<Boolean> = natPreferencesDataSource.isEmailUpdated()
+  override fun isEmailUpdated(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.isEmailUpdated()
 
-  override fun isMyAccountDeleted(): Flow<Boolean> = natPreferencesDataSource.isMyAccountDeleted()
+  override fun isMyAccountDeleted(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.isMyAccountDeleted()
 
-  override fun isShopDeleted(): Flow<Boolean> = natPreferencesDataSource.isShopDeleted()
+  override fun isShopDeleted(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.isShopDeleted()
 
-  override fun didShowTapShopBelowTip(): Flow<Boolean> = natPreferencesDataSource.didShowTapShopBelowTip()
+  override fun didShowTapShopBelowTip(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.didShowTapShopBelowTip()
 }
 
 /**

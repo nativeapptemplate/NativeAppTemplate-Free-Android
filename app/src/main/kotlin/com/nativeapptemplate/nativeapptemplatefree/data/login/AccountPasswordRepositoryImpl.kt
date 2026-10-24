@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class AccountPasswordRepositoryImpl @Inject constructor(
-  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
+  private val nativeAppTemplatePreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val api: AccountPasswordApi,
   @param:Dispatcher(NativeAppTemplateDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : AccountPasswordRepository {
@@ -17,7 +17,7 @@ class AccountPasswordRepositoryImpl @Inject constructor(
     updatePasswordBody: UpdatePasswordBody,
   ) = apiAction(ioDispatcher) {
     api.updateAccountPassword(
-      natPreferencesDataSource.currentAccountId(),
+      nativeAppTemplatePreferencesDataSource.currentAccountId(),
       updatePasswordBody,
     )
   }

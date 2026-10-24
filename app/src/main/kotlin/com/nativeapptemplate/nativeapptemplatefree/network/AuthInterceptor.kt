@@ -20,15 +20,15 @@ import kotlin.coroutines.cancellation.CancellationException
  */
 @Singleton
 class AuthInterceptor internal constructor(
-  private val natPreferencesDataSource: NativeAppTemplatePreferencesDataSource,
+  private val nativeAppTemplatePreferencesDataSource: NativeAppTemplatePreferencesDataSource,
   private val apiHost: String,
 ) : Interceptor {
   @Inject
-  constructor(natPreferencesDataSource: NativeAppTemplatePreferencesDataSource) :
-    this(natPreferencesDataSource, BuildConfig.DOMAIN)
+  constructor(nativeAppTemplatePreferencesDataSource: NativeAppTemplatePreferencesDataSource) :
+    this(nativeAppTemplatePreferencesDataSource, BuildConfig.DOMAIN)
 
   private suspend fun requestHelper(): RequestHelper {
-    val userData = natPreferencesDataSource.userData.first()
+    val userData = nativeAppTemplatePreferencesDataSource.userData.first()
 
     return RequestHelper(
       apiAuthToken = userData.token,
