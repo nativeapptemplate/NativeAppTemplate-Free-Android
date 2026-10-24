@@ -9,6 +9,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+// When you give several roles one color (your palette's surface also as errorContainer, say), give
+// their on* colors one color too. A Surface, Card or Dialog without colors takes its text from
+// contentColorFor, which matches errorContainer before surface: with onErrorContainer left red, the
+// text of every plain surface turns red (ContentColorTest). FABs state their colors for the same
+// reason: the default primaryContainer, made the screen's color, would hide them.
 val LightDefaultColorScheme = lightColorScheme(
   primary = Blue40,
   onPrimary = Color.White,
