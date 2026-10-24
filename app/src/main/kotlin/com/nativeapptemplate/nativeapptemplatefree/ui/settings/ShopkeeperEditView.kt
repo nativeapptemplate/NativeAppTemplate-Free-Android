@@ -362,6 +362,10 @@ fun DeleteShopkeeperAlertDialog(
     title = {
       Text(dialogTitle)
     },
+    // What goes with the account: the API deletes the shopkeeper's organization with its shops
+    text = {
+      Text(stringResource(R.string.delete_my_account_description))
+    },
     onDismissRequest = {
       onDismissRequest()
     },

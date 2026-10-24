@@ -146,6 +146,7 @@
   <string name="terms_of_use">利用規約</string>
   <string name="edit_profile">プロフィールを編集</string>
   <string name="delete_my_account">アカウントを削除</string>
+  <string name="delete_my_account_description">アカウントと一緒に、店舗とアイテムタグもすべて削除されます。元に戻せません。</string>
   <string name="update_password">パスワードを変更</string>
   <string name="current_password">現在のパスワード</string>
   <string name="new_password">新しいパスワード</string>
