@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 
@@ -213,26 +215,35 @@ fun SignInEmailAndPasswordContentView(
 
       MainButtonView(
         title = stringResource(R.string.button_sign_in),
+        type = MainButtonType.PRIMARY,
         onClick = { viewModel.login() },
         enabled = !viewModel.hasInvalidData(),
         modifier = Modifier
           .padding(horizontal = 12.dp, vertical = 24.dp),
       )
 
-      MainButtonView(
-        title = stringResource(R.string.forgot_password),
+      // Links, as on iOS (SignInEmailAndPasswordView.swift): only signing in is a button.
+      TextButton(
         onClick = { onShowForgotPasswordClick() },
-        modifier = Modifier
-          .padding(horizontal = 12.dp, vertical = 24.dp)
-          .padding(top = 64.dp),
-      )
+        modifier = Modifier.padding(top = 64.dp),
+      ) {
+        Text(
+          stringResource(R.string.forgot_password),
+          color = MaterialTheme.colorScheme.primary,
+          style = MaterialTheme.typography.titleMedium,
+        )
+      }
 
-      MainButtonView(
-        title = stringResource(R.string.didnt_receive_confirmation_instructions),
+      TextButton(
         onClick = { onShowResendConfirmationInstructionsClick() },
-        modifier = Modifier
-          .padding(horizontal = 12.dp, vertical = 24.dp),
-      )
+        modifier = Modifier.padding(top = 16.dp),
+      ) {
+        Text(
+          stringResource(R.string.didnt_receive_confirmation_instructions),
+          color = MaterialTheme.colorScheme.primary,
+          style = MaterialTheme.typography.titleMedium,
+        )
+      }
     }
   }
 }

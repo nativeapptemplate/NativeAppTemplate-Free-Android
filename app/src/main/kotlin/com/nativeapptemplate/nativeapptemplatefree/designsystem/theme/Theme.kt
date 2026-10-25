@@ -14,8 +14,11 @@ import androidx.compose.ui.unit.dp
 // contentColorFor, which matches errorContainer before surface: with onErrorContainer left red, the
 // text of every plain surface turns red (ContentColorTest). FABs state their colors for the same
 // reason: the default primaryContainer, made the screen's color, would hide them.
+//
+// primary is also text (links, outlined buttons) and carries white text (filled buttons), so it
+// keeps 4.5:1 both ways (MainButtonTypeTest). Blue20 is iOS's light accent (Light Blue 2).
 val LightDefaultColorScheme = lightColorScheme(
-  primary = Blue40,
+  primary = Blue20,
   onPrimary = Color.White,
   primaryContainer = Blue90,
   onPrimaryContainer = Blue10,

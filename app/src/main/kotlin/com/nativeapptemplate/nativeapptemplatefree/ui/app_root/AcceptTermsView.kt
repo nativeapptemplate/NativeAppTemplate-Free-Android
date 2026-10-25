@@ -30,6 +30,7 @@ import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.FormatLink
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
@@ -114,6 +115,7 @@ fun AcceptTermsContentView(
 
       MainButtonView(
         title = stringResource(R.string.accept),
+        type = MainButtonType.PRIMARY,
         onClick = { viewModel.updateConfirmedTermsVersion() },
         modifier = Modifier
           .padding(horizontal = 12.dp, vertical = 24.dp),
