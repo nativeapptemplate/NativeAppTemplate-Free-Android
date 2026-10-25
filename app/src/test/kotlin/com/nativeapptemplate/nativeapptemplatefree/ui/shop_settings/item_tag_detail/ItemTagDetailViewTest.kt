@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
@@ -29,6 +30,7 @@ class ItemTagDetailViewTest {
   private val viewModel = ItemTagDetailViewModel(
     savedStateHandle = SavedStateHandle(route = ItemTagDetailRoute(id = ITEM_TAG_ID)),
     itemTagRepository = itemTagRepository,
+    messageBus = MessageBus(),
   )
 
   @Test

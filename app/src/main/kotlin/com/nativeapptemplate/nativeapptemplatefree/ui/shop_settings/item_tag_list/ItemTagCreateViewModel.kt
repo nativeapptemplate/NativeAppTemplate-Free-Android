@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagBody
@@ -37,6 +40,7 @@ data class ItemTagCreateUiState(
 class ItemTagCreateViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val itemTagRepository: ItemTagRepository,
+  private val messageBus: MessageBus,
 ) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ItemTagCreateRoute>().shopId
 
@@ -63,6 +67,7 @@ class ItemTagCreateViewModel @Inject constructor(
       itemTagFlow
         .catchShowingError(_uiState)
         .collect {
+          messageBus.post(Message(R.string.message_item_tag_created))
           _uiState.update {
             it.copy(
               isCreated = true,

@@ -40,8 +40,6 @@ interface LoginRepository {
 
   suspend fun setIsMyAccountDeleted(isMyAccountDeleted: Boolean)
 
-  suspend fun setIsShopDeleted(isShopDeleted: Boolean)
-
   /**
    * Forgets the signed-in shopkeeper (session, account, permissions, one-shot flags) and keeps the
    * device settings (dark theme, tips already shown).
@@ -62,8 +60,6 @@ interface LoginRepository {
   fun isEmailUpdated(): Flow<Boolean>
 
   fun isMyAccountDeleted(): Flow<Boolean>
-
-  fun isShopDeleted(): Flow<Boolean>
 
   fun didShowTapShopBelowTip(): Flow<Boolean>
 }

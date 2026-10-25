@@ -4,6 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
@@ -36,6 +39,7 @@ class ShopSettingsViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loginRepository: LoginRepository,
   private val shopRepository: ShopRepository,
+  private val messageBus: MessageBus,
 ) : ViewModel() {
   private val shopId = savedStateHandle.toRoute<ShopSettingsRoute>().id
 
@@ -91,8 +95,7 @@ class ShopSettingsViewModel @Inject constructor(
       booleanFlow
         .catchShowingError(_uiState)
         .collect {
-          loginRepository.setIsShopDeleted(true)
-
+          messageBus.post(Message(R.string.message_shop_deleted))
           _uiState.update {
             it.copy(
               isShopDeleted = true,

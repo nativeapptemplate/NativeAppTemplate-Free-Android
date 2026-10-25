@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,11 +72,9 @@ internal fun ItemTagDetailView(
     onMessageShown = viewModel::snackbarMessageShown,
   )
 
-  if (uiState.isDeleted) {
-    NativeAppTemplateAlertDialog(
-      dialogTitle = stringResource(R.string.message_item_tag_deleted),
-      onDismissRequest = { onBackClick() },
-    )
+  // The app shows the notice (MessageBus), so the screen closes at once
+  LaunchedEffect(uiState.isDeleted) {
+    if (uiState.isDeleted) onBackClick()
   }
 
   ItemTagDetailView(

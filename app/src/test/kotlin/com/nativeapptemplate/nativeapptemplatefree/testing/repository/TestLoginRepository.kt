@@ -146,9 +146,6 @@ class TestLoginRepository : LoginRepository {
     }
   }
 
-  override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
-  }
-
   /** How many times [clearSession] was called. */
   var clearSessionCallCount = 0
     private set
@@ -180,8 +177,6 @@ class TestLoginRepository : LoginRepository {
   override fun isEmailUpdated(): Flow<Boolean> = MutableStateFlow(false)
 
   override fun isMyAccountDeleted(): Flow<Boolean> = MutableStateFlow(false)
-
-  override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(false)
 
   private val _didShowTapShopBelowTip = MutableStateFlow(true)
 

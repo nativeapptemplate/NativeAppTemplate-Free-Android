@@ -22,6 +22,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +34,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
 
@@ -51,11 +51,9 @@ fun ItemTagCreateView(
     onMessageShown = viewModel::snackbarMessageShown,
   )
 
-  if (uiState.isCreated) {
-    NativeAppTemplateAlertDialog(
-      dialogTitle = stringResource(R.string.message_item_tag_created),
-      onDismissRequest = { onBackClick() },
-    )
+  // The app shows the notice (MessageBus), so the screen closes at once
+  LaunchedEffect(uiState.isCreated) {
+    if (uiState.isCreated) onBackClick()
   }
 
   ItemTagCreateView(

@@ -1,6 +1,5 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -32,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,7 +45,6 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
-import com.nativeapptemplate.nativeapptemplatefree.utils.Utility.restartApp
 
 @Composable
 internal fun ShopSettingsView(
@@ -58,7 +55,7 @@ internal fun ShopSettingsView(
 
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
-  restartApp: (Context) -> Unit = { it.restartApp() },
+  onShopDeleted: () -> Unit,
 ) {
   val uiState: ShopSettingsUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -72,10 +69,10 @@ internal fun ShopSettingsView(
     onMessageShown = viewModel::snackbarMessageShown,
   )
 
-  // Restart as a side effect, once per change, not on every recomposition.
-  val context = LocalContext.current
+  // Back to the shop list, which the app shows the notice over (MessageBus).
+  // As a side effect, once per change, not on every recomposition.
   LaunchedEffect(uiState.isShopDeleted) {
-    if (uiState.isShopDeleted) restartApp(context)
+    if (uiState.isShopDeleted) onShopDeleted()
   }
 
   ShopSettingsView(

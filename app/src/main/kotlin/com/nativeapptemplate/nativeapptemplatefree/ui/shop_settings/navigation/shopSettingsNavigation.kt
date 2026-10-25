@@ -36,6 +36,7 @@ fun NavGraphBuilder.shopSettingsView(
   onShowItemTagListClick: (String) -> Unit,
   onShowSnackbar: suspend (String, String?, SnackbarDuration?) -> Boolean,
   onBackClick: () -> Unit,
+  onShopDeleted: () -> Unit,
 ) {
   composable<ShopSettingsRoute> {
     ShopSettingsView(
@@ -43,6 +44,7 @@ fun NavGraphBuilder.shopSettingsView(
       onShowItemTagListClick = onShowItemTagListClick,
       onShowSnackbar = onShowSnackbar,
       onBackClick = onBackClick,
+      onShopDeleted = onShopDeleted,
     )
   }
 }

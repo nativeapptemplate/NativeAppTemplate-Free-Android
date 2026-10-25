@@ -2,6 +2,9 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_de
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -9,6 +12,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.takePosted
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagDetailRoute
 import kotlinx.coroutines.flow.collect
@@ -39,6 +43,8 @@ class ItemTagDetailViewModelTest {
 
   private val itemTagRepository = TestItemTagRepository()
 
+  private val messageBus = MessageBus()
+
   private lateinit var viewModel: ItemTagDetailViewModel
 
   @Before
@@ -48,6 +54,7 @@ class ItemTagDetailViewModelTest {
         route = ItemTagDetailRoute(id = testInputItemTag.datum!!.id!!),
       ),
       itemTagRepository = itemTagRepository,
+      messageBus = messageBus,
     )
   }
 
@@ -83,6 +90,7 @@ class ItemTagDetailViewModelTest {
 
     val uiStateValue = viewModel.uiState.value
     assertTrue(uiStateValue.isDeleted)
+    assertEquals(listOf(Message(R.string.message_item_tag_deleted)), messageBus.takePosted())
   }
 
   @Test

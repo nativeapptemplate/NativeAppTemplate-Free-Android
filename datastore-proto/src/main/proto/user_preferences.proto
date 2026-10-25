@@ -34,7 +34,9 @@ message UserPreferences {
 
   bool is_email_updated = 32;
   bool is_my_account_deleted = 33;
-  bool is_shop_deleted = 35;
+  // 35: a notice stored for the app to show after restarting itself, which it no longer does (MessageBus)
+  reserved 35;
+  reserved "is_shop_deleted";
 
   bool should_update_app = 39;
 

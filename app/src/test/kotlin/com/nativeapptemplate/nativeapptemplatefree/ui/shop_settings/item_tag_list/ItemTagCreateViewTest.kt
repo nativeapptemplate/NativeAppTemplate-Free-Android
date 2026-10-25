@@ -1,26 +1,19 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_list
 
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.testing.invoke
-import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagCreateRoute
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class ItemTagCreateViewTest {
@@ -32,41 +25,33 @@ class ItemTagCreateViewTest {
   private val viewModel = ItemTagCreateViewModel(
     savedStateHandle = SavedStateHandle(route = ItemTagCreateRoute(shopId = "shop-1")),
     itemTagRepository = itemTagRepository,
+    messageBus = MessageBus(),
   )
 
-  private val lifecycleOwner = object : LifecycleOwner {
-    val registry = LifecycleRegistry.createUnsafe(this).apply { currentState = Lifecycle.State.RESUMED }
-    override val lifecycle: Lifecycle get() = registry
-  }
-
-  private val createdMessage = RuntimeEnvironment.getApplication().getString(R.string.message_item_tag_created)
-
+  // The app shows the notice (MessageBus) and the screen closes at once, so the same tag cannot be
+  // submitted again. Closing twice would pop the screen under it too.
   @Test
-  fun createdDialog_staysAfterTheAppIsBackgroundedAndResumed() {
+  fun created_closesTheScreenOnce_evenWhenTheScreenRecomposes() {
+    var closedCount = 0
     composeTestRule.setContent {
-      CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
-        ItemTagCreateView(
-          viewModel = viewModel,
-          onShowSnackbar = { _, _, _ -> true },
-          onBackClick = {},
-        )
-      }
+      ItemTagCreateView(
+        viewModel = viewModel,
+        onShowSnackbar = { _, _, _ -> true },
+        onBackClick = { closedCount++ },
+      )
     }
     itemTagRepository.sendItemTag(createdItemTag)
     composeTestRule.runOnIdle {
       viewModel.updateName("A001")
       viewModel.createItemTag()
     }
-    composeTestRule.onNodeWithText(createdMessage).assertIsDisplayed()
 
-    // The user switches to another app and comes back.
-    composeTestRule.runOnIdle {
-      lifecycleOwner.registry.currentState = Lifecycle.State.STARTED
-      lifecycleOwner.registry.currentState = Lifecycle.State.RESUMED
-    }
+    // Further state changes recompose the screen while isCreated is still true.
+    composeTestRule.runOnIdle { viewModel.updateName("A002") }
+    composeTestRule.runOnIdle { viewModel.updateName("A003") }
+    composeTestRule.waitForIdle()
 
-    // A reset on resume would hide the dialog and let the user create the same tag again.
-    composeTestRule.onNodeWithText(createdMessage).assertIsDisplayed()
+    assertEquals(1, closedCount)
   }
 }
 

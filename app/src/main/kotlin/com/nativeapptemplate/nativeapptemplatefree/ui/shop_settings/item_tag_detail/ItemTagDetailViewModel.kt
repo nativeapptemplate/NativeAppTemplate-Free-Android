@@ -4,6 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.common.errors.codedDescription
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
@@ -38,6 +41,7 @@ data class ItemTagDetailUiState(
 class ItemTagDetailViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val itemTagRepository: ItemTagRepository,
+  private val messageBus: MessageBus,
 ) : ViewModel() {
   val itemTagId = savedStateHandle.toRoute<ItemTagDetailRoute>().id
 
@@ -93,6 +97,7 @@ class ItemTagDetailViewModel @Inject constructor(
       booleanFlow
         .catchShowingError(_uiState)
         .collect {
+          messageBus.post(Message(R.string.message_item_tag_deleted))
           _uiState.update {
             it.copy(
               isDeleted = true,

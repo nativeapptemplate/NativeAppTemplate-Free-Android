@@ -4,6 +4,7 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.nativeapptemplate.nativeapptemplatefree.BuildConfig
 import com.nativeapptemplate.nativeapptemplatefree.UserPreferences
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginApi
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepositoryImpl
 import com.nativeapptemplate.nativeapptemplatefree.datastore.NativeAppTemplatePreferencesDataSource
@@ -52,6 +53,7 @@ class NativeAppTemplateAppStateTest {
     networkMonitor = object : NetworkMonitor {
       override val isOnline = this@NativeAppTemplateAppStateTest.isOnline
     },
+    messageBus = MessageBus(),
   )
 
   // Null until the preferences load, so the app does not route to onboarding on placeholder values.

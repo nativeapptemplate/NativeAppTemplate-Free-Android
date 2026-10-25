@@ -103,10 +103,6 @@ class LoginRepositoryImpl @Inject constructor(
     nativeAppTemplatePreferencesDataSource.setIsMyAccountDeleted(isMyAccountDeleted)
   }
 
-  override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
-    nativeAppTemplatePreferencesDataSource.setIsShopDeleted(isShopDeleted)
-  }
-
   override suspend fun clearSession(notice: SignOutNotice?) {
     nativeAppTemplatePreferencesDataSource.clearSession(
       isEmailUpdated = notice == SignOutNotice.EMAIL_UPDATED,
@@ -125,8 +121,6 @@ class LoginRepositoryImpl @Inject constructor(
   override fun isEmailUpdated(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.isEmailUpdated()
 
   override fun isMyAccountDeleted(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.isMyAccountDeleted()
-
-  override fun isShopDeleted(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.isShopDeleted()
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = nativeAppTemplatePreferencesDataSource.didShowTapShopBelowTip()
 }

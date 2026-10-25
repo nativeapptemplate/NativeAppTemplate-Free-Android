@@ -210,7 +210,6 @@ class NativeAppTemplatePreferencesDataSourceTest {
     subject.setPermissions(Permissions(meta = Meta(androidAppVersion = BuildConfig.VERSION_CODE + 1, shouldUpdatePrivacy = true, shouldUpdateTerms = true, shopLimitCount = 99)))
     subject.setIsEmailUpdated(true)
     subject.setIsMyAccountDeleted(true)
-    subject.setIsShopDeleted(true)
 
     subject.clearSession()
 
@@ -238,7 +237,6 @@ class NativeAppTemplatePreferencesDataSourceTest {
     assertFalse(subject.shouldUpdateApp().first())
     assertFalse(userData.isEmailUpdated)
     assertFalse(userData.isMyAccountDeleted)
-    assertFalse(subject.isShopDeleted().first())
   }
 
   @Test
@@ -258,16 +256,11 @@ class NativeAppTemplatePreferencesDataSourceTest {
   fun flags_readBackWhatWasSet() = testScope.runTest {
     subject.setIsEmailUpdated(true)
     subject.setIsMyAccountDeleted(true)
-    subject.setIsShopDeleted(true)
     subject.setDidShowTapShopBelowTip(true)
 
     assertTrue(subject.isEmailUpdated().first())
     assertTrue(subject.isMyAccountDeleted().first())
-    assertTrue(subject.isShopDeleted().first())
     assertTrue(subject.didShowTapShopBelowTip().first())
-
-    subject.setIsShopDeleted(false)
-    assertFalse(subject.isShopDeleted().first())
   }
 }
 

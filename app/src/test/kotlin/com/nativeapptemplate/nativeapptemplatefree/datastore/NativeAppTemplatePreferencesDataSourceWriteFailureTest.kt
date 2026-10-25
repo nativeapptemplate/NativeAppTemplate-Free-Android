@@ -51,7 +51,7 @@ class NativeAppTemplatePreferencesDataSourceWriteFailureTest {
 
   @Test
   fun aFlag_whenTheWriteFails_isLoggedAndRethrown() = runTest {
-    assertLoggedAndRethrown("Failed to update user preferences") { subject.setIsShopDeleted(true) }
+    assertLoggedAndRethrown("Failed to update user preferences") { subject.setIsMyAccountDeleted(true) }
   }
 
   @Test

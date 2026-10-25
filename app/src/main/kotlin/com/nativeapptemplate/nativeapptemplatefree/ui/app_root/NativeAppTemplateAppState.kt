@@ -11,6 +11,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import androidx.tracing.trace
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination.SETTINGS_TAB
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.stateIn
 fun rememberNativeAppTemplateAppState(
   loginRepository: LoginRepository,
   networkMonitor: NetworkMonitor,
+  messageBus: MessageBus,
   coroutineScope: CoroutineScope = rememberCoroutineScope(),
   navController: NavHostController = rememberNavController(),
 ): NativeAppTemplateAppState {
@@ -40,12 +42,14 @@ fun rememberNativeAppTemplateAppState(
     navController,
     coroutineScope,
     networkMonitor,
+    messageBus,
   ) {
     NativeAppTemplateAppState(
       loginRepository = loginRepository,
       navController = navController,
       coroutineScope = coroutineScope,
       networkMonitor = networkMonitor,
+      messageBus = messageBus,
     )
   }
 }
@@ -56,6 +60,7 @@ class NativeAppTemplateAppState(
   val navController: NavHostController,
   val coroutineScope: CoroutineScope,
   networkMonitor: NetworkMonitor,
+  val messageBus: MessageBus,
 ) {
   val currentDestination: NavDestination?
     @Composable get() = navController

@@ -77,9 +77,6 @@ class DemoLoginRepository @Inject constructor(
   override suspend fun setIsMyAccountDeleted(isMyAccountDeleted: Boolean) {
   }
 
-  override suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
-  }
-
   override suspend fun clearSession(notice: SignOutNotice?) {
   }
 
@@ -94,8 +91,6 @@ class DemoLoginRepository @Inject constructor(
   override fun isEmailUpdated(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun isMyAccountDeleted(): Flow<Boolean> = MutableStateFlow(true)
-
-  override fun isShopDeleted(): Flow<Boolean> = MutableStateFlow(true)
 
   override fun didShowTapShopBelowTip(): Flow<Boolean> = MutableStateFlow(true)
 
