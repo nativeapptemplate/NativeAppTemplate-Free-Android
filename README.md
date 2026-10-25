@@ -12,7 +12,7 @@ Want this template adapted to your own domain? [nativeapptemplate-agent](https:/
 
 NativeAppTemplate-Free-Android connects to a Rails 8.1 API backend that **you run yourself**. The backend is open source (MIT) — run it locally on your Wi-Fi or deploy your own, then point the app at it (see [Running with the NativeAppTemplate-API on localhost](#running-with-the-nativeapptemplate-api-on-localhost)).
 
-> **Note:** There is no shared hosted API. The app still ships with a built-in default of `https://api.nativeapptemplate.com`, but that endpoint has been shut down — you must run your own API server and point the app at it.
+> **Note:** There is no shared hosted API: run your own API server and point the app at it. The built-in default, `https://api.nativeapptemplate.com`, stands for your own production API's host.
 
 - [nativeapptemplateapi](https://github.com/nativeapptemplate/nativeapptemplateapi) &middot; [API Docs](https://nativeapptemplate.com/api-docs/index.html)
 
@@ -80,7 +80,7 @@ To run this app successfully, ensure you have:
 
 ## Running with the NativeAppTemplate-API on localhost
 
-The debug build's built-in default is `https://api.nativeapptemplate.com`, which has been shut down, so point it at a Rails server running on your Wi-Fi. Add the following to `~/.gradle/gradle.properties` (here `~` is your user home directory — `/Users/<you>` on macOS, `/home/<you>` on Linux, `C:\Users\<you>` on Windows; create the file if it doesn't exist):
+The debug build's built-in default is `https://api.nativeapptemplate.com`, your production API's host, so point it at a Rails server running on your Wi-Fi. Add the following to `~/.gradle/gradle.properties` (here `~` is your user home directory — `/Users/<you>` on macOS, `/home/<you>` on Linux, `C:\Users\<you>` on Windows; create the file if it doesn't exist):
 
 ```
 # Use your current Wi-Fi IP (macOS: `ipconfig getifaddr en0`), or 10.0.2.2 for emulator → host.
