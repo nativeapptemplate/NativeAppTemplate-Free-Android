@@ -157,12 +157,6 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
     }
   }
 
-  suspend fun setIsShopDeleted(isShopDeleted: Boolean) {
-    updatePreferences {
-      it.copy { this.isShopDeleted = isShopDeleted }
-    }
-  }
-
   /**
    * Resets everything to its default except the device settings, which belong to whoever uses this
    * device rather than to the signed-in shopkeeper: the dark theme and the "tap shop below" tip
@@ -215,11 +209,6 @@ class NativeAppTemplatePreferencesDataSource @Inject constructor(
   fun isMyAccountDeleted(): Flow<Boolean> = userPreferences.data
     .map { data ->
       data.isMyAccountDeleted
-    }
-
-  fun isShopDeleted(): Flow<Boolean> = userPreferences.data
-    .map { data ->
-      data.isShopDeleted
     }
 
   fun didShowTapShopBelowTip(): Flow<Boolean> = userPreferences.data

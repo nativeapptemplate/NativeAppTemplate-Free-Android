@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Loading
 import com.nativeapptemplate.nativeapptemplatefree.MainActivityUiState.Success
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.login.LoginRepository
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.theme.NativeAppTemplateTheme
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
@@ -36,6 +37,9 @@ class MainActivity : ComponentActivity() {
 
   @Inject
   lateinit var loginRepository: LoginRepository
+
+  @Inject
+  lateinit var messageBus: MessageBus
 
   private val viewModel: MainActivityViewModel by viewModels()
   var uiState: MainActivityUiState by mutableStateOf(Loading)
@@ -92,6 +96,7 @@ class MainActivity : ComponentActivity() {
       val appState = rememberNativeAppTemplateAppState(
         loginRepository = loginRepository,
         networkMonitor = networkMonitor,
+        messageBus = messageBus,
       )
 
       NativeAppTemplateTheme(

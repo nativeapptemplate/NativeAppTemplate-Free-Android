@@ -19,8 +19,6 @@ class StoredNoticeTest {
     InMemoryDataStore(UserPreferences.getDefaultInstance().toBuilder().setIsLoggedIn(true).build()),
   )
 
-  private var shopDeletedShownCount = 0
-  private var shopDeletedClosedCount = 0
   private var emailUpdatedShownCount = 0
 
   /** An Indefinite snackbar: showSnackbar returns only when the shopkeeper dismisses it. */
@@ -31,20 +29,6 @@ class StoredNoticeTest {
   /** One app process, showing the notices as NativeAppTemplateApp does; cancelled = process ended. */
   private fun CoroutineScope.launchApp(isDismissed: Boolean = false) = launch {
     launch {
-      showNoticeStoredForLaunch(
-        flag = preferences.isShopDeleted(),
-        clear = { preferences.setIsShopDeleted(false) },
-        isLoggedIn = preferences.isLoggedIn(),
-      ) {
-        shopDeletedShownCount++
-        try {
-          snackbar(isDismissed)
-        } finally {
-          shopDeletedClosedCount++
-        }
-      }
-    }
-    launch {
       showStoredNotice(
         flag = preferences.isEmailUpdated(),
         clear = { preferences.setIsEmailUpdated(false) },
@@ -53,25 +37,6 @@ class StoredNoticeTest {
         snackbar(isDismissed)
       }
     }
-  }
-
-  // Regression: the flag was cleared only after the snackbar was dismissed, so closing the app while
-  // it showed made it show again at every launch.
-  @Test
-  fun shopDeleted_isShownOnceByTheRestartedApp_evenIfItIsClosedWhileTheNoticeShows() = runTest(UnconfinedTestDispatcher()) {
-    val beforeTheDeletion = launchApp()
-    // ShopSettingsViewModel.deleteShop stores the flag, then the app restarts itself.
-    preferences.setIsShopDeleted(true)
-    beforeTheDeletion.cancel()
-    // Not by the process that is about to exit, whose snackbar would vanish with it.
-    assertEquals(0, shopDeletedShownCount)
-
-    // The restarted app shows it, and is closed while the snackbar is still up.
-    launchApp().cancel()
-    launchApp().cancel()
-
-    // Shown by the first launch after the deletion only.
-    assertEquals(1, shopDeletedShownCount)
   }
 
   @Test
@@ -100,40 +65,10 @@ class StoredNoticeTest {
     app.cancel()
   }
 
-  // Bug (found in MyTurnTagCreator-Android on 2026-10-16): a success snackbar shown after the app
-  // restarted itself ("Organization switched successfully." there; "Shop deleted" here) stayed over
-  // the sign-in screen after Settings > Sign Out.
-  @Test
-  fun shopDeleted_whileItShows_isClosedBySigningOut() = runTest(UnconfinedTestDispatcher()) {
-    preferences.setIsShopDeleted(true)
-    val app = launchApp()
-    assertEquals(1, shopDeletedShownCount)
-    assertEquals(0, shopDeletedClosedCount)
-
-    // LoginRepositoryImpl.signOutLocally.
-    preferences.clearSession()
-
-    assertEquals(1, shopDeletedClosedCount)
-    app.cancel()
-  }
-
-  @Test
-  fun shopDeleted_whileSignedIn_staysUntilDismissed() = runTest(UnconfinedTestDispatcher()) {
-    preferences.setIsShopDeleted(true)
-    val app = launchApp()
-
-    // Any other write while signed in.
-    preferences.setIsEmailUpdated(false)
-
-    assertEquals(0, shopDeletedClosedCount)
-    app.cancel()
-  }
-
   @Test
   fun doneNotices_goByThemselves_andTheReconfirmationStays() {
     // A notice of something done stayed until dismissed and covered the add button: it goes by
     // itself. The new address's confirmation mail asks the shopkeeper to act, so it stays.
-    assertEquals(SnackbarDuration.Short, storedNoticeDuration(R.string.message_shop_deleted))
     assertEquals(SnackbarDuration.Short, storedNoticeDuration(R.string.message_shopkeeper_deleted))
     assertEquals(SnackbarDuration.Indefinite, storedNoticeDuration(R.string.reconfirm_description))
   }

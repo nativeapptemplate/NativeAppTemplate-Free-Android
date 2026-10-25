@@ -3,6 +3,9 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.model.ShopBody
@@ -36,6 +39,7 @@ data class ShopCreateUiState(
 @HiltViewModel
 class ShopCreateViewModel @Inject constructor(
   private val shopRepository: ShopRepository,
+  private val messageBus: MessageBus,
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(ShopCreateUiState())
   val uiState: StateFlow<ShopCreateUiState> = _uiState.asStateFlow()
@@ -58,6 +62,7 @@ class ShopCreateViewModel @Inject constructor(
       shopFlow
         .catchShowingError(_uiState)
         .collect {
+          messageBus.post(Message(R.string.message_shop_created))
           _uiState.update {
             it.copy(
               isCreated = true,

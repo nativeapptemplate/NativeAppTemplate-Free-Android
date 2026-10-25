@@ -3,6 +3,9 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_li
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.item_tag.ItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -11,6 +14,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestItemTagRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.takePosted
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ItemTagCreateRoute
 import kotlinx.coroutines.flow.collect
@@ -40,6 +44,8 @@ class ItemTagCreateViewModelTest {
 
   private val itemTagRepository = TestItemTagRepository()
 
+  private val messageBus = MessageBus()
+
   private lateinit var viewModel: ItemTagCreateViewModel
 
   @Before
@@ -49,6 +55,7 @@ class ItemTagCreateViewModelTest {
         route = ItemTagCreateRoute(shopId = testInputShop.datum!!.id!!),
       ),
       itemTagRepository = itemTagRepository,
+      messageBus = messageBus,
     )
   }
 
@@ -72,6 +79,7 @@ class ItemTagCreateViewModelTest {
 
     val uiStateValue = viewModel.uiState.value
     assertTrue(uiStateValue.isCreated)
+    assertEquals(listOf(Message(R.string.message_item_tag_created)), messageBus.takePosted())
   }
 
   @Test

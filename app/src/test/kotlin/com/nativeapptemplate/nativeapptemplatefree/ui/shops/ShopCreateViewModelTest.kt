@@ -1,6 +1,9 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shops
 
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -8,6 +11,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.Shop
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.takePosted
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -36,12 +40,15 @@ class ShopCreateViewModelTest {
 
   private val shopRepository = TestShopRepository()
 
+  private val messageBus = MessageBus()
+
   private lateinit var viewModel: ShopCreateViewModel
 
   @Before
   fun setUp() {
     viewModel = ShopCreateViewModel(
       shopRepository = shopRepository,
+      messageBus = messageBus,
     )
   }
 
@@ -71,6 +78,7 @@ class ShopCreateViewModelTest {
     viewModel.createShop()
 
     assertTrue(viewModel.uiState.value.isCreated)
+    assertEquals(listOf(Message(R.string.message_shop_created)), messageBus.takePosted())
     assertFalse(viewModel.uiState.value.isLoading)
   }
 

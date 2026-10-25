@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +44,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
-import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
 
@@ -60,11 +60,9 @@ fun ShopCreateView(
     onMessageShown = viewModel::snackbarMessageShown,
   )
 
-  if (uiState.isCreated) {
-    NativeAppTemplateAlertDialog(
-      dialogTitle = stringResource(R.string.message_shop_created),
-      onDismissRequest = { onBackClick() },
-    )
+  // The app shows the notice (MessageBus), so the screen closes at once
+  LaunchedEffect(uiState.isCreated) {
+    if (uiState.isCreated) onBackClick()
   }
 
   ShopCreateView(

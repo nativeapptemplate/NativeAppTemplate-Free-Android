@@ -95,14 +95,15 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
           show = showNotice(R.string.message_shopkeeper_deleted),
         )
       }
+    }
 
-      // Stored just before the app restarts itself; shown by the restarted app.
-      launch {
-        showNoticeStoredForLaunch(
-          flag = loginRepository.isShopDeleted(),
-          clear = { loginRepository.setIsShopDeleted(false) },
-          isLoggedIn = loginRepository.isLoggedIn(),
-          show = showNotice(R.string.message_shop_deleted),
+    // Notices from screens that close once done (MessageBus), one after another
+    LaunchedEffect(appState) {
+      appState.messageBus.messages.collect { message ->
+        snackbarHostState.showSnackbar(
+          message = resources.getString(message.textId),
+          actionLabel = dismissLabel,
+          duration = Short,
         )
       }
     }

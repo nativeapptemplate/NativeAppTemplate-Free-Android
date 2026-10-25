@@ -43,6 +43,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.n
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopBasicSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.shopSettingsView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
+import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopsRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopCreate
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopBaseView
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.shopCreateView
@@ -126,6 +127,7 @@ fun NativeAppTemplateNavHost(
 
         onShowSnackbar = onShowSnackbar,
         onBackClick = navController::popBackStack,
+        onShopDeleted = { navController.popBackStack(ShopsRoute, inclusive = false) },
       )
       shopBasicSettingsView(
         onShowSnackbar = onShowSnackbar,

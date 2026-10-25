@@ -3,6 +3,9 @@ package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import com.nativeapptemplate.nativeapptemplatefree.R
+import com.nativeapptemplate.nativeapptemplatefree.common.Message
+import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.data.shop.ShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -11,6 +14,7 @@ import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestLoginR
 import com.nativeapptemplate.nativeapptemplatefree.testing.repository.TestShopRepository
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.MainDispatcherRule
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.TEST_API_ERROR_MESSAGE
+import com.nativeapptemplate.nativeapptemplatefree.testing.util.takePosted
 import com.nativeapptemplate.nativeapptemplatefree.testing.util.testApiError
 import com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.navigation.ShopSettingsRoute
 import kotlinx.coroutines.flow.collect
@@ -46,6 +50,8 @@ class ShopSettingsViewModelTest {
   private val shopRepository = TestShopRepository()
   private val loginRepository = TestLoginRepository()
 
+  private val messageBus = MessageBus()
+
   private lateinit var viewModel: ShopSettingsViewModel
 
   @Before
@@ -56,6 +62,7 @@ class ShopSettingsViewModelTest {
       ),
       loginRepository = loginRepository,
       shopRepository = shopRepository,
+      messageBus = messageBus,
     )
   }
 
@@ -81,8 +88,21 @@ class ShopSettingsViewModelTest {
   }
 
   @Test
-  fun deletedShop_restartsTheAppOnce_evenWhenTheScreenRecomposes() {
-    var restartCount = 0
+  fun deleteShop_postsTheNotice() = runTest {
+    backgroundScope.launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+    shopRepository.sendShop(testInputShop)
+    viewModel.reload()
+
+    viewModel.deleteShop(testInputShop.datum!!.id!!)
+
+    assertTrue(viewModel.uiState.value.isShopDeleted)
+    // Shown over the shop list the screen goes back to (iOS: ShopSettingsViewModel)
+    assertEquals(listOf(Message(R.string.message_shop_deleted)), messageBus.takePosted())
+  }
+
+  @Test
+  fun deletedShop_goesBackToTheShopListOnce_evenWhenTheScreenRecomposes() {
+    var deletedCount = 0
     composeTestRule.setContent {
       ShopSettingsView(
         viewModel = viewModel,
@@ -90,7 +110,7 @@ class ShopSettingsViewModelTest {
         onShowItemTagListClick = {},
         onShowSnackbar = { _, _, _ -> true },
         onBackClick = {},
-        restartApp = { restartCount++ },
+        onShopDeleted = { deletedCount++ },
       )
     }
     shopRepository.sendShop(testInputShop)
@@ -105,7 +125,7 @@ class ShopSettingsViewModelTest {
     }
     composeTestRule.waitForIdle()
 
-    assertEquals(1, restartCount)
+    assertEquals(1, deletedCount)
   }
 
   // The API rejects it: the coded error is shown, the spinner stops, and the screen stays open.
