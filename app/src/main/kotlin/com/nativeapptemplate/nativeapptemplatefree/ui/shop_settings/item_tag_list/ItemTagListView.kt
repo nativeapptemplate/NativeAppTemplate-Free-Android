@@ -52,6 +52,7 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ActionIcon
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SwipeableItemWithActions
@@ -315,6 +316,7 @@ private fun NoResultsView(
 
       MainButtonView(
         title = stringResource(R.string.label_add_item_tag),
+        type = MainButtonType.PRIMARY,
         onClick = { onAddItemTagClick(viewModel.shopId) },
         modifier = Modifier
           .padding(horizontal = 12.dp, vertical = 24.dp),

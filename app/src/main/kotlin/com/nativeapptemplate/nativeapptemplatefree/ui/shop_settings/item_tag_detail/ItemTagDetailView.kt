@@ -42,6 +42,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.ItemTag
 import com.nativeapptemplate.nativeapptemplatefree.model.ItemTagState
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
@@ -251,6 +252,11 @@ private fun StateToggleButton(
     ItemTagState.Idled -> stringResource(R.string.mark_as_completed)
     ItemTagState.Completed -> stringResource(R.string.mark_as_idled)
   }
+  // As on iOS: completing is the main action; setting the tag back to idle is secondary.
+  val type = when (state) {
+    ItemTagState.Idled -> MainButtonType.PRIMARY
+    ItemTagState.Completed -> MainButtonType.SECONDARY
+  }
   val onClick: () -> Unit = when (state) {
     ItemTagState.Idled -> viewModel::completeItemTag
     ItemTagState.Completed -> viewModel::idleItemTag
@@ -258,10 +264,9 @@ private fun StateToggleButton(
 
   MainButtonView(
     title = title,
+    type = type,
     onClick = onClick,
     enabled = !uiState.isToggling,
-    color = MaterialTheme.colorScheme.primary,
-    titleColor = MaterialTheme.colorScheme.primary,
     modifier = Modifier
       .fillMaxWidth()
       .padding(top = 16.dp),

@@ -46,6 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.fabClearingContentPadding
@@ -327,6 +328,7 @@ private fun NoResultsView(
 
         MainButtonView(
           title = stringResource(R.string.add_shop),
+          type = MainButtonType.PRIMARY,
           onClick = { onAddShopClick() },
           modifier = Modifier
             .padding(horizontal = 12.dp, vertical = 24.dp),

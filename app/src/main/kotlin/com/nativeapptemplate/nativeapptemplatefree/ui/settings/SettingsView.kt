@@ -50,6 +50,7 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.model.DarkThemeConfig
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.utils.Utility
@@ -479,6 +480,7 @@ private fun SettingsContentView(
 
             MainButtonView(
               title = stringResource(R.string.button_sign_out),
+              type = MainButtonType.DESTRUCTIVE,
               onClick = { viewModel.logout() },
               modifier = Modifier
                 .padding(top = 12.dp),

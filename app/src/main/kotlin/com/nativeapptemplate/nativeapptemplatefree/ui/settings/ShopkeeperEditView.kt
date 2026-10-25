@@ -60,6 +60,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadOnceEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
@@ -248,6 +249,7 @@ fun ShopkeeperEditContentView(
 
       MainButtonView(
         title = stringResource(R.string.delete_my_account),
+        type = MainButtonType.DESTRUCTIVE,
         onClick = { isShowingDeleteConfirmationDialog = true },
         modifier = Modifier
           .padding(horizontal = 12.dp, vertical = 24.dp),

@@ -52,6 +52,7 @@ fun ErrorView(
 
     MainButtonView(
       title = buttonTitle,
+      type = MainButtonType.PRIMARY,
       onClick = { onClick() },
       modifier = Modifier
         .padding(horizontal = 12.dp, vertical = 24.dp),

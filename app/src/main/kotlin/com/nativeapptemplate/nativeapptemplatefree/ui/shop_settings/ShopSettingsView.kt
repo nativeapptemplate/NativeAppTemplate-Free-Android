@@ -43,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.ErrorView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
@@ -248,6 +249,7 @@ private fun ShopSettingsContentView(
         item {
           MainButtonView(
             title = stringResource(R.string.title_delete_shop),
+            type = MainButtonType.DESTRUCTIVE,
             onClick = { isShowingDeleteConfirmationDialog = true },
             modifier = Modifier
               .padding(horizontal = 12.dp, vertical = 24.dp),

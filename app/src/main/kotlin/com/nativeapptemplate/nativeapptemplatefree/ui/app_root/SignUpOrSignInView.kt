@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.nativeapptemplate.nativeapptemplatefree.NativeAppTemplateConstants
 import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.FormatLink
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.linkedFormat
 import com.nativeapptemplate.nativeapptemplatefree.utils.openUri
@@ -96,6 +97,7 @@ internal fun SignUpOrSignInView(
 
       MainButtonView(
         title = stringResource(R.string.sign_up_for_an_account),
+        type = MainButtonType.PRIMARY,
         onClick = { onSignUpClick() },
         modifier = Modifier
           .padding(horizontal = 24.dp),
