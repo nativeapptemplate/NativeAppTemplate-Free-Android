@@ -8,6 +8,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
+import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.navigateToShopList
 
 /**
@@ -62,6 +63,13 @@ internal fun AuthRoutingEffect(
       AuthDestination.ACCEPT_PRIVACY -> navController.navigateToAcceptPrivacy(replaceBackStack)
       AuthDestination.ACCEPT_TERMS -> navController.navigateToAcceptTerms(replaceBackStack)
       AuthDestination.SHOPS -> navController.navigateToShopList(replaceBackStack)
+    }
+    if (destination != AuthDestination.SHOPS) {
+      // The screens the Shops tab saved when the shopkeeper left it (a shop's detail) are kept
+      // under the shop list, and a later save does not replace them: after the next sign-in the
+      // tab would bring back the previous shopkeeper's shop. Off the signed-in screens the Shops
+      // graph is not on the back stack, so clearing it drops only what was saved.
+      navController.clearBackStack(ShopBaseRoute)
     }
     routedTo = destination
   }
