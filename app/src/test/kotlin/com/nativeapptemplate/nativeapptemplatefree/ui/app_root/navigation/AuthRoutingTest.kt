@@ -5,11 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.navigation.NavGraph
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.SettingBaseRoute
+import com.nativeapptemplate.nativeapptemplatefree.ui.settings.navigation.SettingsRoute
+import com.nativeapptemplate.nativeapptemplatefree.ui.shop_detail.navigation.ShopDetailRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopBaseRoute
 import com.nativeapptemplate.nativeapptemplatefree.ui.shops.navigation.ShopsRoute
 import org.junit.Assert.assertEquals
@@ -32,6 +37,10 @@ class AuthRoutingTest {
     NavHost(navController = navController, startDestination = ShopBaseRoute) {
       navigation<ShopBaseRoute>(startDestination = ShopsRoute) {
         composable<ShopsRoute> {}
+        composable<ShopDetailRoute> {}
+      }
+      navigation<SettingBaseRoute>(startDestination = SettingsRoute) {
+        composable<SettingsRoute> {}
       }
       composable<OnboardingRoute> {}
       composable<SignUpOrSignInRoute> {}
@@ -80,6 +89,39 @@ class AuthRoutingTest {
     route(AuthDestination.ONBOARDING)
 
     assertEquals(listOf("OnboardingRoute"), screens())
+  }
+
+  /** A bottom bar tab, with NativeAppTemplateAppState.navigateToTopLevelDestination's options */
+  private fun selectTab(route: Any) {
+    composeTestRule.runOnIdle {
+      navController.navigate(
+        route,
+        navOptions {
+          popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+          launchSingleTop = true
+          restoreState = true
+        },
+      )
+    }
+    composeTestRule.waitForIdle()
+  }
+
+  @Test
+  fun signingOutAndIn_dropsTheScreensTheTabsSaved_soTheNextShopkeeperDoesNotSeeThem() {
+    composeTestRule.setContent(content)
+    route(AuthDestination.SHOPS)
+    // The first shopkeeper leaves a shop open on the Shops tab, then signs out from Settings.
+    composeTestRule.runOnIdle { navController.navigate(ShopDetailRoute("previous-shopkeepers-shop")) }
+    composeTestRule.waitForIdle()
+    selectTab(SettingsRoute)
+    route(AuthDestination.ONBOARDING)
+
+    // The next shopkeeper signs in, opens Settings, then comes back to Shops.
+    route(AuthDestination.SHOPS)
+    selectTab(SettingsRoute)
+    selectTab(ShopsRoute)
+
+    assertEquals(listOf("ShopsRoute"), screens())
   }
 
   @Test

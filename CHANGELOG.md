@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Move agent instructions from `CLAUDE.md` to `AGENTS.md` so Claude Code, Codex, and other agents share one file. `CLAUDE.md` now only imports it (`@AGENTS.md`)
 
 ### Fixed
+- After signing out and in, the Shops tab no longer brings back the shop detail it saved when it was left: the previous shopkeeper's shop, answered 404. Navigation keeps a saved back stack under the destination popped up to and does not replace it on a later save, so `AuthRoutingEffect` clears the Shops graph's saved screens off the signed-in screens (`AuthRoutingTest`). Ported from MyTurnTagCreator-Android
 - A session file that the key does not decrypt is no longer read as unencrypted proto: `UserPreferencesSerializer` throws `CorruptionException` and the app starts over signed out, so a plain file put on the device cannot sign it in. Found while building Orange Baton from the template (#92)
 - Notices of something done shown after a restart (shop or account deleted) go by themselves (`SnackbarDuration.Short`) instead of staying over the add button; the new email's reconfirmation still stays. Found while building Orange Baton from the template (#92)
 - Comments say "the agent" instead of the agent's name (renamed with the product) and drop "a"/"an" before domain words, which can't follow the first sound of the renamed word; test fixtures say "This is shop.". `StringResourcesTranslationTest` now fails on "a" or "an" before a domain word or the product name in an English string
