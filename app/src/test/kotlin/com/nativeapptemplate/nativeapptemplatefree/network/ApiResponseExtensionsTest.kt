@@ -114,6 +114,33 @@ class ApiResponseExtensionsTest {
   }
 
   @Test
+  fun throwApiError_accountNotFound_isAccountGone() {
+    // AccountNotFoundController's answer for an organization that no longer exists
+    val response = httpError(
+      404,
+      """{"code":404,"error_code":"account_not_found","error_message":"This organization no longer exists."}""",
+    )
+
+    val exception = assertFailsWith<ApiException.ApiError> {
+      throwApiError(response, "not found")
+    }
+
+    assertEquals("account_not_found", exception.apiErrorCode)
+    assertTrue(exception.isAccountGone)
+  }
+
+  @Test
+  fun throwApiError_otherNotFound_isNotAccountGone() {
+    val response = httpError(404, """{"code":404,"error_message":"Not found."}""")
+
+    val exception = assertFailsWith<ApiException.ApiError> {
+      throwApiError(response, "not found")
+    }
+
+    assertFalse(exception.isAccountGone)
+  }
+
+  @Test
   fun throwApiError_noResponse_hasNoStatusCode() {
     val response: ApiResponse<String> = ApiResponse.Failure.Exception(java.io.IOException("Unable to resolve host"))
 

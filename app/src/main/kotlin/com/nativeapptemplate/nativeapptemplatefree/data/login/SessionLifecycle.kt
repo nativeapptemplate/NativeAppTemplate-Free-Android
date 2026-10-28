@@ -44,8 +44,9 @@ class SessionLifecycle @Inject constructor(
 
   /**
    * Fetches and stores the permissions. On failure the cached permissions stay in use and the
-   * failure is thrown; only a rejected session (401) signs the shopkeeper out first, as being
-   * offline or a server error must not wipe the session.
+   * failure is thrown; only a rejected session (401) or a deleted account
+   * ([ApiException.isAccountGone]) signs the shopkeeper out first, as being offline or a server
+   * error must not wipe the session.
    */
   suspend fun refreshPermissions() = inApplicationScope { fetchPermissions() }
 
@@ -60,7 +61,8 @@ class SessionLifecycle @Inject constructor(
   private suspend fun fetchPermissions() {
     val permissions = loginRepository.getPermissions()
       .catch { exception ->
-        if ((exception as? ApiException)?.isUnauthorized == true) {
+        val apiException = exception as? ApiException
+        if (apiException?.isUnauthorized == true || apiException?.isAccountGone == true) {
           loginRepository.logout()
             .catch { logoutException -> Log.e(TAG, "Logout error", logoutException) }
             .collect { }

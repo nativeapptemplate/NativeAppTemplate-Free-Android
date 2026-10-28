@@ -112,6 +112,7 @@ internal fun throwApiErrorFor(
     throw ApiException.ApiError(
       code = nativeAppTemplateApiError.code,
       apiMessage = nativeAppTemplateApiError.message,
+      apiErrorCode = nativeAppTemplateApiError.errorCode,
       httpStatusCode = httpStatusCode,
     ).logged()
   }
