@@ -21,7 +21,8 @@ import org.robolectric.RobolectricTestRunner
 /**
  * An empty password field names the password it asks for (values/strings.xml): sign-in and sign-up
  * have one password, "Password is required."; Update Password's second field is the new password,
- * "New password is required.".
+ * "New password is required.". Like every field error, it waits until the field is first edited
+ * (rememberIsEdited), so each test types and clears the password first.
  */
 @RunWith(RobolectricTestRunner::class)
 class PasswordRequiredMessagesTest {
@@ -48,6 +49,11 @@ class PasswordRequiredMessagesTest {
       )
     }
 
+    // Nothing typed yet: no error
+    composeTestRule.onNodeWithText(PASSWORD_IS_REQUIRED).assertDoesNotExist()
+    composeTestRule.runOnIdle { viewModel.updatePassword("x") }
+    composeTestRule.runOnIdle { viewModel.updatePassword("") }
+
     composeTestRule.onNodeWithText(PASSWORD_IS_REQUIRED).assertExists()
     composeTestRule.onNodeWithText(NEW_PASSWORD_IS_REQUIRED).assertDoesNotExist()
   }
@@ -63,6 +69,11 @@ class PasswordRequiredMessagesTest {
       )
     }
 
+    // Nothing typed yet: no error
+    composeTestRule.onNodeWithText(PASSWORD_IS_REQUIRED).assertDoesNotExist()
+    composeTestRule.runOnIdle { viewModel.updatePassword("x") }
+    composeTestRule.runOnIdle { viewModel.updatePassword("") }
+
     composeTestRule.onNodeWithText(PASSWORD_IS_REQUIRED).assertExists()
     composeTestRule.onNodeWithText(NEW_PASSWORD_IS_REQUIRED).assertDoesNotExist()
   }
@@ -77,6 +88,11 @@ class PasswordRequiredMessagesTest {
         onBackClick = {},
       )
     }
+
+    // Nothing typed yet: no error
+    composeTestRule.onNodeWithText(NEW_PASSWORD_IS_REQUIRED).assertDoesNotExist()
+    composeTestRule.runOnIdle { viewModel.updatePassword("x") }
+    composeTestRule.runOnIdle { viewModel.updatePassword("") }
 
     composeTestRule.onNodeWithText(NEW_PASSWORD_IS_REQUIRED).assertExists()
     composeTestRule.onNodeWithText(PASSWORD_IS_REQUIRED).assertDoesNotExist()

@@ -36,6 +36,7 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.rememberIsEdited
 
 @Composable
 fun ItemTagCreateView(
@@ -111,6 +112,7 @@ fun ItemTagCreateContentView(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+      val isNameEdited = rememberIsEdited(uiState.name)
       OutlinedTextField(
         label = {
           Text(
@@ -127,7 +129,7 @@ fun ItemTagCreateContentView(
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (viewModel.hasInvalidDataName()) {
+            if (isNameEdited && viewModel.hasInvalidDataName()) {
               Text(
                 text = stringResource(R.string.item_tag_name_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,
@@ -140,6 +142,7 @@ fun ItemTagCreateContentView(
           .fillMaxWidth(),
       )
 
+      val isDescriptionEdited = rememberIsEdited(uiState.description)
       OutlinedTextField(
         label = {
           Text(
@@ -156,7 +159,7 @@ fun ItemTagCreateContentView(
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (viewModel.hasInvalidDataDescription()) {
+            if (isDescriptionEdited && viewModel.hasInvalidDataDescription()) {
               Text(
                 text = stringResource(R.string.item_tag_description_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,

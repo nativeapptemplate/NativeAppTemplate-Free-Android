@@ -56,6 +56,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.rememberIsEdited
 
 @Composable
 fun SignUpView(
@@ -149,6 +150,7 @@ fun SignUpContentView(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
+      val isNameEdited = rememberIsEdited(uiState.name)
       OutlinedTextField(
         label = {
           Text(
@@ -159,7 +161,7 @@ fun SignUpContentView(
         value = uiState.name,
         onValueChange = { viewModel.updateName(it) },
         supportingText = {
-          if (uiState.name.isBlank()) {
+          if (isNameEdited && uiState.name.isBlank()) {
             Text(
               text = stringResource(id = R.string.full_name_is_required),
               style = MaterialTheme.typography.bodyLarge,
@@ -171,6 +173,7 @@ fun SignUpContentView(
           .fillMaxWidth(),
       )
 
+      val isEmailEdited = rememberIsEdited(uiState.email)
       OutlinedTextField(
         label = {
           Text(
@@ -181,13 +184,13 @@ fun SignUpContentView(
         value = uiState.email,
         onValueChange = { viewModel.updateEmail(it) },
         supportingText = {
-          if (uiState.email.isBlank()) {
+          if (isEmailEdited && uiState.email.isBlank()) {
             Text(
               text = stringResource(id = R.string.email_is_required),
               style = MaterialTheme.typography.bodyLarge,
               color = Color.Red,
             )
-          } else if (viewModel.hasInvalidDataEmail()) {
+          } else if (isEmailEdited && viewModel.hasInvalidDataEmail()) {
             Text(
               text = stringResource(id = R.string.email_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
@@ -231,6 +234,7 @@ fun SignUpContentView(
         }
       }
 
+      val isPasswordEdited = rememberIsEdited(uiState.password)
       OutlinedTextField(
         label = {
           Text(
@@ -252,13 +256,13 @@ fun SignUpContentView(
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            if (uiState.password.isBlank()) {
+            if (isPasswordEdited && uiState.password.isBlank()) {
               Text(
                 text = stringResource(id = R.string.password_is_required),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.Red,
               )
-            } else if (viewModel.hasInvalidDataPassword()) {
+            } else if (isPasswordEdited && viewModel.hasInvalidDataPassword()) {
               Text(
                 text = stringResource(id = R.string.password_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,

@@ -1,8 +1,12 @@
 package com.nativeapptemplate.nativeapptemplatefree.ui.shop_settings.item_tag_list
 
+import android.content.Context
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
+import androidx.test.core.app.ApplicationProvider
+import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.common.MessageBus
 import com.nativeapptemplate.nativeapptemplatefree.model.Attributes
 import com.nativeapptemplate.nativeapptemplatefree.model.Data
@@ -27,6 +31,25 @@ class ItemTagCreateViewTest {
     itemTagRepository = itemTagRepository,
     messageBus = MessageBus(),
   )
+
+  // A new form opened with "Name is invalid." in red before anything was typed. The error waits
+  // until the field is first edited (iOS's untilEdited); the save button stays disabled meanwhile.
+  // Found on 2026-10-28 on a device.
+  @Test
+  fun nameError_waitsUntilTheNameIsEdited() {
+    val nameInvalidMessage = ApplicationProvider.getApplicationContext<Context>()
+      .getString(R.string.item_tag_name_is_invalid)
+    composeTestRule.setContent {
+      ItemTagCreateView(viewModel = viewModel, onShowSnackbar = { _, _, _ -> true }, onBackClick = {})
+    }
+    composeTestRule.waitForIdle()
+    // Blank is invalid (ItemTagCreateViewModel.hasInvalidDataName), but nothing was typed yet
+    composeTestRule.onNodeWithText(nameInvalidMessage, useUnmergedTree = true).assertDoesNotExist()
+
+    composeTestRule.runOnIdle { viewModel.updateName("A") }
+    composeTestRule.runOnIdle { viewModel.updateName("") }
+    composeTestRule.onNodeWithText(nameInvalidMessage, useUnmergedTree = true).assertExists()
+  }
 
   // The app shows the notice (MessageBus) and the screen closes at once, so the same tag cannot be
   // submitted again. Closing twice would pop the screen under it too.
