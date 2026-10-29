@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-10-29
+
 ### Fixed
 - A saved session whose account was deleted (the public demo deletes accounts unused for 30 days) signs out, instead of leaving every screen on an error. The API looks up the organization in the path before the token, so the answer is `account_not_found` (404), not 401; it is now handled like a rejected token (`ApiException.isAccountGone`). Found while checking the release on a device against the public demo (#96)
 - Forms show a field's validation message only once that field is edited, like NativeAppTemplate-Free-iOS; sign-in opened with "Email is required." and "Password is required." in red (`rememberIsEdited`). Found while checking the release on a device against the public demo (#96)
