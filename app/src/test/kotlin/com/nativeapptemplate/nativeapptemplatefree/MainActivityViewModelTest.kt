@@ -150,6 +150,39 @@ class MainActivityViewModelTest {
     assertEquals(1, loginRepository.logoutCallCount)
   }
 
+  // The API looks up the organization in the path before the token. A free account has only its
+  // personal organization, which goes with the account (deleted by the user, or by the public demo
+  // after 30 unused days), so a saved session for it gets account_not_found, never
+  // devise_token_auth's 401, and every screen kept failing. Found on 2026-10-28 with the paid app.
+  @Test
+  fun updatePermissions_whenTheAccountIsGone_logsOut() = runTest {
+    loginRepository.sendIsLoggedIn(true)
+    // What throwApiError makes of AccountNotFoundController's answer
+    loginRepository.failPermissions(
+      ApiException.ApiError(
+        code = 404,
+        apiMessage = "This organization no longer exists.",
+        httpStatusCode = 404,
+        apiErrorCode = "account_not_found",
+      ),
+    )
+
+    viewModel.updatePermissions()
+
+    assertEquals(1, loginRepository.logoutCallCount)
+  }
+
+  // Any other 404 keeps the session
+  @Test
+  fun updatePermissions_whenNotFound_keepsTheUserSignedIn() = runTest {
+    loginRepository.sendIsLoggedIn(true)
+    loginRepository.failPermissions(ApiException.ApiError(code = 404, apiMessage = "Not found.", httpStatusCode = 404))
+
+    viewModel.updatePermissions()
+
+    assertEquals(0, loginRepository.logoutCallCount)
+  }
+
   @Test
   fun syncAppLanguage_whenTheAppLanguageChanged_updatesTheShopkeepersLocale() = runTest {
     // Signed up in English, then the app language was switched to 日本語 in Settings.

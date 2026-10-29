@@ -9,4 +9,8 @@ data class NativeAppTemplateApiError(
 
   @SerialName("error_message")
   val message: String,
+
+  /** Only some errors carry it, e.g. "account_not_found" (see [ApiException.isAccountGone] in the app). */
+  @SerialName("error_code")
+  val errorCode: String? = null,
 )

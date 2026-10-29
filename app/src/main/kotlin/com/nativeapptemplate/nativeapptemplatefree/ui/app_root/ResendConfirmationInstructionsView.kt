@@ -41,6 +41,7 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.rememberIsEdited
 
 @Composable
 fun ResendConfirmationInstructionsView(
@@ -129,6 +130,7 @@ fun ResendConfirmationInstructionsContentView(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
+      val isEmailEdited = rememberIsEdited(uiState.email)
       OutlinedTextField(
         label = {
           Text(
@@ -139,13 +141,13 @@ fun ResendConfirmationInstructionsContentView(
         value = uiState.email,
         onValueChange = { viewModel.updateEmail(it) },
         supportingText = {
-          if (uiState.email.isBlank()) {
+          if (isEmailEdited && uiState.email.isBlank()) {
             Text(
               text = stringResource(id = R.string.email_is_required),
               style = MaterialTheme.typography.bodyLarge,
               color = Color.Red,
             )
-          } else if (viewModel.hasInvalidDataEmail()) {
+          } else if (isEmailEdited && viewModel.hasInvalidDataEmail()) {
             Text(
               text = stringResource(id = R.string.email_is_invalid),
               style = MaterialTheme.typography.bodyLarge,

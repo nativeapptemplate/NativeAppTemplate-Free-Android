@@ -46,6 +46,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.rememberIsEdited
 
 @Composable
 fun ShopCreateView(
@@ -124,6 +125,7 @@ fun ShopCreateContentView(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+      val isNameEdited = rememberIsEdited(uiState.name)
       OutlinedTextField(
         label = {
           Text(
@@ -140,7 +142,7 @@ fun ShopCreateContentView(
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (viewModel.hasInvalidDataName()) {
+            if (isNameEdited && viewModel.hasInvalidDataName()) {
               Text(
                 text = stringResource(R.string.shop_name_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,
@@ -153,6 +155,7 @@ fun ShopCreateContentView(
           .fillMaxWidth(),
       )
 
+      val isDescriptionEdited = rememberIsEdited(uiState.description)
       OutlinedTextField(
         label = {
           Text(
@@ -168,7 +171,7 @@ fun ShopCreateContentView(
               style = MaterialTheme.typography.bodyLarge,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (viewModel.hasInvalidDataDescription()) {
+            if (isDescriptionEdited && viewModel.hasInvalidDataDescription()) {
               Text(
                 text = stringResource(R.string.shop_description_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,

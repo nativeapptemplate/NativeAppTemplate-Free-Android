@@ -46,6 +46,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.rememberIsEdited
 
 @Composable
 fun SignInEmailAndPasswordView(
@@ -141,6 +142,7 @@ fun SignInEmailAndPasswordContentView(
         .padding(horizontal = 16.dp, vertical = 16.dp)
         .verticalScroll(rememberScrollState()),
     ) {
+      val isEmailEdited = rememberIsEdited(uiState.email)
       OutlinedTextField(
         label = {
           Text(
@@ -151,13 +153,13 @@ fun SignInEmailAndPasswordContentView(
         value = uiState.email,
         onValueChange = { viewModel.updateEmail(it) },
         supportingText = {
-          if (uiState.email.isBlank()) {
+          if (isEmailEdited && uiState.email.isBlank()) {
             Text(
               text = stringResource(id = R.string.email_is_required),
               style = MaterialTheme.typography.bodyLarge,
               color = Color.Red,
             )
-          } else if (viewModel.hasInvalidDataEmail()) {
+          } else if (isEmailEdited && viewModel.hasInvalidDataEmail()) {
             Text(
               text = stringResource(id = R.string.email_is_invalid),
               style = MaterialTheme.typography.bodyLarge,
@@ -170,6 +172,7 @@ fun SignInEmailAndPasswordContentView(
           .fillMaxWidth(),
       )
 
+      val isPasswordEdited = rememberIsEdited(uiState.password)
       OutlinedTextField(
         label = {
           Text(
@@ -180,13 +183,13 @@ fun SignInEmailAndPasswordContentView(
         value = uiState.password,
         onValueChange = { viewModel.updatePassword(it) },
         supportingText = {
-          if (uiState.password.isBlank()) {
+          if (isPasswordEdited && uiState.password.isBlank()) {
             Text(
               text = stringResource(id = R.string.password_is_required),
               style = MaterialTheme.typography.bodyLarge,
               color = Color.Red,
             )
-          } else if (viewModel.hasInvalidDataPassword()) {
+          } else if (isPasswordEdited && viewModel.hasInvalidDataPassword()) {
             Text(
               text = stringResource(id = R.string.password_is_invalid),
               style = MaterialTheme.typography.bodyLarge,

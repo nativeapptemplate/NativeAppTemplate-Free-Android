@@ -16,10 +16,25 @@ sealed class ApiException(
   /** True when the server rejected the session's credentials. */
   val isUnauthorized: Boolean get() = httpStatusCode == 401
 
+  /**
+   * True when the API answered account_not_found. It looks up the organization in the path before
+   * the token, and a free account has only its personal organization, which goes with the account
+   * (deleted by the user, or by the public demo after 30 unused days): the session is no good either.
+   */
+  val isAccountGone: Boolean
+    get() = this is ApiError && httpStatusCode == 404 && apiErrorCode == ACCOUNT_NOT_FOUND
+
+  private companion object {
+    // The API's AccountNotFoundController
+    const val ACCOUNT_NOT_FOUND = "account_not_found"
+  }
+
+  /** @property apiErrorCode The body's `error_code`, which only some errors carry. */
   class ApiError(
     val code: Int,
     val apiMessage: String,
     httpStatusCode: Int? = null,
+    val apiErrorCode: String? = null,
   ) : ApiException("$apiMessage [Status: $code]", httpStatusCode = httpStatusCode) {
     override val errorCode: String = "NATIVEAPPTEMPLATE-2001"
 

@@ -46,6 +46,7 @@ import com.nativeapptemplate.nativeapptemplatefree.R
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SubmitFab
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.rememberIsEdited
 
 @Composable
 fun PasswordEditView(
@@ -128,6 +129,7 @@ fun PasswordEditContentView(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+      val isCurrentPasswordEdited = rememberIsEdited(uiState.currentPassword)
       OutlinedTextField(
         label = {
           Text(
@@ -145,7 +147,7 @@ fun PasswordEditContentView(
               text = stringResource(id = R.string.we_need_your_current_password),
               style = MaterialTheme.typography.bodyLarge,
             )
-            if (uiState.currentPassword.isBlank()) {
+            if (isCurrentPasswordEdited && uiState.currentPassword.isBlank()) {
               Text(
                 text = stringResource(id = R.string.current_password_is_required),
                 style = MaterialTheme.typography.bodyLarge,
@@ -173,6 +175,7 @@ fun PasswordEditContentView(
           .fillMaxWidth(),
       )
 
+      val isPasswordEdited = rememberIsEdited(uiState.password)
       OutlinedTextField(
         label = {
           Text(
@@ -194,13 +197,13 @@ fun PasswordEditContentView(
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            if (uiState.password.isBlank()) {
+            if (isPasswordEdited && uiState.password.isBlank()) {
               Text(
                 text = stringResource(id = R.string.new_password_is_required),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.Red,
               )
-            } else if (viewModel.hasInvalidDataPassword()) {
+            } else if (isPasswordEdited && viewModel.hasInvalidDataPassword()) {
               Text(
                 text = stringResource(id = R.string.password_is_invalid),
                 style = MaterialTheme.typography.bodyLarge,
@@ -228,6 +231,7 @@ fun PasswordEditContentView(
           .fillMaxWidth(),
       )
 
+      val isPasswordConfirmationEdited = rememberIsEdited(uiState.passwordConfirmation)
       OutlinedTextField(
         label = {
           Text(
@@ -239,7 +243,7 @@ fun PasswordEditContentView(
         onValueChange = { viewModel.updatePasswordConfirmation(it) },
         supportingText = {
           val isMismatch = viewModel.hasPasswordConfirmationMismatch()
-          if (uiState.passwordConfirmation.isBlank() || isMismatch) {
+          if (isPasswordConfirmationEdited && (uiState.passwordConfirmation.isBlank() || isMismatch)) {
             Text(
               text = stringResource(
                 id = if (isMismatch) R.string.passwords_do_not_match else R.string.confirm_new_password_is_required,
