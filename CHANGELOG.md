@@ -7,9 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Fixed
-- A saved session whose account was deleted (the public demo deletes accounts unused for 30 days) signs out, instead of leaving every screen on an error. The API looks up the organization in the path before the token, so the answer is `account_not_found` (404), not 401; it is now handled like a rejected token (`ApiException.isAccountGone`). Found while checking the release on a device against the public demo
-- Forms show a field's validation message only once that field is edited, like NativeAppTemplate-Free-iOS; sign-in opened with "Email is required." and "Password is required." in red (`rememberIsEdited`). Found while checking the release on a device against the public demo
-- A screen's message that comes while offline is dropped: a shop opened offline queued its `[NATIVEAPPTEMPLATE-2002]` behind the indefinite offline snackbar, and it came up stale once the connection was back (`showScreenMessage`). Found while checking the release on a device against the public demo
+- A saved session whose account was deleted (the public demo deletes accounts unused for 30 days) signs out, instead of leaving every screen on an error. The API looks up the organization in the path before the token, so the answer is `account_not_found` (404), not 401; it is now handled like a rejected token (`ApiException.isAccountGone`). Found while checking the release on a device against the public demo (#96)
+- Forms show a field's validation message only once that field is edited, like NativeAppTemplate-Free-iOS; sign-in opened with "Email is required." and "Password is required." in red (`rememberIsEdited`). Found while checking the release on a device against the public demo (#96)
+- A screen's message that comes while offline is dropped: a shop opened offline queued its `[NATIVEAPPTEMPLATE-2002]` behind the indefinite offline snackbar, and it came up stale once the connection was back (`showScreenMessage`). Found while checking the release on a device against the public demo (#96)
 
 ### Added
 - Every API request sends `Accept-Language` built from the device's preferred languages (e.g. `ja-JP, en-US;q=0.9`), so the API's English/Japanese responses before sign-in follow the device; a header already on the request is kept
