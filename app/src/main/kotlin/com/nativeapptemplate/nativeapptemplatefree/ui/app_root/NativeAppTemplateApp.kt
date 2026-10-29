@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarDuration.Short
 import androidx.compose.material3.SnackbarHost
@@ -143,11 +144,12 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
           NativeAppTemplateNavHost(
             appState = appState,
             onShowSnackbar = { message, action, duration ->
-              snackbarHostState.showSnackbar(
+              snackbarHostState.showScreenMessage(
+                isOffline = isOffline,
                 message = message,
                 actionLabel = action,
                 duration = duration ?: Short,
-              ) == ActionPerformed
+              )
             },
           )
         }
@@ -194,3 +196,22 @@ private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) =
   this?.hierarchy?.any {
     it.hasRoute(route)
   } ?: false
+
+/**
+ * Shows a screen's message, unless offline: a request that fails while offline is the lost
+ * connection the offline snackbar already tells about, and queued behind that snackbar, its
+ * message came up stale once the connection was back.
+ */
+internal suspend fun SnackbarHostState.showScreenMessage(
+  isOffline: Boolean,
+  message: String,
+  actionLabel: String?,
+  duration: SnackbarDuration,
+): Boolean {
+  if (isOffline) return false
+  return showSnackbar(
+    message = message,
+    actionLabel = actionLabel,
+    duration = duration,
+  ) == ActionPerformed
+}
