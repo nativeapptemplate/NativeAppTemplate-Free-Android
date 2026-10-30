@@ -56,6 +56,7 @@ import com.nativeapptemplate.nativeapptemplatefree.model.TimeZones
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.NativeAppTemplateAlertDialog
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.aboveAppSnackbar
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.rememberIsEdited
 
 @Composable
@@ -128,7 +129,7 @@ fun SignUpContentView(
       // https://stackoverflow.com/a/68853697/1160200
       Button(
         onClick = { viewModel.createShopkeeper() },
-        modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
+        modifier = Modifier.aboveAppSnackbar().defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
         enabled = !viewModel.hasInvalidData(),
         shape = CircleShape,
 

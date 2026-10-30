@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+- A screen's floating button (save, add) stays above the app's snackbar. The snackbar is on the app's Scaffold, which a screen's own Scaffold does not know of, so "Shop updated.", the offline notice and the others covered most of the button while shown. `aboveAppSnackbar` lifts the button by the snackbar's height (same fix in NativeAppTemplate-Android)
+
 ## [3.3.0] - 2026-10-29
 
 ### Fixed

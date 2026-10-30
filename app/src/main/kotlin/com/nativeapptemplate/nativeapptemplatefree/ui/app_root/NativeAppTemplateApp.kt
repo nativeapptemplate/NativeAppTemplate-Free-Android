@@ -17,14 +17,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarDuration.Short
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult.ActionPerformed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +35,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -43,6 +46,8 @@ import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.Native
 import com.nativeapptemplate.nativeapptemplatefree.designsystem.component.NativeAppTemplateNavigationBarItem
 import com.nativeapptemplate.nativeapptemplatefree.navigation.NativeAppTemplateNavHost
 import com.nativeapptemplate.nativeapptemplatefree.navigation.TopLevelDestination
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.AppSnackbarHost
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.LocalAppSnackbarHeight
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
@@ -53,6 +58,8 @@ import kotlin.reflect.KClass
 fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
   NativeAppTemplateBackground {
     val snackbarHostState = remember { SnackbarHostState() }
+    // Read by the screens' floating buttons, which the snackbar would cover (aboveAppSnackbar)
+    var snackbarHeight by remember { mutableStateOf(0.dp) }
 
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
 
@@ -116,7 +123,7 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
       containerColor = Color.Transparent,
       contentColor = MaterialTheme.colorScheme.onBackground,
       contentWindowInsets = WindowInsets(0, 0, 0, 0),
-      snackbarHost = { SnackbarHost(snackbarHostState) },
+      snackbarHost = { AppSnackbarHost(snackbarHostState, onHeightChange = { snackbarHeight = it }) },
       bottomBar = {
         val shouldShowBottomBar by appState.shouldShowBottomBar.collectAsStateWithLifecycle()
         if (shouldShowBottomBar) {
@@ -141,17 +148,19 @@ fun NativeAppTemplateApp(appState: NativeAppTemplateAppState) {
           ),
       ) {
         Column(Modifier.fillMaxSize()) {
-          NativeAppTemplateNavHost(
-            appState = appState,
-            onShowSnackbar = { message, action, duration ->
-              snackbarHostState.showScreenMessage(
-                isOffline = isOffline,
-                message = message,
-                actionLabel = action,
-                duration = duration ?: Short,
-              )
-            },
-          )
+          CompositionLocalProvider(LocalAppSnackbarHeight provides snackbarHeight) {
+            NativeAppTemplateNavHost(
+              appState = appState,
+              onShowSnackbar = { message, action, duration ->
+                snackbarHostState.showScreenMessage(
+                  isOffline = isOffline,
+                  message = message,
+                  actionLabel = action,
+                  duration = duration ?: Short,
+                )
+              },
+            )
+          }
         }
       }
     }

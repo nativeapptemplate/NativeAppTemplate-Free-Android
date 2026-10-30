@@ -24,7 +24,7 @@ fun SubmitFab(
   // https://stackoverflow.com/a/68853697/1160200
   Button(
     onClick = onClick,
-    modifier = Modifier.defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
+    modifier = Modifier.aboveAppSnackbar().defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
     enabled = enabled,
     shape = CircleShape,
   ) {
