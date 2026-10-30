@@ -49,6 +49,7 @@ import com.nativeapptemplate.nativeapptemplatefree.ui.common.LoadingView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonType
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.MainButtonView
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.SnackbarMessageEffect
+import com.nativeapptemplate.nativeapptemplatefree.ui.common.aboveAppSnackbar
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.fabClearingContentPadding
 import com.nativeapptemplate.nativeapptemplatefree.ui.common.fabListModifier
 
@@ -137,6 +138,7 @@ private fun ShopListContentView(
     floatingActionButton = {
       if (leftInShopSlots > 0) {
         FloatingActionButton(
+          modifier = Modifier.aboveAppSnackbar(),
           // Colors stated, not primaryContainer: a theme that gives primaryContainer the
           // screen's color would hide the button. The same as SubmitFab (primary on onPrimary)
           containerColor = MaterialTheme.colorScheme.primary,
